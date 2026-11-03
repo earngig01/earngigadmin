@@ -1,0 +1,2 @@
+# earngigadmin
+admin control page
