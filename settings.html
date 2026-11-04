@@ -1,0 +1,492 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings | EarnGig Admin</title>
+<style>
+:root{
+ --navy:#111a35;--purple:#7154d9;--purple2:#8b73ec;--lav:#f1edff;
+ --bg:#f6f7fb;--white:#fff;--text:#202943;--muted:#8490a6;
+ --line:#e8eaf2;--green:#15966b;--red:#d94c61;--orange:#d78a25;
+ --gold:#e8bd62;--shadow:0 8px 28px rgba(25,35,65,.06)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:250px;background:var(--navy);color:#dce2f3;padding:23px 15px;position:fixed;inset:0 auto 0 0;overflow:auto;z-index:5}
+.brand{display:flex;align-items:center;gap:10px;padding:3px 10px 27px;font-size:21px;font-weight:800;color:white}
+.brand svg{width:27px;height:27px;flex:none}
+.nav-label{font-size:10px;letter-spacing:1.5px;color:#8995b3;padding:17px 12px 9px;font-weight:700}
+.nav a{display:flex;align-items:center;gap:12px;text-decoration:none;color:#c0c9df;padding:11px 12px;border-radius:9px;font-size:13px;margin:3px 0}
+.nav a:hover,.nav a.active{background:#29365b;color:white}
+.nav a.active{box-shadow:inset 3px 0 var(--purple2)}
+.nav .ico{width:19px;text-align:center;font-size:16px}
+.sidebar-note{margin:25px 7px 0;padding:13px;border:1px solid #344263;border-radius:10px;color:#aab5ce;font-size:11px;line-height:1.6}
+.main{margin-left:250px;width:calc(100% - 250px);min-width:0}
+.topbar{height:68px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:4}
+.top-left{display:flex;align-items:center;gap:12px}
+.topbar small{color:var(--muted)}
+.admin-chip{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700}
+.avatar{width:33px;height:33px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center}
+.content{padding:27px 30px 50px;max-width:1500px;margin:auto}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}
+h1{font-size:24px;margin:0 0 7px;letter-spacing:-.5px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.5}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:700;font-size:12px}
+.btn-primary{background:var(--purple);color:white}
+.btn-primary:hover{background:#6043c7}
+.btn-light{background:#f0edff;color:var(--purple)}
+.btn-outline{background:white;border:1px solid var(--line);color:var(--text)}
+.btn-danger{background:#fff0f2;color:var(--red)}
+.btn-success{background:#e8f7f0;color:var(--green)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.notice{padding:12px 14px;background:#f4f1ff;border:1px solid #e8e1ff;border-radius:9px;color:#6551b0;font-size:11px;line-height:1.6;margin-bottom:15px}
+.notice.warn{background:#fff8e9;border-color:#f6e5bd;color:#94651d}
+.settings-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:17px;align-items:start}
+.settings-nav{background:white;border:1px solid var(--line);border-radius:12px;padding:9px;position:sticky;top:85px}
+.settings-nav button{width:100%;border:0;background:transparent;text-align:left;padding:11px 12px;border-radius:8px;color:#67738a;font-size:12px;font-weight:700}
+.settings-nav button.active{background:var(--lav);color:var(--purple)}
+.settings-nav button:hover{background:#f7f5ff}
+.panel{background:white;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);margin-bottom:17px}
+.panel-head{padding:17px 19px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.panel-head h2{font-size:14px;margin:0}
+.panel-head p{font-size:11px;color:var(--muted);margin:5px 0 0}
+.panel-body{padding:19px}
+.setting-row{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid #f0f1f6}
+.setting-row:last-child{border-bottom:0}
+.setting-info{min-width:0}
+.setting-info strong{display:block;font-size:12px;margin-bottom:5px}
+.setting-info small{font-size:11px;color:var(--muted);line-height:1.5;display:block}
+.field{min-width:0}
+.field label{display:block;font-size:11px;font-weight:700;margin-bottom:7px}
+.field input,.field select,.field textarea{
+ width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 11px;background:white;color:var(--text);font-size:12px;outline:none
+}
+.field textarea{min-height:90px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--purple2);box-shadow:0 0 0 3px #7154d91a}
+.control{width:220px;max-width:45%}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.check{appearance:none;width:39px;height:22px;border-radius:20px;background:#d8dce6;position:relative;flex:none;cursor:pointer;transition:.2s}
+.check:before{content:"";position:absolute;width:16px;height:16px;background:white;border-radius:50%;top:3px;left:3px;transition:.2s;box-shadow:0 1px 3px #0002}
+.check:checked{background:var(--purple)}
+.check:checked:before{left:20px}
+.badge{display:inline-block;padding:5px 8px;border-radius:20px;font-size:10px;font-weight:700;background:#f1edff;color:var(--purple)}
+.muted{color:var(--muted)}
+.footer-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:550px}
+th{text-align:left;background:#fafbfe;color:#8a94a9;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:12px}
+td{padding:12px;border-top:1px solid #f0f1f6;font-size:11px}
+.empty{text-align:center;padding:25px;color:var(--muted);font-size:12px}
+.hidden{display:none!important}
+.modal-backdrop{position:fixed;inset:0;background:#10182d99;z-index:20;display:none;align-items:center;justify-content:center;padding:18px}
+.modal-backdrop.show{display:flex}
+.modal{background:white;width:min(550px,100%);max-height:90vh;overflow:auto;border-radius:14px}
+.modal-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.modal-head h3{font-size:15px;margin:0}
+.modal-body{padding:20px}
+.modal-foot{padding:14px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+.close{border:0;background:#f1f2f7;border-radius:7px;width:30px;height:30px;font-size:18px}
+.mobile-menu{display:none}
+.footer-note{font-size:10px;color:var(--muted);line-height:1.6;margin-top:12px}
+@media(max-width:1000px){.settings-layout{grid-template-columns:1fr}.settings-nav{position:static;display:flex;overflow:auto}.settings-nav button{width:auto;white-space:nowrap}.grid3{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){
+ .sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:translateX(0)}
+ .main{margin-left:0;width:100%}.topbar{padding:0 16px}.content{padding:20px 14px 40px}
+ .mobile-menu{display:inline-block;border:0;background:var(--lav);color:var(--purple);border-radius:7px;padding:7px 10px}
+ .page-head{flex-direction:column}.grid2,.grid3{grid-template-columns:1fr}
+ .setting-row{align-items:flex-start;flex-direction:column}.control{max-width:none;width:100%}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+   <path d="M5 12L12 18L19.5 6L27 18L35 12L31 30H9L5 12Z" stroke="#E8BD62" stroke-width="2.3" stroke-linejoin="round"/>
+   <path d="M10 34H30" stroke="#E8BD62" stroke-width="2.3" stroke-linecap="round"/>
+   <circle cx="5" cy="11" r="2" fill="#E8BD62"/><circle cx="19.5" cy="5" r="2" fill="#E8BD62"/><circle cx="35" cy="11" r="2" fill="#E8BD62"/>
+  </svg>
+  EarnGig
+ </div>
+ <nav class="nav">
+  <div class="nav-label">MAIN</div>
+  <a href="admin.html"><span class="ico">▦</span>Dashboard</a>
+  <div class="nav-label">USER MANAGEMENT</div>
+  <a href="users.html"><span class="ico">♙</span>Users</a>
+  <a href="membership.html"><span class="ico">◇</span>Membership</a>
+  <a href="wallet.html"><span class="ico">◈</span>Coin Withdrawals</a>
+  <a href="coin-purchases.html"><span class="ico">◉</span>Coin Purchases</a>
+  <a href="referrals.html"><span class="ico">⇄</span>Referrals</a>
+  <div class="nav-label">FINANCE</div>
+  <a href="transactions.html"><span class="ico">▤</span>Transactions</a>
+  <a href="deposits.html"><span class="ico">↓</span>Deposits</a>
+  <a href="withdrawals.html"><span class="ico">↑</span>Wallet Withdrawals</a>
+  <a href="seller-wallet.html"><span class="ico">▣</span>Seller Wallet</a>
+  <a href="payouts.html"><span class="ico">₦</span>Payouts</a>
+  <div class="nav-label">CONTENT & COMMUNITY</div>
+  <a href="writers.html"><span class="ico">✎</span>Writer Management</a>
+  <a href="novels.html"><span class="ico">▥</span>Novel Management</a>
+  <a href="marketplace.html"><span class="ico">▧</span>Marketplace Activity</a>
+  <div class="nav-label">ADVERTISING</div>
+  <a href="advertising.html"><span class="ico">▣</span>Advertisement Bookings</a>
+  <a href="watch-earn.html"><span class="ico">▶</span>Watch & Earn</a>
+  <a href="billboard.html"><span class="ico">▤</span>Billboard Management</a>
+  <div class="nav-label">ADMINISTRATION</div>
+  <a href="notifications.html"><span class="ico">♢</span>Notifications</a>
+  <a href="reports.html"><span class="ico">▥</span>Reports & Analysis</a>
+  <a class="active" href="settings.html"><span class="ico">⚙</span>Settings</a>
+ </nav>
+ <div class="sidebar-note">EarnGig Administration<br>Owner access only<br><span style="color:#e8bd62">●</span> Admin workspace prototype</div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+  <div><strong style="font-size:13px">Platform Settings</strong><br><small>Configuration and administration controls</small></div>
+ </div>
+ <div class="admin-chip"><div class="avatar">A</div><span>Administrator</span></div>
+</header>
+
+<div class="content">
+ <div class="page-head">
+  <div>
+   <h1>Settings</h1>
+   <div class="subtitle">Manage platform preferences, operational rules and administrator configuration.</div>
+  </div>
+  <span class="badge">Prototype configuration</span>
+ </div>
+
+ <div class="notice warn">
+  <strong>Security notice:</strong> These settings are saved in this browser only. They do not change the live EarnGig platform. Critical controls such as account authentication, payment rules, fees, coin balances, user permissions and payout restrictions must be enforced by the backend. Do not store passwords, secret API keys or payment credentials here.
+ </div>
+
+ <div class="settings-layout">
+  <nav class="settings-nav" id="settingsNav">
+   <button class="active" data-page="general">General</button>
+   <button data-page="wallet">Wallet & Coins</button>
+   <button data-page="marketplace">Marketplace</button>
+   <button data-page="novels">Novels & Writers</button>
+   <button data-page="advertising">Advertising</button>
+   <button data-page="notifications">Notifications</button>
+   <button data-page="security">Security</button>
+   <button data-page="admin">Administrator</button>
+   <button data-page="maintenance">Maintenance</button>
+  </nav>
+
+  <div>
+   <!-- GENERAL -->
+   <section class="settings-page" id="page-general">
+    <div class="panel">
+     <div class="panel-head"><div><h2>General platform information</h2><p>Basic public-facing platform details.</p></div></div>
+     <div class="panel-body">
+      <div class="grid2">
+       <div class="field"><label>Platform name</label><input id="platformName" value="EarnGig"></div>
+       <div class="field"><label>Support email</label><input id="supportEmail" type="email" placeholder="Enter official support email"></div>
+       <div class="field"><label>Default country</label><input id="country" value="Nigeria"></div>
+       <div class="field"><label>Default currency</label><select id="currency"><option value="NGN">NGN — Nigerian Naira</option></select></div>
+       <div class="field"><label>Timezone</label><select id="timezone"><option value="Africa/Lagos">Africa/Lagos (WAT)</option><option value="UTC">UTC</option></select></div>
+       <div class="field"><label>Public website URL</label><input id="websiteUrl" type="url" placeholder="https://your-domain.com"></div>
+      </div>
+      <div class="footer-actions"><button class="btn btn-primary" onclick="saveSection('general')">Save general settings</button></div>
+     </div>
+    </div>
+    <div class="panel">
+     <div class="panel-head"><div><h2>Platform availability</h2><p>Prototype switches only; they do not control the live website.</p></div></div>
+     <div class="panel-body">
+      <div class="setting-row"><div class="setting-info"><strong>Allow new user registrations</strong><small>Controls whether the registration flow should accept new accounts.</small></div><input class="check" type="checkbox" id="registrations" checked></div>
+      <div class="setting-row"><div class="setting-info"><strong>Allow new marketplace orders</strong><small>Controls whether buyers can place new marketplace orders.</small></div><input class="check" type="checkbox" id="marketOrders" checked></div>
+      <div class="setting-row"><div class="setting-info"><strong>Allow new writer applications</strong><small>Controls whether people can submit writer applications.</small></div><input class="check" type="checkbox" id="writerApplications" checked></div>
+      <div class="footer-actions"><button class="btn btn-primary" onclick="saveSection('general')">Save availability settings</button></div>
+     </div>
+    </div>
+   </section>
+
+   <!-- WALLET -->
+   <section class="settings-page hidden" id="page-wallet">
+    <div class="panel">
+     <div class="panel-head"><div><h2>Coin economy settings</h2><p>Current EarnGig coin rules.</p></div><span class="badge">Defined rules</span></div>
+     <div class="panel-body">
+      <div class="grid2">
+       <div class="field"><label>Coins per ₦1</label><input id="coinRate" type="number" value="10" readonly></div>
+       <div class="field"><label>Minimum coin purchase</label><input id="minCoinPurchase" type="number" value="1000" readonly></div>
+       <div class="field"><label>Coin purchase fee (%)</label><input id="coinFee" type="number" value="2" readonly></div>
+       <div class="field"><label>New verified account welcome bonus</label><input id="welcomeBonus" type="number" value="1000" readonly></div>
+       <div class="field"><label>Successful referral reward (coins)</label><input id="referralBonus" type="number" value="5000" readonly></div>
+       <div class="field"><label>Successful novel reader reward (coins)</label><input id="readerBonus" type="number" value="250" readonly></div>
+       <div class="field"><label>Successful novel writer reward per reader (coins)</label><input id="writerBonus" type="number" value="250" readonly></div>
+      </div>
+      <div class="notice">These values are displayed as read-only because they represent the rules already provided for EarnGig. Change the live values through a secured backend configuration process, not by editing browser fields.</div>
+     </div>
+    </div>
+    <div class="panel">
+     <div class="panel-head"><div><h2>Main wallet withdrawal rules</h2><p>Current user withdrawal policy.</p></div><span class="badge">Defined rules</span></div>
+     <div class="panel-body">
+      <div class="grid2">
+       <div class="field"><label>Minimum withdrawal (₦)</label><input value="100" readonly></div>
+       <div class="field"><label>Withdrawal fee (%)</label><input value="2" readonly></div>
+       <div class="field"><label>Withdrawal day</label><input value="Friday only" readonly></div>
+       <div class="field"><label>Withdrawal window</label><input value="12:00 AM – 11:59 PM WAT" readonly></div>
+      </div>
+      <div class="notice warn">The live backend must enforce the Friday window, available balance, minimum amount, fee calculation and payment status. A browser setting cannot enforce withdrawal restrictions securely.</div>
+     </div>
+    </div>
+   </section>
+
+   <!-- MARKETPLACE -->
+   <section class="settings-page hidden" id="page-marketplace">
+    <div class="panel">
+     <div class="panel-head"><div><h2>Marketplace operational rules</h2><p>Delivery and seller-wallet configuration reference.</p></div></div>
+     <div class="panel-body">
+      <div class="setting-row"><div class="setting-info"><strong>Require buyer delivery confirmation</strong><small>Seller funds remain pending until buyer and seller have both confirmed delivery.</small></div><span class="badge">Required workflow</span></div>
+      <div class="setting-row"><div class="setting-info"><strong>Require seller delivery confirmation</strong><small>Both parties must confirm delivery before pending funds are released.</small></div><span class="badge">Required workflow</span></div>
+      <div class="setting-row"><div class="setting-info"><strong>Release pending seller funds automatically</strong><small>Only release after both required delivery confirmations are validated by the backend.</small></div><span class="badge">Backend required</span></div>
+      <div class="field" style="margin-top:16px"><label>Seller transaction fee</label><input value="Not configured" readonly></div>
+      <div class="field"><label>Seller payout schedule</label><input value="Not configured" readonly></div>
+      <div class="notice warn">Seller fee and payout schedule have not been defined. They are intentionally left unconfigured rather than assigned invented values.</div>
+     </div>
+    </div>
+   </section>
+
+   <!-- NOVELS -->
+   <section class="settings-page hidden" id="page-novels">
+    <div class="panel">
+     <div class="panel-head"><div><h2>Novel programme rules</h2><p>Reader-target fees and reward conditions.</p></div></div>
+     <div class="panel-body">
+      <div class="field"><label>Reader reward per successful novel</label><input value="250 coins" readonly></div>
+      <div class="field"><label>Writer reward per successful reader</label><input value="250 coins" readonly></div>
+      <div class="notice">A reader must finish the full novel and pass its quiz before qualifying for the reading reward. The writer reward is based on successful readers.</div>
+      <div class="table-wrap">
+       <table><thead><tr><th>Reader target</th><th>Novel upload fee</th></tr></thead>
+       <tbody>
+        <tr><td>50</td><td>₦625</td></tr><tr><td>100</td><td>₦1,250</td></tr>
+        <tr><td>250</td><td>₦3,125</td></tr><tr><td>500</td><td>₦6,250</td></tr>
+        <tr><td>1,000</td><td>₦12,500</td></tr><tr><td>2,500</td><td>₦31,250</td></tr>
+        <tr><td>5,000</td><td>₦62,500</td></tr><tr><td>10,000</td><td>₦125,000</td></tr>
+       </tbody></table>
+      </div>
+      <div class="footer-note">Editorial approval, payment verification and publication must remain separate steps. Paystack verification and reader reward eligibility must be handled by the backend.</div>
+     </div>
+    </div>
+   </section>
+
+   <!-- ADVERTISING -->
+   <section class="settings-page hidden" id="page-advertising">
+    <div class="panel">
+     <div class="panel-head"><div><h2>Advertisement pricing reference</h2><p>Current booking prices supplied for EarnGig.</p></div></div>
+     <div class="panel-body">
+      <h3 style="font-size:12px">Duration-based advertising</h3>
+      <div class="table-wrap"><table><thead><tr><th>Duration</th><th>Price</th></tr></thead><tbody>
+       <tr><td>24 hours</td><td>₦10,000</td></tr><tr><td>72 hours</td><td>₦25,000</td></tr>
+       <tr><td>7 days</td><td>₦50,000</td></tr><tr><td>14 days</td><td>₦85,000</td></tr>
+       <tr><td>30 days</td><td>₦150,000</td></tr>
+      </tbody></table></div>
+      <h3 style="font-size:12px;margin-top:22px">Views-based advertising</h3>
+      <div class="table-wrap"><table><thead><tr><th>Target views</th><th>Price</th></tr></thead><tbody>
+       <tr><td>100</td><td>₦1,500</td></tr><tr><td>500</td><td>₦6,500</td></tr>
+       <tr><td>1,000</td><td>₦12,000</td></tr><tr><td>2,500</td><td>₦27,500</td></tr>
+       <tr><td>5,000</td><td>₦50,000</td></tr><tr><td>10,000</td><td>₦90,000</td></tr>
+      </tbody></table></div>
+      <div class="notice">Advertisement booking approval does not automatically publish an advert to Watch & Earn. Admin controls Watch & Earn publication separately.</div>
+     </div>
+    </div>
+    <div class="panel">
+     <div class="panel-head"><div><h2>Billboard rules reference</h2><p>Separate weekly billboard allocation.</p></div></div>
+     <div class="panel-body">
+      <div class="grid2">
+       <div class="field"><label>Weekly billboard slots</label><input value="10" readonly></div>
+       <div class="field"><label>Price per slot</label><input value="₦100,000" readonly></div>
+       <div class="field"><label>Booking window</label><input value="Saturday and Sunday" readonly></div>
+       <div class="field"><label>Allocation period</label><input value="Following week" readonly></div>
+      </div>
+      <div class="notice warn">Billboard bookings, approval and slot placement are managed separately. Approval alone does not publish a video into a slot.</div>
+     </div>
+    </div>
+   </section>
+
+   <!-- NOTIFICATIONS -->
+   <section class="settings-page hidden" id="page-notifications">
+    <div class="panel">
+     <div class="panel-head"><div><h2>Notification preferences</h2><p>Choose which notification categories should be enabled in the intended platform configuration.</p></div></div>
+     <div class="panel-body">
+      <div class="setting-row"><div class="setting-info"><strong>Account notifications</strong><small>Registration, verification and account changes.</small></div><input class="check" type="checkbox" id="notifyAccount" checked></div>
+      <div class="setting-row"><div class="setting-info"><strong>Wallet notifications</strong><small>Coin purchases, withdrawals and wallet activity.</small></div><input class="check" type="checkbox" id="notifyWallet" checked></div>
+      <div class="setting-row"><div class="setting-info"><strong>Marketplace notifications</strong><small>Orders, delivery updates and disputes.</small></div><input class="check" type="checkbox" id="notifyMarketplace" checked></div>
+      <div class="setting-row"><div class="setting-info"><strong>Writer and novel notifications</strong><small>Applications, editorial decisions and publication updates.</small></div><input class="check" type="checkbox" id="notifyNovels" checked></div>
+      <div class="setting-row"><div class="setting-info"><strong>Advertising notifications</strong><small>Booking reviews and advertising updates.</small></div><input class="check" type="checkbox" id="notifyAds" checked></div>
+      <div class="footer-actions"><button class="btn btn-primary" onclick="saveSection('notifications')">Save preferences</button></div>
+     </div>
+    </div>
+   </section>
+
+   <!-- SECURITY -->
+   <section class="settings-page hidden" id="page-security">
+    <div class="panel">
+     <div class="panel-head"><div><h2>Administrator security</h2><p>Owner-only access configuration reference.</p></div><span class="badge">Security critical</span></div>
+     <div class="panel-body">
+      <div class="field"><label>Authorised administrator email</label><input value="earngigofficial@gmail.com" readonly></div>
+      <div class="setting-row"><div class="setting-info"><strong>Public admin registration</strong><small>New users must not be able to register themselves as administrators.</small></div><span class="badge">Disabled by policy</span></div>
+      <div class="setting-row"><div class="setting-info"><strong>Single administrator account</strong><small>Only the authorised owner account should have admin access.</small></div><span class="badge">Required</span></div>
+      <div class="setting-row"><div class="setting-info"><strong>Server-side access checks</strong><small>Every protected API endpoint and admin resource must validate the administrator session.</small></div><span class="badge">Backend required</span></div>
+      <div class="setting-row"><div class="setting-info"><strong>Secure session management</strong><small>Use server-managed sessions or secure authentication tokens with appropriate protection.</small></div><span class="badge">Backend required</span></div>
+      <div class="notice warn">GitHub Pages is static hosting. A browser-only email check is not secure authentication. Do not store an administrator password in this file, localStorage or frontend JavaScript. The backend must securely provision the initial owner account and enforce the email allowlist.</div>
+     </div>
+    </div>
+   </section>
+
+   <!-- ADMIN -->
+   <section class="settings-page hidden" id="page-admin">
+    <div class="panel">
+     <div class="panel-head"><div><h2>Administrator profile</h2><p>Local display preferences for the admin workspace.</p></div></div>
+     <div class="panel-body">
+      <div class="grid2">
+       <div class="field"><label>Administrator email</label><input value="earngigofficial@gmail.com" readonly></div>
+       <div class="field"><label>Display name</label><input id="adminDisplayName" placeholder="Administrator"></div>
+       <div class="field"><label>Preferred dashboard landing page</label><select id="landingPage"><option value="admin.html">Admin overview</option><option value="reports.html">Reports & Analysis</option><option value="notifications.html">Notifications</option></select></div>
+       <div class="field"><label>Interface density</label><select id="density"><option value="comfortable">Comfortable</option><option value="compact">Compact</option></select></div>
+      </div>
+      <div class="footer-actions"><button class="btn btn-primary" onclick="saveSection('admin')">Save administrator preferences</button></div>
+     </div>
+    </div>
+   </section>
+
+   <!-- MAINTENANCE -->
+   <section class="settings-page hidden" id="page-maintenance">
+    <div class="panel">
+     <div class="panel-head"><div><h2>Maintenance mode</h2><p>Prepare platform maintenance controls.</p></div></div>
+     <div class="panel-body">
+      <div class="notice warn">This prototype switch does not take the live website offline. Live maintenance mode must be enforced by the backend or hosting infrastructure.</div>
+      <div class="setting-row"><div class="setting-info"><strong>Maintenance mode</strong><small>When implemented, this would temporarily restrict ordinary platform access.</small></div><input class="check" type="checkbox" id="maintenanceMode"></div>
+      <div class="field"><label>Maintenance message</label><textarea id="maintenanceMessage" placeholder="Enter the message visitors should see during maintenance."></textarea></div>
+      <div class="field"><label>Expected return time (optional)</label><input type="datetime-local" id="maintenanceReturn"></div>
+      <div class="footer-actions"><button class="btn btn-primary" onclick="saveSection('maintenance')">Save maintenance preferences</button></div>
+     </div>
+    </div>
+   </section>
+
+   <div class="panel">
+    <div class="panel-head"><div><h2>Configuration history</h2><p>Changes saved in this browser.</p></div><button class="btn btn-outline" onclick="exportSettings()">Export configuration</button></div>
+    <div class="panel-body">
+     <div class="table-wrap"><table><thead><tr><th>Setting section</th><th>Action</th><th>Recorded date</th></tr></thead><tbody id="historyRows"></tbody></table></div>
+     <div class="empty hidden" id="historyEmpty">No configuration changes recorded yet.</div>
+     <div class="footer-note">This history is stored locally and is not a secure or tamper-proof audit log. Live audit records must be stored on the server.</div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+</main>
+</div>
+
+<div class="modal-backdrop" id="confirmModal">
+ <div class="modal">
+  <div class="modal-head"><h3>Confirm configuration change</h3><button class="close" onclick="closeConfirm()">×</button></div>
+  <div class="modal-body">
+   <p id="confirmText" style="font-size:13px;line-height:1.6"></p>
+   <div class="notice warn">This action only changes the local prototype setting. It does not change the live platform.</div>
+  </div>
+  <div class="modal-foot">
+   <button class="btn btn-outline" onclick="closeConfirm()">Cancel</button>
+   <button class="btn btn-danger" id="confirmAction">Confirm</button>
+  </div>
+ </div>
+</div>
+
+<script>
+const SETTINGS_KEY='earngig_admin_settings_v1';
+const HISTORY_KEY='earngig_admin_settings_history_v1';
+let settings=read(SETTINGS_KEY,{});
+let history=read(HISTORY_KEY,[]);
+let pendingAction=null;
+
+function read(key,fallback){
+ try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch(e){return fallback}
+}
+function save(key,value){localStorage.setItem(key,JSON.stringify(value))}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function showPage(page){
+ document.querySelectorAll('.settings-page').forEach(x=>x.classList.add('hidden'));
+ document.getElementById('page-'+page).classList.remove('hidden');
+ document.querySelectorAll('#settingsNav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+}
+document.querySelectorAll('#settingsNav button').forEach(btn=>btn.addEventListener('click',()=>showPage(btn.dataset.page)));
+
+function collectSection(section){
+ const fields={
+  general:['platformName','supportEmail','country','currency','timezone','websiteUrl','registrations','marketOrders','writerApplications'],
+  notifications:['notifyAccount','notifyWallet','notifyMarketplace','notifyNovels','notifyAds'],
+  admin:['adminDisplayName','landingPage','density'],
+  maintenance:['maintenanceMode','maintenanceMessage','maintenanceReturn']
+ }[section]||[];
+ const result={};
+ fields.forEach(id=>{
+  const el=document.getElementById(id);
+  if(!el)return;
+  result[id]=el.type==='checkbox'?el.checked:el.value;
+ });
+ return result;
+}
+function saveSection(section){
+ const values=collectSection(section);
+ if(section==='general'){
+  const email=values.supportEmail;
+  if(email&& !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alert('Enter a valid support email address.');return}
+  const url=values.websiteUrl;
+  if(url){try{new URL(url)}catch(e){alert('Enter a valid website URL.');return}}
+ }
+ if(section==='maintenance'&&values.maintenanceMode){
+  askConfirm('Enable maintenance mode in the local prototype? This will not affect the live website.',()=>{
+   applySave(section,values);
+  });
+  return;
+ }
+ applySave(section,values);
+}
+function applySave(section,values){
+ settings[section]={...(settings[section]||{}),...values,updatedAt:new Date().toISOString()};
+ save(SETTINGS_KEY,settings);
+ history.unshift({section,action:'Settings saved',date:new Date().toISOString()});
+ history=history.slice(0,100);save(HISTORY_KEY,history);
+ renderHistory();alert('Settings saved in this browser prototype.');
+}
+function restoreFields(){
+ Object.entries(settings).forEach(([section,values])=>{
+  Object.entries(values||{}).forEach(([id,value])=>{
+   const el=document.getElementById(id);
+   if(!el||id==='updatedAt')return;
+   if(el.type==='checkbox')el.checked=Boolean(value);
+   else if(value!==null&&value!==undefined)el.value=value;
+  });
+ });
+}
+function renderHistory(){
+ document.getElementById('historyRows').innerHTML=history.map(h=>`
+ <tr><td>${esc(h.section)}</td><td>${esc(h.action)}</td><td>${new Date(h.date).toLocaleString('en-NG')}</td></tr>`).join('');
+ document.getElementById('historyEmpty').classList.toggle('hidden',history.length>0);
+}
+function askConfirm(message,callback){
+ pendingAction=callback;document.getElementById('confirmText').textContent=message;
+ document.getElementById('confirmModal').classList.add('show');
+}
+function closeConfirm(){document.getElementById('confirmModal').classList.remove('show');pendingAction=null}
+document.getElementById('confirmAction').addEventListener('click',()=>{
+ if(pendingAction)pendingAction();closeConfirm();
+});
+function exportSettings(){
+ const data={exportedAt:new Date().toISOString(),settings,history};
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='earngig-admin-settings.json';a.click();URL.revokeObjectURL(url);
+}
+restoreFields();renderHistory();showPage('general');
+document.getElementById('confirmModal').addEventListener('click',e=>{if(e.target.id==='confirmModal')closeConfirm()});
+</script>
+</body>
+</html>
