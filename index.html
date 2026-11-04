@@ -1,0 +1,308 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnGig Admin Login</title>
+<style>
+:root {
+  --purple: #6829c7;
+  --purple-dark: #4d189e;
+  --lavender: #f3edff;
+  --border: #e6dcf5;
+  --text: #28213a;
+  --muted: #81798f;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #faf9fd;
+  font-family: Arial, sans-serif;
+  color: var(--text);
+}
+.login-container {
+  width: 100%;
+  max-width: 420px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--purple);
+  font-size: 29px;
+  font-weight: 800;
+  margin-bottom: 30px;
+}
+.crown { width: 36px; height: 36px; }
+.login-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 35px 30px;
+  box-shadow: 0 12px 40px rgba(57, 28, 94, .06);
+}
+.admin-tag {
+  display: inline-block;
+  background: var(--lavender);
+  color: var(--purple);
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1.2px;
+  padding: 7px 11px;
+  border-radius: 20px;
+  margin-bottom: 17px;
+}
+h1 {
+  font-size: 24px;
+  margin: 0 0 9px;
+}
+.subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 27px;
+}
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 17px 0 8px;
+}
+input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 14px;
+  font-size: 14px;
+  outline: none;
+  color: var(--text);
+  background: white;
+}
+input:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px #6829c714;
+}
+.password-wrap { position: relative; }
+.password-wrap input { padding-right: 65px; }
+.show-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 0;
+  color: var(--purple);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+}
+.login-btn {
+  width: 100%;
+  border: 0;
+  border-radius: 9px;
+  background: var(--purple);
+  color: white;
+  padding: 15px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 25px;
+}
+.login-btn:hover { background: var(--purple-dark); }
+.login-btn:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}
+.message {
+  display: none;
+  padding: 12px;
+  margin-top: 17px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.message.error {
+  display: block;
+  color: #a12b35;
+  background: #fff0f0;
+  border: 1px solid #f4d1d1;
+}
+.message.info {
+  display: block;
+  color: #684b14;
+  background: #fff8e8;
+  border: 1px solid #f1e1b8;
+}
+.security-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  background: #f8f5fd;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 13px;
+  margin-top: 22px;
+  font-size: 11px;
+  color: #655c74;
+  line-height: 1.6;
+}
+.security-icon { color: var(--purple); font-size: 16px; }
+.footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 22px;
+}
+</style>
+</head>
+<body>
+
+<div class="login-container">
+
+  <div class="brand">
+    <svg class="crown" viewBox="0 0 64 64" fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 18L20 29L31 10L43 29L55 18L50 43H14L9 18Z"
+        stroke="#D5A52E" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M14 50H50" stroke="#D5A52E"
+        stroke-width="4" stroke-linecap="round"/>
+      <circle cx="9" cy="16" r="4" fill="#D5A52E"/>
+      <circle cx="31" cy="8" r="4" fill="#D5A52E"/>
+      <circle cx="55" cy="16" r="4" fill="#D5A52E"/>
+    </svg>
+    EarnGig
+  </div>
+
+  <div class="login-card">
+    <div class="admin-tag">PRIVATE ADMIN ACCESS</div>
+
+    <h1>Welcome Back</h1>
+    <p class="subtitle">
+      Sign in to access the EarnGig administration dashboard.
+      This portal is reserved for the platform owner.
+    </p>
+
+    <form id="loginForm">
+      <label for="email">Administrator Email</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="Enter your authorised email"
+        autocomplete="username"
+        required
+      >
+
+      <label for="password">Password</label>
+      <div class="password-wrap">
+        <input
+          type="password"
+          id="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+        >
+        <button
+          type="button"
+          class="show-password"
+          onclick="togglePassword()"
+        >SHOW</button>
+      </div>
+
+      <button type="submit" class="login-btn" id="loginButton">
+        Sign In Securely
+      </button>
+
+      <div id="message" class="message" role="alert"></div>
+    </form>
+
+    <div class="security-note">
+      <span class="security-icon">🔒</span>
+      <span>
+        <strong>Restricted access.</strong>
+        Only the pre-authorised administrator account can enter
+        this portal. Public account registration is disabled.
+      </span>
+    </div>
+  </div>
+
+  <div class="footer">
+    © <span id="year"></span> EarnGig. Private Administration Portal.
+  </div>
+</div>
+
+<script>
+const AUTHORISED_EMAIL = "earngigofficial@gmail.com";
+
+function togglePassword() {
+  const password = document.getElementById("password");
+  const button = document.querySelector(".show-password");
+
+  if (password.type === "password") {
+    password.type = "text";
+    button.textContent = "HIDE";
+  } else {
+    password.type = "password";
+    button.textContent = "SHOW";
+  }
+}
+
+function showMessage(message, type) {
+  const box = document.getElementById("message");
+  box.textContent = message;
+  box.className = "message " + type;
+}
+
+document.getElementById("year").textContent =
+  new Date().getFullYear();
+
+document.getElementById("loginForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const email = document.getElementById("email").value.trim().toLowerCase();
+  const password = document.getElementById("password").value;
+  const button = document.getElementById("loginButton");
+
+  if (email !== AUTHORISED_EMAIL) {
+    showMessage("Access denied. This email is not authorised for EarnGig administration.", "error");
+    return;
+  }
+
+  if (!password) {
+    showMessage("Please enter your password.", "error");
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Checking access...";
+
+  /*
+    BACKEND AUTHENTICATION WILL BE CONNECTED HERE.
+
+    Do not store passwords in this file.
+    Do not create a frontend-only login using localStorage.
+    The backend must verify the password and confirm that
+    this email is the single authorised administrator.
+
+    Successful authentication should return a secure session
+    before redirecting to admin.html.
+  */
+
+  showMessage(
+    "Your email is recognised, but secure login is not connected yet. Please wait until the authentication backend is configured.",
+    "info"
+  );
+
+  button.disabled = false;
+  button.textContent = "Sign In Securely";
+});
+</script>
+
+</body>
+</html>
