@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EarnGig Admin | Coin Purchases</title>
+<style>
+:root{--navy:#111827;--purple:#7047eb;--lav:#f1edff;--bg:#f5f6fa;--text:#20283a;--muted:#8991a3;--border:#e9eaf1;--green:#16865c;--greenbg:#e9f8f1;--orange:#bd761b;--orangebg:#fff4e5;--red:#d34b58;--redbg:#fff0f1;--blue:#3976c8;--bluebg:#edf4ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:var(--text)}button,input,select{font:inherit}button{cursor:pointer}
+.layout{display:flex;min-height:100vh}.sidebar{width:250px;background:var(--navy);color:white;position:fixed;inset:0 auto 0 0;padding:25px 15px;overflow:auto;z-index:10}
+.brand{display:flex;align-items:center;gap:10px;padding:0 12px 28px;font-size:22px;font-weight:800}.crown{width:27px;height:25px}
+.nav-label{font-size:10px;letter-spacing:1.5px;color:#8290a9;padding:18px 13px 9px;font-weight:700}
+.nav-link{display:flex;align-items:center;gap:12px;color:#aeb8ca;text-decoration:none;padding:11px 13px;margin:3px 0;border-radius:8px;font-size:13px}
+.nav-link:hover,.nav-link.active{background:#292344;color:white}.nav-link.active{box-shadow:inset 3px 0 var(--purple)}.nav-icon{width:19px;text-align:center}
+.sidebar-footer{border-top:1px solid #30394b;margin-top:28px;padding:18px 12px;color:#8996aa;font-size:11px;line-height:1.7}
+.main{margin-left:250px;width:calc(100% - 250px);min-width:0}.topbar{height:72px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:5}
+.top-title{font-size:14px;font-weight:700}.top-sub{font-size:11px;color:var(--muted);margin-top:3px}.admin-pill{background:var(--lav);color:var(--purple);padding:8px 13px;border-radius:20px;font-size:11px;font-weight:700}
+.content{padding:29px 30px 50px;max-width:1600px;margin:auto}.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}
+h1{font-size:24px;margin:0 0 7px;letter-spacing:-.6px}.subtitle{font-size:12px;color:var(--muted);line-height:1.6}
+.btn{border:0;border-radius:7px;padding:10px 14px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.primary{background:var(--purple);color:white}.light{background:white;border:1px solid var(--border);color:#535d70}
+.notice{background:#f0edff;border:1px solid #e1d9ff;border-radius:9px;padding:13px 15px;color:#51418c;font-size:11px;line-height:1.7;margin-bottom:20px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:20px}.stat,.panel{background:white;border:1px solid var(--border);border-radius:10px;box-shadow:0 5px 20px #181f350b}
+.stat{padding:18px}.stat-label{font-size:11px;color:var(--muted);font-weight:600}.stat-value{font-size:23px;font-weight:800;margin-top:12px}.stat-foot{font-size:10px;color:var(--muted);margin-top:7px}
+.panel{margin-bottom:20px}.panel-head{padding:17px 19px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.panel-title{font-size:13px;font-weight:800}.panel-sub{font-size:10px;color:var(--muted);margin-top:4px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}.field{border:1px solid var(--border);background:white;border-radius:7px;padding:10px;font-size:11px;color:var(--text);outline:none;min-width:130px}.field:focus{border-color:var(--purple)}.search{min-width:220px}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:left;font-size:10px;color:#8c94a5;background:#fafbfc;padding:13px 15px}td{padding:14px 15px;border-top:1px solid #f0f1f5;font-size:11px;vertical-align:middle}tbody tr:hover{background:#fcfbff}
+.person{display:flex;align-items:center;gap:9px}.avatar{width:34px;height:34px;border-radius:9px;background:#eee9ff;color:var(--purple);display:grid;place-items:center;font-weight:800;flex-shrink:0}.person-name{font-weight:700}.person-meta{font-size:10px;color:var(--muted);margin-top:4px}
+.tag{display:inline-block;border-radius:20px;padding:5px 9px;font-size:9px;font-weight:800}.pending{background:var(--orangebg);color:var(--orange)}.verified{background:var(--greenbg);color:var(--green)}.failed{background:var(--redbg);color:var(--red)}.processing{background:var(--bluebg);color:var(--blue)}.notcredited{background:#f0f1f4;color:#697386}
+.action{border:1px solid var(--border);background:white;border-radius:6px;padding:7px 9px;font-size:10px;font-weight:700;color:#596276}.action:hover{border-color:var(--purple);color:var(--purple)}
+.empty{text-align:center;padding:42px 20px;color:var(--muted)}.empty strong{display:block;color:#4d5668;font-size:13px;margin-bottom:6px}.empty p{font-size:11px;line-height:1.6;margin:0}
+.modal-backdrop{display:none;position:fixed;inset:0;background:#0a0f1c99;z-index:30;align-items:center;justify-content:center;padding:16px}.modal-backdrop.show{display:flex}.modal{background:white;border-radius:13px;width:100%;max-width:700px;max-height:92vh;overflow-y:auto;box-shadow:0 20px 70px #0003}
+.modal-head{padding:19px 21px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.modal-head h2{font-size:16px;margin:0}.close{border:0;background:#f2f3f7;border-radius:7px;width:30px;height:30px;font-size:17px}
+.modal-body{padding:20px 21px}.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.detail{padding:12px;background:#f8f9fc;border-radius:8px;min-width:0}.detail-label{font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase}.detail-value{font-size:12px;font-weight:700;overflow-wrap:anywhere}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 13px}.form-group{margin-top:13px}.form-group label{display:block;font-size:10px;font-weight:700;margin-bottom:6px}.form-group .field{width:100%}.form-group.full{grid-column:1/-1}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:20px}.help{font-size:10px;color:var(--muted);line-height:1.6;margin-top:7px}
+.mobile-menu{display:none;border:0;background:white;font-size:20px}
+.rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:18px}.rule{background:#f8f9fc;padding:15px;border-radius:8px}.rule-label{font-size:10px;color:var(--muted)}.rule-value{font-size:17px;font-weight:800;margin-top:8px}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.rules{grid-template-columns:1fr}}
+@media(max-width:760px){.sidebar{transform:translateX(-100%);transition:.25s}.sidebar.open{transform:translateX(0)}.main{margin-left:0;width:100%}.mobile-menu{display:block}.topbar{padding:0 16px}.content{padding:22px 15px}.heading{flex-direction:column}.search{min-width:100%;width:100%}.filters{width:100%}.filters .field{flex:1}}
+@media(max-width:480px){.detail-grid,.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <svg class="crown" viewBox="0 0 40 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <path d="M4 10L11 16L19.5 4L28 16L36 10L32 28H8L4 10Z" stroke="#E8BD62" stroke-width="2" stroke-linejoin="round"/>
+   <path d="M9 23H31M11 31H29" stroke="#E8BD62" stroke-width="2" stroke-linecap="round"/>
+   <circle cx="4" cy="8" r="2" fill="#E8BD62"/><circle cx="19.5" cy="3" r="2" fill="#E8BD62"/><circle cx="36" cy="8" r="2" fill="#E8BD62"/>
+  </svg><span>EarnGig</span>
+ </div>
+ <div class="nav-label">OVERVIEW</div>
+ <a class="nav-link" href="admin.html"><span class="nav-icon">▦</span>Dashboard</a>
+ <div class="nav-label">USER MANAGEMENT</div>
+ <a class="nav-link" href="users.html"><span class="nav-icon">♙</span>Users</a>
+ <a class="nav-link" href="membership.html"><span class="nav-icon">◇</span>Membership</a>
+ <div class="nav-label">FINANCIAL MANAGEMENT</div>
+ <a class="nav-link" href="wallet.html"><span class="nav-icon">◈</span>Coin Withdrawals</a>
+ <a class="nav-link active" href="coin-purchases.html"><span class="nav-icon">◉</span>Coin Purchases</a>
+ <a class="nav-link" href="referrals.html"><span class="nav-icon">♧</span>Referrals</a>
+ <a class="nav-link" href="transactions.html"><span class="nav-icon">⇄</span>Transactions</a>
+ <a class="nav-link" href="deposits.html"><span class="nav-icon">↓</span>Deposits</a>
+ <a class="nav-link" href="withdrawals.html"><span class="nav-icon">↑</span>User Naira Withdrawals</a>
+ <a class="nav-link" href="payouts.html"><span class="nav-icon">⇧</span>Payout Management</a>
+ <a class="nav-link" href="seller-wallet.html"><span class="nav-icon">▣</span>Seller Store Wallet</a>
+ <div class="nav-label">MARKETPLACE</div>
+ <a class="nav-link" href="store-verification.html"><span class="nav-icon">✓</span>Store Verification</a>
+ <div class="nav-label">ADVERTISING</div>
+ <a class="nav-link" href="advertising.html"><span class="nav-icon">▤</span>Advertisement Bookings</a>
+ <a class="nav-link" href="watch-earn.html"><span class="nav-icon">▶</span>Watch &amp; Earn</a>
+ <a class="nav-link" href="billboard.html"><span class="nav-icon">▣</span>Billboard Management</a>
+ <div class="nav-label">CONTENT &amp; OPERATIONS</div>
+ <a class="nav-link" href="writers.html"><span class="nav-icon">✎</span>Writers</a>
+ <div class="sidebar-footer">EarnGig Administration<br>Owner access only<br><span style="color:#e8bd62">●</span> Admin prototype</div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div style="display:flex;align-items:center;gap:13px">
+  <button class="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+  <div><div class="top-title">Coin Purchases</div><div class="top-sub">Financial management / Coin purchase transactions</div></div>
+ </div>
+ <div class="admin-pill">OWNER ADMIN</div>
+</header>
+
+<div class="content">
+ <div class="heading">
+  <div><h1>Coin Purchase History</h1><div class="subtitle">View every coin purchase, payment verification and automatic account credit.</div></div>
+  <button class="btn light" onclick="exportData()">⇩ Export history</button>
+ </div>
+
+ <div class="notice">
+  <strong>Automatic coin crediting:</strong> When Paystack confirms a successful payment, the EarnGig backend must verify the transaction and credit the purchased coins to the correct user's account automatically. Admins should not need to manually add coins. This page is for monitoring and reviewing those transactions.
+ </div>
+
+ <section class="stats">
+  <div class="stat"><div class="stat-label">Total purchases</div><div class="stat-value" id="totalCount">0</div><div class="stat-foot">All recorded purchase transactions</div></div>
+  <div class="stat"><div class="stat-label">Verified payments</div><div class="stat-value" id="verifiedCount">0</div><div class="stat-foot">Payment confirmations received</div></div>
+  <div class="stat"><div class="stat-label">Coins credited</div><div class="stat-value" id="creditedCoins">0</div><div class="stat-foot">Coins recorded as credited</div></div>
+  <div class="stat"><div class="stat-label">Pending verification</div><div class="stat-value" id="pendingCount">0</div><div class="stat-foot">Awaiting provider confirmation</div></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head">
+   <div><div class="panel-title">Purchase transaction history</div><div class="panel-sub">A record of each user's coin purchase and payment outcome.</div></div>
+   <div class="filters">
+    <input class="field search" id="search" placeholder="Search user, ID or reference..." oninput="render()">
+    <select class="field" id="statusFilter" onchange="render()"><option value="">All payment statuses</option><option>Pending</option><option>Verified &amp; Credited</option><option>Failed</option><option>Refunded</option></select>
+    <select class="field" id="providerFilter" onchange="render()"><option value="">All providers</option><option>Paystack</option><option>Other</option></select>
+   </div>
+  </div>
+  <div class="table-wrap">
+   <table><thead><tr><th>USER</th><th>TRANSACTION ID</th><th>COINS PURCHASED</th><th>PAYMENT AMOUNT</th><th>PAYMENT REFERENCE</th><th>STATUS</th><th>ACTION</th></tr></thead>
+   <tbody id="purchaseRows"></tbody></table>
+  </div>
+  <div class="panel-head" style="border-top:1px solid var(--border);border-bottom:0">
+   <span class="help">Live purchases will appear here after backend integration.</span>
+   <button class="btn primary" onclick="openAdd()">＋ Record test transaction</button>
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><div><div class="panel-title">Coin purchase pricing rules</div><div class="panel-sub">Current EarnGig coin purchase calculation.</div></div></div>
+  <div class="rules">
+   <div class="rule"><div class="rule-label">Coin conversion</div><div class="rule-value">10 coins = ₦1</div></div>
+   <div class="rule"><div class="rule-label">Minimum purchase</div><div class="rule-value">1,000 coins</div></div>
+   <div class="rule"><div class="rule-label">Purchase fee</div><div class="rule-value">2%</div></div>
+  </div>
+  <div style="padding:0 18px 18px;font-size:11px;color:#687286;line-height:1.7">
+   Example: 1,000 coins cost ₦100 before the 2% fee. The 2% fee is ₦2, so the total payment is ₦102. The backend should credit 1,000 coins after verifying the full payment of ₦102.
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><div><div class="panel-title">How automatic crediting works</div><div class="panel-sub">Required backend payment process.</div></div></div>
+  <div class="rules">
+   <div class="rule"><div class="rule-label">01 · Customer</div><div class="rule-value">Select coins</div><div class="help">Customer chooses a coin amount and starts checkout.</div></div>
+   <div class="rule"><div class="rule-label">02 · Payment</div><div class="rule-value">Paystack</div><div class="help">Customer completes payment through the provider.</div></div>
+   <div class="rule"><div class="rule-label">03 · Verification</div><div class="rule-value">Server verifies</div><div class="help">Backend checks the provider transaction and expected amount.</div></div>
+   <div class="rule"><div class="rule-label">04 · Credit</div><div class="rule-value">Coins added</div><div class="help">Backend credits the exact purchased coins once only.</div></div>
+   <div class="rule"><div class="rule-label">05 · History</div><div class="rule-value">Record saved</div><div class="help">Transaction appears here as verified and credited.</div></div>
+  </div>
+ </section>
+
+ <div class="help">Prototype storage: <code>earngig_coin_purchase_history_v1</code>. This page does not connect to Paystack or credit real user accounts. The production backend must verify payment references, amounts, currency, transaction ownership and prevent duplicate credits.</div>
+</div>
+</main>
+</div>
+
+<!-- TEST TRANSACTION -->
+<div class="modal-backdrop" id="addModal" onclick="backdrop(event,'addModal')">
+ <div class="modal"><div class="modal-head"><h2>Record test transaction</h2><button class="close" onclick="closeModal('addModal')">×</button></div><div class="modal-body">
+  <div class="notice">This creates a local test record only. You cannot mark a payment verified here or credit a user's coins from this page.</div>
+  <div class="form-grid">
+   <div class="form-group"><label>User full name *</label><input class="field" id="fName" placeholder="Full name"></div>
+   <div class="form-group"><label>EarnGig user ID *</label><input class="field" id="fUserId" placeholder="User ID"></div>
+   <div class="form-group"><label>Coins purchased *</label><input class="field" id="fCoins" type="number" min="1000" step="1" placeholder="Minimum 1,000" oninput="calculate()"></div>
+   <div class="form-group"><label>Payment provider</label><select class="field" id="fProvider"><option>Paystack</option><option>Other</option></select></div>
+   <div class="form-group"><label>Payment reference</label><input class="field" id="fReference" placeholder="Provider reference"></div>
+   <div class="form-group"><label>Payment amount received (₦)</label><input class="field" id="fAmount" type="number" min="0" step="0.01" placeholder="Amount received"></div>
+   <div class="form-group full"><label>Expected total (₦)</label><input class="field" id="fExpected" readonly placeholder="Calculated amount including 2% fee"></div>
+  </div>
+  <div class="help">New test records are always saved as Pending. The form cannot verify payment or add coins to an account.</div>
+  <div class="modal-actions"><button class="btn light" onclick="closeModal('addModal')">Cancel</button><button class="btn primary" onclick="savePurchase()">Save pending record</button></div>
+ </div></div>
+</div>
+
+<!-- DETAILS -->
+<div class="modal-backdrop" id="detailModal" onclick="backdrop(event,'detailModal')">
+ <div class="modal"><div class="modal-head"><h2 id="detailTitle">Purchase details</h2><button class="close" onclick="closeModal('detailModal')">×</button></div><div class="modal-body" id="detailBody"></div></div>
+</div>
+
+<script>
+const KEY='earngig_coin_purchase_history_v1';
+let purchases=load();
+function load(){try{const a=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(a)?a:[]}catch(e){return []}}
+function save(){localStorage.setItem(KEY,JSON.stringify(purchases))}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function uid(){return 'CNP-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,5).toUpperCase()}
+function money(v){return '₦'+Number(v||0).toLocaleString('en-NG',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function expectedPayment(coins){return (Number(coins)/10)*1.02}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function backdrop(e,id){if(e.target.id===id)closeModal(id)}
+function badge(s){
+ const cls={'Pending':'pending','Verified & Credited':'verified','Failed':'failed','Refunded':'notcredited'}[s]||'pending';
+ return `<span class="tag ${cls}">${esc(s)}</span>`;
+}
+function calculate(){
+ const coins=Number(document.getElementById('fCoins').value);
+ document.getElementById('fExpected').value=Number.isFinite(coins)&&coins>0?money(expectedPayment(coins)):'';
+}
+function openAdd(){
+ ['fName','fUserId','fCoins','fReference','fAmount','fExpected'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('fProvider').value='Paystack';
+ document.getElementById('addModal').classList.add('show');
+}
+function savePurchase(){
+ const name=document.getElementById('fName').value.trim();
+ const userId=document.getElementById('fUserId').value.trim();
+ const coins=Number(document.getElementById('fCoins').value);
+ const amountText=document.getElementById('fAmount').value.trim();
+ const amount=amountText===''?null:Number(amountText);
+ if(!name||!userId||!Number.isSafeInteger(coins)||coins<1000){alert('Enter the user's name, user ID and at least 1,000 whole coins.');return}
+ if(amount!==null&&(!Number.isFinite(amount)||amount<0)){alert('Enter a valid payment amount.');return}
+ const now=new Date().toISOString();
+ purchases.unshift({
+  id:uid(),name,userId,coins,
+  expectedAmount:Number(expectedPayment(coins).toFixed(2)),
+  amountReceived:amount,
+  provider:document.getElementById('fProvider').value,
+  reference:document.getElementById('fReference').value.trim(),
+  status:'Pending',credited:false,creditedAt:null,
+  createdAt:now,updatedAt:now
+ });
+ save();render();closeModal('addModal');
+}
+function render(){
+ document.getElementById('totalCount').textContent=purchases.length;
+ document.getElementById('verifiedCount').textContent=purchases.filter(x=>x.status==='Verified & Credited').length;
+ document.getElementById('creditedCoins').textContent=purchases.filter(x=>x.credited===true).reduce((s,x)=>s+Number(x.coins||0),0).toLocaleString('en-NG');
+ document.getElementById('pendingCount').textContent=purchases.filter(x=>x.status==='Pending').length;
+ const q=document.getElementById('search').value.trim().toLowerCase();
+ const status=document.getElementById('statusFilter').value;
+ const provider=document.getElementById('providerFilter').value;
+ const list=purchases.filter(x=>
+  (!q||[x.name,x.userId,x.id,x.reference].join(' ').toLowerCase().includes(q))&&
+  (!status||x.status===status)&&(!provider||x.provider===provider)
+ ).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+ document.getElementById('purchaseRows').innerHTML=list.length?list.map(x=>`
+ <tr>
+ <td><div class="person"><div class="avatar">${esc((x.name||'?').slice(0,1).toUpperCase())}</div><div><div class="person-name">${esc(x.name)}</div><div class="person-meta">${esc(x.userId)}</div></div></div></td>
+ <td>${esc(x.id)}</td>
+ <td><strong>${Number(x.coins).toLocaleString('en-NG')}</strong></td>
+ <td>${x.amountReceived===null?'Not recorded':money(x.amountReceived)}</td>
+ <td>${esc(x.reference||'Not recorded')}</td>
+ <td>${badge(x.status)}</td>
+ <td><button class="action" onclick="showDetails('${x.id}')">View ↗</button></td>
+ </tr>`).join(''):'<tr><td colspan="7"><div class="empty"><strong>No coin purchases found</strong><p>Purchase records will appear here when the live payment service is connected.</p></div></td></tr>';
+}
+function detail(label,value){return `<div class="detail"><div class="detail-label">${esc(label)}</div><div class="detail-value">${esc(value??'Not recorded')}</div></div>`}
+function showDetails(id){
+ const x=purchases.find(p=>p.id===id);if(!x)return;
+ document.getElementById('detailTitle').textContent='Purchase · '+x.id;
+ document.getElementById('detailBody').innerHTML=`
+ <div class="detail-grid">
+ ${detail('Customer',x.name)}${detail('EarnGig user ID',x.userId)}
+ ${detail('Coins purchased',Number(x.coins).toLocaleString('en-NG'))}${detail('Expected payment',money(x.expectedAmount))}
+ ${detail('Amount received',x.amountReceived===null?'Not recorded':money(x.amountReceived))}
+ ${detail('Payment provider',x.provider)}
+ ${detail('Payment reference',x.reference||'Not recorded')}
+ ${detail('Payment status',x.status)}
+ ${detail('Coin credit status',x.credited?'Credited':'Not credited')}
+ ${detail('Credit date',x.creditedAt?new Date(x.creditedAt).toLocaleString('en-NG'):'Not credited')}
+ ${detail('Transaction date',new Date(x.createdAt).toLocaleString('en-NG'))}
+ </div>
+ <div class="notice" style="margin-top:14px">This admin prototype cannot verify a Paystack transaction or credit coins. In production, the backend must perform both actions automatically after confirmed payment.</div>
+ <div class="help">A payment reference entered by an administrator or customer is not proof of payment. Only a verified provider response should trigger a coin credit.</div>
+ <div class="modal-actions"><button class="btn light" onclick="closeModal('detailModal')">Close</button></div>`;
+ document.getElementById('detailModal').classList.add('show');
+}
+function exportData(){
+ const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),coinPurchases:purchases},null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='earngig-coin-purchase-history.json';a.click();URL.revokeObjectURL(url);
+}
+render();
+</script>
+</body>
+</html>
