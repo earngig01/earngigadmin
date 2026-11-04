@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EarnGig Admin | Writer Management</title>
+<style>
+:root{--navy:#151b2d;--purple:#713cf0;--lav:#f2edff;--bg:#f5f6fb;--ink:#192033;--muted:#7b8295;--line:#e9ebf3;--green:#16a765;--red:#e34d59;--orange:#efa638;--blue:#3995ed}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif;font-size:14px}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:245px;background:var(--navy);padding:22px 15px;color:white;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:9px;font-size:23px;font-weight:800;padding:10px 12px 35px}
+.brand span{color:#e6bd59}
+.brand svg{width:25px;height:25px}
+.nav-label{font-size:10px;letter-spacing:1px;color:#778198;padding:15px 12px 8px}
+.nav{display:block;text-decoration:none;color:#cbd0de;padding:12px;border-radius:9px;margin:3px 0;font-size:13px}
+.nav:hover,.nav.active{background:#49347e;color:white}
+.main{margin-left:245px}
+.topbar{height:72px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px}
+.searchtop{width:45%;background:#f2f3f8;border-radius:9px;padding:12px;border:0}
+.profile{display:flex;align-items:center;gap:10px;font-size:12px}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-weight:bold}
+.content{padding:28px;max-width:1600px;margin:auto}
+.heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+h1{font-size:27px;margin:0 0 7px}
+.subtitle{color:var(--muted);font-size:13px;margin:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
+.card,.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:0 3px 12px #17203a05}
+.card small{color:var(--muted)}
+.card h2{font-size:25px;margin:12px 0 5px}
+.card-icon{float:right;width:39px;height:39px;border-radius:11px;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-size:20px}
+.panel{margin-bottom:18px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:17px}
+.panel-head h2{font-size:16px;margin:0}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.toolbar input{flex:1;min-width:190px}
+input,select,textarea{border:1px solid var(--line);border-radius:8px;padding:11px;background:white;color:var(--ink);outline:none;width:100%}
+button.primary{background:var(--purple);color:white;border:0;padding:11px 16px;border-radius:8px;font-weight:bold}
+button.light{background:var(--lav);color:var(--purple);border:0;padding:10px 13px;border-radius:8px;font-weight:bold}
+button.danger{background:#fff0f0;color:var(--red);border:0;padding:9px 12px;border-radius:8px;font-weight:bold}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:900px}
+th,td{padding:14px 11px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}
+th{background:#f8f8fc;color:#747b8e;font-size:11px}
+.badge{display:inline-block;border-radius:20px;padding:6px 9px;font-size:10px;font-weight:bold;background:#f0f1f5;color:#70788a}
+.badge.good{background:#e5f8ed;color:#159557}
+.badge.pending{background:#fff4e2;color:#ba7b19}
+.badge.bad{background:#fff0f0;color:var(--red)}
+.badge.info{background:#e9f2ff;color:#287bd7}
+.action{background:none;border:0;color:var(--purple);font-weight:bold}
+.empty{padding:40px 15px;text-align:center;color:var(--muted)}
+.notice{background:#fff8e9;color:#805c1d;border:1px solid #f0dfb8;padding:12px;border-radius:9px;font-size:12px;margin-bottom:17px}
+.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.detail{background:#f7f7fb;padding:13px;border-radius:9px;font-size:13px;overflow-wrap:anywhere}
+.detail small{display:block;color:var(--muted);margin-bottom:6px}
+.modalbg{display:none;position:fixed;inset:0;background:#10172799;z-index:20;align-items:center;justify-content:center;padding:15px}
+.modal{background:white;border-radius:14px;padding:23px;width:min(720px,100%);max-height:90vh;overflow:auto}
+.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.modalhead h2{font-size:18px;margin:0}
+.modal-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:20px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:17px}
+.tab{border:1px solid var(--line);background:white;color:var(--muted);padding:10px 15px;border-radius:8px;font-weight:bold}
+.tab.active{background:var(--lav);border-color:#d9caff;color:var(--purple)}
+.rulegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rule{background:#f7f7fb;padding:15px;border-radius:10px}
+.rule small{color:var(--muted);display:block;margin-bottom:7px}
+@media(max-width:950px){.sidebar{width:205px}.main{margin-left:205px}.stats{grid-template-columns:repeat(2,1fr)}.content{padding:18px}.rulegrid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.sidebar{display:none}.main{margin-left:0}.topbar{padding:0 13px}.content{padding:15px}.stats{gap:9px}.card{padding:13px}.card h2{font-size:21px}.detailgrid,.rulegrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+ <div class="brand">
+  <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+   <path d="M5 12L12 19L19 7L26 19L35 12L31 29H9L5 12Z" stroke="#E6BD59" stroke-width="2.2" stroke-linejoin="round"/>
+   <path d="M10 33H30" stroke="#E6BD59" stroke-width="2.2" stroke-linecap="round"/>
+   <circle cx="5" cy="10" r="2" fill="#E6BD59"/>
+   <circle cx="19" cy="5" r="2" fill="#E6BD59"/>
+   <circle cx="35" cy="10" r="2" fill="#E6BD59"/>
+  </svg>
+  <span>EarnGig</span>
+ </div>
+ <div class="nav-label">MAIN MENU</div>
+ <a class="nav" href="admin.html">▦ Dashboard</a>
+ <div class="nav-label">USERS & ACCOUNTS</div>
+ <a class="nav" href="users.html">♙ User Management</a>
+ <a class="nav" href="membership.html">♧ Membership</a>
+ <a class="nav" href="wallet.html">◈ Wallet & Coins</a>
+ <a class="nav" href="referrals.html">♧ Referrals & Rewards</a>
+ <div class="nav-label">FINANCE</div>
+ <a class="nav" href="transactions.html">▤ Transactions</a>
+ <a class="nav" href="deposits.html">＋ Deposits & Payments</a>
+ <a class="nav" href="withdrawals.html">↗ Withdrawals</a>
+ <a class="nav" href="seller-wallet.html">▣ Seller Store Wallet</a>
+ <div class="nav-label">CONTENT</div>
+ <a class="nav active" href="writers.html">✎ Writer Applications</a>
+ <a class="nav" href="novels.html">▤ Novel Management</a>
+ <a class="nav" href="readers.html">♡ Readers & Rewards</a>
+ <div class="nav-label">BUSINESS</div>
+ <a class="nav" href="ads.html">▧ Advertisements</a>
+ <a class="nav" href="billboard.html">▦ Billboard Bookings</a>
+ <a class="nav" href="marketplace.html">▣ Marketplace</a>
+ <a class="nav" href="stores.html">✓ Store Verification</a>
+ <a class="nav" href="delivery.html">🚚 Delivery Management</a>
+ <div class="nav-label">SYSTEM</div>
+ <a class="nav" href="notifications.html">♧ Notifications</a>
+ <a class="nav" href="reports.html">▥ Reports</a>
+ <a class="nav" href="settings.html">⚙ Settings</a>
+</aside>
+
+<div class="main">
+<header class="topbar">
+ <input class="searchtop" placeholder="Search EarnGig administration...">
+ <div class="profile"><div class="avatar">A</div><div><b>EarnGig Admin</b><br><span style="color:#858b9c">Administrator</span></div></div>
+</header>
+
+<main class="content">
+ <div class="heading">
+  <div><h1>Writer Management</h1><p class="subtitle">Review writer applications, manage approved writers and monitor submitted content.</p></div>
+  <button class="light" onclick="exportData()">↓ Export Report</button>
+ </div>
+
+ <div class="notice"><b>Prototype mode:</b> Writer applications and content are not connected to the live platform. Approval here does not create a real writer account or grant publishing permissions.</div>
+
+ <div class="stats">
+  <div class="card"><span class="card-icon">✎</span><small>Total Applications</small><h2 id="applications">0</h2><small>Recorded applications</small></div>
+  <div class="card"><span class="card-icon">◷</span><small>Awaiting Review</small><h2 id="pending">0</h2><small>Applications pending</small></div>
+  <div class="card"><span class="card-icon">✓</span><small>Approved Writers</small><h2 id="approved">0</h2><small>Approved writer records</small></div>
+  <div class="card"><span class="card-icon">▤</span><small>Content Submissions</small><h2 id="submissions">0</h2><small>Novels and chapters recorded</small></div>
+ </div>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Writer Applications</h2><span class="badge info">Application Review</span></div>
+  <div class="toolbar">
+   <input id="applicationSearch" placeholder="Search applicant name, email or application ID..." oninput="renderApplications()">
+   <select id="applicationFilter" onchange="renderApplications()">
+    <option value="">All application statuses</option>
+    <option>Pending</option><option>Approved</option><option>Rejected</option><option>More Information Required</option>
+   </select>
+  </div>
+  <div class="tablewrap" id="applicationTable"></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Approved Writer Directory</h2><span class="badge good">Writer Accounts</span></div>
+  <div class="toolbar">
+   <input id="writerSearch" placeholder="Search writer name or email..." oninput="renderWriters()">
+   <select id="writerFilter" onchange="renderWriters()">
+    <option value="">All writer account statuses</option><option>Active</option><option>Suspended</option>
+   </select>
+  </div>
+  <div class="tablewrap" id="writerTable"></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Novel & Chapter Submissions</h2><span class="badge info">Editorial Review</span></div>
+  <div class="toolbar">
+   <input id="submissionSearch" placeholder="Search submission, novel or writer..." oninput="renderSubmissions()">
+   <select id="submissionFilter" onchange="renderSubmissions()">
+    <option value="">All submission statuses</option>
+    <option>Pending Review</option><option>Approved</option><option>Changes Requested</option><option>Rejected</option>
+   </select>
+  </div>
+  <div class="tablewrap" id="submissionTable"></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Writer Programme Guidelines</h2></div>
+  <div class="rulegrid">
+   <div class="rule"><small>Joining process</small><b>Application and admin approval</b></div>
+   <div class="rule"><small>Content workflow</small><b>Write, submit and await review</b></div>
+   <div class="rule"><small>Payment process</small><b>Approved content proceeds to payment</b></div>
+  </div>
+  <p style="color:var(--muted);font-size:12px;margin:14px 0 0">Reader target packages and writer earnings are managed through the reader and rewards sections. Do not record a writer payment as completed until the payment provider confirms it.</p>
+ </section>
+</main>
+</div>
+
+<div class="modalbg" id="modal">
+ <div class="modal">
+  <div class="modalhead"><h2 id="modalTitle">Review Details</h2><button class="light" onclick="closeModal()">Close</button></div>
+  <div id="modalContent"></div>
+ </div>
+</div>
+
+<script>
+const APPLICATIONS_KEY="earngig_writer_applications_v1";
+const WRITERS_KEY="earngig_writer_accounts_v1";
+const SUBMISSIONS_KEY="earngig_writer_submissions_v1";
+
+function read(key){
+ try{const v=JSON.parse(localStorage.getItem(key)||"[]");return Array.isArray(v)?v:[]}catch{return []}
+}
+let applications=read(APPLICATIONS_KEY);
+let writers=read(WRITERS_KEY);
+let submissions=read(SUBMISSIONS_KEY);
+
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function saveApplications(){localStorage.setItem(APPLICATIONS_KEY,JSON.stringify(applications));renderAll()}
+function saveWriters(){localStorage.setItem(WRITERS_KEY,JSON.stringify(writers));renderAll()}
+function saveSubmissions(){localStorage.setItem(SUBMISSIONS_KEY,JSON.stringify(submissions));renderAll()}
+
+function updateStats(){
+ document.getElementById("applications").textContent=applications.length;
+ document.getElementById("pending").textContent=applications.filter(a=>a.status==="Pending").length;
+ document.getElementById("approved").textContent=writers.filter(w=>w.status==="Active").length;
+ document.getElementById("submissions").textContent=submissions.length;
+}
+
+function renderApplications(){
+ const q=document.getElementById("applicationSearch").value.toLowerCase();
+ const f=document.getElementById("applicationFilter").value;
+ const list=applications.map((a,i)=>({...a,index:i})).filter(a=>
+ [a.id,a.name,a.email].join(" ").toLowerCase().includes(q)&&(!f||a.status===f)
+ );
+ document.getElementById("applicationTable").innerHTML=list.length?`
+ <table><thead><tr><th>APPLICATION ID</th><th>APPLICANT</th><th>GENRE / INTEREST</th><th>SUBMITTED</th><th>STATUS</th><th>ACTION</th></tr></thead>
+ <tbody>${list.map(a=>`<tr>
+ <td><b>${esc(a.id)}</b></td>
+ <td>${esc(a.name)}<br><small style="color:#858b9c">${esc(a.email)}</small></td>
+ <td>${esc(a.genre||"Not specified")}</td><td>${esc(a.date||"—")}</td>
+ <td><span class="badge ${a.status==="Approved"?"good":a.status==="Rejected"?"bad":"pending"}">${esc(a.status)}</span></td>
+ <td><button class="action" onclick="viewApplication(${a.index})">Review →</button></td>
+ </tr>`).join("")}</tbody></table>`:
+ `<div class="empty"><h3>No writer applications found</h3><p>New applications will appear here when the writer application system is connected.</p></div>`;
+}
+
+function renderWriters(){
+ const q=document.getElementById("writerSearch").value.toLowerCase();
+ const f=document.getElementById("writerFilter").value;
+ const list=writers.map((w,i)=>({...w,index:i})).filter(w=>
+ [w.id,w.name,w.email].join(" ").toLowerCase().includes(q)&&(!f||w.status===f)
+ );
+ document.getElementById("writerTable").innerHTML=list.length?`
+ <table><thead><tr><th>WRITER ID</th><th>WRITER</th><th>JOINED</th><th>NOVELS</th><th>STATUS</th><th>ACTION</th></tr></thead>
+ <tbody>${list.map(w=>`<tr>
+ <td><b>${esc(w.id)}</b></td>
+ <td>${esc(w.name)}<br><small style="color:#858b9c">${esc(w.email)}</small></td>
+ <td>${esc(w.joined||"—")}</td><td>${Number(w.novels||0)}</td>
+ <td><span class="badge ${w.status==="Active"?"good":"bad"}">${esc(w.status)}</span></td>
+ <td><button class="action" onclick="viewWriter(${w.index})">Manage →</button></td>
+ </tr>`).join("")}</tbody></table>`:
+ `<div class="empty"><h3>No approved writers recorded</h3><p>Approved writer accounts will appear here.</p></div>`;
+}
+
+function renderSubmissions(){
+ const q=document.getElementById("submissionSearch").value.toLowerCase();
+ const f=document.getElementById("submissionFilter").value;
+ const list=submissions.map((s,i)=>({...s,index:i})).filter(s=>
+ [s.id,s.title,s.writer,s.email,s.kind].join(" ").toLowerCase().includes(q)&&(!f||s.status===f)
+ );
+ document.getElementById("submissionTable").innerHTML=list.length?`
+ <table><thead><tr><th>SUBMISSION ID</th><th>CONTENT TITLE</th><th>WRITER</th><th>TYPE</th><th>SUBMITTED</th><th>STATUS</th><th>ACTION</th></tr></thead>
+ <tbody>${list.map(s=>`<tr>
+ <td><b>${esc(s.id)}</b></td><td>${esc(s.title)}</td>
+ <td>${esc(s.writer)}<br><small style="color:#858b9c">${esc(s.email)}</small></td>
+ <td>${esc(s.kind||"Novel")}</td><td>${esc(s.date||"—")}</td>
+ <td><span class="badge ${s.status==="Approved"?"good":s.status==="Rejected"?"bad":"pending"}">${esc(s.status)}</span></td>
+ <td><button class="action" onclick="viewSubmission(${s.index})">Review →</button></td>
+ </tr>`).join("")}</tbody></table>`:
+ `<div class="empty"><h3>No content submissions found</h3><p>Submitted novels and chapters will appear here after backend integration.</p></div>`;
+}
+
+function viewApplication(i){
+ const a=applications[i];if(!a)return;
+ showModal("Writer Application Review",`
+ <div class="detailgrid">
+ <div class="detail"><small>Application ID</small><b>${esc(a.id)}</b></div>
+ <div class="detail"><small>Applicant name</small>${esc(a.name)}</div>
+ <div class="detail"><small>Email</small>${esc(a.email)}</div>
+ <div class="detail"><small>Writing interest / genre</small>${esc(a.genre||"Not specified")}</div>
+ <div class="detail"><small>Experience</small>${esc(a.experience||"Not provided")}</div>
+ <div class="detail"><small>Submitted</small>${esc(a.date||"—")}</div>
+ <div class="detail"><small>Application status</small>${esc(a.status)}</div>
+ <div class="detail"><small>Writing sample / portfolio</small>${esc(a.sample||"Not provided")}</div>
+ <div class="detail" style="grid-column:1/-1"><small>Applicant message</small>${esc(a.message||"No message provided")}</div>
+ <div class="detail" style="grid-column:1/-1"><small>Admin notes</small>${esc(a.notes||"No notes")}</div>
+ </div>
+ <div class="modal-actions">
+ <button class="light" onclick="applicationStatus(${i},'More Information Required')">Request More Info</button>
+ <button class="primary" onclick="approveApplication(${i})">Approve Applicant</button>
+ <button class="danger" onclick="applicationStatus(${i},'Rejected')">Reject Application</button>
+ </div>
+ <p style="font-size:11px;color:#9297a5;margin-top:15px">Prototype action only. A real approval must be authorised and saved by the backend.</p>`);
+}
+
+function applicationStatus(i,status){
+ if(!confirm("Change application status to "+status+"?"))return;
+ applications[i].status=status;
+ applications[i].reviewedAt=new Date().toLocaleString();
+ saveApplications();viewApplication(i);
+}
+
+function approveApplication(i){
+ const a=applications[i];if(!a)return;
+ if(a.status==="Approved"){alert("This application is already approved.");return}
+ if(!confirm("Approve this applicant in the local prototype?"))return;
+ a.status="Approved";
+ a.reviewedAt=new Date().toLocaleString();
+ const exists=writers.some(w=>w.applicationId===a.id);
+ if(!exists){
+  writers.push({
+   id:"WTR-"+Date.now(),
+   applicationId:a.id,
+   name:a.name,
+   email:a.email,
+   status:"Active",
+   joined:new Date().toLocaleDateString(),
+   novels:0
+  });
+ }
+ localStorage.setItem(APPLICATIONS_KEY,JSON.stringify(applications));
+ localStorage.setItem(WRITERS_KEY,JSON.stringify(writers));
+ renderAll();viewApplication(i);
+}
+
+function viewWriter(i){
+ const w=writers[i];if(!w)return;
+ showModal("Writer Account Management",`
+ <div class="detailgrid">
+ <div class="detail"><small>Writer ID</small><b>${esc(w.id)}</b></div>
+ <div class="detail"><small>Application ID</small>${esc(w.applicationId||"—")}</div>
+ <div class="detail"><small>Name</small>${esc(w.name)}</div>
+ <div class="detail"><small>Email</small>${esc(w.email)}</div>
+ <div class="detail"><small>Joined</small>${esc(w.joined||"—")}</div>
+ <div class="detail"><small>Novel count</small>${Number(w.novels||0)}</div>
+ <div class="detail"><small>Account status</small>${esc(w.status)}</div>
+ <div class="detail"><small>Admin notes</small>${esc(w.notes||"No notes")}</div>
+ </div>
+ <div class="modal-actions">
+ <button class="${w.status==="Active"?"danger":"primary"}" onclick="toggleWriter(${i})">${w.status==="Active"?"Suspend Writer":"Reactivate Writer"}</button>
+ </div>
+ <p style="font-size:11px;color:#9297a5;margin-top:15px">Suspension in this prototype does not block publishing or login on the live platform.</p>`);
+}
+
+function toggleWriter(i){
+ writers[i].status=writers[i].status==="Active"?"Suspended":"Active";
+ saveWriters();viewWriter(i);
+}
+
+function viewSubmission(i){
+ const s=submissions[i];if(!s)return;
+ showModal("Content Submission Review",`
+ <div class="detailgrid">
+ <div class="detail"><small>Submission ID</small><b>${esc(s.id)}</b></div>
+ <div class="detail"><small>Content type</small>${esc(s.kind||"Novel")}</div>
+ <div class="detail"><small>Title</small>${esc(s.title)}</div>
+ <div class="detail"><small>Writer</small>${esc(s.writer)}</div>
+ <div class="detail"><small>Writer email</small>${esc(s.email)}</div>
+ <div class="detail"><small>Submission date</small>${esc(s.date||"—")}</div>
+ <div class="detail"><small>Current status</small>${esc(s.status)}</div>
+ <div class="detail"><small>Chapter / volume</small>${esc(s.chapter||"—")}</div>
+ <div class="detail" style="grid-column:1/-1"><small>Submission summary</small>${esc(s.summary||"No summary provided")}</div>
+ <div class="detail" style="grid-column:1/-1"><small>Content preview or secure file reference</small>${esc(s.contentReference||"No preview reference recorded")}</div>
+ <div class="detail" style="grid-column:1/-1"><small>Review notes</small>${esc(s.notes||"No notes")}</div>
+ </div>
+ <div class="modal-actions">
+ <button class="light" onclick="submissionStatus(${i},'Changes Requested')">Request Changes</button>
+ <button class="primary" onclick="submissionStatus(${i},'Approved')">Approve Submission</button>
+ <button class="danger" onclick="submissionStatus(${i},'Rejected')">Reject Submission</button>
+ </div>
+ <p style="font-size:11px;color:#9297a5;margin-top:15px">Prototype only. The live system should store manuscripts securely and record reviewer identity, decision and timestamps.</p>`);
+}
+
+function submissionStatus(i,status){
+ if(!confirm("Change submission status to "+status+"?"))return;
+ submissions[i].status=status;
+ submissions[i].reviewedAt=new Date().toLocaleString();
+ saveSubmissions();viewSubmission(i);
+}
+
+function showModal(title,html){
+ document.getElementById("modalTitle").textContent=title;
+ document.getElementById("modalContent").innerHTML=html;
+ document.getElementById("modal").style.display="flex";
+}
+function closeModal(){document.getElementById("modal").style.display="none"}
+
+function exportData(){
+ const data={applications,writers,submissions};
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="earngig-writer-management.json";a.click();URL.revokeObjectURL(url);
+}
+
+function renderAll(){
+ updateStats();
+ renderApplications();
+ renderWriters();
+ renderSubmissions();
+}
+renderAll();
+</script>
+</body>
+</html>
