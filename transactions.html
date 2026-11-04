@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EarnGig Admin | Transactions</title>
+<style>
+:root{--navy:#151b2d;--purple:#713cf0;--lav:#f2edff;--bg:#f5f6fb;--ink:#192033;--muted:#7b8295;--line:#e9ebf3;--green:#16a765;--red:#e34d59;--orange:#efa638;--blue:#3995ed}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif;font-size:14px}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:245px;background:var(--navy);padding:22px 15px;color:white;overflow-y:auto}
+.brand{font-size:23px;font-weight:800;padding:10px 12px 35px}.brand span{color:#e6bd59}
+.nav-label{font-size:10px;letter-spacing:1px;color:#778198;padding:15px 12px 8px}
+.nav{display:block;text-decoration:none;color:#cbd0de;padding:12px;border-radius:9px;margin:3px 0;font-size:13px}
+.nav:hover,.nav.active{background:#49347e;color:white}
+.main{margin-left:245px}
+.topbar{height:72px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px}
+.searchtop{width:45%;background:#f2f3f8;border-radius:9px;padding:12px;border:0}
+.profile{display:flex;align-items:center;gap:10px;font-size:12px}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-weight:bold}
+.content{padding:28px;max-width:1600px;margin:auto}
+.heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+h1{font-size:27px;margin:0 0 7px}.subtitle{color:var(--muted);font-size:13px;margin:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
+.card,.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:0 3px 12px #17203a05}
+.card small{color:var(--muted)}.card h2{font-size:25px;margin:12px 0 5px}
+.card-icon{float:right;width:39px;height:39px;border-radius:11px;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-size:20px}
+.panel{margin-bottom:18px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:17px}.panel-head h2{font-size:16px;margin:0}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.toolbar input{flex:1;min-width:190px}
+input,select{border:1px solid var(--line);border-radius:8px;padding:11px;background:white;color:var(--ink);outline:none}
+button.primary{background:var(--purple);color:white;border:0;padding:11px 16px;border-radius:8px;font-weight:bold}
+button.light{background:var(--lav);color:var(--purple);border:0;padding:10px 13px;border-radius:8px;font-weight:bold}
+button.danger{background:#fff0f0;color:var(--red);border:0;padding:9px 12px;border-radius:8px;font-weight:bold}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:900px}
+th,td{padding:14px 11px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}
+th{background:#f8f8fc;color:#747b8e;font-size:11px}
+.badge{display:inline-block;border-radius:20px;padding:6px 9px;font-size:10px;font-weight:bold;background:#f0f1f5;color:#70788a}
+.badge.good{background:#e5f8ed;color:#159557}.badge.pending{background:#fff4e2;color:#ba7b19}.badge.bad{background:#fff0f0;color:var(--red)}.badge.info{background:#e9f2ff;color:#287bd7}
+.action{background:none;border:0;color:var(--purple);font-weight:bold}
+.empty{padding:40px 15px;text-align:center;color:var(--muted)}
+.notice{background:#fff8e9;color:#805c1d;border:1px solid #f0dfb8;padding:12px;border-radius:9px;font-size:12px;margin-bottom:17px}
+.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.detail{background:#f7f7fb;padding:13px;border-radius:9px;font-size:13px;overflow-wrap:anywhere}
+.detail small{display:block;color:var(--muted);margin-bottom:6px}
+.modalbg{display:none;position:fixed;inset:0;background:#10172799;z-index:20;align-items:center;justify-content:center;padding:15px}
+.modal{background:white;border-radius:14px;padding:23px;width:min(680px,100%);max-height:90vh;overflow:auto}
+.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modalhead h2{font-size:18px;margin:0}
+.modal-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:20px}
+@media(max-width:950px){.sidebar{width:205px}.main{margin-left:205px}.stats{grid-template-columns:repeat(2,1fr)}.content{padding:18px}}
+@media(max-width:600px){.sidebar{display:none}.main{margin-left:0}.topbar{padding:0 13px}.content{padding:15px}.stats{gap:9px}.card{padding:13px}.card h2{font-size:21px}.detailgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+ <div class="brand">♛ <span>Earn</span>Gig</div>
+ <div class="nav-label">MAIN MENU</div>
+ <a class="nav" href="admin.html">▦ Dashboard</a>
+ <div class="nav-label">USERS & ACCOUNTS</div>
+ <a class="nav" href="users.html">♙ User Management</a>
+ <a class="nav" href="membership.html">♧ Membership</a>
+ <a class="nav" href="wallet.html">◈ Wallet & Coins</a>
+ <a class="nav" href="referrals.html">♧ Referrals & Rewards</a>
+ <div class="nav-label">FINANCE</div>
+ <a class="nav active" href="transactions.html">▤ Transactions</a>
+ <a class="nav" href="deposits.html">＋ Deposits & Payments</a>
+ <a class="nav" href="withdrawals.html">↗ Withdrawals</a>
+ <a class="nav" href="seller-wallet.html">▣ Seller Store Wallet</a>
+ <div class="nav-label">CONTENT</div>
+ <a class="nav" href="writers.html">✎ Writer Applications</a>
+ <a class="nav" href="novels.html">▤ Novel Management</a>
+ <a class="nav" href="readers.html">♡ Readers & Rewards</a>
+ <div class="nav-label">BUSINESS</div>
+ <a class="nav" href="ads.html">▧ Advertisements</a>
+ <a class="nav" href="billboard.html">▦ Billboard Bookings</a>
+ <a class="nav" href="marketplace.html">▣ Marketplace</a>
+ <a class="nav" href="stores.html">✓ Store Verification</a>
+ <a class="nav" href="delivery.html">🚚 Delivery Management</a>
+ <div class="nav-label">SYSTEM</div>
+ <a class="nav" href="notifications.html">♧ Notifications</a>
+ <a class="nav" href="reports.html">▥ Reports</a>
+ <a class="nav" href="settings.html">⚙ Settings</a>
+</aside>
+
+<div class="main">
+<header class="topbar">
+ <input class="searchtop" placeholder="Search EarnGig administration...">
+ <div class="profile"><div class="avatar">A</div><div><b>EarnGig Admin</b><br><span style="color:#858b9c">Administrator</span></div></div>
+</header>
+
+<main class="content">
+ <div class="heading">
+  <div><h1>Transactions</h1><p class="subtitle">Financial transaction ledger, payment references and transaction records.</p></div>
+  <button class="light" onclick="exportData()">↓ Export Ledger</button>
+ </div>
+
+ <div class="notice">Prototype mode: this page is not connected to Paystack or the live EarnGig database. A transaction marked successful here is only a local record, not proof of payment.</div>
+
+ <div class="stats">
+  <div class="card"><span class="card-icon">▤</span><small>Total Transactions</small><h2 id="total">0</h2><small>All recorded entries</small></div>
+  <div class="card"><span class="card-icon">✓</span><small>Successful</small><h2 id="successful">0</h2><small>Recorded as successful</small></div>
+  <div class="card"><span class="card-icon">◷</span><small>Pending</small><h2 id="pending">0</h2><small>Awaiting confirmation</small></div>
+  <div class="card"><span class="card-icon">₦</span><small>Successful Naira Volume</small><h2 id="volume">₦0</h2><small>Based on recorded entries</small></div>
+ </div>
+
+ <section class="panel">
+  <div class="panel-head"><h2>All Transactions</h2><span class="badge info">Transaction Ledger</span></div>
+  <div class="toolbar">
+   <input id="search" placeholder="Search transaction ID, user, email or payment reference..." oninput="render()">
+   <select id="typeFilter" onchange="render()">
+    <option value="">All transaction types</option>
+    <option>Coin Purchase</option><option>Wallet Deposit</option><option>Withdrawal</option>
+    <option>Referral Reward</option><option>Welcome Bonus</option><option>Novel Reader Reward</option>
+    <option>Advertisement Payment</option><option>Billboard Payment</option><option>Store Opening Fee</option>
+    <option>Store Customisation</option><option>Marketplace Payment</option><option>Other</option>
+   </select>
+   <select id="statusFilter" onchange="render()">
+    <option value="">All statuses</option>
+    <option>Pending</option><option>Successful</option><option>Failed</option><option>Reversed</option>
+   </select>
+  </div>
+  <div class="tablewrap" id="table"></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Transaction Status Guide</h2></div>
+  <div class="detailgrid">
+   <div class="detail"><small>Pending</small>Payment or transaction has not yet been confirmed.</div>
+   <div class="detail"><small>Successful</small>Transaction has been confirmed by the trusted payment or wallet service.</div>
+   <div class="detail"><small>Failed</small>Transaction did not complete successfully.</div>
+   <div class="detail"><small>Reversed</small>Transaction has been reversed or refunded through an authorised process.</div>
+  </div>
+ </section>
+</main>
+</div>
+
+<div class="modalbg" id="modal">
+ <div class="modal">
+  <div class="modalhead"><h2 id="modalTitle">Transaction Details</h2><button class="light" onclick="closeModal()">Close</button></div>
+  <div id="modalContent"></div>
+ </div>
+</div>
+
+<script>
+const KEY="earngig_transaction_ledger_v1";
+let transactions=[];
+try{transactions=JSON.parse(localStorage.getItem(KEY)||"[]");if(!Array.isArray(transactions))transactions=[]}catch{transactions=[]}
+
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function money(v){return "₦"+Number(v||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function save(){localStorage.setItem(KEY,JSON.stringify(transactions));render()}
+
+function render(){
+ const q=document.getElementById("search").value.toLowerCase();
+ const type=document.getElementById("typeFilter").value;
+ const status=document.getElementById("statusFilter").value;
+ const list=transactions.map((t,i)=>({...t,index:i})).filter(t=>
+ [t.id,t.user,t.email,t.reference,t.description].join(" ").toLowerCase().includes(q)&&
+ (!type||t.type===type)&&(!status||t.status===status)
+ );
+ document.getElementById("total").textContent=transactions.length;
+ document.getElementById("successful").textContent=transactions.filter(t=>t.status==="Successful").length;
+ document.getElementById("pending").textContent=transactions.filter(t=>t.status==="Pending").length;
+ const volume=transactions.filter(t=>t.status==="Successful"&&t.currency!=="COINS").reduce((a,t)=>a+Number(t.amount||0),0);
+ document.getElementById("volume").textContent=money(volume);
+
+ document.getElementById("table").innerHTML=list.length?`
+ <table><thead><tr>
+ <th>TRANSACTION ID</th><th>USER</th><th>TYPE</th><th>AMOUNT</th><th>PAYMENT REFERENCE</th><th>DATE</th><th>STATUS</th><th>ACTION</th>
+ </tr></thead><tbody>${list.map(t=>`
+ <tr><td><b>${esc(t.id)}</b></td>
+ <td>${esc(t.user)}<br><small style="color:#858b9c">${esc(t.email)}</small></td>
+ <td>${esc(t.type)}</td>
+ <td><b>${t.currency==="COINS"?Number(t.amount||0).toLocaleString()+" coins":money(t.amount)}</b></td>
+ <td>${esc(t.reference||"—")}</td>
+ <td>${esc(t.date||"—")}</td>
+ <td><span class="badge ${t.status==="Successful"?"good":t.status==="Failed"||t.status==="Reversed"?"bad":"pending"}">${esc(t.status)}</span></td>
+ <td><button class="action" onclick="viewTransaction(${t.index})">View →</button></td></tr>`).join("")}</tbody></table>`:
+ `<div class="empty"><h3>No transactions found</h3><p>Transaction records will appear here when the live financial database is connected.</p></div>`;
+}
+
+function viewTransaction(i){
+ const t=transactions[i];if(!t)return;
+ showModal("Transaction Details",`
+ <div class="detailgrid">
+  <div class="detail"><small>Transaction ID</small><b>${esc(t.id)}</b></div>
+  <div class="detail"><small>Transaction type</small>${esc(t.type)}</div>
+  <div class="detail"><small>User</small>${esc(t.user)}</div>
+  <div class="detail"><small>User email</small>${esc(t.email)}</div>
+  <div class="detail"><small>Amount</small>${t.currency==="COINS"?Number(t.amount||0).toLocaleString()+" coins":money(t.amount)}</div>
+  <div class="detail"><small>Currency</small>${esc(t.currency||"NGN")}</div>
+  <div class="detail"><small>Payment reference</small>${esc(t.reference||"—")}</div>
+  <div class="detail"><small>Payment provider</small>${esc(t.provider||"—")}</div>
+  <div class="detail"><small>Date and time</small>${esc(t.date||"—")}</div>
+  <div class="detail"><small>Status</small>${esc(t.status)}</div>
+  <div class="detail"><small>Description</small>${esc(t.description||"—")}</div>
+  <div class="detail"><small>Admin notes</small>${esc(t.notes||"No notes")}</div>
+ </div>
+ <p style="font-size:11px;color:#9297a5;margin-top:15px">This view displays locally saved prototype data. It does not independently verify a payment.</p>`);
+}
+
+function showModal(title,html){
+ document.getElementById("modalTitle").textContent=title;
+ document.getElementById("modalContent").innerHTML=html;
+ document.getElementById("modal").style.display="flex";
+}
+function closeModal(){document.getElementById("modal").style.display="none"}
+
+function exportData(){
+ const blob=new Blob([JSON.stringify(transactions,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="earngig-transactions.json";a.click();URL.revokeObjectURL(url);
+}
+
+render();
+</script>
+</body>
+</html>
