@@ -1,0 +1,378 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EarnGig Admin | Advertisement Bookings</title>
+<style>
+:root{--navy:#111827;--purple:#7047eb;--lav:#f1edff;--bg:#f5f6fa;--text:#20283a;--muted:#8991a3;--border:#e9eaf1;--green:#16865c;--greenbg:#e9f8f1;--orange:#bd761b;--orangebg:#fff4e5;--red:#d34b58;--redbg:#fff0f1;--blue:#3976c8;--bluebg:#edf4ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer}
+.layout{display:flex;min-height:100vh}.sidebar{width:250px;background:var(--navy);color:white;position:fixed;inset:0 auto 0 0;padding:25px 15px;overflow:auto;z-index:10}
+.brand{display:flex;align-items:center;gap:10px;padding:0 12px 28px;font-size:22px;font-weight:800}.crown{width:27px;height:25px}
+.nav-label{font-size:10px;letter-spacing:1.5px;color:#8290a9;padding:18px 13px 9px;font-weight:700}
+.nav-link{display:flex;align-items:center;gap:12px;color:#aeb8ca;text-decoration:none;padding:11px 13px;margin:3px 0;border-radius:8px;font-size:13px}
+.nav-link:hover,.nav-link.active{background:#292344;color:white}.nav-link.active{box-shadow:inset 3px 0 var(--purple)}
+.nav-icon{width:19px;text-align:center}.sidebar-footer{border-top:1px solid #30394b;margin-top:28px;padding:18px 12px;color:#8996aa;font-size:11px;line-height:1.7}
+.main{margin-left:250px;width:calc(100% - 250px);min-width:0}.topbar{height:72px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:5}
+.top-title{font-size:14px;font-weight:700}.top-sub{font-size:11px;color:var(--muted);margin-top:3px}.admin-pill{background:var(--lav);color:var(--purple);padding:8px 13px;border-radius:20px;font-size:11px;font-weight:700}
+.content{padding:29px 30px 50px;max-width:1600px;margin:auto}.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}
+h1{font-size:24px;margin:0 0 7px;letter-spacing:-.6px}.subtitle{font-size:12px;color:var(--muted);line-height:1.6}
+.btn{border:0;border-radius:7px;padding:10px 14px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.primary{background:var(--purple);color:white}.light{background:white;border:1px solid var(--border);color:#535d70}.danger{background:var(--redbg);color:var(--red)}.success{background:var(--greenbg);color:var(--green)}.warning{background:var(--orangebg);color:var(--orange)}
+.notice{background:#f0edff;border:1px solid #e1d9ff;border-radius:9px;padding:13px 15px;color:#51418c;font-size:11px;line-height:1.7;margin-bottom:20px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:20px}.stat,.panel{background:white;border:1px solid var(--border);border-radius:10px;box-shadow:0 5px 20px #181f350b}
+.stat{padding:18px}.stat-label{font-size:11px;color:var(--muted);font-weight:600}.stat-value{font-size:23px;font-weight:800;margin-top:12px}.stat-foot{font-size:10px;color:var(--muted);margin-top:7px}
+.panel{margin-bottom:20px}.panel-head{padding:17px 19px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.panel-title{font-size:13px;font-weight:800}.panel-sub{font-size:10px;color:var(--muted);margin-top:4px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}.field{border:1px solid var(--border);background:white;border-radius:7px;padding:10px;font-size:11px;color:var(--text);outline:none;min-width:130px}.field:focus{border-color:var(--purple)}.search{min-width:220px}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:left;font-size:10px;color:#8c94a5;background:#fafbfc;padding:13px 15px}td{padding:14px 15px;border-top:1px solid #f0f1f5;font-size:11px;vertical-align:middle}tbody tr:hover{background:#fcfbff}
+.person{display:flex;align-items:center;gap:9px}.avatar{width:34px;height:34px;border-radius:9px;background:#eee9ff;color:var(--purple);display:grid;place-items:center;font-weight:800;flex-shrink:0}.person-name{font-weight:700}.person-meta{font-size:10px;color:var(--muted);margin-top:4px}
+.tag{display:inline-block;border-radius:20px;padding:5px 9px;font-size:9px;font-weight:800}.pending{background:var(--orangebg);color:var(--orange)}.approved{background:var(--greenbg);color:var(--green)}.rejected{background:var(--redbg);color:var(--red)}.changes{background:var(--bluebg);color:var(--blue)}
+.action{border:1px solid var(--border);background:white;border-radius:6px;padding:7px 9px;font-size:10px;font-weight:700;color:#596276}.action:hover{border-color:var(--purple);color:var(--purple)}
+.empty{text-align:center;padding:42px 20px;color:var(--muted)}.empty strong{display:block;color:#4d5668;font-size:13px;margin-bottom:6px}.empty p{font-size:11px;line-height:1.6;margin:0}
+.modal-backdrop{display:none;position:fixed;inset:0;background:#0a0f1c99;z-index:30;align-items:center;justify-content:center;padding:16px}.modal-backdrop.show{display:flex}.modal{background:white;border-radius:13px;width:100%;max-width:740px;max-height:92vh;overflow-y:auto;box-shadow:0 20px 70px #0003}
+.modal-head{padding:19px 21px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.modal-head h2{font-size:16px;margin:0}.close{border:0;background:#f2f3f7;border-radius:7px;width:30px;height:30px;font-size:17px}
+.modal-body{padding:20px 21px}.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.detail{padding:12px;background:#f8f9fc;border-radius:8px;min-width:0}.detail-label{font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase}.detail-value{font-size:12px;font-weight:700;overflow-wrap:anywhere}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 13px}.form-group{margin-top:13px}.form-group label{display:block;font-size:10px;font-weight:700;margin-bottom:6px}.form-group .field{width:100%}.form-group.full{grid-column:1/-1}textarea.field{min-height:75px;resize:vertical}
+.video-preview{background:#111827;border-radius:9px;min-height:190px;display:flex;align-items:center;justify-content:center;overflow:hidden;color:white;margin-top:12px}.video-preview video{width:100%;max-height:360px;background:#111827}.video-placeholder{text-align:center;color:#aab2c2;font-size:11px;padding:30px}
+.upload-box{border:1px dashed #c8c0ed;background:#faf9ff;padding:16px;border-radius:9px;text-align:center}.upload-box input{max-width:100%;font-size:11px}.upload-title{font-size:11px;font-weight:700;margin-bottom:7px}.upload-note{font-size:10px;color:var(--muted);line-height:1.5;margin-top:6px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:20px}.help{font-size:10px;color:var(--muted);line-height:1.6;margin-top:7px}
+.mobile-menu{display:none;border:0;background:white;font-size:20px}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.sidebar{transform:translateX(-100%);transition:.25s}.sidebar.open{transform:translateX(0)}.main{margin-left:0;width:100%}.mobile-menu{display:block}.topbar{padding:0 16px}.content{padding:22px 15px}.heading{flex-direction:column}.search{min-width:100%;width:100%}.filters{width:100%}.filters .field{flex:1}}
+@media(max-width:480px){.detail-grid,.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <svg class="crown" viewBox="0 0 40 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <path d="M4 10L11 16L19.5 4L28 16L36 10L32 28H8L4 10Z" stroke="#E8BD62" stroke-width="2" stroke-linejoin="round"/>
+   <path d="M9 23H31M11 31H29" stroke="#E8BD62" stroke-width="2" stroke-linecap="round"/>
+   <circle cx="4" cy="8" r="2" fill="#E8BD62"/><circle cx="19.5" cy="3" r="2" fill="#E8BD62"/><circle cx="36" cy="8" r="2" fill="#E8BD62"/>
+  </svg><span>EarnGig</span>
+ </div>
+ <div class="nav-label">OVERVIEW</div>
+ <a class="nav-link" href="admin.html"><span class="nav-icon">▦</span>Dashboard</a>
+ <div class="nav-label">USER MANAGEMENT</div>
+ <a class="nav-link" href="users.html"><span class="nav-icon">♙</span>Users</a>
+ <a class="nav-link" href="membership.html"><span class="nav-icon">◇</span>Membership</a>
+ <div class="nav-label">FINANCIAL MANAGEMENT</div>
+ <a class="nav-link" href="wallet.html"><span class="nav-icon">◈</span>User Wallets</a>
+ <a class="nav-link" href="referrals.html"><span class="nav-icon">♧</span>Referrals</a>
+ <a class="nav-link" href="transactions.html"><span class="nav-icon">⇄</span>Transactions</a>
+ <a class="nav-link" href="deposits.html"><span class="nav-icon">↓</span>Deposits</a>
+ <a class="nav-link" href="withdrawals.html"><span class="nav-icon">↑</span>User Withdrawals</a>
+ <a class="nav-link" href="payouts.html"><span class="nav-icon">⇧</span>Payout Management</a>
+ <a class="nav-link" href="seller-wallet.html"><span class="nav-icon">▣</span>Seller Store Wallet</a>
+ <div class="nav-label">MARKETPLACE</div>
+ <a class="nav-link" href="store-verification.html"><span class="nav-icon">✓</span>Store Verification</a>
+ <div class="nav-label">ADVERTISING</div>
+ <a class="nav-link active" href="advertising.html"><span class="nav-icon">▤</span>Advertisement Bookings</a>
+ <a class="nav-link" href="watch-earn.html"><span class="nav-icon">▶</span>Watch &amp; Earn</a>
+ <a class="nav-link" href="billboard.html"><span class="nav-icon">▣</span>Billboard Management</a>
+ <div class="nav-label">CONTENT &amp; OPERATIONS</div>
+ <a class="nav-link" href="writers.html"><span class="nav-icon">✎</span>Writers</a>
+ <div class="sidebar-footer">EarnGig Administration<br>Owner access only<br><span style="color:#e8bd62">●</span> Admin prototype</div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div style="display:flex;align-items:center;gap:13px">
+  <button class="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+  <div><div class="top-title">Advertisement Bookings</div><div class="top-sub">Advertising / Customer booking review</div></div>
+ </div>
+ <div class="admin-pill">OWNER ADMIN</div>
+</header>
+
+<div class="content">
+ <div class="heading">
+  <div><h1>Advertisement Bookings</h1><div class="subtitle">Review customer advertising requests, inspect their creative and record your decision.</div></div>
+  <button class="btn light" onclick="exportData()">⇩ Export bookings</button>
+ </div>
+
+ <div class="notice">
+  <strong>Approval is not publication.</strong> This department only manages customer booking requests. Approving a booking does not automatically send its video to Watch &amp; Earn, the billboard or any other part of EarnGig. You retain control over where and when adverts are used.
+ </div>
+
+ <section class="stats">
+  <div class="stat"><div class="stat-label">Total bookings</div><div class="stat-value" id="totalCount">0</div><div class="stat-foot">Recorded advertiser requests</div></div>
+  <div class="stat"><div class="stat-label">Awaiting review</div><div class="stat-value" id="pendingCount">0</div><div class="stat-foot">Requests needing your decision</div></div>
+  <div class="stat"><div class="stat-label">Approved</div><div class="stat-value" id="approvedCount">0</div><div class="stat-foot">Bookings you have approved</div></div>
+  <div class="stat"><div class="stat-label">Changes requested</div><div class="stat-value" id="changesCount">0</div><div class="stat-foot">Waiting for advertiser updates</div></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head">
+   <div><div class="panel-title">Customer advertisement requests</div><div class="panel-sub">Inspect the package, creative, payment reference and advertiser details.</div></div>
+   <div class="filters">
+    <input class="field search" id="search" placeholder="Search advertiser, booking ID..." oninput="render()">
+    <select class="field" id="statusFilter" onchange="render()"><option value="">All statuses</option><option>Pending Review</option><option>Approved</option><option>Rejected</option><option>Changes Requested</option></select>
+    <select class="field" id="packageFilter" onchange="render()"><option value="">All packages</option><option>24 hours</option><option>72 hours</option><option>7 days</option><option>14 days</option><option>30 days</option><option>100 views</option><option>500 views</option><option>1,000 views</option><option>2,500 views</option><option>5,000 views</option><option>10,000 views</option></select>
+   </div>
+  </div>
+  <div class="table-wrap">
+   <table><thead><tr><th>ADVERTISER</th><th>BOOKING ID</th><th>PACKAGE</th><th>AMOUNT</th><th>PAYMENT REFERENCE</th><th>STATUS</th><th>ACTION</th></tr></thead>
+   <tbody id="bookingRows"></tbody></table>
+  </div>
+  <div class="panel-head" style="border-top:1px solid var(--border);border-bottom:0">
+   <span class="help">Customer bookings will appear here when the live booking service is connected.</span>
+   <button class="btn primary" onclick="openAdd()">＋ Record booking</button>
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><div><div class="panel-title">Advert booking packages</div><div class="panel-sub">Current customer advertisement prices for reference.</div></div></div>
+  <div class="table-wrap"><table>
+   <thead><tr><th>PACKAGE TYPE</th><th>PACKAGE</th><th>PRICE</th></tr></thead>
+   <tbody>
+    <tr><td>Duration</td><td>24 hours</td><td>₦10,000</td></tr>
+    <tr><td>Duration</td><td>72 hours</td><td>₦25,000</td></tr>
+    <tr><td>Duration</td><td>7 days</td><td>₦50,000</td></tr>
+    <tr><td>Duration</td><td>14 days</td><td>₦85,000</td></tr>
+    <tr><td>Duration</td><td>30 days</td><td>₦150,000</td></tr>
+    <tr><td>Views</td><td>100 views</td><td>₦1,500</td></tr>
+    <tr><td>Views</td><td>500 views</td><td>₦6,500</td></tr>
+    <tr><td>Views</td><td>1,000 views</td><td>₦12,000</td></tr>
+    <tr><td>Views</td><td>2,500 views</td><td>₦27,500</td></tr>
+    <tr><td>Views</td><td>5,000 views</td><td>₦50,000</td></tr>
+    <tr><td>Views</td><td>10,000 views</td><td>₦90,000</td></tr>
+   </tbody>
+  </table></div>
+ </section>
+ <div class="help">Prototype storage: <code>earngig_advertiser_bookings_v1</code> and browser IndexedDB for selected video files. Live advertiser submissions, payment verification and secure video storage are not connected.</div>
+</div>
+</main>
+</div>
+
+<!-- ADD BOOKING -->
+<div class="modal-backdrop" id="addModal" onclick="backdrop(event,'addModal')">
+ <div class="modal"><div class="modal-head"><h2>Record customer booking</h2><button class="close" onclick="closeModal('addModal')">×</button></div><div class="modal-body">
+  <div class="notice">This form is for recording and testing booking records. It does not create a customer payment or publish an advert.</div>
+  <div class="form-grid">
+   <div class="form-group"><label>Advertiser / business name *</label><input class="field" id="aAdvertiser" placeholder="Business name"></div>
+   <div class="form-group"><label>EarnGig account ID</label><input class="field" id="aAccount" placeholder="Account ID"></div>
+   <div class="form-group"><label>Contact email</label><input class="field" id="aEmail" type="email" placeholder="Email address"></div>
+   <div class="form-group"><label>Contact phone</label><input class="field" id="aPhone" placeholder="Phone number"></div>
+   <div class="form-group full"><label>Campaign / advert title *</label><input class="field" id="aTitle" placeholder="Advert title"></div>
+   <div class="form-group"><label>Advert package *</label><select class="field" id="aPackage"><option value="">Choose package</option><option>24 hours</option><option>72 hours</option><option>7 days</option><option>14 days</option><option>30 days</option><option>100 views</option><option>500 views</option><option>1,000 views</option><option>2,500 views</option><option>5,000 views</option><option>10,000 views</option></select></div>
+   <div class="form-group"><label>Amount recorded (₦)</label><input class="field" id="aAmount" type="number" min="0" step="0.01" placeholder="Amount paid"></div>
+   <div class="form-group"><label>Payment provider</label><select class="field" id="aProvider"><option value="">Not specified</option><option>Paystack</option><option>Other</option></select></div>
+   <div class="form-group"><label>Payment reference</label><input class="field" id="aReference" placeholder="Transaction reference"></div>
+   <div class="form-group full"><label>Advertiser's submitted video</label><div class="upload-box"><div class="upload-title">Choose submitted video</div><input type="file" id="aVideo" accept="video/*"><div class="upload-note" id="aVideoName">No video selected.</div></div></div>
+   <div class="form-group full"><label>Or submitted video URL</label><input class="field" id="aVideoUrl" type="url" placeholder="Direct video URL"></div>
+   <div class="form-group full"><label>Advertiser's description / instructions</label><textarea class="field" id="aDescription" placeholder="Campaign information or advertiser instructions"></textarea></div>
+  </div>
+  <div class="modal-actions"><button class="btn light" onclick="closeModal('addModal')">Cancel</button><button class="btn primary" onclick="saveBooking()">Save booking</button></div>
+ </div></div>
+</div>
+
+<!-- REVIEW BOOKING -->
+<div class="modal-backdrop" id="reviewModal" onclick="backdrop(event,'reviewModal')">
+ <div class="modal"><div class="modal-head"><h2 id="reviewHeading">Review advertisement booking</h2><button class="close" onclick="closeModal('reviewModal')">×</button></div><div class="modal-body" id="reviewBody"></div></div>
+</div>
+
+<!-- DECISION -->
+<div class="modal-backdrop" id="decisionModal" onclick="backdrop(event,'decisionModal')">
+ <div class="modal"><div class="modal-head"><h2 id="decisionHeading">Record decision</h2><button class="close" onclick="closeModal('decisionModal')">×</button></div><div class="modal-body">
+  <div id="decisionInfo" class="subtitle"></div>
+  <div class="form-group"><label>Decision note / reason *</label><textarea class="field" id="decisionNote" placeholder="Explain your decision to the advertiser"></textarea></div>
+  <div class="modal-actions"><button class="btn light" onclick="closeModal('decisionModal')">Cancel</button><button class="btn primary" onclick="confirmDecision()">Confirm decision</button></div>
+ </div></div>
+</div>
+
+<script>
+const KEY='earngig_advertiser_bookings_v1';
+const DB_NAME='earngig_advertiser_media_db';
+const DB_STORE='videos';
+const prices={
+ '24 hours':10000,'72 hours':25000,'7 days':50000,'14 days':85000,'30 days':150000,
+ '100 views':1500,'500 views':6500,'1,000 views':12000,'2,500 views':27500,'5,000 views':50000,'10,000 views':90000
+};
+let bookings=load();
+let selectedVideo=null;
+let dbPromise=null;
+let decisionTarget=null;
+let previewUrl=null;
+
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(x)?x:[]}catch(e){return []}}
+function save(){localStorage.setItem(KEY,JSON.stringify(bookings))}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function uid(){return 'ADV-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,5).toUpperCase()}
+function money(v){return '₦'+Number(v||0).toLocaleString('en-NG')}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function backdrop(e,id){if(e.target.id===id)closeModal(id)}
+function statusClass(s){return ({'Pending Review':'pending','Approved':'approved','Rejected':'rejected','Changes Requested':'changes'})[s]||'pending'}
+function badge(s){return `<span class="tag ${statusClass(s)}">${esc(s)}</span>`}
+function fmtDate(v){if(!v)return '—';const d=new Date(v);return isNaN(d)?'—':d.toLocaleDateString('en-NG',{dateStyle:'medium'})}
+
+function openDB(){
+ if(!('indexedDB' in window))return Promise.reject(new Error('IndexedDB is not supported.'));
+ if(dbPromise)return dbPromise;
+ dbPromise=new Promise((resolve,reject)=>{
+  const req=indexedDB.open(DB_NAME,1);
+  req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(DB_STORE))req.result.createObjectStore(DB_STORE,{keyPath:'id'})};
+  req.onsuccess=()=>resolve(req.result);
+  req.onerror=()=>reject(req.error);
+ });
+ return dbPromise;
+}
+async function storeVideo(file,id){
+ const db=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(DB_STORE,'readwrite');
+  tx.objectStore(DB_STORE).put({id,name:file.name,type:file.type,blob:file,savedAt:new Date().toISOString()});
+  tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error);
+ });
+}
+async function getVideo(id){
+ if(!id)return null;
+ const db=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(DB_STORE,'readonly');
+  const req=tx.objectStore(DB_STORE).get(id);
+  req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>reject(req.error);
+ });
+}
+async function removeVideo(id){
+ if(!id)return;
+ try{
+  const db=await openDB();
+  await new Promise((resolve,reject)=>{
+   const tx=db.transaction(DB_STORE,'readwrite');
+   tx.objectStore(DB_STORE).delete(id);
+   tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);
+  });
+ }catch(e){}
+}
+function releasePreview(){if(previewUrl){URL.revokeObjectURL(previewUrl);previewUrl=null}}
+
+document.getElementById('aVideo').addEventListener('change',function(){
+ selectedVideo=this.files&&this.files[0]?this.files[0]:null;
+ document.getElementById('aVideoName').textContent=selectedVideo?selectedVideo.name+' · '+(selectedVideo.size/1024/1024).toFixed(1)+' MB':'No video selected.';
+});
+function openAdd(){
+ selectedVideo=null;
+ ['aAdvertiser','aAccount','aEmail','aPhone','aTitle','aAmount','aReference','aVideoUrl','aDescription'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('aPackage').value='';
+ document.getElementById('aProvider').value='';
+ document.getElementById('aVideo').value='';
+ document.getElementById('aVideoName').textContent='No video selected.';
+ document.getElementById('addModal').classList.add('show');
+}
+async function saveBooking(){
+ const advertiser=document.getElementById('aAdvertiser').value.trim();
+ const title=document.getElementById('aTitle').value.trim();
+ const pack=document.getElementById('aPackage').value;
+ const amountText=document.getElementById('aAmount').value.trim();
+ const amount=amountText===''?null:Number(amountText);
+ if(!advertiser||!title||!pack){alert('Advertiser, campaign title and package are required.');return}
+ if(amount!==null&&(!Number.isFinite(amount)||amount<0)){alert('Enter a valid amount.');return}
+ const record={
+  id:uid(),advertiser,title,package:pack,packagePrice:prices[pack],
+  accountId:document.getElementById('aAccount').value.trim(),
+  email:document.getElementById('aEmail').value.trim(),
+  phone:document.getElementById('aPhone').value.trim(),
+  amount,provider:document.getElementById('aProvider').value,
+  paymentReference:document.getElementById('aReference').value.trim(),
+  videoUrl:document.getElementById('aVideoUrl').value.trim(),
+  videoMediaId:null,videoName:selectedVideo?selectedVideo.name:'',
+  description:document.getElementById('aDescription').value.trim(),
+  status:'Pending Review',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),history:[]
+ };
+ if(selectedVideo){
+  record.videoMediaId=uid();
+  try{await storeVideo(selectedVideo,record.videoMediaId)}
+  catch(e){alert('The video could not be saved in this browser. Try a smaller file.');return}
+ }
+ bookings.unshift(record);save();render();closeModal('addModal');
+}
+
+function render(){
+ document.getElementById('totalCount').textContent=bookings.length;
+ document.getElementById('pendingCount').textContent=bookings.filter(x=>x.status==='Pending Review').length;
+ document.getElementById('approvedCount').textContent=bookings.filter(x=>x.status==='Approved').length;
+ document.getElementById('changesCount').textContent=bookings.filter(x=>x.status==='Changes Requested').length;
+ const q=document.getElementById('search').value.trim().toLowerCase();
+ const status=document.getElementById('statusFilter').value;
+ const pack=document.getElementById('packageFilter').value;
+ const list=bookings.filter(x=>{
+  const text=[x.id,x.advertiser,x.title,x.accountId,x.email,x.paymentReference].join(' ').toLowerCase();
+  return (!q||text.includes(q))&&(!status||x.status===status)&&(!pack||x.package===pack);
+ }).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+ document.getElementById('bookingRows').innerHTML=list.length?list.map(x=>`
+ <tr>
+  <td><div class="person"><div class="avatar">${esc((x.advertiser||'?').slice(0,1).toUpperCase())}</div><div><div class="person-name">${esc(x.advertiser)}</div><div class="person-meta">${esc(x.email||'No email provided')}</div></div></div></td>
+  <td>${esc(x.id)}</td><td>${esc(x.package)}</td><td>${x.amount===null?'Not recorded':money(x.amount)}</td>
+  <td>${x.paymentReference?'<span class="tag approved">Reference recorded</span>':'<span class="tag pending">Not recorded</span>'}</td>
+  <td>${badge(x.status)}</td>
+  <td><button class="action" onclick="review('${x.id}')">Inspect ↗</button></td>
+ </tr>`).join(''):'<tr><td colspan="7"><div class="empty"><strong>No advertisement bookings found</strong><p>Customer booking requests will appear here when recorded or connected to the platform.</p></div></td></tr>';
+}
+function detail(label,value){return `<div class="detail"><div class="detail-label">${esc(label)}</div><div class="detail-value">${esc(value)}</div></div>`}
+async function review(id){
+ const x=bookings.find(b=>b.id===id);if(!x)return;
+ let videoUrl='';
+ if(x.videoMediaId){
+  try{const item=await getVideo(x.videoMediaId);if(item)videoUrl=URL.createObjectURL(item.blob)}catch(e){}
+ }
+ if(!videoUrl)videoUrl=x.videoUrl||'';
+ const video=videoUrl?`<div class="video-preview"><video controls preload="metadata" src="${esc(videoUrl)}"></video></div>`:'<div class="video-preview"><div class="video-placeholder">No video was submitted with this booking.</div></div>';
+ document.getElementById('reviewHeading').textContent='Booking review · '+x.id;
+ document.getElementById('reviewBody').innerHTML=`
+  ${video}
+  <div class="detail-grid" style="margin-top:14px">
+   ${detail('Advertiser',x.advertiser)}${detail('Account ID',x.accountId||'Not provided')}
+   ${detail('Campaign title',x.title)}${detail('Package',x.package)}
+   ${detail('Package catalogue price',money(x.packagePrice))}${detail('Amount recorded',x.amount===null?'Not entered':money(x.amount))}
+   ${detail('Payment provider',x.provider||'Not specified')}${detail('Payment reference',x.paymentReference||'Not recorded')}
+   ${detail('Contact email',x.email||'Not provided')}${detail('Contact phone',x.phone||'Not provided')}
+   ${detail('Booking status',x.status)}${detail('Date submitted',new Date(x.createdAt).toLocaleString('en-NG'))}
+   ${detail('Submitted video',x.videoName||x.videoUrl||'No video submitted')}
+  </div>
+  <div class="detail" style="margin-top:12px"><div class="detail-label">Advertiser description</div><div class="detail-value">${esc(x.description||'No description provided.')}</div></div>
+  <div class="help">Check the creative against EarnGig's advertising requirements and verify the payment through the payment provider before approving. A recorded payment reference is not proof of successful payment.</div>
+  <div class="modal-actions">
+   ${['Pending Review','Changes Requested'].includes(x.status)?`
+    <button class="btn danger" onclick="startDecision('${x.id}','Rejected')">Reject</button>
+    <button class="btn light" onclick="startDecision('${x.id}','Changes Requested')">Request changes</button>
+    <button class="btn primary" onclick="startDecision('${x.id}','Approved')">Approve booking</button>`:''}
+   <button class="btn light" onclick="closeModal('reviewModal')">Close</button>
+  </div>
+  ${x.history&&x.history.length?`<div style="margin-top:20px;font-size:12px;font-weight:800">Decision history</div>${x.history.map(h=>`<div class="detail" style="margin-top:8px"><strong style="font-size:11px">${esc(h.status)}</strong><div class="help">${esc(h.note)} · ${new Date(h.date).toLocaleString('en-NG')}</div></div>`).join('')}`:''}
+ `;
+ document.getElementById('reviewModal').classList.add('show');
+}
+function startDecision(id,status){
+ closeModal('reviewModal');
+ decisionTarget={id,status};
+ document.getElementById('decisionHeading').textContent=status;
+ document.getElementById('decisionInfo').textContent={
+  'Approved':'Approve this customer booking after reviewing the creative and confirming payment. This does not publish the advert.',
+  'Rejected':'Reject the booking and record the reason.',
+  'Changes Requested':'Ask the advertiser to update their creative or booking details.'
+ }[status];
+ document.getElementById('decisionNote').value='';
+ document.getElementById('decisionModal').classList.add('show');
+}
+function confirmDecision(){
+ if(!decisionTarget)return;
+ const note=document.getElementById('decisionNote').value.trim();
+ if(!note){alert('Please enter a decision note.');return}
+ const x=bookings.find(b=>b.id===decisionTarget.id);if(!x)return;
+ x.status=decisionTarget.status;x.updatedAt=new Date().toISOString();
+ x.history=x.history||[];
+ x.history.unshift({status:x.status,note,date:x.updatedAt});
+ save();render();closeModal('decisionModal');decisionTarget=null;
+}
+async function exportData(){
+ const safe=bookings.map(({videoMediaId,...x})=>({...x,videoStoredInBrowser:!!videoMediaId}));
+ const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),bookings:safe},null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='earngig-advertisement-bookings.json';a.click();URL.revokeObjectURL(url);
+}
+render();
+</script>
+</body>
+</html>
