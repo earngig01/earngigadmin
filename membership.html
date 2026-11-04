@@ -3,293 +3,519 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>EarnGig Admin | Membership Management</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnGig Admin | Membership</title>
 <style>
 :root{
---navy:#151b2d;--purple:#713cf0;--lav:#f2edff;
---bg:#f5f6fb;--ink:#192033;--muted:#7b8295;
---line:#e9ebf3;--green:#16a765;--red:#e34d59;
---orange:#efa638;--blue:#3995ed;
+ --navy:#111a35;--purple:#7154d9;--lav:#f1edff;
+ --bg:#f6f7fb;--white:#fff;--text:#202943;
+ --muted:#8490a6;--line:#e8eaf2;
+ --green:#15966b;--red:#d94c61;--orange:#d78a25;
+ --blue:#3995ed;--shadow:0 8px 28px rgba(25,35,65,.05)
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif;font-size:14px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;font-size:14px}
 button,input,select{font:inherit}
 button{cursor:pointer}
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:245px;background:var(--navy);padding:22px 15px;color:#fff;overflow-y:auto}
-.brand{font-size:23px;font-weight:800;padding:10px 12px 35px}
-.brand span{color:#e6bd59}
-.nav-label{font-size:10px;letter-spacing:1px;color:#778198;padding:15px 12px 8px}
-.nav{display:block;text-decoration:none;color:#cbd0de;padding:12px;border-radius:9px;margin:3px 0;font-size:13px}
-.nav:hover,.nav.active{background:#49347e;color:white}
-.main{margin-left:245px}
-.topbar{height:72px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px}
-.searchtop{width:45%;background:#f2f3f8;border-radius:9px;padding:12px;border:0}
-.profile{display:flex;align-items:center;gap:10px;font-size:12px}
-.avatar{width:38px;height:38px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-weight:bold}
-.content{padding:28px;max-width:1600px;margin:auto}
-.heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:23px}
-h1{font-size:27px;margin:0 0 7px}
-.subtitle{color:var(--muted);font-size:13px;margin:0}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
-.card,.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:0 3px 12px #17203a05}
-.card small{color:var(--muted)}
+.layout{display:flex;min-height:100vh}
+.sidebar{
+ width:250px;background:var(--navy);color:#dce2f3;
+ position:fixed;inset:0 auto 0 0;overflow-y:auto;
+ padding:22px 15px;z-index:10
+}
+.brand{display:flex;align-items:center;gap:10px;padding:5px 10px 27px;color:white;font-size:22px;font-weight:800}
+.brand svg{width:32px;height:32px}
+.brand span{color:#e8bd62}
+.nav-label{font-size:10px;letter-spacing:1.5px;color:#8995b3;padding:17px 12px 8px;font-weight:800}
+.nav a{
+ display:flex;align-items:center;gap:12px;padding:11px 12px;
+ border-radius:9px;color:#c0c9df;text-decoration:none;
+ font-size:12px;margin:3px 0
+}
+.nav a:hover,.nav a.active{background:#29365b;color:white}
+.nav a.active{box-shadow:inset 3px 0 var(--purple)}
+.nav .ico{width:20px;text-align:center;font-size:16px}
+.sidebar-note{margin:20px 7px 0;padding:12px;border:1px solid #344263;border-radius:9px;color:#aab5ce;font-size:10px;line-height:1.7}
+.main{margin-left:250px;width:calc(100% - 250px);min-width:0}
+.topbar{
+ height:70px;background:white;border-bottom:1px solid var(--line);
+ display:flex;align-items:center;justify-content:space-between;
+ padding:0 28px;position:sticky;top:0;z-index:5
+}
+.top-left{display:flex;align-items:center;gap:12px}
+.mobile-menu{display:none;border:0;background:var(--lav);color:var(--purple);padding:8px 11px;border-radius:8px}
+.profile{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-weight:800}
+.content{padding:28px 30px 50px;max-width:1550px;margin:auto}
+.heading{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+h1{font-size:25px;margin:0 0 7px;letter-spacing:-.5px}
+.subtitle{font-size:12px;color:var(--muted);line-height:1.6}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-size:11px;font-weight:700}
+.primary{background:var(--purple);color:white}
+.light{background:var(--lav);color:var(--purple)}
+.outline{background:white;border:1px solid var(--line);color:var(--text)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:19px}
+.card{background:white;border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:var(--shadow)}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.card small{font-size:11px;color:var(--muted)}
 .card h2{font-size:27px;margin:12px 0 5px}
-.card-icon{float:right;width:39px;height:39px;border-radius:11px;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-size:20px}
-.green{color:var(--green)}.orange{color:var(--orange)}
-.panel{margin-bottom:18px}
+.card p{font-size:10px;color:var(--muted);margin:0}
+.card-icon{width:40px;height:40px;border-radius:11px;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-size:19px}
+.green-bg{background:#e5f8ed;color:var(--green)}
+.blue-bg{background:#e9f1ff;color:var(--blue)}
+.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:19px;box-shadow:var(--shadow);margin-bottom:18px}
 .panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:17px}
-.panel-head h2{font-size:16px;margin:0}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-.toolbar input{flex:1;min-width:190px}
-input,select{border:1px solid var(--line);border-radius:8px;padding:11px;background:white;color:var(--ink);outline:none}
-button.primary{background:var(--purple);color:white;border:0;padding:11px 16px;border-radius:8px;font-weight:bold}
-button.light{background:var(--lav);color:var(--purple);border:0;padding:10px 13px;border-radius:8px;font-weight:bold}
-button.danger{background:#fff0f0;color:var(--red);border:0;padding:9px 12px;border-radius:8px;font-weight:bold}
-.tablewrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:850px}
-th,td{padding:14px 11px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}
-th{background:#f8f8fc;color:#747b8e;font-size:11px}
+.panel-head h2{font-size:14px;margin:0}
+.panel-head p{font-size:10px;color:var(--muted);margin:5px 0 0}
+.badge{display:inline-block;border-radius:20px;padding:5px 8px;font-size:9px;font-weight:700;background:#f0f1f5;color:#687084}
+.badge.active,.badge.verified{background:#e5f8ed;color:#15966b}
+.badge.suspended{background:#fff0f2;color:var(--red)}
+.badge.unverified{background:#fff4e2;color:#bd801c}
+.badge.info{background:#e9f2ff;color:#287bd7}
+.toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:15px}
+.toolbar input{flex:1;min-width:200px}
+.toolbar input,.toolbar select{border:1px solid var(--line);border-radius:8px;padding:11px;background:white;color:var(--text);font-size:11px;outline:none}
+.toolbar input:focus,.toolbar select:focus{border-color:var(--purple)}
+.tablewrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:720px}
+th{text-align:left;background:#fafbfe;color:#8a94a9;font-size:9px;letter-spacing:.5px;text-transform:uppercase;padding:13px}
+td{padding:13px;border-top:1px solid #f0f1f6;font-size:10px}
 .member{display:flex;align-items:center;gap:9px}
-.member-avatar{width:35px;height:35px;border-radius:50%;background:#eee8ff;color:var(--purple);display:grid;place-items:center;font-weight:bold}
-.member strong{display:block}.member small{color:var(--muted)}
-.badge{display:inline-block;border-radius:20px;padding:6px 9px;font-size:10px;font-weight:bold;background:#f0f1f5;color:#70788a}
-.badge.active{background:#e5f8ed;color:#159557}
-.badge.expired,.badge.cancelled{background:#fff0f0;color:var(--red)}
-.badge.pending{background:#fff4e2;color:#ba7b19}
-.badge.suspended{background:#e9f2ff;color:#287bd7}
-.action{background:none;border:0;color:var(--purple);font-weight:bold}
-.empty{padding:45px 15px;text-align:center;color:var(--muted)}
-.notice{background:#fff8e9;color:#805c1d;border:1px solid #f0dfb8;padding:12px;border-radius:9px;font-size:12px;margin-bottom:17px}
-.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.plan-card{border:1px solid var(--line);border-radius:12px;padding:17px;background:white}
-.plan-card h3{margin:0 0 8px;font-size:15px}
-.plan-card p{font-size:12px;color:var(--muted);line-height:1.6}
-.plan-symbol{width:37px;height:37px;border-radius:10px;background:var(--lav);display:grid;place-items:center;color:var(--purple);font-size:18px;margin-bottom:13px}
+.member-avatar{width:34px;height:34px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-weight:800;flex:none}
+.member strong{display:block;font-size:11px}
+.member small{display:block;color:var(--muted);font-size:9px;margin-top:3px}
+.action{border:0;background:transparent;color:var(--purple);font-weight:700;font-size:10px}
+.empty{padding:40px 15px;text-align:center;color:var(--muted);font-size:11px;line-height:1.7}
+.notice{padding:12px 14px;background:#f2efff;border:1px solid #e6e0ff;color:#6551b0;border-radius:9px;font-size:10px;line-height:1.6;margin-bottom:17px}
+.notice.warn{background:#fff8e9;border-color:#f4e4bd;color:#94651d}
 .modalbg{display:none;position:fixed;inset:0;background:#10172799;z-index:20;align-items:center;justify-content:center;padding:15px}
-.modal{background:white;border-radius:14px;padding:23px;width:min(650px,100%);max-height:90vh;overflow:auto}
+.modalbg.show{display:flex}
+.modal{background:white;border-radius:14px;padding:22px;width:min(620px,100%);max-height:90vh;overflow:auto}
 .modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.modalhead h2{font-size:18px;margin:0}
-.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.detail{background:#f7f7fb;padding:13px;border-radius:9px;font-size:13px;overflow-wrap:anywhere}
-.detail small{display:block;color:var(--muted);margin-bottom:6px}
-.modal-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:20px}
-@media(max-width:950px){.sidebar{width:205px}.main{margin-left:205px}.stats{grid-template-columns:repeat(2,1fr)}.plan-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.sidebar{display:none}.main{margin-left:0}.topbar{padding:0 13px}.content{padding:15px}.stats{gap:9px}.card{padding:13px}.card h2{font-size:22px}.plan-grid,.detailgrid{grid-template-columns:1fr}}
+.modalhead h2{font-size:16px;margin:0}
+.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.detail{background:#f7f7fb;padding:13px;border-radius:9px;font-size:11px;overflow-wrap:anywhere}
+.detail small{display:block;color:var(--muted);margin-bottom:6px;font-size:9px}
+.modal-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:18px}
+.footer-note{font-size:10px;color:var(--muted);line-height:1.6;margin-top:14px}
+.hidden{display:none!important}
+@media(max-width:950px){.sidebar{width:220px}.main{margin-left:220px;width:calc(100% - 220px)}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){
+ .sidebar{transform:translateX(-100%);transition:.2s}
+ .sidebar.open{transform:translateX(0)}
+ .main{margin-left:0;width:100%}
+ .mobile-menu{display:block}
+ .topbar{padding:0 14px}
+ .content{padding:19px 14px}
+ .stats{gap:9px}
+ .card{padding:13px}
+ .card h2{font-size:22px}
+ .detailgrid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
+<div class="layout">
 
-<aside class="sidebar">
- <div class="brand">♛ <span>Earn</span>Gig</div>
- <div class="nav-label">MAIN MENU</div>
- <a class="nav" href="admin.html">▦ Dashboard</a>
- <div class="nav-label">USERS & ACCOUNTS</div>
- <a class="nav" href="users.html">♙ User Management</a>
- <a class="nav active" href="membership.html">♧ Membership</a>
- <a class="nav" href="wallet.html">◈ Wallet & Coins</a>
- <a class="nav" href="referrals.html">♧ Referrals & Rewards</a>
- <div class="nav-label">FINANCE</div>
- <a class="nav" href="transactions.html">▤ Transactions</a>
- <a class="nav" href="deposits.html">＋ Deposits & Payments</a>
- <a class="nav" href="withdrawals.html">↗ Withdrawals</a>
- <a class="nav" href="seller-wallet.html">▣ Seller Store Wallet</a>
- <div class="nav-label">CONTENT</div>
- <a class="nav" href="writers.html">✎ Writer Applications</a>
- <a class="nav" href="novels.html">▤ Novel Management</a>
- <a class="nav" href="readers.html">♡ Readers & Rewards</a>
- <div class="nav-label">BUSINESS</div>
- <a class="nav" href="ads.html">▧ Advertisements</a>
- <a class="nav" href="billboard.html">▦ Billboard Bookings</a>
- <a class="nav" href="marketplace.html">▣ Marketplace</a>
- <a class="nav" href="stores.html">✓ Store Verification</a>
- <a class="nav" href="delivery.html">🚚 Delivery Management</a>
- <div class="nav-label">SYSTEM</div>
- <a class="nav" href="notifications.html">♧ Notifications</a>
- <a class="nav" href="reports.html">▥ Reports</a>
- <a class="nav" href="settings.html">⚙ Settings</a>
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+   <path d="M5 12L12 18L19.5 6L27 18L35 12L31 30H9L5 12Z" stroke="#E8BD62" stroke-width="2.3" stroke-linejoin="round"/>
+   <path d="M10 34H30" stroke="#E8BD62" stroke-width="2.3" stroke-linecap="round"/>
+   <circle cx="5" cy="11" r="2" fill="#E8BD62"/>
+   <circle cx="19.5" cy="5" r="2" fill="#E8BD62"/>
+   <circle cx="35" cy="11" r="2" fill="#E8BD62"/>
+  </svg>
+  <div><span>Earn</span>Gig</div>
+ </div>
+
+ <nav class="nav">
+  <div class="nav-label">MAIN</div>
+  <a href="admin.html"><span class="ico">▦</span>Dashboard</a>
+
+  <div class="nav-label">USERS & ACCOUNTS</div>
+  <a href="users.html"><span class="ico">♙</span>Users</a>
+  <a class="active" href="membership.html"><span class="ico">◇</span>Membership</a>
+  <a href="wallet.html"><span class="ico">◈</span>Coin Withdrawals</a>
+  <a href="coin-purchases.html"><span class="ico">◉</span>Coin Purchases</a>
+  <a href="referrals.html"><span class="ico">⇄</span>Referrals & Rewards</a>
+
+  <div class="nav-label">FINANCE</div>
+  <a href="transactions.html"><span class="ico">▤</span>Transactions</a>
+  <a href="deposits.html"><span class="ico">↓</span>Deposits</a>
+  <a href="withdrawals.html"><span class="ico">↑</span>Wallet Withdrawals</a>
+  <a href="seller-wallet.html"><span class="ico">▣</span>Seller Wallet</a>
+  <a href="payouts.html"><span class="ico">₦</span>Payouts</a>
+
+  <div class="nav-label">CONTENT & BUSINESS</div>
+  <a href="writers.html"><span class="ico">✎</span>Writer Management</a>
+  <a href="novels.html"><span class="ico">▥</span>Novel Management</a>
+  <a href="marketplace.html"><span class="ico">▧</span>Marketplace</a>
+  <a href="store-verification.html"><span class="ico">✓</span>Store Verification</a>
+
+  <div class="nav-label">ADVERTISING</div>
+  <a href="advertising.html"><span class="ico">▣</span>Advertisement Bookings</a>
+  <a href="watch-earn.html"><span class="ico">▶</span>Watch & Earn</a>
+  <a href="billboard.html"><span class="ico">▤</span>Billboard Management</a>
+
+  <div class="nav-label">SYSTEM</div>
+  <a href="notifications.html"><span class="ico">♢</span>Notifications</a>
+  <a href="reports.html"><span class="ico">▥</span>Reports & Analysis</a>
+  <a href="settings.html"><span class="ico">⚙</span>Settings</a>
+ </nav>
+ <div class="sidebar-note">EarnGig Administration<br>Owner access only</div>
 </aside>
 
-<div class="main">
-<header class="topbar">
- <input class="searchtop" placeholder="Search EarnGig administration...">
- <div class="profile"><div class="avatar">A</div><div><b>EarnGig Admin</b><br><span style="color:#858b9c">Administrator</span></div></div>
-</header>
-
-<main class="content">
- <div class="heading">
-  <div>
-   <h1>Membership Management</h1>
-   <p class="subtitle">Manage membership subscriptions, plans, renewals and member status.</p>
+<main class="main">
+ <header class="topbar">
+  <div class="top-left">
+   <button class="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+   <strong style="font-size:12px">Membership Directory</strong>
   </div>
-  <button class="light" onclick="exportMembership()">↓ Export Subscriptions</button>
+  <div class="profile">
+   <div class="avatar">A</div>
+   <span>EarnGig Admin</span>
+  </div>
+ </header>
+
+ <div class="content">
+  <div class="heading">
+   <div>
+    <h1>Membership</h1>
+    <p class="subtitle">View and count everyone registered on the EarnGig platform.</p>
+   </div>
+   <button class="btn light" onclick="exportMembers()">↓ Export Members</button>
+  </div>
+
+  <div class="notice warn">
+   Membership here means registered EarnGig platform members. It does not mean paid subscriptions or membership plans. The page will display member records only when connected to the registered-user data source.
+  </div>
+
+  <section class="stats">
+   <div class="card">
+    <div class="card-top">
+     <small>Total Registered Members</small>
+     <div class="card-icon">♙</div>
+    </div>
+    <h2 id="totalMembers">0</h2>
+    <p>All registered accounts available in the member directory</p>
+   </div>
+
+   <div class="card">
+    <div class="card-top">
+     <small>Verified Members</small>
+     <div class="card-icon green-bg">✓</div>
+    </div>
+    <h2 id="verifiedMembers">0</h2>
+    <p>Accounts marked as verified in the available records</p>
+   </div>
+
+   <div class="card">
+    <div class="card-top">
+     <small>Unverified Members</small>
+     <div class="card-icon blue-bg">◷</div>
+    </div>
+    <h2 id="unverifiedMembers">0</h2>
+    <p>Accounts not yet marked as verified</p>
+   </div>
+  </section>
+
+  <section class="panel">
+   <div class="panel-head">
+    <div>
+     <h2>All Registered Members</h2>
+     <p>Browse the people who have registered on EarnGig.</p>
+    </div>
+    <span class="badge info" id="recordCount">0 members</span>
+   </div>
+
+   <div class="toolbar">
+    <input id="search" type="search" placeholder="Search member name, email or user ID..." oninput="renderMembers()">
+    <select id="verificationFilter" onchange="renderMembers()">
+     <option value="">All verification statuses</option>
+     <option value="verified">Verified</option>
+     <option value="unverified">Unverified</option>
+    </select>
+    <select id="statusFilter" onchange="renderMembers()">
+     <option value="">All account statuses</option>
+     <option value="active">Active</option>
+     <option value="suspended">Suspended</option>
+    </select>
+   </div>
+
+   <div class="tablewrap" id="memberTable"></div>
+   <div class="footer-note">
+    Member records are displayed from the configured user data source. No sample members are added to your real directory.
+   </div>
+  </section>
  </div>
-
- <div class="notice">Prototype mode: membership information is not connected to live EarnGig accounts. No membership plans, fees or fake subscriptions have been invented.</div>
-
- <div class="stats">
-  <div class="card"><span class="card-icon">♧</span><small>Total Subscriptions</small><h2 id="total">0</h2><small>Subscription records</small></div>
-  <div class="card"><span class="card-icon">✓</span><small>Active Memberships</small><h2 id="active">0</h2><small class="green">Currently active</small></div>
-  <div class="card"><span class="card-icon">◷</span><small>Pending Memberships</small><h2 id="pending">0</h2><small class="orange">Awaiting confirmation</small></div>
-  <div class="card"><span class="card-icon">⊘</span><small>Expired Memberships</small><h2 id="expired">0</h2><small>Past expiry date</small></div>
- </div>
-
- <section class="panel">
-  <div class="panel-head"><h2>Membership Plans</h2><span class="badge">Plan Configuration</span></div>
-  <div class="plan-grid">
-   <div class="plan-card">
-    <div class="plan-symbol">♙</div>
-    <h3>Membership Plans</h3>
-    <p>View and configure the membership plans offered by EarnGig.</p>
-    <span class="badge pending">Awaiting plan configuration</span>
-   </div>
-   <div class="plan-card">
-    <div class="plan-symbol">₦</div>
-    <h3>Membership Pricing</h3>
-    <p>Manage membership prices, billing periods and payment rules.</p>
-    <span class="badge pending">Pricing not configured</span>
-   </div>
-   <div class="plan-card">
-    <div class="plan-symbol">↻</div>
-    <h3>Renewal Settings</h3>
-    <p>Manage subscription renewal periods and expiry policies.</p>
-    <span class="badge pending">Rules not configured</span>
-   </div>
-  </div>
- </section>
-
- <section class="panel">
-  <div class="panel-head">
-   <h2>Member Subscriptions</h2>
-   <span class="badge">Subscription Directory</span>
-  </div>
-  <div class="toolbar">
-   <input id="search" placeholder="Search member name, email or subscription ID..." oninput="render()">
-   <select id="statusFilter" onchange="render()">
-    <option value="">All statuses</option>
-    <option>Active</option><option>Pending</option><option>Expired</option><option>Cancelled</option><option>Suspended</option>
-   </select>
-   <select id="planFilter" onchange="render()">
-    <option value="">All plans</option>
-   </select>
-  </div>
-  <div class="tablewrap" id="subscriptionTable"></div>
- </section>
-
- <section class="panel">
-  <div class="panel-head"><h2>Membership Administration</h2></div>
-  <div class="plan-grid">
-   <div class="plan-card"><h3>Subscription Reviews</h3><p>Review membership records and their current payment and subscription status.</p></div>
-   <div class="plan-card"><h3>Renewal Monitoring</h3><p>Identify subscriptions approaching expiry and review renewal history.</p></div>
-   <div class="plan-card"><h3>Membership History</h3><p>Review previous plans, subscription dates and membership changes.</p></div>
-  </div>
- </section>
 </main>
 </div>
 
 <div class="modalbg" id="modal">
  <div class="modal">
-  <div class="modalhead"><h2 id="modalTitle">Membership Details</h2><button class="light" onclick="closeModal()">Close</button></div>
+  <div class="modalhead">
+   <h2>Member Details</h2>
+   <button class="btn light" onclick="closeModal()">Close</button>
+  </div>
   <div id="modalContent"></div>
  </div>
 </div>
 
 <script>
-const KEY="earngig_membership_management_v1";
-let subscriptions=[];
-try{
- subscriptions=JSON.parse(localStorage.getItem(KEY)||"[]");
- if(!Array.isArray(subscriptions))subscriptions=[];
-}catch{subscriptions=[]}
+/*
+ Membership is a registered-member directory, not a subscription system.
 
-function save(){
- localStorage.setItem(KEY,JSON.stringify(subscriptions));
- render();
+ The user records should come from the same central user database used by
+ the Users page. This static prototype checks the shared localStorage key
+ earngig_users_v1. Live platform integration requires a backend.
+*/
+
+const USER_KEY='earngig_users_v1';
+let members=[];
+
+function escapeHTML(value){
+ return String(value??'').replace(/[&<>"']/g,char=>({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+ }[char]));
 }
-function esc(v){
- return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function readMembers(){
+ try{
+  const data=JSON.parse(localStorage.getItem(USER_KEY)||'null');
+
+  if(Array.isArray(data))return data;
+
+  if(data&&typeof data==='object'){
+   for(const key of ['users','members','records','data','items']){
+    if(Array.isArray(data[key]))return data[key];
+   }
+  }
+ }catch(error){
+  console.error('Could not read member records:',error);
+ }
+
+ return [];
 }
-function render(){
- const q=document.getElementById("search").value.toLowerCase();
- const sf=document.getElementById("statusFilter").value;
- const pf=document.getElementById("planFilter").value;
 
- const active=subscriptions.filter(s=>s.status==="Active").length;
- const pending=subscriptions.filter(s=>s.status==="Pending").length;
- const expired=subscriptions.filter(s=>s.status==="Expired").length;
+function memberName(member){
+ return member.name||
+  member.fullName||
+  member.full_name||
+  member.username||
+  member.displayName||
+  'Name not provided';
+}
 
- document.getElementById("total").textContent=subscriptions.length;
- document.getElementById("active").textContent=active;
- document.getElementById("pending").textContent=pending;
- document.getElementById("expired").textContent=expired;
+function memberEmail(member){
+ return member.email||member.emailAddress||member.email_address||'Not provided';
+}
 
- const plans=[...new Set(subscriptions.map(s=>s.plan).filter(Boolean))];
- document.getElementById("planFilter").innerHTML='<option value="">All plans</option>'+plans.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join("");
- document.getElementById("planFilter").value=pf;
+function memberId(member){
+ return member.id||
+  member.userId||
+  member.user_id||
+  member.uid||
+  member.memberId||
+  'Not provided';
+}
 
- const list=subscriptions.map((s,i)=>({...s,index:i})).filter(s=>
- [s.id,s.name,s.email,s.plan].join(" ").toLowerCase().includes(q)&&
- (!sf||s.status===sf)&&(!pf||s.plan===pf)
- );
+function memberDate(member){
+ return member.registeredAt||
+  member.registrationDate||
+  member.registration_date||
+  member.createdAt||
+  member.created_at||
+  member.dateJoined||
+  member.joinedAt||
+  '';
+}
 
- document.getElementById("subscriptionTable").innerHTML=list.length?`
+function isVerified(member){
+ const value=member.verified??member.isVerified??member.is_verified??member.emailVerified??member.email_verified;
+ if(value===true||value===1)return true;
+ if(typeof value==='string')return ['true','yes','verified','approved'].includes(value.toLowerCase());
+ return false;
+}
+
+function accountStatus(member){
+ const value=String(member.status||member.accountStatus||member.account_status||'Active').toLowerCase();
+ if(value.includes('suspend')||value==='blocked'||value==='disabled')return 'Suspended';
+ return 'Active';
+}
+
+function formatDate(value){
+ if(!value)return 'Not available';
+ const date=new Date(value);
+ if(Number.isNaN(date.getTime()))return escapeHTML(value);
+ return date.toLocaleDateString('en-NG',{day:'numeric',month:'short',year:'numeric'});
+}
+
+function refreshMembers(){
+ members=readMembers();
+
+ const verified=members.filter(isVerified).length;
+ const unverified=members.length-verified;
+
+ document.getElementById('totalMembers').textContent=members.length.toLocaleString('en-NG');
+ document.getElementById('verifiedMembers').textContent=verified.toLocaleString('en-NG');
+ document.getElementById('unverifiedMembers').textContent=unverified.toLocaleString('en-NG');
+
+ renderMembers();
+}
+
+function renderMembers(){
+ const query=document.getElementById('search').value.trim().toLowerCase();
+ const verification=document.getElementById('verificationFilter').value;
+ const status=document.getElementById('statusFilter').value;
+
+ const list=members.map((member,index)=>({member,index})).filter(({member})=>{
+  const searchText=[
+   memberName(member),
+   memberEmail(member),
+   memberId(member)
+  ].join(' ').toLowerCase();
+
+  const verificationMatch=!verification||
+   (verification==='verified'&&isVerified(member))||
+   (verification==='unverified'&&!isVerified(member));
+
+  const statusMatch=!status||
+   (status==='active'&&accountStatus(member)==='Active')||
+   (status==='suspended'&&accountStatus(member)==='Suspended');
+
+  return searchText.includes(query)&&verificationMatch&&statusMatch;
+ });
+
+ document.getElementById('recordCount').textContent=
+  list.length.toLocaleString('en-NG')+' members';
+
+ const table=document.getElementById('memberTable');
+
+ if(!list.length){
+  table.innerHTML=`
+   <div class="empty">
+    <h3>No registered members found</h3>
+    <p>
+     ${members.length===0
+      ?'No member records are available from the shared user data source yet.'
+      :'Try changing your search or filters.'}
+    </p>
+   </div>`;
+  return;
+ }
+
+ table.innerHTML=`
  <table>
- <thead><tr>
- <th>MEMBER</th><th>SUBSCRIPTION ID</th><th>MEMBERSHIP PLAN</th>
- <th>START DATE</th><th>EXPIRY DATE</th><th>STATUS</th><th>ACTION</th>
- </tr></thead>
- <tbody>${list.map(s=>`
- <tr>
- <td><b>${esc(s.name)}</b><br><small style="color:#858b9c">${esc(s.email)}</small></td>
- <td>${esc(s.id)}</td><td>${esc(s.plan)}</td>
- <td>${esc(s.start||"Not available")}</td>
- <td>${esc(s.expiry||"Not available")}</td>
- <td><span class="badge ${s.status==="Active"?"active":s.status==="Pending"?"pending":s.status==="Suspended"?"suspended":"expired"}">${esc(s.status)}</span></td>
- <td><button class="action" onclick="viewSubscription(${s.index})">View Details →</button></td>
- </tr>`).join("")}</tbody></table>`:
- `<div class="empty"><h3>No membership subscriptions found</h3><p>Subscriptions will appear here when membership data is connected to EarnGig.</p></div>`;
+  <thead>
+   <tr>
+    <th>MEMBER</th>
+    <th>USER ID</th>
+    <th>DATE REGISTERED</th>
+    <th>VERIFICATION</th>
+    <th>ACCOUNT STATUS</th>
+    <th>ACTION</th>
+   </tr>
+  </thead>
+  <tbody>
+   ${list.map(({member,index})=>{
+    const verified=isVerified(member);
+    const status=accountStatus(member);
+    const name=memberName(member);
+    const email=memberEmail(member);
+    const initial=name.charAt(0).toUpperCase();
+
+    return `
+    <tr>
+     <td>
+      <div class="member">
+       <div class="member-avatar">${escapeHTML(initial)}</div>
+       <div>
+        <strong>${escapeHTML(name)}</strong>
+        <small>${escapeHTML(email)}</small>
+       </div>
+      </div>
+     </td>
+     <td>${escapeHTML(memberId(member))}</td>
+     <td>${formatDate(memberDate(member))}</td>
+     <td><span class="badge ${verified?'verified':'unverified'}">${verified?'Verified':'Unverified'}</span></td>
+     <td><span class="badge ${status==='Active'?'active':'suspended'}">${status}</span></td>
+     <td><button class="action" onclick="viewMember(${index})">View Details →</button></td>
+    </tr>`;
+   }).join('')}
+  </tbody>
+ </table>`;
 }
 
-function viewSubscription(i){
- const s=subscriptions[i];if(!s)return;
- document.getElementById("modalTitle").textContent="Subscription Details";
- document.getElementById("modalContent").innerHTML=`
- <div class="detailgrid">
-  <div class="detail"><small>Member name</small><b>${esc(s.name)}</b></div>
-  <div class="detail"><small>Member email</small>${esc(s.email)}</div>
-  <div class="detail"><small>Subscription ID</small>${esc(s.id)}</div>
-  <div class="detail"><small>Membership plan</small>${esc(s.plan)}</div>
-  <div class="detail"><small>Subscription status</small>${esc(s.status)}</div>
-  <div class="detail"><small>Subscription price</small>${esc(s.price||"Not specified")}</div>
-  <div class="detail"><small>Start date</small>${esc(s.start||"Not available")}</div>
-  <div class="detail"><small>Expiry date</small>${esc(s.expiry||"Not available")}</div>
-  <div class="detail"><small>Payment reference</small>${esc(s.paymentRef||"Not available")}</div>
-  <div class="detail"><small>Renewal history</small>${esc(s.renewals||"No history available")}</div>
- </div>
- <div class="modal-actions">
-  <button class="light" onclick="changeStatus(${i},'Active')">Activate</button>
-  <button class="light" onclick="changeStatus(${i},'Suspended')">Suspend</button>
-  <button class="danger" onclick="changeStatus(${i},'Cancelled')">Cancel</button>
- </div>
- <p style="font-size:11px;color:#9297a5;margin-top:15px">Prototype controls only. Real subscription changes must be verified and enforced by the backend.</p>`;
- document.getElementById("modal").style.display="flex";
-}
-function changeStatus(i,status){
- if(!confirm("Change this membership status to "+status+"?"))return;
- subscriptions[i].status=status;
- save();
- viewSubscription(i);
-}
-function closeModal(){document.getElementById("modal").style.display="none"}
+function viewMember(index){
+ const member=members[index];
+ if(!member)return;
 
-function exportMembership(){
- const blob=new Blob([JSON.stringify(subscriptions,null,2)],{type:"application/json"});
+ const fields=[
+  ['Full name',memberName(member)],
+  ['Email address',memberEmail(member)],
+  ['User ID',memberId(member)],
+  ['Phone number',member.phone||member.phoneNumber||member.phone_number||'Not provided'],
+  ['Registration date',formatDate(memberDate(member))],
+  ['Verification',isVerified(member)?'Verified':'Unverified'],
+  ['Account status',accountStatus(member)],
+  ['Country',member.country||'Not provided']
+ ];
+
+ document.getElementById('modalContent').innerHTML=`
+  <div class="detailgrid">
+   ${fields.map(([label,value])=>`
+    <div class="detail">
+     <small>${escapeHTML(label)}</small>
+     <strong>${escapeHTML(value)}</strong>
+    </div>`).join('')}
+  </div>
+  <p class="footer-note">This page displays available member information. Account security and member updates must be handled through the secured backend.</p>
+ `;
+ document.getElementById('modal').classList.add('show');
+}
+
+function closeModal(){
+ document.getElementById('modal').classList.remove('show');
+}
+
+function exportMembers(){
+ if(!members.length){
+  alert('There are no member records available to export.');
+  return;
+ }
+
+ const data=members.map(member=>({
+  name:memberName(member),
+  email:memberEmail(member),
+  userId:memberId(member),
+  registrationDate:memberDate(member),
+  verified:isVerified(member),
+  accountStatus:accountStatus(member)
+ }));
+
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
  const url=URL.createObjectURL(blob);
- const a=document.createElement("a");
- a.href=url;a.download="earngig-memberships.json";a.click();
+ const link=document.createElement('a');
+ link.href=url;
+ link.download='earngig-registered-members.json';
+ link.click();
  URL.revokeObjectURL(url);
 }
-render();
+
+document.getElementById('sidebar').addEventListener('click',event=>{
+ if(event.target.closest('a'))document.getElementById('sidebar').classList.remove('open');
+});
+
+document.getElementById('modal').addEventListener('click',event=>{
+ if(event.target.id==='modal')closeModal();
+});
+
+window.addEventListener('storage',event=>{
+ if(event.key===USER_KEY)refreshMembers();
+});
+
+refreshMembers();
 </script>
 </body>
 </html>
