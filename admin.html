@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnGig Admin Dashboard</title>
+<style>
+:root {
+  --purple:#6829c7;
+  --dark-purple:#4d189e;
+  --lavender:#f3edff;
+  --border:#e8def8;
+  --text:#28213a;
+  --muted:#81798f;
+  --bg:#faf9fd;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+a{text-decoration:none;color:inherit}
+.layout{display:flex;min-height:100vh}
+.sidebar{
+ width:255px;background:#fff;border-right:1px solid var(--border);
+ padding:25px 17px;position:fixed;inset:0 auto 0 0;
+ overflow-y:auto;z-index:20;transition:transform .25s
+}
+.brand{display:flex;align-items:center;gap:10px;padding:5px 9px 27px;font-size:23px;font-weight:800;color:var(--purple)}
+.crown{width:28px;height:28px}
+.admin-label{font-size:10px;letter-spacing:1.5px;color:var(--muted);font-weight:bold;padding:0 11px 12px}
+.nav-link{display:flex;align-items:center;gap:12px;padding:12px 13px;margin:4px 0;border-radius:10px;color:#686174;font-size:13px;font-weight:600;transition:.2s}
+.nav-link:hover,.nav-link.active{background:var(--lavender);color:var(--purple)}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.sidebar-bottom{border-top:1px solid var(--border);margin-top:25px;padding-top:15px}
+.main{margin-left:255px;width:calc(100% - 255px);min-width:0}
+.topbar{background:#fff;border-bottom:1px solid var(--border);height:75px;padding:0 30px;display:flex;align-items:center;justify-content:space-between;gap:15px;position:sticky;top:0;z-index:10}
+.topbar-left{display:flex;align-items:center;gap:13px}
+.menu-btn{display:none;background:var(--lavender);color:var(--purple);border:0;border-radius:8px;padding:9px 12px;font-size:19px;cursor:pointer}
+.top-title{font-size:19px;font-weight:800}
+.top-subtitle{font-size:11px;color:var(--muted);margin-top:4px}
+.admin-profile{display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--lavender);color:var(--purple);display:grid;place-items:center;font-weight:bold}
+.admin-name{font-size:12px;font-weight:bold}
+.admin-role{color:var(--muted);font-size:10px;margin-top:3px}
+.content{padding:30px;max-width:1500px;margin:auto}
+.welcome{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:25px}
+.welcome h1{font-size:24px;margin:0 0 7px}
+.welcome p{margin:0;color:var(--muted);font-size:13px}
+.date-label{background:#fff;border:1px solid var(--border);border-radius:9px;padding:11px 14px;color:var(--muted);font-size:12px}
+.notice{background:#fff8e8;border:1px solid #f1e1b8;color:#74551b;padding:13px 15px;border-radius:10px;font-size:11px;line-height:1.6;margin-bottom:20px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:25px}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:13px;padding:19px}
+.stat-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.stat-name{font-size:12px;color:var(--muted);font-weight:600}
+.stat-icon{width:35px;height:35px;border-radius:10px;display:grid;place-items:center;background:var(--lavender);color:var(--purple);font-size:17px}
+.stat-number{font-size:25px;font-weight:800;margin:15px 0 7px}
+.stat-note{color:var(--muted);font-size:10px}
+.section-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;margin-bottom:22px}
+.panel{background:#fff;border:1px solid var(--border);border-radius:13px;padding:20px;min-width:0}
+.panel-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:17px}
+.panel-heading h2{font-size:15px;margin:0}
+.view-link{font-size:11px;color:var(--purple);font-weight:bold}
+.activity{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #f1edf6}
+.activity:last-child{border-bottom:0}
+.activity-icon{width:36px;height:36px;border-radius:10px;background:var(--lavender);display:grid;place-items:center;color:var(--purple);flex-shrink:0}
+.activity-info{flex:1;min-width:0}
+.activity-title{font-size:12px;font-weight:bold}
+.activity-desc{font-size:10px;color:var(--muted);margin-top:4px}
+.activity-time{color:var(--muted);font-size:10px;white-space:nowrap}
+.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+.quick-link{border:1px solid var(--border);border-radius:10px;padding:15px 12px;transition:.2s}
+.quick-link:hover{background:var(--lavender);border-color:#c9b2ef}
+.quick-link span{display:block;font-size:20px;margin-bottom:9px}
+.quick-link strong{display:block;font-size:11px}
+.quick-link small{display:block;color:var(--muted);font-size:9px;margin-top:5px}
+.status-list{display:grid;gap:15px}
+.status-row{display:flex;justify-content:space-between;gap:10px;font-size:12px}
+.status-row span:first-child{color:#625c70}
+.status-number{font-weight:bold;color:var(--purple)}
+.footer{text-align:center;padding:20px;color:var(--muted);font-size:10px}
+@media(max-width:1050px){
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .section-grid{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+ .sidebar{transform:translateX(-100%);box-shadow:none}
+ .sidebar.open{transform:translateX(0);box-shadow:10px 0 30px #24103a22}
+ .main{margin-left:0;width:100%}
+ .menu-btn{display:block}
+ .topbar{padding:0 15px;height:67px}
+ .content{padding:20px 14px}
+ .welcome h1{font-size:21px}
+ .stats{gap:10px}
+ .stat-card{padding:14px}
+ .stat-number{font-size:21px}
+ .admin-name,.admin-role{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+  <a class="brand" href="admin.html">
+    <svg class="crown" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 18L20 29L31 10L43 29L55 18L50 43H14L9 18Z" stroke="#D5A52E" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M14 50H50" stroke="#D5A52E" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="9" cy="16" r="4" fill="#D5A52E"/>
+      <circle cx="31" cy="8" r="4" fill="#D5A52E"/>
+      <circle cx="55" cy="16" r="4" fill="#D5A52E"/>
+    </svg>
+    EarnGig
+  </a>
+
+  <div class="admin-label">ADMINISTRATION</div>
+
+  <nav>
+    <a class="nav-link active" href="admin.html"><span class="nav-icon">▦</span>Dashboard</a>
+    <a class="nav-link" href="admin-users.html"><span class="nav-icon">♙</span>User Management</a>
+    <a class="nav-link" href="admin-writers.html"><span class="nav-icon">✎</span>Writer Approvals</a>
+    <a class="nav-link" href="admin-novels.html"><span class="nav-icon">▤</span>Novel Management</a>
+    <a class="nav-link" href="admin-payments.html"><span class="nav-icon">₦</span>Payments & Withdrawals</a>
+    <a class="nav-link" href="admin-games.html"><span class="nav-icon">♧</span>Games Management</a>
+    <a class="nav-link" href="admin-ads.html"><span class="nav-icon">▣</span>Advertisements</a>
+    <a class="nav-link" href="admin-marketplace.html"><span class="nav-icon">🛍</span>Marketplace</a>
+    <a class="nav-link" href="admin-referrals.html"><span class="nav-icon">♧</span>Referrals & Rewards</a>
+    <a class="nav-link" href="admin-reports.html"><span class="nav-icon">▥</span>Reports & Analytics</a>
+    <a class="nav-link" href="admin-settings.html"><span class="nav-icon">⚙</span>Settings</a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <a class="nav-link" href="https://earngig01.github.io/earngig/">
+      <span class="nav-icon">⌂</span>Back to Website
+    </a>
+    <a class="nav-link" href="index.html">
+      <span class="nav-icon">⇥</span>Login Page
+    </a>
+  </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="menu-btn" onclick="toggleSidebar()" aria-label="Toggle menu">☰</button>
+    <div>
+      <div class="top-title">Admin Dashboard</div>
+      <div class="top-subtitle">EarnGig Platform Control Centre</div>
+    </div>
+  </div>
+  <div class="admin-profile">
+    <div class="avatar">A</div>
+    <div>
+      <div class="admin-name">Platform Owner</div>
+      <div class="admin-role">Administrator</div>
+    </div>
+  </div>
+</header>
+
+<div class="content">
+  <div class="welcome">
+    <div>
+      <h1>Welcome to EarnGig Admin</h1>
+      <p>Manage your platform, members and daily operations.</p>
+    </div>
+    <div class="date-label" id="todayDate"></div>
+  </div>
+
+  <div class="notice">
+    <strong>Backend connection pending:</strong>
+    Dashboard figures and activity will remain placeholders until the secure EarnGig admin backend is connected. This page is not yet protected by authentication.
+  </div>
+
+  <section class="stats">
+    <div class="stat-card">
+      <div class="stat-top"><div class="stat-name">Total Members</div><div class="stat-icon">♙</div></div>
+      <div class="stat-number">—</div>
+      <div class="stat-note">Live member data pending</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-top"><div class="stat-name">Platform Revenue</div><div class="stat-icon">₦</div></div>
+      <div class="stat-number">—</div>
+      <div class="stat-note">Live revenue data pending</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-top"><div class="stat-name">Pending Withdrawals</div><div class="stat-icon">⇧</div></div>
+      <div class="stat-number">—</div>
+      <div class="stat-note">Awaiting backend connection</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-top"><div class="stat-name">Pending Approvals</div><div class="stat-icon">✓</div></div>
+      <div class="stat-number">—</div>
+      <div class="stat-note">Awaiting backend connection</div>
+    </div>
+  </section>
+
+  <div class="section-grid">
+    <section class="panel">
+      <div class="panel-heading">
+        <h2>Platform Activity</h2>
+        <span class="view-link">Live feed pending</span>
+      </div>
+      <div class="activity">
+        <div class="activity-icon">♙</div>
+        <div class="activity-info">
+          <div class="activity-title">New member registrations</div>
+          <div class="activity-desc">Registration activity will appear here.</div>
+        </div>
+        <div class="activity-time">—</div>
+      </div>
+      <div class="activity">
+        <div class="activity-icon">₦</div>
+        <div class="activity-info">
+          <div class="activity-title">Payment notifications</div>
+          <div class="activity-desc">Verified payment events will appear here.</div>
+        </div>
+        <div class="activity-time">—</div>
+      </div>
+      <div class="activity">
+        <div class="activity-icon">✎</div>
+        <div class="activity-info">
+          <div class="activity-title">Writer applications</div>
+          <div class="activity-desc">New applications will appear here.</div>
+        </div>
+        <div class="activity-time">—</div>
+      </div>
+      <div class="activity">
+        <div class="activity-icon">▣</div>
+        <div class="activity-info">
+          <div class="activity-title">Advertisement submissions</div>
+          <div class="activity-desc">Submitted adverts will appear here.</div>
+        </div>
+        <div class="activity-time">—</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading"><h2>Quick Actions</h2></div>
+      <div class="quick-grid">
+        <a class="quick-link" href="admin-users.html"><span>♙</span><strong>Manage Users</strong><small>Accounts and members</small></a>
+        <a class="quick-link" href="admin-payments.html"><span>₦</span><strong>Payments</strong><small>Transactions and payouts</small></a>
+        <a class="quick-link" href="admin-writers.html"><span>✎</span><strong>Review Writers</strong><small>Applications and approvals</small></a>
+        <a class="quick-link" href="admin-ads.html"><span>▣</span><strong>Manage Ads</strong><small>Campaigns and bookings</small></a>
+      </div>
+    </section>
+  </div>
+
+  <div class="section-grid">
+    <section class="panel">
+      <div class="panel-heading"><h2>Pending Tasks</h2></div>
+      <div class="status-list">
+        <div class="status-row"><span>Writer applications</span><span class="status-number">—</span></div>
+        <div class="status-row"><span>Novel submissions</span><span class="status-number">—</span></div>
+        <div class="status-row"><span>Withdrawal requests</span><span class="status-number">—</span></div>
+        <div class="status-row"><span>Advert approval requests</span><span class="status-number">—</span></div>
+        <div class="status-row"><span>Marketplace reports</span><span class="status-number">—</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading"><h2>Platform Management</h2></div>
+      <div class="status-list">
+        <div class="status-row"><span>Users and account security</span><span class="status-number">→</span></div>
+        <div class="status-row"><span>Games and coin entries</span><span class="status-number">→</span></div>
+        <div class="status-row"><span>Referral rewards</span><span class="status-number">→</span></div>
+        <div class="status-row"><span>Platform settings</span><span class="status-number">→</span></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="footer">© <span id="year"></span> EarnGig. Admin Control Centre.</div>
+</div>
+</main>
+</div>
+
+<script>
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("open");
+}
+
+const today = new Date();
+document.getElementById("todayDate").textContent =
+  today.toLocaleDateString("en-NG", {
+    weekday:"short",
+    day:"numeric",
+    month:"short",
+    year:"numeric"
+  });
+
+document.getElementById("year").textContent = today.getFullYear();
+
+document.addEventListener("click", function(event){
+  const sidebar = document.getElementById("sidebar");
+  const menu = document.querySelector(".menu-btn");
+
+  if(
+    window.innerWidth <= 700 &&
+    sidebar.classList.contains("open") &&
+    !sidebar.contains(event.target) &&
+    !menu.contains(event.target)
+  ){
+    sidebar.classList.remove("open");
+  }
+});
+</script>
+</body>
+</html>
