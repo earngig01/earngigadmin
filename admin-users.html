@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnGig Admin - User Management</title>
+<style>
+:root {
+  --purple:#6829c7;
+  --purple-dark:#4d189e;
+  --lavender:#f3edff;
+  --border:#e8def8;
+  --text:#28213a;
+  --muted:#81798f;
+  --bg:#faf9fd;
+  --green:#168451;
+  --red:#c33b4b;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:255px;background:#fff;border-right:1px solid var(--border);padding:25px 17px;position:fixed;inset:0 auto 0 0;overflow-y:auto;z-index:20;transition:transform .25s}
+.brand{display:flex;align-items:center;gap:10px;padding:5px 9px 27px;font-size:23px;font-weight:800;color:var(--purple)}
+.crown{width:28px;height:28px}
+.admin-label{font-size:10px;letter-spacing:1.5px;color:var(--muted);font-weight:bold;padding:0 11px 12px}
+.nav-link{display:flex;align-items:center;gap:12px;padding:12px 13px;margin:4px 0;border-radius:10px;color:#686174;font-size:13px;font-weight:600}
+.nav-link:hover,.nav-link.active{background:var(--lavender);color:var(--purple)}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.sidebar-bottom{border-top:1px solid var(--border);margin-top:25px;padding-top:15px}
+.main{margin-left:255px;width:calc(100% - 255px);min-width:0}
+.topbar{height:75px;background:#fff;border-bottom:1px solid var(--border);padding:0 30px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.top-left{display:flex;align-items:center;gap:13px}
+.menu-btn{display:none;border:0;background:var(--lavender);color:var(--purple);border-radius:8px;padding:9px 12px;font-size:19px}
+.top-title{font-size:18px;font-weight:800}
+.top-subtitle{font-size:11px;color:var(--muted);margin-top:4px}
+.profile{display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--lavender);color:var(--purple);display:grid;place-items:center;font-weight:bold}
+.profile-name{font-size:12px;font-weight:bold}
+.profile-role{font-size:10px;color:var(--muted);margin-top:3px}
+.content{max-width:1500px;margin:auto;padding:30px}
+.page-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+.page-heading h1{font-size:24px;margin:0 0 7px}
+.page-heading p{font-size:13px;color:var(--muted);margin:0}
+.notice{padding:13px 15px;border:1px solid #f1e1b8;background:#fff8e8;color:#74551b;border-radius:9px;font-size:11px;line-height:1.6;margin-bottom:20px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.stat{background:#fff;border:1px solid var(--border);border-radius:12px;padding:17px}
+.stat-label{font-size:11px;color:var(--muted)}
+.stat-value{font-size:24px;font-weight:800;margin-top:11px}
+.stat-foot{font-size:10px;color:var(--muted);margin-top:5px}
+.panel{background:#fff;border:1px solid var(--border);border-radius:13px;padding:20px;margin-bottom:20px}
+.panel-title{font-size:15px;font-weight:bold;margin:0 0 17px}
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:17px}
+.search{flex:1;min-width:190px;position:relative}
+.search input{width:100%;padding:12px 13px;border:1px solid var(--border);border-radius:9px;outline:none;font-size:12px}
+.search input:focus,select:focus{border-color:var(--purple)}
+select{padding:11px 12px;border:1px solid var(--border);border-radius:9px;background:white;color:var(--text);font-size:12px;outline:none}
+.btn{border:0;border-radius:8px;padding:11px 15px;background:var(--purple);color:white;font-weight:bold;font-size:11px;cursor:pointer}
+.btn:hover{background:var(--purple-dark)}
+.btn-light{background:var(--lavender);color:var(--purple)}
+.btn-light:hover{background:#e8dcfa}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:750px}
+th{text-align:left;background:#faf8fd;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;padding:13px 12px}
+td{padding:14px 12px;border-bottom:1px solid #f0edf5;font-size:11px}
+.empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:12px}
+.member{display:flex;align-items:center;gap:9px}
+.member-avatar{width:33px;height:33px;border-radius:50%;background:var(--lavender);color:var(--purple);display:grid;place-items:center;font-weight:bold}
+.member-name{font-weight:bold;font-size:11px}
+.member-email{font-size:10px;color:var(--muted);margin-top:4px}
+.status{display:inline-block;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:bold}
+.status.active{background:#e8f7ef;color:var(--green)}
+.status.suspended{background:#fff0f0;color:var(--red)}
+.status.pending{background:#fff6e5;color:#986516}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.action-btn{border:1px solid var(--border);background:white;color:var(--purple);border-radius:6px;padding:6px 8px;font-size:10px;cursor:pointer}
+.action-btn:hover{background:var(--lavender)}
+.pagination{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:17px;color:var(--muted);font-size:10px}
+.footer{text-align:center;color:var(--muted);font-size:10px;padding:20px}
+.modal-backdrop{display:none;position:fixed;inset:0;background:#17102088;z-index:50;align-items:center;justify-content:center;padding:18px}
+.modal-backdrop.show{display:flex}
+.modal{width:100%;max-width:420px;background:white;border-radius:14px;padding:24px}
+.modal h2{font-size:17px;margin:0 0 10px}
+.modal p{font-size:12px;color:var(--muted);line-height:1.6}
+.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){
+ .sidebar{transform:translateX(-100%)}
+ .sidebar.open{transform:translateX(0);box-shadow:10px 0 30px #24103a22}
+ .main{margin-left:0;width:100%}
+ .menu-btn{display:block}
+ .topbar{height:67px;padding:0 14px}
+ .profile-name,.profile-role{display:none}
+ .content{padding:20px 13px}
+ .page-heading h1{font-size:21px}
+ .panel{padding:14px}
+ .stats{gap:9px}
+ .stat{padding:13px}
+ .stat-value{font-size:21px}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <a class="brand" href="admin.html">
+    <svg class="crown" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 18L20 29L31 10L43 29L55 18L50 43H14L9 18Z" stroke="#D5A52E" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M14 50H50" stroke="#D5A52E" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="9" cy="16" r="4" fill="#D5A52E"/>
+      <circle cx="31" cy="8" r="4" fill="#D5A52E"/>
+      <circle cx="55" cy="16" r="4" fill="#D5A52E"/>
+    </svg>
+    EarnGig
+  </a>
+  <div class="admin-label">ADMINISTRATION</div>
+  <nav>
+    <a class="nav-link" href="admin.html"><span class="nav-icon">▦</span>Dashboard</a>
+    <a class="nav-link active" href="admin-users.html"><span class="nav-icon">♙</span>User Management</a>
+    <a class="nav-link" href="admin-writers.html"><span class="nav-icon">✎</span>Writer Approvals</a>
+    <a class="nav-link" href="admin-novels.html"><span class="nav-icon">▤</span>Novel Management</a>
+    <a class="nav-link" href="admin-payments.html"><span class="nav-icon">₦</span>Payments & Withdrawals</a>
+    <a class="nav-link" href="admin-games.html"><span class="nav-icon">♧</span>Games Management</a>
+    <a class="nav-link" href="admin-ads.html"><span class="nav-icon">▣</span>Advertisements</a>
+    <a class="nav-link" href="admin-marketplace.html"><span class="nav-icon">🛍</span>Marketplace</a>
+    <a class="nav-link" href="admin-referrals.html"><span class="nav-icon">♧</span>Referrals & Rewards</a>
+    <a class="nav-link" href="admin-reports.html"><span class="nav-icon">▥</span>Reports & Analytics</a>
+    <a class="nav-link" href="admin-settings.html"><span class="nav-icon">⚙</span>Settings</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <a class="nav-link" href="https://earngig01.github.io/earngig/">⌂ Back to Website</a>
+    <a class="nav-link" href="index.html">⇥ Login Page</a>
+  </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div class="top-left">
+    <button class="menu-btn" onclick="toggleSidebar()" aria-label="Toggle menu">☰</button>
+    <div>
+      <div class="top-title">User Management</div>
+      <div class="top-subtitle">Manage EarnGig member accounts</div>
+    </div>
+  </div>
+  <div class="profile">
+    <div class="avatar">A</div>
+    <div><div class="profile-name">Platform Owner</div><div class="profile-role">Administrator</div></div>
+  </div>
+</header>
+
+<div class="content">
+  <div class="page-heading">
+    <div>
+      <h1>User Management</h1>
+      <p>Search, review and manage member accounts across EarnGig.</p>
+    </div>
+    <button class="btn btn-light" onclick="exportUsers()">Export CSV</button>
+  </div>
+
+  <div class="notice">
+    <strong>Backend connection pending:</strong>
+    No real member records are loaded on this page. Account suspension, deletion and other changes must be implemented and authorised by the secure backend.
+  </div>
+
+  <section class="stats">
+    <div class="stat"><div class="stat-label">Total Members</div><div class="stat-value">—</div><div class="stat-foot">Awaiting live data</div></div>
+    <div class="stat"><div class="stat-label">Active Members</div><div class="stat-value">—</div><div class="stat-foot">Awaiting live data</div></div>
+    <div class="stat"><div class="stat-label">Suspended Accounts</div><div class="stat-value">—</div><div class="stat-foot">Awaiting live data</div></div>
+    <div class="stat"><div class="stat-label">New This Month</div><div class="stat-value">—</div><div class="stat-foot">Awaiting live data</div></div>
+  </section>
+
+  <section class="panel">
+    <h2 class="panel-title">Member Accounts</h2>
+
+    <div class="toolbar">
+      <div class="search">
+        <input id="searchInput" type="search" placeholder="Search by name, email or member ID..." oninput="filterUsers()">
+      </div>
+      <select id="statusFilter" onchange="filterUsers()">
+        <option value="all">All statuses</option>
+        <option value="active">Active</option>
+        <option value="suspended">Suspended</option>
+        <option value="pending">Pending</option>
+      </select>
+      <button class="btn btn-light" onclick="resetFilters()">Reset</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Member</th>
+            <th>Member ID</th>
+            <th>Joined</th>
+            <th>Wallet</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersTable">
+          <tr><td colspan="6" class="empty">No member records loaded. Connect the admin backend to display real users.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <span id="resultCount">No records to display</span>
+      <span>Member data will appear here after backend integration.</span>
+    </div>
+  </section>
+
+  <div class="footer">© <span id="year"></span> EarnGig. Admin Control Centre.</div>
+</div>
+</main>
+</div>
+
+<div class="modal-backdrop" id="actionModal">
+  <div class="modal">
+    <h2 id="modalTitle">Account action</h2>
+    <p id="modalText"></p>
+    <div class="modal-actions">
+      <button class="btn btn-light" onclick="closeModal()">Cancel</button>
+      <button class="btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("open");
+}
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
+const users = [];
+
+function filterUsers(){
+  const search = document.getElementById("searchInput").value.toLowerCase().trim();
+  const status = document.getElementById("statusFilter").value;
+
+  const filtered = users.filter(user => {
+    const matchesSearch = [user.name,user.email,user.id]
+      .some(value => String(value || "").toLowerCase().includes(search));
+    const matchesStatus = status === "all" || user.status === status;
+    return matchesSearch && matchesStatus;
+  });
+
+  renderUsers(filtered);
+}
+
+function renderUsers(list){
+  const table = document.getElementById("usersTable");
+  const count = document.getElementById("resultCount");
+
+  count.textContent = list.length + " records";
+
+  if(!list.length){
+    table.innerHTML = '<tr><td colspan="6" class="empty">No member records available. Connect the backend to load real accounts.</td></tr>';
+    return;
+  }
+
+  table.innerHTML = list.map(user => `
+    <tr>
+      <td>
+        <div class="member">
+          <div class="member-avatar">${escapeHTML((user.name || "?").charAt(0).toUpperCase())}</div>
+          <div>
+            <div class="member-name">${escapeHTML(user.name)}</div>
+            <div class="member-email">${escapeHTML(user.email)}</div>
+          </div>
+        </div>
+      </td>
+      <td>${escapeHTML(user.id)}</td>
+      <td>${escapeHTML(user.joined || "—")}</td>
+      <td>${escapeHTML(user.wallet || "—")}</td>
+      <td><span class="status ${escapeHTML(user.status)}">${escapeHTML(user.status)}</span></td>
+      <td><div class="actions">
+        <button class="action-btn" onclick="showAction('View member','Member details will be available after backend integration.')">View</button>
+        <button class="action-btn" onclick="showAction('Account action','Account changes are disabled until secure backend integration.')">Manage</button>
+      </div></td>
+    </tr>
+  `).join("");
+}
+
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[char]);
+}
+
+function resetFilters(){
+  document.getElementById("searchInput").value = "";
+  document.getElementById("statusFilter").value = "all";
+  filterUsers();
+}
+
+function showAction(title,text){
+  document.getElementById("modalTitle").textContent = title;
+  document.getElementById("modalText").textContent = text;
+  document.getElementById("actionModal").classList.add("show");
+}
+
+function closeModal(){
+  document.getElementById("actionModal").classList.remove("show");
+}
+
+function exportUsers(){
+  if(!users.length){
+    showAction("No member records","There are no loaded member records to export. Connect the backend first.");
+    return;
+  }
+  const rows = [["Name","Email","Member ID","Joined","Wallet","Status"]];
+  users.forEach(user => rows.push([
+    user.name,user.email,user.id,user.joined,user.wallet,user.status
+  ]));
+  const csv = rows.map(row => row.map(value =>
+    '"' + String(value ?? "").replace(/"/g,'""') + '"'
+  ).join(",")).join("\n");
+  const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "earngig-members.csv";
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+document.addEventListener("click",function(event){
+  const sidebar = document.getElementById("sidebar");
+  const menu = document.querySelector(".menu-btn");
+  if(window.innerWidth <= 700 && sidebar.classList.contains("open")
+    && !sidebar.contains(event.target) && !menu.contains(event.target)){
+    sidebar.classList.remove("open");
+  }
+});
+</script>
+</body>
+</html>
