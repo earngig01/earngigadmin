@@ -1,0 +1,524 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novel Management | EarnGig Admin</title>
+<style>
+:root{
+  --navy:#111a35;--navy2:#1b2748;--purple:#7154d9;--purple2:#8b73ec;
+  --lav:#f2efff;--bg:#f6f7fb;--white:#fff;--text:#202943;
+  --muted:#8490a6;--line:#e8eaf2;--green:#15966b;--red:#d94c61;
+  --orange:#d78a25;--gold:#e8bd62;--shadow:0 8px 28px rgba(25,35,65,.06);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:250px;background:var(--navy);color:#dce2f3;padding:23px 15px;position:fixed;inset:0 auto 0 0;overflow:auto;z-index:5}
+.brand{display:flex;align-items:center;gap:10px;padding:3px 10px 27px;font-size:21px;font-weight:800;color:white}
+.brand svg{width:27px;height:27px;flex:none}
+.nav-label{font-size:10px;letter-spacing:1.5px;color:#8995b3;padding:17px 12px 9px;font-weight:700}
+.nav a{display:flex;align-items:center;gap:12px;text-decoration:none;color:#c0c9df;padding:11px 12px;border-radius:9px;font-size:13px;margin:3px 0}
+.nav a:hover,.nav a.active{background:#29365b;color:white}
+.nav a.active{box-shadow:inset 3px 0 var(--purple2)}
+.nav .ico{width:19px;text-align:center;font-size:16px}
+.sidebar-note{margin:25px 7px 0;padding:13px;border:1px solid #344263;border-radius:10px;color:#aab5ce;font-size:11px;line-height:1.6}
+.main{margin-left:250px;width:calc(100% - 250px);min-width:0}
+.topbar{height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:4}
+.top-left{display:flex;align-items:center;gap:12px}
+.topbar small{color:var(--muted)}
+.admin-chip{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700}
+.avatar{width:33px;height:33px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center}
+.content{padding:27px 30px 50px;max-width:1600px;margin:auto}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}
+h1{font-size:24px;margin:0 0 7px;letter-spacing:-.5px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.5}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:700;font-size:12px}
+.btn-primary{background:var(--purple);color:white}
+.btn-primary:hover{background:#6043c7}
+.btn-light{background:#f0edff;color:var(--purple)}
+.btn-outline{background:white;border:1px solid var(--line);color:var(--text)}
+.btn-danger{background:#fff0f2;color:var(--red)}
+.btn-success{background:#e8f7f0;color:var(--green)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.stat{background:white;border:1px solid var(--line);border-radius:12px;padding:17px;box-shadow:var(--shadow)}
+.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px}
+.stat-icon{width:31px;height:31px;border-radius:9px;background:var(--lav);color:var(--purple);display:grid;place-items:center}
+.stat strong{display:block;font-size:25px;margin-top:13px;letter-spacing:-.5px}
+.stat small{font-size:10px;color:var(--muted)}
+.panel{background:white;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);margin-bottom:19px}
+.panel-head{padding:17px 19px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.panel-head h2{font-size:14px;margin:0}
+.panel-body{padding:18px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{border:0;background:transparent;padding:9px 12px;border-radius:7px;color:#7c879e;font-size:12px;font-weight:700}
+.tab.active{background:var(--lav);color:var(--purple)}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}
+.toolbar input,.toolbar select,.field input,.field select,.field textarea{
+  border:1px solid var(--line);border-radius:8px;padding:10px 11px;background:white;color:var(--text);font-size:12px;outline:none;width:100%
+}
+.toolbar input{max-width:270px}
+.toolbar select{width:auto;min-width:145px}
+input:focus,select:focus,textarea:focus{border-color:var(--purple2)!important;box-shadow:0 0 0 3px #7154d91a}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th{text-align:left;background:#fafbfe;color:#8a94a9;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:12px 14px;white-space:nowrap}
+td{padding:13px 14px;border-top:1px solid #f0f1f6;font-size:12px;vertical-align:middle}
+td strong{font-size:12px}
+.muted{color:var(--muted)}
+.subline{display:block;font-size:10px;color:var(--muted);margin-top:4px}
+.pill{display:inline-block;border-radius:20px;padding:5px 8px;font-size:10px;font-weight:700;background:#f0f1f5;color:#68738a;white-space:nowrap}
+.pill.pending{background:#fff4df;color:#a96c12}
+.pill.approved,.pill.published,.pill.verified{background:#e7f7ef;color:#14845e}
+.pill.rejected{background:#ffedf0;color:#c44156}
+.pill.changes{background:#f1edff;color:#7054d4}
+.pill.unpaid{background:#fff1e7;color:#c16c26}
+.pill.draft{background:#edf1f7;color:#66748d}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.actions button{border:1px solid var(--line);background:white;border-radius:6px;padding:7px 9px;font-size:10px;color:#59647b}
+.actions button:hover{border-color:var(--purple);color:var(--purple)}
+.empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:12px}
+.empty b{display:block;color:var(--text);margin-bottom:7px;font-size:13px}
+.fee-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.fee{border:1px solid var(--line);border-radius:9px;padding:12px}
+.fee strong{display:block;font-size:15px;margin-top:6px}
+.fee small{color:var(--muted);font-size:10px}
+.notice{padding:12px 14px;background:#f4f1ff;border:1px solid #e8e1ff;border-radius:9px;color:#6551b0;font-size:11px;line-height:1.6;margin-bottom:15px}
+.notice.warn{background:#fff8e9;border-color:#f6e5bd;color:#94651d}
+.hidden{display:none!important}
+.modal-backdrop{position:fixed;inset:0;background:#10182d99;z-index:20;display:none;align-items:center;justify-content:center;padding:18px}
+.modal-backdrop.show{display:flex}
+.modal{background:white;width:min(850px,100%);max-height:92vh;overflow:auto;border-radius:14px;box-shadow:0 20px 70px #0003}
+.modal-head{padding:18px 21px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:white;z-index:2}
+.modal-head h3{margin:0;font-size:15px}
+.close{border:0;background:#f1f2f7;border-radius:7px;width:30px;height:30px;font-size:18px}
+.modal-content{padding:20px}
+.modal-foot{padding:15px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px;position:sticky;bottom:0;background:white}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:700;margin-bottom:7px}
+.field textarea{min-height:110px;resize:vertical;line-height:1.6}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.manuscript{white-space:pre-wrap;line-height:1.85;font-family:Georgia,serif;font-size:14px;color:#30394f;background:#fcfcfe;border:1px solid var(--line);border-radius:9px;padding:22px;max-height:440px;overflow:auto}
+.detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:17px}
+.detail-box{background:#f8f9fc;border-radius:8px;padding:11px}
+.detail-box small{display:block;color:var(--muted);font-size:10px;margin-bottom:6px}
+.detail-box strong{font-size:12px;overflow-wrap:anywhere}
+.question-card{border:1px solid var(--line);border-radius:9px;padding:13px;margin-bottom:10px}
+.question-card h4{font-size:12px;margin:0 0 10px}
+.option-line{font-size:11px;color:#69758b;padding:4px 0}
+.option-line.correct{color:var(--green);font-weight:700}
+.mobile-menu{display:none}
+.footer-note{font-size:10px;color:var(--muted);line-height:1.6;margin-top:12px}
+@media(max-width:1100px){.stats{grid-template-columns:repeat(3,1fr)}.fee-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){
+ .sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:translateX(0)}
+ .main{margin-left:0;width:100%}.topbar{padding:0 16px}.content{padding:20px 14px 40px}
+ .mobile-menu{display:inline-block;border:0;background:var(--lav);color:var(--purple);border-radius:7px;padding:7px 10px}
+ .stats{grid-template-columns:repeat(2,1fr)}.page-head{flex-direction:column}
+ .grid2,.detail-grid{grid-template-columns:1fr}.fee-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+      <path d="M5 12L12 18L19.5 6L27 18L35 12L31 30H9L5 12Z" stroke="#E8BD62" stroke-width="2.3" stroke-linejoin="round"/>
+      <path d="M10 34H30" stroke="#E8BD62" stroke-width="2.3" stroke-linecap="round"/>
+      <circle cx="5" cy="11" r="2" fill="#E8BD62"/><circle cx="19.5" cy="5" r="2" fill="#E8BD62"/><circle cx="35" cy="11" r="2" fill="#E8BD62"/>
+    </svg>
+    EarnGig
+  </div>
+  <nav class="nav">
+    <div class="nav-label">MAIN</div>
+    <a href="admin.html"><span class="ico">▦</span>Dashboard</a>
+    <div class="nav-label">USER MANAGEMENT</div>
+    <a href="users.html"><span class="ico">♙</span>Users</a>
+    <a href="membership.html"><span class="ico">◇</span>Membership</a>
+    <a href="wallet.html"><span class="ico">◈</span>Coin Withdrawals</a>
+    <a href="coin-purchases.html"><span class="ico">◉</span>Coin Purchases</a>
+    <a href="referrals.html"><span class="ico">⇄</span>Referrals</a>
+    <div class="nav-label">FINANCE</div>
+    <a href="transactions.html"><span class="ico">▤</span>Transactions</a>
+    <a href="deposits.html"><span class="ico">↓</span>Deposits</a>
+    <a href="withdrawals.html"><span class="ico">↑</span>Wallet Withdrawals</a>
+    <a href="seller-wallet.html"><span class="ico">▣</span>Seller Wallet</a>
+    <a href="payouts.html"><span class="ico">₦</span>Payouts</a>
+    <div class="nav-label">CONTENT & COMMUNITY</div>
+    <a href="writers.html"><span class="ico">✎</span>Writer Management</a>
+    <a class="active" href="novels.html"><span class="ico">▥</span>Novel Management</a>
+    <a href="marketplace.html"><span class="ico">▧</span>Marketplace Activity</a>
+    <div class="nav-label">ADVERTISING</div>
+    <a href="advertising.html"><span class="ico">▣</span>Advertisement Bookings</a>
+    <a href="watch-earn.html"><span class="ico">▶</span>Watch & Earn</a>
+    <a href="billboard.html"><span class="ico">▤</span>Billboard Management</a>
+  </nav>
+  <div class="sidebar-note">EarnGig Administration<br>Owner access only<br><span style="color:#e8bd62">●</span> Admin workspace prototype</div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div class="top-left">
+    <button class="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+    <div><strong style="font-size:13px">Novel Management</strong><br><small>Editorial, payment and publication control</small></div>
+  </div>
+  <div class="admin-chip"><div class="avatar">A</div><span>Administrator</span></div>
+</header>
+
+<div class="content">
+  <div class="page-head">
+    <div>
+      <h1>Novel Management</h1>
+      <div class="subtitle">Review complete manuscripts, manage editorial decisions, monitor upload fees and publication, and manage reader quizzes.</div>
+    </div>
+    <button class="btn btn-outline" onclick="exportNovels()">Export novel records ↓</button>
+  </div>
+
+  <div class="notice warn">
+    <strong>Important workflow:</strong> Editorial approval is not publication approval. A novel must have a successful, server-verified Paystack payment before the platform publishes it. This page is currently a browser prototype and cannot verify payments or publish to the live EarnGig platform.
+  </div>
+
+  <section class="stats">
+    <div class="stat"><div class="stat-top">Submitted novels <span class="stat-icon">▥</span></div><strong id="statTotal">0</strong><small>All novel records</small></div>
+    <div class="stat"><div class="stat-top">Awaiting review <span class="stat-icon">◷</span></div><strong id="statPending">0</strong><small>Editorial queue</small></div>
+    <div class="stat"><div class="stat-top">Awaiting payment <span class="stat-icon">₦</span></div><strong id="statPayment">0</strong><small>Editorially approved</small></div>
+    <div class="stat"><div class="stat-top">Published <span class="stat-icon">✓</span></div><strong id="statPublished">0</strong><small>Payment verified records</small></div>
+    <div class="stat"><div class="stat-top">Reader attempts <span class="stat-icon">♙</span></div><strong id="statReaders">0</strong><small>Quiz and completion records</small></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Novel submissions</h2>
+      <div class="tabs" id="statusTabs">
+        <button class="tab active" data-filter="all">All</button>
+        <button class="tab" data-filter="Submitted for Review">Review Queue</button>
+        <button class="tab" data-filter="Changes Requested">Changes Requested</button>
+        <button class="tab" data-filter="Editorially Approved – Awaiting Payment">Awaiting Payment</button>
+        <button class="tab" data-filter="Payment Verified">Payment Verified</button>
+        <button class="tab" data-filter="Published">Published</button>
+        <button class="tab" data-filter="Rejected">Rejected</button>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="toolbar">
+        <input id="searchNovels" placeholder="Search title, writer or novel ID..." oninput="renderNovels()">
+        <select id="writerFilter" onchange="renderNovels()"><option value="">All writers</option></select>
+        <select id="paymentFilter" onchange="renderNovels()">
+          <option value="">All payment states</option><option>Not Paid</option><option>Pending Verification</option><option>Verified</option><option>Failed</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Novel</th><th>Writer</th><th>Reader target</th><th>Upload fee</th><th>Editorial status</th><th>Payment</th><th>Publication</th><th>Action</th></tr></thead>
+          <tbody id="novelRows"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="novelEmpty"><b>No novel submissions yet</b>Novel submissions will appear here when the writer submission system is connected.</div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Novel upload fee schedule</h2><span class="pill">Platform pricing</span></div>
+    <div class="panel-body">
+      <div class="fee-grid" id="feeGrid"></div>
+      <div class="footer-note">The upload fee is based on the reader target selected by the writer. The fee schedule is displayed for administration; payment verification must come from the server and Paystack, not from a manually entered reference.</div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Reader completion & quiz activity</h2>
+      <button class="btn btn-outline" onclick="exportReaders()">Export reader records ↓</button>
+    </div>
+    <div class="panel-body">
+      <div class="notice">A reader qualifies for the reading reward only after finishing the full novel and passing its quiz. The stated reader reward is <strong>250 coins</strong>. The writer's stated reward is also <strong>250 coins per successful reader</strong>. This page records prototype outcomes only; live eligibility and coin credits must be calculated by the backend.</div>
+      <div class="toolbar">
+        <input id="readerSearch" placeholder="Search reader or novel..." oninput="renderReaders()">
+        <select id="readerFilter" onchange="renderReaders()">
+          <option value="">All reader outcomes</option><option>In Progress</option><option>Completed</option><option>Quiz Passed</option><option>Quiz Failed</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Reader</th><th>Novel</th><th>Progress</th><th>Quiz result</th><th>Reward eligibility</th><th>Recorded date</th></tr></thead>
+          <tbody id="readerRows"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="readerEmpty"><b>No reader activity recorded</b>Reader completion and quiz results will appear here when connected to the reading platform.</div>
+    </div>
+  </section>
+</div>
+</main>
+</div>
+
+<!-- Novel details and editorial review -->
+<div class="modal-backdrop" id="detailModal">
+ <div class="modal">
+  <div class="modal-head"><h3 id="detailTitle">Novel details</h3><button class="close" onclick="closeModal('detailModal')">×</button></div>
+  <div class="modal-content" id="detailContent"></div>
+  <div class="modal-foot" id="detailActions"></div>
+ </div>
+</div>
+
+<!-- Editorial decision -->
+<div class="modal-backdrop" id="decisionModal">
+ <div class="modal">
+  <div class="modal-head"><h3 id="decisionHeading">Editorial decision</h3><button class="close" onclick="closeModal('decisionModal')">×</button></div>
+  <div class="modal-content">
+   <div class="field"><label>Message to writer / decision note</label><textarea id="decisionNote" placeholder="Write clear feedback for the writer..."></textarea></div>
+   <div class="notice">The decision and note will be recorded in this browser prototype. The live platform must notify the writer through its backend.</div>
+  </div>
+  <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('decisionModal')">Cancel</button><button class="btn btn-primary" id="saveDecision">Save decision</button></div>
+ </div>
+</div>
+
+<!-- Quiz editor -->
+<div class="modal-backdrop" id="quizModal">
+ <div class="modal">
+  <div class="modal-head"><h3 id="quizHeading">Novel quiz management</h3><button class="close" onclick="closeModal('quizModal')">×</button></div>
+  <div class="modal-content">
+   <div class="notice">Create questions based on the novel's actual story. Select the correct answer for each question. Configure the passing score explicitly; no pass threshold is assumed by this page.</div>
+   <div class="grid2">
+    <div class="field"><label>Number of questions</label><input type="number" min="1" id="quizCount" readonly></div>
+    <div class="field"><label>Passing score (%)</label><input type="number" min="1" max="100" id="passScore" placeholder="Set passing score"></div>
+   </div>
+   <div id="quizQuestions"></div>
+   <button class="btn btn-light" onclick="addQuestion()">＋ Add question</button>
+  </div>
+  <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('quizModal')">Cancel</button><button class="btn btn-primary" onclick="saveQuiz()">Save quiz</button></div>
+ </div>
+</div>
+
+<!-- Create or import submission for testing/manual migration -->
+<div class="modal-backdrop" id="recordModal">
+ <div class="modal">
+  <div class="modal-head"><h3>Add existing novel record</h3><button class="close" onclick="closeModal('recordModal')">×</button></div>
+  <div class="modal-content">
+   <div class="notice warn">Use this only to enter a real submission record already received outside this prototype. It does not create a writer submission or accept a manuscript from the public.</div>
+   <div class="grid2">
+    <div class="field"><label>Novel title</label><input id="newTitle" placeholder="Novel title"></div>
+    <div class="field"><label>Writer name</label><input id="newWriter" placeholder="Writer name"></div>
+    <div class="field"><label>Writer email</label><input id="newEmail" type="email" placeholder="Writer email"></div>
+    <div class="field"><label>Reader target</label><select id="newTarget"></select></div>
+   </div>
+   <div class="field"><label>Full manuscript</label><textarea id="newManuscript" style="min-height:190px" placeholder="Paste the complete manuscript text for this existing submission..."></textarea></div>
+   <div class="field"><label>Writer submission reference (optional)</label><input id="newReference" placeholder="Reference from the writer platform"></div>
+  </div>
+  <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('recordModal')">Cancel</button><button class="btn btn-primary" onclick="addNovelRecord()">Save record</button></div>
+ </div>
+</div>
+
+<script>
+const NOVEL_KEY='earngig_novel_management_v1';
+const READER_KEY='earngig_novel_reader_activity_v1';
+const QUIZ_KEY='earngig_novel_quizzes_v1';
+const FEE_SCHEDULE=[
+ {target:50,fee:625},{target:100,fee:1250},{target:250,fee:3125},
+ {target:500,fee:6250},{target:1000,fee:12500},{target:2500,fee:31250},
+ {target:5000,fee:62500},{target:10000,fee:125000}
+];
+const STATUSES=['Submitted for Review','Changes Requested','Editorially Approved – Awaiting Payment','Payment Verified','Published','Rejected'];
+let novels=readStore(NOVEL_KEY,[]);
+let readerRecords=readStore(READER_KEY,[]);
+let quizzes=readStore(QUIZ_KEY,{});
+let activeFilter='all',activeNovelId=null,decisionAction=null,questionDraft=[];
+
+function readStore(key,fallback){
+ try{const value=localStorage.getItem(key);return value?JSON.parse(value):fallback}catch(e){return fallback}
+}
+function saveStore(key,value){localStorage.setItem(key,JSON.stringify(value))}
+function escapeHTML(value){
+ return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function money(n){return '₦'+Number(n||0).toLocaleString('en-NG')}
+function feeFor(target){return FEE_SCHEDULE.find(x=>x.target===Number(target))?.fee||0}
+function dateText(value){if(!value)return '—';const d=new Date(value);return isNaN(d)?escapeHTML(value):d.toLocaleDateString('en-NG',{day:'numeric',month:'short',year:'numeric'})}
+function id(){return 'NOV-'+Date.now().toString(36).toUpperCase()}
+function pill(text){
+ let cls='';if(['Published','Payment Verified','Verified','Quiz Passed','Completed'].includes(text))cls='approved';
+ else if(['Rejected','Quiz Failed'].includes(text))cls='rejected';
+ else if(['Changes Requested'].includes(text))cls='changes';
+ else if(['Submitted for Review','Pending Verification','In Progress'].includes(text))cls='pending';
+ else if(['Not Paid','Failed'].includes(text))cls='unpaid';
+ else if(['Draft'].includes(text))cls='draft';
+ return `<span class="pill ${cls}">${escapeHTML(text||'Not set')}</span>`;
+}
+function renderFees(){
+ document.getElementById('feeGrid').innerHTML=FEE_SCHEDULE.map(x=>`<div class="fee"><small>Reader target</small><strong>${x.target.toLocaleString('en-NG')} readers</strong><small>Upload fee</small><strong>${money(x.fee)}</strong></div>`).join('');
+ const select=document.getElementById('newTarget');
+ select.innerHTML=FEE_SCHEDULE.map(x=>`<option value="${x.target}">${x.target.toLocaleString('en-NG')} readers — ${money(x.fee)}</option>`).join('');
+}
+function updateStats(){
+ document.getElementById('statTotal').textContent=novels.length;
+ document.getElementById('statPending').textContent=novels.filter(n=>n.status==='Submitted for Review').length;
+ document.getElementById('statPayment').textContent=novels.filter(n=>n.status==='Editorially Approved – Awaiting Payment').length;
+ document.getElementById('statPublished').textContent=novels.filter(n=>n.status==='Published').length;
+ document.getElementById('statReaders').textContent=readerRecords.length;
+}
+function renderWriterFilter(){
+ const select=document.getElementById('writerFilter'),current=select.value;
+ const writers=[...new Set(novels.map(n=>n.writer).filter(Boolean))].sort();
+ select.innerHTML='<option value="">All writers</option>'+writers.map(w=>`<option value="${escapeHTML(w)}">${escapeHTML(w)}</option>`).join('');
+ select.value=writers.includes(current)?current:'';
+}
+function renderNovels(){
+ updateStats();renderWriterFilter();
+ const q=document.getElementById('searchNovels').value.toLowerCase();
+ const writer=document.getElementById('writerFilter').value;
+ const payment=document.getElementById('paymentFilter').value;
+ const rows=novels.filter(n=>{
+  const matchText=[n.title,n.writer,n.id,n.email].join(' ').toLowerCase().includes(q);
+  return matchText&&(!writer||n.writer===writer)&&(!payment||n.paymentStatus===payment)&&(activeFilter==='all'||n.status===activeFilter);
+ });
+ document.getElementById('novelRows').innerHTML=rows.map(n=>`
+ <tr>
+  <td><strong>${escapeHTML(n.title)}</strong><span class="subline">${escapeHTML(n.id)}</span></td>
+  <td>${escapeHTML(n.writer)}<span class="subline">${escapeHTML(n.email||'')}</span></td>
+  <td>${Number(n.target||0).toLocaleString('en-NG')}</td>
+  <td><strong>${money(n.fee)}</strong></td>
+  <td>${pill(n.status)}</td>
+  <td>${pill(n.paymentStatus||'Not Paid')}</td>
+  <td>${pill(n.publicationStatus||'Not Published')}</td>
+  <td><div class="actions"><button onclick="viewNovel('${n.id}')">Open review</button><button onclick="openQuiz('${n.id}')">Quiz</button></div></td>
+ </tr>`).join('');
+ document.getElementById('novelEmpty').classList.toggle('hidden',rows.length>0);
+}
+function renderReaders(){
+ const q=document.getElementById('readerSearch').value.toLowerCase();
+ const filter=document.getElementById('readerFilter').value;
+ const rows=readerRecords.filter(r=>[r.reader,r.novelTitle,r.novelId].join(' ').toLowerCase().includes(q)&&(!filter||r.outcome===filter));
+ document.getElementById('readerRows').innerHTML=rows.map(r=>{
+  const eligible=Number(r.progress)>=100&&r.outcome==='Quiz Passed';
+  return `<tr><td><strong>${escapeHTML(r.reader)}</strong><span class="subline">${escapeHTML(r.readerEmail||'')}</span></td>
+  <td>${escapeHTML(r.novelTitle||r.novelId)}</td><td>${Number(r.progress||0)}%</td>
+  <td>${pill(r.outcome)}</td><td>${eligible?pill('Eligible — 250 coins'):pill('Not eligible')}</td><td>${dateText(r.date)}</td></tr>`;
+ }).join('');
+ document.getElementById('readerEmpty').classList.toggle('hidden',rows.length>0);
+}
+function viewNovel(novelId){
+ const n=novels.find(x=>x.id===novelId);if(!n)return;
+ activeNovelId=novelId;
+ document.getElementById('detailTitle').textContent=n.title;
+ const quiz=quizzes[novelId]||{questions:[],passScore:''};
+ document.getElementById('detailContent').innerHTML=`
+ <div class="detail-grid">
+  <div class="detail-box"><small>Novel reference</small><strong>${escapeHTML(n.id)}</strong></div>
+  <div class="detail-box"><small>Writer</small><strong>${escapeHTML(n.writer)}</strong></div>
+  <div class="detail-box"><small>Reader target</small><strong>${Number(n.target).toLocaleString('en-NG')}</strong></div>
+  <div class="detail-box"><small>Upload fee</small><strong>${money(n.fee)}</strong></div>
+  <div class="detail-box"><small>Editorial status</small><strong>${escapeHTML(n.status)}</strong></div>
+  <div class="detail-box"><small>Payment status</small><strong>${escapeHTML(n.paymentStatus||'Not Paid')}</strong></div>
+ </div>
+ <div class="field"><label>Writer email</label><div>${escapeHTML(n.email||'Not provided')}</div></div>
+ <div class="field"><label>Submission reference</label><div>${escapeHTML(n.reference||'Not provided')}</div></div>
+ <div class="field"><label>Writer's manuscript — full text</label><div class="manuscript">${escapeHTML(n.manuscript||'No manuscript text was provided in this record.')}</div></div>
+ <div class="field"><label>Latest editorial note</label><div>${escapeHTML(n.decisionNote||'No editorial note recorded.')}</div></div>
+ <div class="field"><label>Editorial history</label>
+  ${(n.history||[]).length?(n.history||[]).slice().reverse().map(h=>`<div class="question-card"><strong>${escapeHTML(h.action)}</strong><span class="subline">${dateText(h.date)}</span><p style="font-size:12px;line-height:1.5">${escapeHTML(h.note||'No note')}</p></div>`).join(''):'<span class="muted">No decisions recorded yet.</span>'}
+ </div>
+ <div class="notice">Payment status is displayed for monitoring. Only a server-confirmed Paystack transaction should mark a payment as verified. Do not use a payment reference alone as proof.</div>`;
+ let actions='';
+ if(n.status==='Submitted for Review'||n.status==='Changes Requested'){
+  actions=`<button class="btn btn-danger" onclick="openDecision('Rejected')">Reject novel</button>
+  <button class="btn btn-light" onclick="openDecision('Changes Requested')">Request corrections</button>
+  <button class="btn btn-primary" onclick="openDecision('Editorially Approved – Awaiting Payment')">Approve manuscript</button>`;
+ }else if(n.status==='Editorially Approved – Awaiting Payment'){
+  actions=`<span class="muted" style="font-size:11px;margin-right:auto">Waiting for verified upload payment</span><button class="btn btn-outline" onclick="closeModal('detailModal')">Close</button>`;
+ }else if(n.status==='Payment Verified'){
+  actions=`<span class="muted" style="font-size:11px;margin-right:auto">Payment verified — publication can now be handled by the connected publishing workflow.</span><button class="btn btn-outline" onclick="markPublished()">Mark published (prototype)</button>`;
+ }else{
+  actions=`<button class="btn btn-outline" onclick="closeModal('detailModal')">Close</button>`;
+ }
+ document.getElementById('detailActions').innerHTML=actions;
+ document.getElementById('detailModal').classList.add('show');
+}
+function openDecision(action){
+ decisionAction=action;document.getElementById('decisionNote').value='';
+ document.getElementById('decisionHeading').textContent=action;
+ closeModal('detailModal');document.getElementById('decisionModal').classList.add('show');
+}
+document.getElementById('saveDecision').addEventListener('click',()=>{
+ const n=novels.find(x=>x.id===activeNovelId);if(!n||!decisionAction)return;
+ const note=document.getElementById('decisionNote').value.trim();
+ if((decisionAction==='Changes Requested'||decisionAction==='Rejected')&&!note){alert('Please add a clear note for the writer.');return}
+ n.status=decisionAction;n.decisionNote=note;
+ n.history=n.history||[];n.history.push({action:decisionAction,note,date:new Date().toISOString()});
+ if(decisionAction==='Editorially Approved – Awaiting Payment')n.paymentStatus='Not Paid';
+ if(decisionAction==='Rejected')n.publicationStatus='Not Published';
+ saveStore(NOVEL_KEY,novels);closeModal('decisionModal');renderNovels();
+});
+function markPublished(){
+ const n=novels.find(x=>x.id===activeNovelId);if(!n)return;
+ if(n.status!=='Payment Verified'){alert('A novel must have verified payment before publication.');return}
+ if(!confirm('Record this novel as published in the local prototype?'))return;
+ n.status='Published';n.publicationStatus='Published';n.publishedAt=new Date().toISOString();
+ n.history=n.history||[];n.history.push({action:'Published (prototype)',note:'Publication status changed manually in local prototype.',date:new Date().toISOString()});
+ saveStore(NOVEL_KEY,novels);closeModal('detailModal');renderNovels();
+}
+function openQuiz(novelId){
+ activeNovelId=novelId;const n=novels.find(x=>x.id===novelId);if(!n)return;
+ const existing=quizzes[novelId]||{questions:[],passScore:''};
+ questionDraft=JSON.parse(JSON.stringify(existing.questions||[]));
+ document.getElementById('quizHeading').textContent='Quiz: '+n.title;
+ document.getElementById('passScore').value=existing.passScore??'';
+ renderQuizQuestions();document.getElementById('quizModal').classList.add('show');
+}
+function renderQuizQuestions(){
+ document.getElementById('quizCount').value=questionDraft.length;
+ document.getElementById('quizQuestions').innerHTML=questionDraft.map((q,i)=>`
+ <div class="question-card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h4>Question ${i+1}</h4><button class="btn btn-danger" onclick="removeQuestion(${i})">Remove</button></div>
+  <div class="field"><label>Question text</label><textarea rows="2" oninput="questionDraft[${i}].text=this.value" placeholder="Enter a question based on the novel">${escapeHTML(q.text||'')}</textarea></div>
+  <div class="grid2">
+   ${[0,1,2,3].map(j=>`<div class="field"><label>Option ${String.fromCharCode(65+j)}</label><input value="${escapeHTML(q.options?.[j]||'')}" oninput="questionDraft[${i}].options[${j}]=this.value" placeholder="Answer option"></div>`).join('')}
+  </div>
+  <div class="field"><label>Correct answer</label><select onchange="questionDraft[${i}].correct=Number(this.value)"><option value="">Select correct option</option>${[0,1,2,3].map(j=>`<option value="${j}" ${String(q.correct)===String(j)?'selected':''}>Option ${String.fromCharCode(65+j)}</option>`).join('')}</select></div>
+ </div>`).join('')||'<div class="empty">No quiz questions added yet.</div>';
+}
+function addQuestion(){questionDraft.push({text:'',options:['','','',''],correct:''});renderQuizQuestions()}
+function removeQuestion(i){questionDraft.splice(i,1);renderQuizQuestions()}
+function saveQuiz(){
+ const pass=document.getElementById('passScore').value;
+ if(!questionDraft.length){alert('Add at least one quiz question.');return}
+ if(pass===''||Number(pass)<1||Number(pass)>100){alert('Set a passing score between 1 and 100%.');return}
+ for(let i=0;i<questionDraft.length;i++){
+  const q=questionDraft[i];
+  if(!q.text.trim()||q.options.length!==4||q.options.some(x=>!String(x).trim())||![0,1,2,3].includes(Number(q.correct))){alert('Complete the question, all four options and the correct answer for Question '+(i+1)+'.');return}
+ }
+ quizzes[activeNovelId]={questions:questionDraft,passScore:Number(pass),updatedAt:new Date().toISOString()};
+ saveStore(QUIZ_KEY,quizzes);closeModal('quizModal');alert('Quiz saved in this browser prototype.');
+}
+function addNovelRecord(){
+ const title=document.getElementById('newTitle').value.trim(),writer=document.getElementById('newWriter').value.trim();
+ const email=document.getElementById('newEmail').value.trim(),target=Number(document.getElementById('newTarget').value);
+ const manuscript=document.getElementById('newManuscript').value.trim();
+ if(!title||!writer||!email||!manuscript){alert('Complete the title, writer, email and full manuscript.');return}
+ const n={id:id(),title,writer,email,target,fee:feeFor(target),manuscript,reference:document.getElementById('newReference').value.trim(),status:'Submitted for Review',paymentStatus:'Not Paid',publicationStatus:'Not Published',submittedAt:new Date().toISOString(),history:[{action:'Record added',note:'Existing submission entered by administrator.',date:new Date().toISOString()}]};
+ novels.unshift(n);saveStore(NOVEL_KEY,novels);closeModal('recordModal');
+ ['newTitle','newWriter','newEmail','newManuscript','newReference'].forEach(x=>document.getElementById(x).value='');
+ renderNovels();
+}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function exportFile(filename,data){
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);
+}
+function exportNovels(){exportFile('earngig-novel-records.json',novels)}
+function exportReaders(){exportFile('earngig-novel-reader-activity.json',readerRecords)}
+document.querySelectorAll('#statusTabs .tab').forEach(btn=>btn.addEventListener('click',()=>{
+ document.querySelectorAll('#statusTabs .tab').forEach(x=>x.classList.remove('active'));
+ btn.classList.add('active');activeFilter=btn.dataset.filter;renderNovels();
+}));
+document.getElementById('detailModal').addEventListener('click',e=>{if(e.target.id==='detailModal')closeModal('detailModal')});
+document.getElementById('decisionModal').addEventListener('click',e=>{if(e.target.id==='decisionModal')closeModal('decisionModal')});
+document.getElementById('quizModal').addEventListener('click',e=>{if(e.target.id==='quizModal')closeModal('quizModal')});
+document.getElementById('recordModal').addEventListener('click',e=>{if(e.target.id==='recordModal')closeModal('recordModal')});
+renderFees();renderNovels();renderReaders();
+</script>
+</body>
+</html>
