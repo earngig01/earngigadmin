@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EarnGig Admin | User Management</title>
+<style>
+:root{--navy:#151b2d;--purple:#713cf0;--lav:#f2edff;--bg:#f5f6fb;--ink:#192033;--muted:#7b8295;--line:#e9ebf3;--green:#16a765;--red:#e34d59;--orange:#efa638}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:245px;background:var(--navy);padding:22px 15px;color:#fff;overflow-y:auto}
+.brand{font-size:23px;font-weight:800;padding:10px 12px 35px}
+.brand span{color:#e6bd59}
+.nav-label{font-size:10px;letter-spacing:1px;color:#778198;padding:15px 12px 8px}
+.nav{display:block;text-decoration:none;color:#cbd0de;padding:12px;border-radius:9px;margin:3px 0;font-size:13px}
+.nav:hover,.nav.active{background:#49347e;color:white}
+.main{margin-left:245px}
+.topbar{height:72px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px}
+.searchtop{width:45%;background:#f2f3f8;border-radius:9px;padding:12px;border:0}
+.profile{display:flex;align-items:center;gap:10px;font-size:12px}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-weight:bold}
+.content{padding:28px;max-width:1600px;margin:auto}
+.heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+h1{font-size:27px;margin:0 0 7px}
+.subtitle{color:var(--muted);font-size:13px;margin:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
+.card,.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:0 3px 12px #17203a05}
+.card small{color:var(--muted)}
+.card h2{font-size:27px;margin:12px 0 5px}
+.card-icon{float:right;width:39px;height:39px;border-radius:11px;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-size:20px}
+.green{color:var(--green)}.orange{color:var(--orange)}
+.panel{margin-bottom:18px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:17px}
+.panel-head h2{font-size:16px;margin:0}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.toolbar input{flex:1;min-width:190px}
+input,select{border:1px solid var(--line);border-radius:8px;padding:11px;background:white;color:var(--ink);outline:none}
+button.primary{background:var(--purple);color:white;border:0;padding:11px 16px;border-radius:8px;font-weight:bold}
+button.light{background:var(--lav);color:var(--purple);border:0;padding:10px 13px;border-radius:8px;font-weight:bold}
+button.danger{background:#fff0f0;color:var(--red);border:0;padding:9px 12px;border-radius:8px}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:850px}
+th,td{padding:14px 11px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}
+th{background:#f8f8fc;color:#747b8e;font-size:11px}
+.user{display:flex;align-items:center;gap:9px}
+.user-avatar{width:34px;height:34px;border-radius:50%;background:#eee8ff;color:var(--purple);display:grid;place-items:center;font-weight:bold}
+.user strong{display:block}.user small{color:var(--muted)}
+.badge{display:inline-block;border-radius:20px;padding:6px 9px;font-size:10px;font-weight:bold;background:#f0f1f5;color:#70788a}
+.badge.active,.badge.verified{background:#e5f8ed;color:#159557}
+.badge.suspended{background:#fff0f0;color:var(--red)}
+.badge.pending{background:#fff4e2;color:#ba7b19}
+.action{background:none;border:0;color:var(--purple);font-weight:bold}
+.empty{padding:45px 15px;text-align:center;color:var(--muted)}
+.modalbg{display:none;position:fixed;inset:0;background:#10172799;z-index:20;align-items:center;justify-content:center;padding:15px}
+.modal{background:white;border-radius:14px;padding:23px;width:min(650px,100%);max-height:90vh;overflow:auto}
+.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.modalhead h2{font-size:18px;margin:0}
+.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.detail{background:#f7f7fb;padding:13px;border-radius:9px;font-size:13px;overflow-wrap:anywhere}
+.detail small{display:block;color:var(--muted);margin-bottom:6px}
+.modal-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:20px}
+.notice{background:#fff8e9;color:#805c1d;border:1px solid #f0dfb8;padding:12px;border-radius:9px;font-size:12px;margin-bottom:17px}
+@media(max-width:900px){.sidebar{width:205px}.main{margin-left:205px}.stats{grid-template-columns:repeat(2,1fr)}.content{padding:18px}}
+@media(max-width:600px){.sidebar{display:none}.main{margin-left:0}.topbar{padding:0 13px}.content{padding:15px}.stats{gap:9px}.card{padding:13px}.card h2{font-size:22px}.detailgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+ <div class="brand">♛ <span>Earn</span>Gig</div>
+ <div class="nav-label">MAIN MENU</div>
+ <a class="nav" href="admin.html">▦ Dashboard</a>
+ <div class="nav-label">USERS & ACCOUNTS</div>
+ <a class="nav active" href="users.html">♙ User Management</a>
+ <a class="nav" href="membership.html">♧ Membership</a>
+ <a class="nav" href="wallet.html">◈ Wallet & Coins</a>
+ <a class="nav" href="referrals.html">♧ Referrals & Rewards</a>
+ <div class="nav-label">FINANCE</div>
+ <a class="nav" href="transactions.html">▤ Transactions</a>
+ <a class="nav" href="deposits.html">＋ Deposits & Payments</a>
+ <a class="nav" href="withdrawals.html">↗ Withdrawals</a>
+ <a class="nav" href="seller-wallet.html">▣ Seller Store Wallet</a>
+ <div class="nav-label">CONTENT</div>
+ <a class="nav" href="writers.html">✎ Writer Applications</a>
+ <a class="nav" href="novels.html">▤ Novel Management</a>
+ <a class="nav" href="readers.html">♡ Readers & Rewards</a>
+ <div class="nav-label">BUSINESS</div>
+ <a class="nav" href="ads.html">▧ Advertisements</a>
+ <a class="nav" href="billboard.html">▦ Billboard Bookings</a>
+ <a class="nav" href="marketplace.html">▣ Marketplace</a>
+ <a class="nav" href="stores.html">✓ Store Verification</a>
+ <a class="nav" href="delivery.html">🚚 Delivery Management</a>
+ <div class="nav-label">SYSTEM</div>
+ <a class="nav" href="notifications.html">♧ Notifications</a>
+ <a class="nav" href="reports.html">▥ Reports</a>
+ <a class="nav" href="settings.html">⚙ Settings</a>
+</aside>
+
+<div class="main">
+<header class="topbar">
+ <input class="searchtop" placeholder="Search EarnGig administration...">
+ <div class="profile"><div class="avatar">A</div><div><b>EarnGig Admin</b><br><span style="color:#858b9c">Administrator</span></div></div>
+</header>
+
+<main class="content">
+ <div class="heading">
+  <div><h1>User Management</h1><p class="subtitle">Manage registered EarnGig accounts, verification and account activity.</p></div>
+  <button class="primary" onclick="exportUsers()">↓ Export Users</button>
+ </div>
+
+ <div class="notice">User information entered on this page is currently browser-based demonstration data. It is not connected to live EarnGig accounts.</div>
+
+ <div class="stats">
+  <div class="card"><span class="card-icon">♙</span><small>Total Users</small><h2 id="total">0</h2><small>Registered accounts</small></div>
+  <div class="card"><span class="card-icon">✓</span><small>Verified Users</small><h2 id="verified">0</h2><small class="green">Identity verified</small></div>
+  <div class="card"><span class="card-icon">◉</span><small>Active Users</small><h2 id="active">0</h2><small class="green">Active accounts</small></div>
+  <div class="card"><span class="card-icon">⊘</span><small>Suspended Users</small><h2 id="suspended">0</h2><small class="orange">Restricted accounts</small></div>
+ </div>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Registered Users</h2><span class="badge">Account Directory</span></div>
+  <div class="toolbar">
+   <input id="search" placeholder="Search name, email or user ID..." oninput="render()">
+   <select id="statusFilter" onchange="render()">
+    <option value="">All account statuses</option>
+    <option>Active</option><option>Suspended</option>
+   </select>
+   <select id="verifyFilter" onchange="render()">
+    <option value="">All verification statuses</option>
+    <option>Verified</option><option>Unverified</option>
+   </select>
+  </div>
+  <div class="tablewrap" id="userTable"></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Account Management Information</h2></div>
+  <div class="detailgrid">
+   <div class="detail"><small>Account verification</small>Review account verification status and identity-check results.</div>
+   <div class="detail"><small>Account restrictions</small>Review and manage suspended accounts.</div>
+   <div class="detail"><small>Wallet information</small>View account coin and Naira balance summaries.</div>
+   <div class="detail"><small>Account activity</small>Review registration and last activity information when available.</div>
+  </div>
+ </section>
+</main>
+</div>
+
+<div class="modalbg" id="modal">
+ <div class="modal">
+  <div class="modalhead"><h2 id="modalTitle">User Profile</h2><button class="light" onclick="closeModal()">Close</button></div>
+  <div id="modalContent"></div>
+ </div>
+</div>
+
+<script>
+const KEY="earngig_user_management_v1";
+let users=[];
+try{users=JSON.parse(localStorage.getItem(KEY)||"[]");if(!Array.isArray(users))users=[]}catch{users=[]}
+
+function save(){localStorage.setItem(KEY,JSON.stringify(users));render()}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+
+function render(){
+ const q=document.getElementById("search").value.toLowerCase();
+ const sf=document.getElementById("statusFilter").value;
+ const vf=document.getElementById("verifyFilter").value;
+
+ const filtered=users.map((u,i)=>({...u,index:i})).filter(u=>
+  [u.id,u.name,u.email].join(" ").toLowerCase().includes(q)&&
+  (!sf||u.status===sf)&&(!vf||(vf==="Verified"?u.verified:u.verified==="No"))
+ );
+
+ document.getElementById("total").textContent=users.length;
+ document.getElementById("verified").textContent=users.filter(u=>u.verified==="Yes").length;
+ document.getElementById("active").textContent=users.filter(u=>u.status==="Active").length;
+ document.getElementById("suspended").textContent=users.filter(u=>u.status==="Suspended").length;
+
+ document.getElementById("userTable").innerHTML=filtered.length?`
+ <table>
+ <thead><tr><th>USER</th><th>USER ID</th><th>ACCOUNT STATUS</th><th>VERIFICATION</th><th>COINS</th><th>JOINED</th><th>ACTION</th></tr></thead>
+ <tbody>${filtered.map(u=>`
+ <tr>
+ <td><div class="user"><div class="user-avatar">${esc(u.name.charAt(0).toUpperCase())}</div><div><strong>${esc(u.name)}</strong><small>${esc(u.email)}</small></div></div></td>
+ <td>${esc(u.id)}</td>
+ <td><span class="badge ${u.status==="Active"?"active":"suspended"}">${esc(u.status)}</span></td>
+ <td><span class="badge ${u.verified==="Yes"?"verified":"pending"}">${u.verified==="Yes"?"Verified":"Unverified"}</span></td>
+ <td>${Number(u.coins||0).toLocaleString()}</td>
+ <td>${esc(u.joined||"Not available")}</td>
+ <td><button class="action" onclick="viewUser(${u.index})">View Profile →</button></td>
+ </tr>`).join("")}</tbody></table>`:
+ `<div class="empty"><h3>No user accounts to display</h3><p>When connected to the EarnGig database, registered users will appear here automatically.</p></div>`;
+}
+
+function viewUser(i){
+ const u=users[i];if(!u)return;
+ document.getElementById("modalTitle").textContent="User Profile";
+ document.getElementById("modalContent").innerHTML=`
+ <div class="detailgrid">
+  <div class="detail"><small>Full name</small><b>${esc(u.name)}</b></div>
+  <div class="detail"><small>User ID</small><b>${esc(u.id)}</b></div>
+  <div class="detail"><small>Email</small>${esc(u.email)}</div>
+  <div class="detail"><small>Phone</small>${esc(u.phone||"Not provided")}</div>
+  <div class="detail"><small>Account status</small>${esc(u.status)}</div>
+  <div class="detail"><small>Verification</small>${esc(u.verified)}</div>
+  <div class="detail"><small>Coin balance</small>${Number(u.coins||0).toLocaleString()} coins</div>
+  <div class="detail"><small>Naira wallet</small>₦${Number(u.balance||0).toLocaleString()}</div>
+  <div class="detail"><small>Registration date</small>${esc(u.joined||"Not available")}</div>
+  <div class="detail"><small>Last activity</small>${esc(u.lastActive||"Not available")}</div>
+ </div>
+ <div class="modal-actions">
+  <button class="light" onclick="toggleVerification(${i})">${u.verified==="Yes"?"Mark Unverified":"Mark Verified"}</button>
+  <button class="${u.status==="Active"?"danger":"primary"}" onclick="toggleStatus(${i})">${u.status==="Active"?"Suspend Account":"Reactivate Account"}</button>
+ </div>
+ <p style="font-size:11px;color:#9297a5;margin-top:16px">Demonstration controls only. Real account restrictions must be enforced by the secure backend.</p>`;
+ document.getElementById("modal").style.display="flex";
+}
+function toggleStatus(i){
+ users[i].status=users[i].status==="Active"?"Suspended":"Active";
+ save();viewUser(i);
+}
+function toggleVerification(i){
+ users[i].verified=users[i].verified==="Yes"?"No":"Yes";
+ save();viewUser(i);
+}
+function closeModal(){document.getElementById("modal").style.display="none"}
+
+function exportUsers(){
+ const blob=new Blob([JSON.stringify(users,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download="earngig-users.json";a.click();
+ URL.revokeObjectURL(url);
+}
+render();
+</script>
+</body>
+</html>
