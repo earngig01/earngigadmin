@@ -1,0 +1,536 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notifications | EarnGig Admin</title>
+<style>
+:root{
+ --navy:#111a35;--purple:#7154d9;--purple2:#8b73ec;--lav:#f1edff;
+ --bg:#f6f7fb;--white:#fff;--text:#202943;--muted:#8490a6;
+ --line:#e8eaf2;--green:#15966b;--red:#d94c61;--orange:#d78a25;
+ --gold:#e8bd62;--shadow:0 8px 28px rgba(25,35,65,.06)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:250px;background:var(--navy);color:#dce2f3;padding:23px 15px;position:fixed;inset:0 auto 0 0;overflow:auto;z-index:5}
+.brand{display:flex;align-items:center;gap:10px;padding:3px 10px 27px;font-size:21px;font-weight:800;color:white}
+.brand svg{width:27px;height:27px;flex:none}
+.nav-label{font-size:10px;letter-spacing:1.5px;color:#8995b3;padding:17px 12px 9px;font-weight:700}
+.nav a{display:flex;align-items:center;gap:12px;text-decoration:none;color:#c0c9df;padding:11px 12px;border-radius:9px;font-size:13px;margin:3px 0}
+.nav a:hover,.nav a.active{background:#29365b;color:white}
+.nav a.active{box-shadow:inset 3px 0 var(--purple2)}
+.nav .ico{width:19px;text-align:center;font-size:16px}
+.sidebar-note{margin:25px 7px 0;padding:13px;border:1px solid #344263;border-radius:10px;color:#aab5ce;font-size:11px;line-height:1.6}
+.main{margin-left:250px;width:calc(100% - 250px);min-width:0}
+.topbar{height:68px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:4}
+.top-left{display:flex;align-items:center;gap:12px}
+.topbar small{color:var(--muted)}
+.admin-chip{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700}
+.avatar{width:33px;height:33px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center}
+.content{padding:27px 30px 50px;max-width:1600px;margin:auto}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}
+h1{font-size:24px;margin:0 0 7px;letter-spacing:-.5px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.5}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:700;font-size:12px}
+.btn-primary{background:var(--purple);color:white}
+.btn-primary:hover{background:#6043c7}
+.btn-light{background:#f0edff;color:var(--purple)}
+.btn-outline{background:white;border:1px solid var(--line);color:var(--text)}
+.btn-danger{background:#fff0f2;color:var(--red)}
+.btn-success{background:#e8f7f0;color:var(--green)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.stat{background:white;border:1px solid var(--line);border-radius:12px;padding:17px;box-shadow:var(--shadow)}
+.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px}
+.stat-icon{width:31px;height:31px;border-radius:9px;background:var(--lav);color:var(--purple);display:grid;place-items:center}
+.stat strong{display:block;font-size:25px;margin-top:13px}
+.stat small{font-size:10px;color:var(--muted)}
+.panel{background:white;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);margin-bottom:19px}
+.panel-head{padding:17px 19px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.panel-head h2{font-size:14px;margin:0}
+.panel-body{padding:18px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{border:0;background:transparent;padding:9px 12px;border-radius:7px;color:#7c879e;font-size:12px;font-weight:700}
+.tab.active{background:var(--lav);color:var(--purple)}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}
+.toolbar input,.toolbar select,.field input,.field select,.field textarea{
+ border:1px solid var(--line);border-radius:8px;padding:10px 11px;background:white;color:var(--text);font-size:12px;outline:none;width:100%
+}
+.toolbar input{max-width:270px}
+.toolbar select{width:auto;min-width:145px}
+input:focus,select:focus,textarea:focus{border-color:var(--purple2)!important;box-shadow:0 0 0 3px #7154d91a}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:750px}
+th{text-align:left;background:#fafbfe;color:#8a94a9;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:12px 14px;white-space:nowrap}
+td{padding:13px 14px;border-top:1px solid #f0f1f6;font-size:12px;vertical-align:middle}
+td strong{font-size:12px}
+.muted{color:var(--muted)}
+.subline{display:block;font-size:10px;color:var(--muted);margin-top:4px}
+.pill{display:inline-block;border-radius:20px;padding:5px 8px;font-size:10px;font-weight:700;background:#f0f1f5;color:#68738a;white-space:nowrap}
+.pill.sent,.pill.active{background:#e7f7ef;color:#14845e}
+.pill.failed,.pill.cancelled{background:#ffedf0;color:#c44156}
+.pill.scheduled,.pill.pending{background:#fff4df;color:#a96c12}
+.pill.draft{background:#edf1f7;color:#66748d}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.actions button{border:1px solid var(--line);background:white;border-radius:6px;padding:7px 9px;font-size:10px;color:#59647b}
+.actions button:hover{border-color:var(--purple);color:var(--purple)}
+.empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:12px}
+.empty b{display:block;color:var(--text);margin-bottom:7px;font-size:13px}
+.notice{padding:12px 14px;background:#f4f1ff;border:1px solid #e8e1ff;border-radius:9px;color:#6551b0;font-size:11px;line-height:1.6;margin-bottom:15px}
+.notice.warn{background:#fff8e9;border-color:#f6e5bd;color:#94651d}
+.hidden{display:none!important}
+.modal-backdrop{position:fixed;inset:0;background:#10182d99;z-index:20;display:none;align-items:center;justify-content:center;padding:18px}
+.modal-backdrop.show{display:flex}
+.modal{background:white;width:min(760px,100%);max-height:92vh;overflow:auto;border-radius:14px;box-shadow:0 20px 70px #0003}
+.modal-head{padding:18px 21px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:white;z-index:2}
+.modal-head h3{margin:0;font-size:15px}
+.close{border:0;background:#f1f2f7;border-radius:7px;width:30px;height:30px;font-size:18px}
+.modal-content{padding:20px}
+.modal-foot{padding:15px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px;position:sticky;bottom:0;background:white}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:700;margin-bottom:7px}
+.field textarea{min-height:110px;resize:vertical;line-height:1.6}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.preview{border:1px solid var(--line);border-radius:10px;padding:16px;background:#fafbfe}
+.preview small{color:var(--muted)}
+.preview h3{font-size:15px;margin:10px 0}
+.preview p{font-size:12px;line-height:1.6;color:#66718a}
+.mobile-menu{display:none}
+.footer-note{font-size:10px;color:var(--muted);line-height:1.6;margin-top:12px}
+@media(max-width:1000px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){
+ .sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:translateX(0)}
+ .main{margin-left:0;width:100%}.topbar{padding:0 16px}.content{padding:20px 14px 40px}
+ .mobile-menu{display:inline-block;border:0;background:var(--lav);color:var(--purple);border-radius:7px;padding:7px 10px}
+ .page-head{flex-direction:column}.grid2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+   <path d="M5 12L12 18L19.5 6L27 18L35 12L31 30H9L5 12Z" stroke="#E8BD62" stroke-width="2.3" stroke-linejoin="round"/>
+   <path d="M10 34H30" stroke="#E8BD62" stroke-width="2.3" stroke-linecap="round"/>
+   <circle cx="5" cy="11" r="2" fill="#E8BD62"/><circle cx="19.5" cy="5" r="2" fill="#E8BD62"/><circle cx="35" cy="11" r="2" fill="#E8BD62"/>
+  </svg>
+  EarnGig
+ </div>
+ <nav class="nav">
+  <div class="nav-label">MAIN</div>
+  <a href="admin.html"><span class="ico">▦</span>Dashboard</a>
+  <div class="nav-label">USER MANAGEMENT</div>
+  <a href="users.html"><span class="ico">♙</span>Users</a>
+  <a href="membership.html"><span class="ico">◇</span>Membership</a>
+  <a href="wallet.html"><span class="ico">◈</span>Coin Withdrawals</a>
+  <a href="coin-purchases.html"><span class="ico">◉</span>Coin Purchases</a>
+  <a href="referrals.html"><span class="ico">⇄</span>Referrals</a>
+  <div class="nav-label">FINANCE</div>
+  <a href="transactions.html"><span class="ico">▤</span>Transactions</a>
+  <a href="deposits.html"><span class="ico">↓</span>Deposits</a>
+  <a href="withdrawals.html"><span class="ico">↑</span>Wallet Withdrawals</a>
+  <a href="seller-wallet.html"><span class="ico">▣</span>Seller Wallet</a>
+  <a href="payouts.html"><span class="ico">₦</span>Payouts</a>
+  <div class="nav-label">CONTENT & COMMUNITY</div>
+  <a href="writers.html"><span class="ico">✎</span>Writer Management</a>
+  <a href="novels.html"><span class="ico">▥</span>Novel Management</a>
+  <a href="marketplace.html"><span class="ico">▧</span>Marketplace Activity</a>
+  <div class="nav-label">ADVERTISING</div>
+  <a href="advertising.html"><span class="ico">▣</span>Advertisement Bookings</a>
+  <a href="watch-earn.html"><span class="ico">▶</span>Watch & Earn</a>
+  <a href="billboard.html"><span class="ico">▤</span>Billboard Management</a>
+  <div class="nav-label">ADMINISTRATION</div>
+  <a class="active" href="notifications.html"><span class="ico">♢</span>Notifications</a>
+  <a href="reports.html"><span class="ico">▥</span>Reports & Analysis</a>
+  <a href="settings.html"><span class="ico">⚙</span>Settings</a>
+ </nav>
+ <div class="sidebar-note">EarnGig Administration<br>Owner access only<br><span style="color:#e8bd62">●</span> Admin workspace prototype</div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+  <div><strong style="font-size:13px">Notification Management</strong><br><small>Announcements, messages and delivery records</small></div>
+ </div>
+ <div class="admin-chip"><div class="avatar">A</div><span>Administrator</span></div>
+</header>
+
+<div class="content">
+ <div class="page-head">
+  <div>
+   <h1>Notifications</h1>
+   <div class="subtitle">Create platform announcements, prepare targeted messages and review notification history.</div>
+  </div>
+  <button class="btn btn-primary" onclick="openComposer()">＋ Create notification</button>
+ </div>
+
+ <div class="notice warn">
+  <strong>Delivery limitation:</strong> This page stores notification drafts and records in this browser only. It does not send push notifications, emails, SMS or in-app messages to real users. Live delivery requires a backend notification service and connected user database.
+ </div>
+
+ <section class="stats">
+  <div class="stat"><div class="stat-top">Total notifications <span class="stat-icon">♢</span></div><strong id="statTotal">0</strong><small>All saved notification records</small></div>
+  <div class="stat"><div class="stat-top">Drafts <span class="stat-icon">✎</span></div><strong id="statDraft">0</strong><small>Prepared but not sent</small></div>
+  <div class="stat"><div class="stat-top">Scheduled <span class="stat-icon">◷</span></div><strong id="statScheduled">0</strong><small>Waiting for delivery scheduling</small></div>
+  <div class="stat"><div class="stat-top">Sent records <span class="stat-icon">✓</span></div><strong id="statSent">0</strong><small>Local records marked sent</small></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head">
+   <h2>Notification centre</h2>
+   <div class="tabs" id="tabs">
+    <button class="tab active" data-filter="all">All</button>
+    <button class="tab" data-filter="Draft">Drafts</button>
+    <button class="tab" data-filter="Scheduled">Scheduled</button>
+    <button class="tab" data-filter="Sent">Sent</button>
+    <button class="tab" data-filter="Failed">Failed</button>
+   </div>
+  </div>
+  <div class="panel-body">
+   <div class="toolbar">
+    <input id="search" placeholder="Search title or message..." oninput="render()">
+    <select id="typeFilter" onchange="render()">
+     <option value="">All notification types</option>
+     <option>Platform Announcement</option><option>Account Update</option>
+     <option>Wallet Update</option><option>Marketplace Update</option>
+     <option>Novel & Writer Update</option><option>Advertising Update</option>
+     <option>Security Alert</option><option>Other</option>
+    </select>
+    <select id="channelFilter" onchange="render()">
+     <option value="">All channels</option><option>In-app</option><option>Push</option><option>Email</option><option>SMS</option>
+    </select>
+   </div>
+   <div class="table-wrap">
+    <table>
+     <thead><tr><th>Notification</th><th>Type</th><th>Audience</th><th>Channel</th><th>Created</th><th>Schedule</th><th>Status</th><th>Actions</th></tr></thead>
+     <tbody id="rows"></tbody>
+    </table>
+   </div>
+   <div class="empty" id="empty"><b>No notifications created</b>Create a notification draft to begin managing platform announcements.</div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Notification templates</h2><button class="btn btn-outline" onclick="openTemplateCreator()">＋ Create template</button></div>
+  <div class="panel-body">
+   <div class="notice">Save reusable message formats for common platform communication. Templates are stored locally in this prototype.</div>
+   <div class="table-wrap">
+    <table>
+     <thead><tr><th>Template name</th><th>Type</th><th>Title</th><th>Last updated</th><th>Actions</th></tr></thead>
+     <tbody id="templateRows"></tbody>
+    </table>
+   </div>
+   <div class="empty" id="templateEmpty"><b>No templates saved</b>Create reusable templates for messages you send regularly.</div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Delivery activity</h2><button class="btn btn-outline" onclick="exportDelivery()">Export history ↓</button></div>
+  <div class="panel-body">
+   <div class="notice warn">Delivery counts such as delivered, opened and failed must come from the actual notification provider. This prototype does not generate delivery receipts or read confirmations.</div>
+   <div class="table-wrap">
+    <table>
+     <thead><tr><th>Notification</th><th>Channel</th><th>Recorded status</th><th>Recipient count</th><th>Delivered</th><th>Failed</th><th>Last activity</th></tr></thead>
+     <tbody id="deliveryRows"></tbody>
+    </table>
+   </div>
+   <div class="empty" id="deliveryEmpty"><b>No delivery history</b>Delivery records will appear when a connected notification service reports activity.</div>
+  </div>
+ </section>
+</div>
+</main>
+</div>
+
+<!-- Notification composer -->
+<div class="modal-backdrop" id="composerModal">
+ <div class="modal">
+  <div class="modal-head"><h3 id="composerHeading">Create notification</h3><button class="close" onclick="closeModal('composerModal')">×</button></div>
+  <div class="modal-content">
+   <div class="grid2">
+    <div class="field"><label>Notification title</label><input id="noticeTitle" maxlength="120" placeholder="Enter a clear notification title"></div>
+    <div class="field"><label>Notification type</label>
+     <select id="noticeType">
+      <option>Platform Announcement</option><option>Account Update</option>
+      <option>Wallet Update</option><option>Marketplace Update</option>
+      <option>Novel & Writer Update</option><option>Advertising Update</option>
+      <option>Security Alert</option><option>Other</option>
+     </select>
+    </div>
+    <div class="field"><label>Audience</label>
+     <select id="audience" onchange="toggleRecipientField()">
+      <option value="All Users">All Users</option>
+      <option value="Verified Users">Verified Users</option>
+      <option value="Unverified Users">Unverified Users</option>
+      <option value="Writers">Writers</option>
+      <option value="Marketplace Sellers">Marketplace Sellers</option>
+      <option value="Advertisers">Advertisers</option>
+      <option value="Specific User">Specific User</option>
+     </select>
+    </div>
+    <div class="field hidden" id="recipientField"><label>Specific user email or ID</label><input id="recipient" placeholder="Enter exact user email or ID"></div>
+    <div class="field"><label>Delivery channel</label>
+     <select id="channel"><option>In-app</option><option>Push</option><option>Email</option><option>SMS</option></select>
+    </div>
+    <div class="field"><label>Delivery timing</label>
+     <select id="timing" onchange="toggleSchedule()"><option value="now">Save as draft</option><option value="schedule">Schedule for later</option></select>
+    </div>
+   </div>
+   <div class="field hidden" id="scheduleField"><label>Scheduled date and time</label><input id="scheduleAt" type="datetime-local"></div>
+   <div class="field"><label>Message</label><textarea id="noticeMessage" maxlength="5000" placeholder="Write the notification message..."></textarea></div>
+   <div class="preview">
+    <small>MESSAGE PREVIEW</small>
+    <h3 id="previewTitle">Your notification title</h3>
+    <p id="previewMessage">Your notification message will appear here.</p>
+    <small id="previewAudience">Audience: All Users · In-app</small>
+   </div>
+   <div class="footer-note">Saving a draft or scheduled record here does not deliver it. Actual sending must be initiated by the secured backend notification service.</div>
+  </div>
+  <div class="modal-foot">
+   <button class="btn btn-outline" onclick="closeModal('composerModal')">Cancel</button>
+   <button class="btn btn-primary" onclick="saveNotification()">Save notification</button>
+  </div>
+ </div>
+</div>
+
+<!-- Template editor -->
+<div class="modal-backdrop" id="templateModal">
+ <div class="modal">
+  <div class="modal-head"><h3 id="templateHeading">Create template</h3><button class="close" onclick="closeModal('templateModal')">×</button></div>
+  <div class="modal-content">
+   <div class="field"><label>Template name</label><input id="templateName" placeholder="e.g. Platform maintenance announcement"></div>
+   <div class="field"><label>Notification type</label>
+    <select id="templateType"><option>Platform Announcement</option><option>Account Update</option><option>Wallet Update</option><option>Marketplace Update</option><option>Novel & Writer Update</option><option>Advertising Update</option><option>Security Alert</option><option>Other</option></select>
+   </div>
+   <div class="field"><label>Default title</label><input id="templateTitle" placeholder="Notification title"></div>
+   <div class="field"><label>Default message</label><textarea id="templateMessage" placeholder="Write the reusable message..."></textarea></div>
+  </div>
+  <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('templateModal')">Cancel</button><button class="btn btn-primary" onclick="saveTemplate()">Save template</button></div>
+ </div>
+</div>
+
+<script>
+const NOTICE_KEY='earngig_admin_notifications_v1';
+const TEMPLATE_KEY='earngig_notification_templates_v1';
+let notifications=load(NOTICE_KEY,[]);
+let templates=load(TEMPLATE_KEY,[]);
+let currentFilter='all',editingId=null,editingTemplateId=null;
+
+function load(key,fallback){
+ try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch(e){return fallback}
+}
+function save(key,value){localStorage.setItem(key,JSON.stringify(value))}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function dateText(v){
+ if(!v)return '—';const d=new Date(v);
+ return isNaN(d)?esc(v):d.toLocaleString('en-NG',{dateStyle:'medium',timeStyle:'short'});
+}
+function makeId(){return 'NTF-'+Date.now().toString(36).toUpperCase()}
+function statusPill(status){
+ const cls=status==='Sent'?'sent':status==='Failed'?'failed':status==='Scheduled'?'scheduled':'draft';
+ return `<span class="pill ${cls}">${esc(status)}</span>`;
+}
+function updateStats(){
+ document.getElementById('statTotal').textContent=notifications.length;
+ document.getElementById('statDraft').textContent=notifications.filter(n=>n.status==='Draft').length;
+ document.getElementById('statScheduled').textContent=notifications.filter(n=>n.status==='Scheduled').length;
+ document.getElementById('statSent').textContent=notifications.filter(n=>n.status==='Sent').length;
+}
+function render(){
+ updateStats();
+ const q=document.getElementById('search').value.toLowerCase();
+ const type=document.getElementById('typeFilter').value;
+ const channel=document.getElementById('channelFilter').value;
+ const list=notifications.filter(n=>
+  [n.title,n.message,n.id].join(' ').toLowerCase().includes(q)&&
+  (!type||n.type===type)&&(!channel||n.channel===channel)&&
+  (currentFilter==='all'||n.status===currentFilter)
+ ).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+ document.getElementById('rows').innerHTML=list.map(n=>`
+ <tr>
+  <td><strong>${esc(n.title)}</strong><span class="subline">${esc(n.id)}</span></td>
+  <td>${esc(n.type)}</td><td>${esc(n.audience)}${n.recipient?`<span class="subline">${esc(n.recipient)}</span>`:''}</td>
+  <td>${esc(n.channel)}</td><td>${dateText(n.createdAt)}</td>
+  <td>${n.scheduleAt?dateText(n.scheduleAt):'—'}</td><td>${statusPill(n.status)}</td>
+  <td><div class="actions">
+   <button onclick="editNotification('${n.id}')">Edit</button>
+   <button onclick="duplicateNotification('${n.id}')">Duplicate</button>
+   <button onclick="deleteNotification('${n.id}')">Delete</button>
+  </div></td>
+ </tr>`).join('');
+ document.getElementById('empty').classList.toggle('hidden',list.length>0);
+ renderTemplates();renderDelivery();
+}
+function openComposer(){
+ editingId=null;document.getElementById('composerHeading').textContent='Create notification';
+ ['noticeTitle','noticeMessage','recipient','scheduleAt'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('noticeType').value='Platform Announcement';
+ document.getElementById('audience').value='All Users';
+ document.getElementById('channel').value='In-app';
+ document.getElementById('timing').value='now';
+ toggleRecipientField();toggleSchedule();updatePreview();
+ document.getElementById('composerModal').classList.add('show');
+}
+function editNotification(id){
+ const n=notifications.find(x=>x.id===id);if(!n)return;
+ editingId=id;document.getElementById('composerHeading').textContent='Edit notification';
+ document.getElementById('noticeTitle').value=n.title||'';
+ document.getElementById('noticeType').value=n.type||'Other';
+ document.getElementById('audience').value=n.audience||'All Users';
+ document.getElementById('recipient').value=n.recipient||'';
+ document.getElementById('channel').value=n.channel||'In-app';
+ document.getElementById('timing').value=n.status==='Scheduled'?'schedule':'now';
+ document.getElementById('scheduleAt').value=n.scheduleAt?new Date(n.scheduleAt).toISOString().slice(0,16):'';
+ document.getElementById('noticeMessage').value=n.message||'';
+ toggleRecipientField();toggleSchedule();updatePreview();
+ document.getElementById('composerModal').classList.add('show');
+}
+function duplicateNotification(id){
+ const n=notifications.find(x=>x.id===id);if(!n)return;
+ editingId=null;
+ document.getElementById('noticeTitle').value=n.title+' (Copy)';
+ document.getElementById('noticeType').value=n.type;
+ document.getElementById('audience').value=n.audience;
+ document.getElementById('recipient').value=n.recipient||'';
+ document.getElementById('channel').value=n.channel;
+ document.getElementById('timing').value='now';
+ document.getElementById('noticeMessage').value=n.message;
+ toggleRecipientField();toggleSchedule();updatePreview();
+ document.getElementById('composerHeading').textContent='Duplicate notification';
+ document.getElementById('composerModal').classList.add('show');
+}
+function deleteNotification(id){
+ if(!confirm('Delete this notification record from this browser?'))return;
+ notifications=notifications.filter(n=>n.id!==id);save(NOTICE_KEY,notifications);render();
+}
+function toggleRecipientField(){
+ document.getElementById('recipientField').classList.toggle('hidden',document.getElementById('audience').value!=='Specific User');
+ updatePreview();
+}
+function toggleSchedule(){
+ const scheduled=document.getElementById('timing').value==='schedule';
+ document.getElementById('scheduleField').classList.toggle('hidden',!scheduled);
+}
+function updatePreview(){
+ const title=document.getElementById('noticeTitle').value.trim();
+ const message=document.getElementById('noticeMessage').value.trim();
+ document.getElementById('previewTitle').textContent=title||'Your notification title';
+ document.getElementById('previewMessage').textContent=message||'Your notification message will appear here.';
+ document.getElementById('previewAudience').textContent='Audience: '+document.getElementById('audience').value+' · '+document.getElementById('channel').value;
+}
+['noticeTitle','noticeMessage','channel','audience'].forEach(id=>{
+ document.getElementById(id).addEventListener('input',updatePreview);
+ document.getElementById(id).addEventListener('change',updatePreview);
+});
+function saveNotification(){
+ const title=document.getElementById('noticeTitle').value.trim();
+ const message=document.getElementById('noticeMessage').value.trim();
+ const audience=document.getElementById('audience').value;
+ const recipient=document.getElementById('recipient').value.trim();
+ const timing=document.getElementById('timing').value;
+ const scheduleAt=document.getElementById('scheduleAt').value;
+ if(!title||!message){alert('Enter both a notification title and message.');return}
+ if(audience==='Specific User'&&!recipient){alert('Enter the specific user's email or ID.');return}
+ if(timing==='schedule'){
+  if(!scheduleAt){alert('Choose a date and time for the scheduled notification.');return}
+  if(new Date(scheduleAt)<=new Date()){alert('Choose a future date and time.');return}
+ }
+ let record=editingId?notifications.find(n=>n.id===editingId):null;
+ if(record&&record.status==='Sent'){alert('A sent notification cannot be edited. Duplicate it to prepare a new notification.');return}
+ if(!record){
+  record={id:makeId(),createdAt:new Date().toISOString(),status:'Draft',recipientCount:0,delivered:0,failed:0};
+  notifications.unshift(record);
+ }
+ record.title=title;
+ record.message=message;
+ record.type=document.getElementById('noticeType').value;
+ record.audience=audience;
+ record.recipient=audience==='Specific User'?recipient:'';
+ record.channel=document.getElementById('channel').value;
+ record.scheduleAt=timing==='schedule'?new Date(scheduleAt).toISOString():null;
+ record.status=timing==='schedule'?'Scheduled':'Draft';
+ record.updatedAt=new Date().toISOString();
+ save(NOTICE_KEY,notifications);closeModal('composerModal');render();
+}
+function renderTemplates(){
+ document.getElementById('templateRows').innerHTML=templates.map(t=>`
+ <tr><td><strong>${esc(t.name)}</strong></td><td>${esc(t.type)}</td>
+ <td>${esc(t.title)}</td><td>${dateText(t.updatedAt)}</td>
+ <td><div class="actions"><button onclick="useTemplate('${t.id}')">Use</button><button onclick="editTemplate('${t.id}')">Edit</button><button onclick="deleteTemplate('${t.id}')">Delete</button></div></td></tr>`).join('');
+ document.getElementById('templateEmpty').classList.toggle('hidden',templates.length>0);
+}
+function openTemplateCreator(){
+ editingTemplateId=null;
+ ['templateName','templateTitle','templateMessage'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('templateType').value='Platform Announcement';
+ document.getElementById('templateHeading').textContent='Create template';
+ document.getElementById('templateModal').classList.add('show');
+}
+function editTemplate(id){
+ const t=templates.find(x=>x.id===id);if(!t)return;
+ editingTemplateId=id;
+ document.getElementById('templateName').value=t.name;
+ document.getElementById('templateType').value=t.type;
+ document.getElementById('templateTitle').value=t.title;
+ document.getElementById('templateMessage').value=t.message;
+ document.getElementById('templateHeading').textContent='Edit template';
+ document.getElementById('templateModal').classList.add('show');
+}
+function saveTemplate(){
+ const name=document.getElementById('templateName').value.trim();
+ const title=document.getElementById('templateTitle').value.trim();
+ const message=document.getElementById('templateMessage').value.trim();
+ if(!name||!title||!message){alert('Complete the template name, title and message.');return}
+ let t=editingTemplateId?templates.find(x=>x.id===editingTemplateId):null;
+ if(!t){t={id:makeId(),createdAt:new Date().toISOString()};templates.unshift(t)}
+ t.name=name;t.type=document.getElementById('templateType').value;t.title=title;t.message=message;t.updatedAt=new Date().toISOString();
+ save(TEMPLATE_KEY,templates);closeModal('templateModal');renderTemplates();
+}
+function useTemplate(id){
+ const t=templates.find(x=>x.id===id);if(!t)return;
+ openComposer();
+ document.getElementById('noticeTitle').value=t.title;
+ document.getElementById('noticeType').value=t.type;
+ document.getElementById('noticeMessage').value=t.message;
+ updatePreview();
+}
+function deleteTemplate(id){
+ if(!confirm('Delete this saved template?'))return;
+ templates=templates.filter(t=>t.id!==id);save(TEMPLATE_KEY,templates);renderTemplates();
+}
+function renderDelivery(){
+ const list=notifications.filter(n=>n.status==='Sent'||n.status==='Failed');
+ document.getElementById('deliveryRows').innerHTML=list.map(n=>`
+ <tr><td><strong>${esc(n.title)}</strong><span class="subline">${esc(n.id)}</span></td>
+ <td>${esc(n.channel)}</td><td>${statusPill(n.status)}</td>
+ <td>${Number(n.recipientCount||0)}</td><td>${Number(n.delivered||0)}</td>
+ <td>${Number(n.failed||0)}</td><td>${dateText(n.lastDeliveryActivity||n.updatedAt)}</td></tr>`).join('');
+ document.getElementById('deliveryEmpty').classList.toggle('hidden',list.length>0);
+}
+function exportDelivery(){
+ const records=notifications.filter(n=>n.status==='Sent'||n.status==='Failed');
+ exportFile('earngig-notification-delivery-history.json',records);
+}
+function exportFile(name,data){
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download=name;a.click();URL.revokeObjectURL(url);
+}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+document.querySelectorAll('#tabs .tab').forEach(btn=>btn.addEventListener('click',()=>{
+ document.querySelectorAll('#tabs .tab').forEach(x=>x.classList.remove('active'));
+ btn.classList.add('active');currentFilter=btn.dataset.filter;render();
+}));
+['composerModal','templateModal'].forEach(id=>{
+ document.getElementById(id).addEventListener('click',e=>{if(e.target.id===id)closeModal(id)});
+});
+render();
+</script>
+</body>
+</html>
