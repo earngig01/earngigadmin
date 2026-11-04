@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EarnGig Admin | Referrals & Rewards</title>
+<style>
+:root{--navy:#151b2d;--purple:#713cf0;--lav:#f2edff;--bg:#f5f6fb;--ink:#192033;--muted:#7b8295;--line:#e9ebf3;--green:#16a765;--red:#e34d59;--orange:#efa638;--blue:#3995ed}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif;font-size:14px}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:245px;background:var(--navy);padding:22px 15px;color:white;overflow-y:auto}
+.brand{font-size:23px;font-weight:800;padding:10px 12px 35px}.brand span{color:#e6bd59}
+.nav-label{font-size:10px;letter-spacing:1px;color:#778198;padding:15px 12px 8px}
+.nav{display:block;text-decoration:none;color:#cbd0de;padding:12px;border-radius:9px;margin:3px 0;font-size:13px}
+.nav:hover,.nav.active{background:#49347e;color:white}
+.main{margin-left:245px}
+.topbar{height:72px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px}
+.searchtop{width:45%;background:#f2f3f8;border-radius:9px;padding:12px;border:0}
+.profile{display:flex;align-items:center;gap:10px;font-size:12px}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-weight:bold}
+.content{padding:28px;max-width:1600px;margin:auto}
+.heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+h1{font-size:27px;margin:0 0 7px}.subtitle{color:var(--muted);font-size:13px;margin:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
+.card,.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:0 3px 12px #17203a05}
+.card small{color:var(--muted)}.card h2{font-size:25px;margin:12px 0 5px}
+.card-icon{float:right;width:39px;height:39px;border-radius:11px;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-size:20px}
+.panel{margin-bottom:18px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:17px}.panel-head h2{font-size:16px;margin:0}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.toolbar input{flex:1;min-width:190px}
+input,select,textarea{border:1px solid var(--line);border-radius:8px;padding:11px;background:white;color:var(--ink);outline:none}
+button.primary{background:var(--purple);color:white;border:0;padding:11px 16px;border-radius:8px;font-weight:bold}
+button.light{background:var(--lav);color:var(--purple);border:0;padding:10px 13px;border-radius:8px;font-weight:bold}
+button.danger{background:#fff0f0;color:var(--red);border:0;padding:9px 12px;border-radius:8px;font-weight:bold}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:850px}
+th,td{padding:14px 11px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}
+th{background:#f8f8fc;color:#747b8e;font-size:11px}
+.person{display:flex;align-items:center;gap:9px}.person-avatar{width:35px;height:35px;border-radius:50%;background:#eee8ff;color:var(--purple);display:grid;place-items:center;font-weight:bold}
+.person strong{display:block}.person small{color:var(--muted)}
+.badge{display:inline-block;border-radius:20px;padding:6px 9px;font-size:10px;font-weight:bold;background:#f0f1f5;color:#70788a}
+.badge.good{background:#e5f8ed;color:#159557}.badge.pending{background:#fff4e2;color:#ba7b19}.badge.bad{background:#fff0f0;color:var(--red)}.badge.info{background:#e9f2ff;color:#287bd7}
+.action{background:none;border:0;color:var(--purple);font-weight:bold}
+.empty{padding:40px 15px;text-align:center;color:var(--muted)}
+.notice{background:#fff8e9;color:#805c1d;border:1px solid #f0dfb8;padding:12px;border-radius:9px;font-size:12px;margin-bottom:17px}
+.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.detail{background:#f7f7fb;padding:13px;border-radius:9px;font-size:13px;overflow-wrap:anywhere}
+.detail small{display:block;color:var(--muted);margin-bottom:6px}
+.modalbg{display:none;position:fixed;inset:0;background:#10172799;z-index:20;align-items:center;justify-content:center;padding:15px}
+.modal{background:white;border-radius:14px;padding:23px;width:min(650px,100%);max-height:90vh;overflow:auto}
+.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modalhead h2{font-size:18px;margin:0}
+.modal-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:20px}
+.reward-banner{background:linear-gradient(110deg,#5430a7,#8152e9);color:white;border-radius:13px;padding:21px;display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:20px}
+.reward-banner small{opacity:.8}.reward-banner strong{font-size:29px;display:block;margin-top:6px}
+@media(max-width:950px){.sidebar{width:205px}.main{margin-left:205px}.stats{grid-template-columns:repeat(2,1fr)}.content{padding:18px}}
+@media(max-width:600px){.sidebar{display:none}.main{margin-left:0}.topbar{padding:0 13px}.content{padding:15px}.stats{gap:9px}.card{padding:13px}.card h2{font-size:21px}.detailgrid{grid-template-columns:1fr}.reward-banner{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+ <div class="brand">♛ <span>Earn</span>Gig</div>
+ <div class="nav-label">MAIN MENU</div>
+ <a class="nav" href="admin.html">▦ Dashboard</a>
+ <div class="nav-label">USERS & ACCOUNTS</div>
+ <a class="nav" href="users.html">♙ User Management</a>
+ <a class="nav" href="membership.html">♧ Membership</a>
+ <a class="nav" href="wallet.html">◈ Wallet & Coins</a>
+ <a class="nav active" href="referrals.html">♧ Referrals & Rewards</a>
+ <div class="nav-label">FINANCE</div>
+ <a class="nav" href="transactions.html">▤ Transactions</a>
+ <a class="nav" href="deposits.html">＋ Deposits & Payments</a>
+ <a class="nav" href="withdrawals.html">↗ Withdrawals</a>
+ <a class="nav" href="seller-wallet.html">▣ Seller Store Wallet</a>
+ <div class="nav-label">CONTENT</div>
+ <a class="nav" href="writers.html">✎ Writer Applications</a>
+ <a class="nav" href="novels.html">▤ Novel Management</a>
+ <a class="nav" href="readers.html">♡ Readers & Rewards</a>
+ <div class="nav-label">BUSINESS</div>
+ <a class="nav" href="ads.html">▧ Advertisements</a>
+ <a class="nav" href="billboard.html">▦ Billboard Bookings</a>
+ <a class="nav" href="marketplace.html">▣ Marketplace</a>
+ <a class="nav" href="stores.html">✓ Store Verification</a>
+ <a class="nav" href="delivery.html">🚚 Delivery Management</a>
+ <div class="nav-label">SYSTEM</div>
+ <a class="nav" href="notifications.html">♧ Notifications</a>
+ <a class="nav" href="reports.html">▥ Reports</a>
+ <a class="nav" href="settings.html">⚙ Settings</a>
+</aside>
+
+<div class="main">
+<header class="topbar">
+ <input class="searchtop" placeholder="Search EarnGig administration...">
+ <div class="profile"><div class="avatar">A</div><div><b>EarnGig Admin</b><br><span style="color:#858b9c">Administrator</span></div></div>
+</header>
+
+<main class="content">
+ <div class="heading">
+  <div><h1>Referrals & Rewards</h1><p class="subtitle">Monitor referral activity, successful invitations and reward distribution.</p></div>
+  <button class="light" onclick="exportReferrals()">↓ Export Report</button>
+ </div>
+
+ <div class="notice">Prototype mode: referral data is not connected to live EarnGig accounts. A referral reward should only be approved after the referral meets the platform's eligibility requirements.</div>
+
+ <div class="reward-banner">
+  <div><small>EarnGig successful referral reward</small><strong>5,000 Coins</strong><small>Reward per successful referral</small></div>
+  <div style="font-size:35px">♧</div>
+ </div>
+
+ <div class="stats">
+  <div class="card"><span class="card-icon">♧</span><small>Total Referrals</small><h2 id="total">0</h2><small>Recorded invitations</small></div>
+  <div class="card"><span class="card-icon">✓</span><small>Successful Referrals</small><h2 id="successful">0</h2><small class="green">Eligible referrals</small></div>
+  <div class="card"><span class="card-icon">◷</span><small>Pending Rewards</small><h2 id="pending">0</h2><small class="orange">Awaiting review</small></div>
+  <div class="card"><span class="card-icon">◈</span><small>Coins Awarded</small><h2 id="awarded">0</h2><small>Recorded reward coins</small></div>
+ </div>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Referral Activity</h2><span class="badge info">Referral Directory</span></div>
+  <div class="toolbar">
+   <input id="search" placeholder="Search referral ID, referrer or invited user..." oninput="render()">
+   <select id="statusFilter" onchange="render()">
+    <option value="">All referral statuses</option>
+    <option>Pending</option><option>Successful</option><option>Rejected</option><option>Rewarded</option>
+   </select>
+  </div>
+  <div class="tablewrap" id="referralTable"></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Reward Distribution History</h2><span class="badge">Reward Records</span></div>
+  <div class="tablewrap" id="rewardTable"></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Referral Programme Rules</h2></div>
+  <div class="detailgrid">
+   <div class="detail"><small>Successful referral reward</small><b>5,000 coins</b></div>
+   <div class="detail"><small>Reward eligibility</small>Must satisfy EarnGig referral programme requirements.</div>
+   <div class="detail"><small>Reward approval</small>Admin review before reward distribution.</div>
+   <div class="detail"><small>Reward destination</small>Referrer's EarnGig coin wallet.</div>
+  </div>
+ </section>
+</main>
+</div>
+
+<div class="modalbg" id="modal">
+ <div class="modal">
+  <div class="modalhead"><h2 id="modalTitle">Referral Details</h2><button class="light" onclick="closeModal()">Close</button></div>
+  <div id="modalContent"></div>
+ </div>
+</div>
+
+<script>
+const KEY="earngig_referral_management_v1";
+const REWARDS="earngig_referral_rewards_v1";
+let referrals=[],rewardHistory=[];
+try{referrals=JSON.parse(localStorage.getItem(KEY)||"[]");if(!Array.isArray(referrals))referrals=[]}catch{referrals=[]}
+try{rewardHistory=JSON.parse(localStorage.getItem(REWARDS)||"[]");if(!Array.isArray(rewardHistory))rewardHistory=[]}catch{rewardHistory=[]}
+
+const REWARD_COINS=5000;
+function save(){localStorage.setItem(KEY,JSON.stringify(referrals));render()}
+function saveRewards(){localStorage.setItem(REWARDS,JSON.stringify(rewardHistory));renderRewards()}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+
+function updateStats(){
+ document.getElementById("total").textContent=referrals.length;
+ document.getElementById("successful").textContent=referrals.filter(r=>["Successful","Rewarded"].includes(r.status)).length;
+ document.getElementById("pending").textContent=referrals.filter(r=>r.status==="Pending").length;
+ document.getElementById("awarded").textContent=rewardHistory.reduce((a,r)=>a+Number(r.coins||0),0).toLocaleString();
+}
+
+function render(){
+ const q=document.getElementById("search").value.toLowerCase();
+ const filter=document.getElementById("statusFilter").value;
+ const list=referrals.map((r,i)=>({...r,index:i})).filter(r=>
+ [r.id,r.referrer,r.referrerEmail,r.invited,r.invitedEmail,r.code].join(" ").toLowerCase().includes(q)&&(!filter||r.status===filter)
+ );
+ document.getElementById("referralTable").innerHTML=list.length?`
+ <table><thead><tr>
+ <th>REFERRAL ID</th><th>REFERRER</th><th>INVITED USER</th><th>REFERRAL CODE</th><th>DATE</th><th>STATUS</th><th>REWARD</th><th>ACTION</th>
+ </tr></thead><tbody>${list.map(r=>`
+ <tr><td><b>${esc(r.id)}</b></td>
+ <td>${esc(r.referrer)}<br><small style="color:#858b9c">${esc(r.referrerEmail)}</small></td>
+ <td>${esc(r.invited)}<br><small style="color:#858b9c">${esc(r.invitedEmail)}</small></td>
+ <td>${esc(r.code||"—")}</td><td>${esc(r.date||"—")}</td>
+ <td><span class="badge ${r.status==="Rewarded"||r.status==="Successful"?"good":r.status==="Rejected"?"bad":"pending"}">${esc(r.status)}</span></td>
+ <td>${r.status==="Rewarded"?REWARD_COINS.toLocaleString()+" coins":r.status==="Successful"?REWARD_COINS.toLocaleString()+" coins pending":"—"}</td>
+ <td><button class="action" onclick="viewReferral(${r.index})">Review →</button></td></tr>`).join("")}</tbody></table>`:
+ `<div class="empty"><h3>No referral records found</h3><p>Live referral activity will appear here when the referral database is connected.</p></div>`;
+ updateStats();
+}
+
+function viewReferral(i){
+ const r=referrals[i];if(!r)return;
+ showModal("Referral Review",`
+ <div class="detailgrid">
+ <div class="detail"><small>Referral ID</small><b>${esc(r.id)}</b></div>
+ <div class="detail"><small>Referral code</small>${esc(r.code||"—")}</div>
+ <div class="detail"><small>Referrer</small>${esc(r.referrer)}</div>
+ <div class="detail"><small>Referrer email</small>${esc(r.referrerEmail)}</div>
+ <div class="detail"><small>Invited user</small>${esc(r.invited)}</div>
+ <div class="detail"><small>Invited user email</small>${esc(r.invitedEmail)}</div>
+ <div class="detail"><small>Referral date</small>${esc(r.date||"—")}</div>
+ <div class="detail"><small>Current status</small>${esc(r.status)}</div>
+ <div class="detail"><small>Eligibility notes</small>${esc(r.notes||"No notes recorded")}</div>
+ <div class="detail"><small>Reward</small>${r.status==="Rewarded"?REWARD_COINS.toLocaleString()+" coins awarded":"5,000 coins if approved"}</div>
+ </div>
+ <div class="modal-actions">
+ <button class="light" onclick="setStatus(${i},'Successful')">Mark Successful</button>
+ <button class="primary" onclick="approveReward(${i})">Approve & Record Reward</button>
+ <button class="danger" onclick="setStatus(${i},'Rejected')">Reject Referral</button>
+ </div>
+ <p style="font-size:11px;color:#9297a5;margin-top:15px">Prototype only. Approving here records a demonstration reward; it does not credit a real wallet.</p>`);
+}
+
+function setStatus(i,status){
+ if(!confirm("Change referral status to "+status+"?"))return;
+ referrals[i].status=status;
+ save();viewReferral(i);
+}
+
+function approveReward(i){
+ const r=referrals[i];if(!r)return;
+ if(r.status==="Rewarded"){alert("This referral has already been rewarded.");return}
+ if(r.status==="Rejected"){alert("Rejected referrals cannot receive rewards.");return}
+ if(!confirm("Record a reward of 5,000 coins for this successful referral?"))return;
+ r.status="Rewarded";
+ r.rewardDate=new Date().toLocaleString();
+ rewardHistory.unshift({
+  id:"RWD-"+Date.now(),
+  referralId:r.id,
+  recipient:r.referrer,
+  recipientEmail:r.referrerEmail,
+  coins:REWARD_COINS,
+  date:r.rewardDate,
+  status:"Recorded"
+ });
+ localStorage.setItem(KEY,JSON.stringify(referrals));
+ saveRewards();render();viewReferral(i);
+}
+
+function renderRewards(){
+ document.getElementById("rewardTable").innerHTML=rewardHistory.length?`
+ <table><thead><tr><th>REWARD ID</th><th>REFERRAL ID</th><th>RECIPIENT</th><th>COINS</th><th>DATE</th><th>STATUS</th></tr></thead>
+ <tbody>${rewardHistory.map(r=>`<tr><td>${esc(r.id)}</td><td>${esc(r.referralId)}</td><td>${esc(r.recipient)}<br><small>${esc(r.recipientEmail)}</small></td><td>${Number(r.coins).toLocaleString()}</td><td>${esc(r.date)}</td><td><span class="badge good">${esc(r.status)}</span></td></tr>`).join("")}</tbody></table>`:
+ `<div class="empty">No referral rewards have been recorded.</div>`;
+}
+
+function showModal(title,html){
+ document.getElementById("modalTitle").textContent=title;
+ document.getElementById("modalContent").innerHTML=html;
+ document.getElementById("modal").style.display="flex";
+}
+function closeModal(){document.getElementById("modal").style.display="none"}
+
+function exportReferrals(){
+ const blob=new Blob([JSON.stringify({referrals,rewardHistory},null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="earngig-referral-report.json";a.click();URL.revokeObjectURL(url);
+}
+
+render();
+renderRewards();
+updateStats();
+</script>
+</body>
+</html>
