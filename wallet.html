@@ -4,292 +4,228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>EarnGig Admin | Wallet & Coins</title>
+<title>EarnGig Admin | Coin Withdrawals</title>
 <style>
-:root{--navy:#151b2d;--purple:#713cf0;--lav:#f2edff;--bg:#f5f6fb;--ink:#192033;--muted:#7b8295;--line:#e9ebf3;--green:#16a765;--red:#e34d59;--orange:#efa638}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif;font-size:14px}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:245px;background:var(--navy);padding:22px 15px;color:white;overflow-y:auto}
-.brand{font-size:23px;font-weight:800;padding:10px 12px 35px}.brand span{color:#e6bd59}
-.nav-label{font-size:10px;letter-spacing:1px;color:#778198;padding:15px 12px 8px}
-.nav{display:block;text-decoration:none;color:#cbd0de;padding:12px;border-radius:9px;margin:3px 0;font-size:13px}
-.nav:hover,.nav.active{background:#49347e;color:white}
-.main{margin-left:245px}
-.topbar{height:72px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px}
-.searchtop{width:45%;background:#f2f3f8;border-radius:9px;padding:12px;border:0}
-.profile{display:flex;align-items:center;gap:10px;font-size:12px}
-.avatar{width:38px;height:38px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-weight:bold}
-.content{padding:28px;max-width:1600px;margin:auto}
-.heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:22px}
-h1{font-size:27px;margin:0 0 7px}.subtitle{color:var(--muted);font-size:13px;margin:0}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
-.card,.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:0 3px 12px #17203a05}
-.card small{color:var(--muted)}.card h2{font-size:25px;margin:12px 0 5px}
-.card-icon{float:right;width:39px;height:39px;border-radius:11px;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-size:20px}
-.panel{margin-bottom:18px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:17px}.panel-head h2{font-size:16px;margin:0}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-.toolbar input{flex:1;min-width:190px}
-input,select,textarea{border:1px solid var(--line);border-radius:8px;padding:11px;background:white;color:var(--ink);outline:none;width:100%}
-button.primary{background:var(--purple);color:white;border:0;padding:11px 16px;border-radius:8px;font-weight:bold}
-button.light{background:var(--lav);color:var(--purple);border:0;padding:10px 13px;border-radius:8px;font-weight:bold}
-button.danger{background:#fff0f0;color:var(--red);border:0;padding:9px 12px;border-radius:8px;font-weight:bold}
-.tablewrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:780px}
-th,td{padding:14px 11px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}
-th{background:#f8f8fc;color:#747b8e;font-size:11px}
-.person{display:flex;align-items:center;gap:9px}.person-avatar{width:35px;height:35px;border-radius:50%;background:#eee8ff;color:var(--purple);display:grid;place-items:center;font-weight:bold}
-.person strong{display:block}.person small{color:var(--muted)}
-.badge{display:inline-block;border-radius:20px;padding:6px 9px;font-size:10px;font-weight:bold;background:#f0f1f5;color:#70788a}
-.badge.good{background:#e5f8ed;color:#159557}.badge.pending{background:#fff4e2;color:#ba7b19}.badge.bad{background:#fff0f0;color:var(--red)}
-.action{background:none;border:0;color:var(--purple);font-weight:bold}
-.empty{padding:40px 15px;text-align:center;color:var(--muted)}
-.notice{background:#fff8e9;color:#805c1d;border:1px solid #f0dfb8;padding:12px;border-radius:9px;font-size:12px;margin-bottom:17px}
-.modalbg{display:none;position:fixed;inset:0;background:#10172799;z-index:20;align-items:center;justify-content:center;padding:15px}
-.modal{background:white;border-radius:14px;padding:23px;width:min(650px,100%);max-height:90vh;overflow:auto}
-.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modalhead h2{font-size:18px;margin:0}
-.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.detail{background:#f7f7fb;padding:13px;border-radius:9px;font-size:13px;overflow-wrap:anywhere}
-.detail small{display:block;color:var(--muted);margin-bottom:6px}
-.field{display:flex;flex-direction:column;gap:6px;margin-bottom:13px}
-.field label{font-size:11px;color:var(--muted);font-weight:bold}
-.modal-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:20px}
-@media(max-width:950px){.sidebar{width:205px}.main{margin-left:205px}.stats{grid-template-columns:repeat(2,1fr)}.content{padding:18px}}
-@media(max-width:600px){.sidebar{display:none}.main{margin-left:0}.topbar{padding:0 13px}.content{padding:15px}.stats{gap:9px}.card{padding:13px}.card h2{font-size:21px}.detailgrid{grid-template-columns:1fr}}
+:root{--navy:#111827;--purple:#7047eb;--lav:#f1edff;--bg:#f5f6fa;--text:#20283a;--muted:#8991a3;--border:#e9eaf1;--green:#16865c;--greenbg:#e9f8f1;--orange:#bd761b;--orangebg:#fff4e5;--red:#d34b58;--redbg:#fff0f1;--blue:#3976c8;--bluebg:#edf4ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer}
+.layout{display:flex;min-height:100vh}.sidebar{width:250px;background:var(--navy);color:white;position:fixed;inset:0 auto 0 0;padding:25px 15px;overflow:auto;z-index:10}
+.brand{display:flex;align-items:center;gap:10px;padding:0 12px 28px;font-size:22px;font-weight:800}.crown{width:27px;height:25px}
+.nav-label{font-size:10px;letter-spacing:1.5px;color:#8290a9;padding:18px 13px 9px;font-weight:700}
+.nav-link{display:flex;align-items:center;gap:12px;color:#aeb8ca;text-decoration:none;padding:11px 13px;margin:3px 0;border-radius:8px;font-size:13px}
+.nav-link:hover,.nav-link.active{background:#292344;color:white}.nav-link.active{box-shadow:inset 3px 0 var(--purple)}.nav-icon{width:19px;text-align:center}
+.sidebar-footer{border-top:1px solid #30394b;margin-top:28px;padding:18px 12px;color:#8996aa;font-size:11px;line-height:1.7}
+.main{margin-left:250px;width:calc(100% - 250px);min-width:0}.topbar{height:72px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:5}
+.top-title{font-size:14px;font-weight:700}.top-sub{font-size:11px;color:var(--muted);margin-top:3px}.admin-pill{background:var(--lav);color:var(--purple);padding:8px 13px;border-radius:20px;font-size:11px;font-weight:700}
+.content{padding:29px 30px 50px;max-width:1600px;margin:auto}.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}
+h1{font-size:24px;margin:0 0 7px;letter-spacing:-.6px}.subtitle{font-size:12px;color:var(--muted);line-height:1.6}
+.btn{border:0;border-radius:7px;padding:10px 14px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.primary{background:var(--purple);color:white}.light{background:white;border:1px solid var(--border);color:#535d70}.danger{background:var(--redbg);color:var(--red)}.success{background:var(--greenbg);color:var(--green)}
+.notice{background:#f0edff;border:1px solid #e1d9ff;border-radius:9px;padding:13px 15px;color:#51418c;font-size:11px;line-height:1.7;margin-bottom:20px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:20px}.stat,.panel{background:white;border:1px solid var(--border);border-radius:10px;box-shadow:0 5px 20px #181f350b}
+.stat{padding:18px}.stat-label{font-size:11px;color:var(--muted);font-weight:600}.stat-value{font-size:23px;font-weight:800;margin-top:12px}.stat-foot{font-size:10px;color:var(--muted);margin-top:7px}
+.panel{margin-bottom:20px}.panel-head{padding:17px 19px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.panel-title{font-size:13px;font-weight:800}.panel-sub{font-size:10px;color:var(--muted);margin-top:4px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}.field{border:1px solid var(--border);background:white;border-radius:7px;padding:10px;font-size:11px;color:var(--text);outline:none;min-width:130px}.field:focus{border-color:var(--purple)}.search{min-width:220px}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:left;font-size:10px;color:#8c94a5;background:#fafbfc;padding:13px 15px}td{padding:14px 15px;border-top:1px solid #f0f1f5;font-size:11px;vertical-align:middle}tbody tr:hover{background:#fcfbff}
+.person{display:flex;align-items:center;gap:9px}.avatar{width:34px;height:34px;border-radius:9px;background:#eee9ff;color:var(--purple);display:grid;place-items:center;font-weight:800;flex-shrink:0}.person-name{font-weight:700}.person-meta{font-size:10px;color:var(--muted);margin-top:4px}
+.tag{display:inline-block;border-radius:20px;padding:5px 9px;font-size:9px;font-weight:800}.pending{background:var(--orangebg);color:var(--orange)}.approved{background:var(--greenbg);color:var(--green)}.rejected{background:var(--redbg);color:var(--red)}.processing{background:var(--bluebg);color:var(--blue)}.paid{background:var(--greenbg);color:var(--green)}.frozen{background:#f0f1f4;color:#697386}
+.action{border:1px solid var(--border);background:white;border-radius:6px;padding:7px 9px;font-size:10px;font-weight:700;color:#596276}.action:hover{border-color:var(--purple);color:var(--purple)}
+.empty{text-align:center;padding:42px 20px;color:var(--muted)}.empty strong{display:block;color:#4d5668;font-size:13px;margin-bottom:6px}.empty p{font-size:11px;line-height:1.6;margin:0}
+.modal-backdrop{display:none;position:fixed;inset:0;background:#0a0f1c99;z-index:30;align-items:center;justify-content:center;padding:16px}.modal-backdrop.show{display:flex}.modal{background:white;border-radius:13px;width:100%;max-width:700px;max-height:92vh;overflow-y:auto;box-shadow:0 20px 70px #0003}
+.modal-head{padding:19px 21px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.modal-head h2{font-size:16px;margin:0}.close{border:0;background:#f2f3f7;border-radius:7px;width:30px;height:30px;font-size:17px}
+.modal-body{padding:20px 21px}.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.detail{padding:12px;background:#f8f9fc;border-radius:8px;min-width:0}.detail-label{font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase}.detail-value{font-size:12px;font-weight:700;overflow-wrap:anywhere}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 13px}.form-group{margin-top:13px}.form-group label{display:block;font-size:10px;font-weight:700;margin-bottom:6px}.form-group .field{width:100%}.form-group.full{grid-column:1/-1}textarea.field{min-height:75px;resize:vertical}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:20px}.help{font-size:10px;color:var(--muted);line-height:1.6;margin-top:7px}
+.mobile-menu{display:none;border:0;background:white;font-size:20px}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.sidebar{transform:translateX(-100%);transition:.25s}.sidebar.open{transform:translateX(0)}.main{margin-left:0;width:100%}.mobile-menu{display:block}.topbar{padding:0 16px}.content{padding:22px 15px}.heading{flex-direction:column}.search{min-width:100%;width:100%}.filters{width:100%}.filters .field{flex:1}}
+@media(max-width:480px){.detail-grid,.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}}
 </style>
 </head>
 <body>
-
-<aside class="sidebar">
- <div class="brand">♛ <span>Earn</span>Gig</div>
- <div class="nav-label">MAIN MENU</div>
- <a class="nav" href="admin.html">▦ Dashboard</a>
- <div class="nav-label">USERS & ACCOUNTS</div>
- <a class="nav" href="users.html">♙ User Management</a>
- <a class="nav" href="membership.html">♧ Membership</a>
- <a class="nav active" href="wallet.html">◈ Wallet & Coins</a>
- <a class="nav" href="referrals.html">♧ Referrals & Rewards</a>
- <div class="nav-label">FINANCE</div>
- <a class="nav" href="transactions.html">▤ Transactions</a>
- <a class="nav" href="deposits.html">＋ Deposits & Payments</a>
- <a class="nav" href="withdrawals.html">↗ Withdrawals</a>
- <a class="nav" href="seller-wallet.html">▣ Seller Store Wallet</a>
- <div class="nav-label">CONTENT</div>
- <a class="nav" href="writers.html">✎ Writer Applications</a>
- <a class="nav" href="novels.html">▤ Novel Management</a>
- <a class="nav" href="readers.html">♡ Readers & Rewards</a>
- <div class="nav-label">BUSINESS</div>
- <a class="nav" href="ads.html">▧ Advertisements</a>
- <a class="nav" href="billboard.html">▦ Billboard Bookings</a>
- <a class="nav" href="marketplace.html">▣ Marketplace</a>
- <a class="nav" href="stores.html">✓ Store Verification</a>
- <a class="nav" href="delivery.html">🚚 Delivery Management</a>
- <div class="nav-label">SYSTEM</div>
- <a class="nav" href="notifications.html">♧ Notifications</a>
- <a class="nav" href="reports.html">▥ Reports</a>
- <a class="nav" href="settings.html">⚙ Settings</a>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <svg class="crown" viewBox="0 0 40 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <path d="M4 10L11 16L19.5 4L28 16L36 10L32 28H8L4 10Z" stroke="#E8BD62" stroke-width="2" stroke-linejoin="round"/>
+   <path d="M9 23H31M11 31H29" stroke="#E8BD62" stroke-width="2" stroke-linecap="round"/>
+   <circle cx="4" cy="8" r="2" fill="#E8BD62"/><circle cx="19.5" cy="3" r="2" fill="#E8BD62"/><circle cx="36" cy="8" r="2" fill="#E8BD62"/>
+  </svg><span>EarnGig</span>
+ </div>
+ <div class="nav-label">OVERVIEW</div>
+ <a class="nav-link" href="admin.html"><span class="nav-icon">▦</span>Dashboard</a>
+ <div class="nav-label">USER MANAGEMENT</div>
+ <a class="nav-link" href="users.html"><span class="nav-icon">♙</span>Users</a>
+ <a class="nav-link" href="membership.html"><span class="nav-icon">◇</span>Membership</a>
+ <div class="nav-label">FINANCIAL MANAGEMENT</div>
+ <a class="nav-link active" href="wallet.html"><span class="nav-icon">◈</span>Coin Withdrawals</a>
+ <a class="nav-link" href="coin-purchases.html"><span class="nav-icon">◉</span>Coin Purchases</a>
+ <a class="nav-link" href="referrals.html"><span class="nav-icon">♧</span>Referrals</a>
+ <a class="nav-link" href="transactions.html"><span class="nav-icon">⇄</span>Transactions</a>
+ <a class="nav-link" href="deposits.html"><span class="nav-icon">↓</span>Deposits</a>
+ <a class="nav-link" href="withdrawals.html"><span class="nav-icon">↑</span>User Naira Withdrawals</a>
+ <a class="nav-link" href="payouts.html"><span class="nav-icon">⇧</span>Payout Management</a>
+ <a class="nav-link" href="seller-wallet.html"><span class="nav-icon">▣</span>Seller Store Wallet</a>
+ <div class="nav-label">MARKETPLACE</div>
+ <a class="nav-link" href="store-verification.html"><span class="nav-icon">✓</span>Store Verification</a>
+ <div class="nav-label">ADVERTISING</div>
+ <a class="nav-link" href="advertising.html"><span class="nav-icon">▤</span>Advertisement Bookings</a>
+ <a class="nav-link" href="watch-earn.html"><span class="nav-icon">▶</span>Watch &amp; Earn</a>
+ <a class="nav-link" href="billboard.html"><span class="nav-icon">▣</span>Billboard Management</a>
+ <div class="nav-label">CONTENT &amp; OPERATIONS</div>
+ <a class="nav-link" href="writers.html"><span class="nav-icon">✎</span>Writers</a>
+ <div class="sidebar-footer">EarnGig Administration<br>Owner access only<br><span style="color:#e8bd62">●</span> Admin prototype</div>
 </aside>
 
-<div class="main">
+<main class="main">
 <header class="topbar">
- <input class="searchtop" placeholder="Search EarnGig administration...">
- <div class="profile"><div class="avatar">A</div><div><b>EarnGig Admin</b><br><span style="color:#858b9c">Administrator</span></div></div>
+ <div style="display:flex;align-items:center;gap:13px">
+  <button class="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+  <div><div class="top-title">Coin Withdrawals</div><div class="top-sub">Financial management / Coin withdrawal requests</div></div>
+ </div>
+ <div class="admin-pill">OWNER ADMIN</div>
 </header>
 
-<main class="content">
+<div class="content">
  <div class="heading">
-  <div><h1>Wallet & Coins</h1><p class="subtitle">Manage user Naira wallets, coin balances, purchases and wallet activity.</p></div>
-  <button class="light" onclick="exportWallets()">↓ Export Wallet Data</button>
+  <div><h1>Coin Withdrawals</h1><div class="subtitle">Monitor users who request to withdraw their earned or purchased coins.</div></div>
+  <button class="btn light" onclick="exportData()">⇩ Export records</button>
  </div>
 
- <div class="notice">Prototype mode: balances and transactions are not connected to live EarnGig accounts. Do not use manual adjustments for real financial operations until server-side verification and audit controls are implemented.</div>
-
- <div class="stats">
-  <div class="card"><span class="card-icon">◈</span><small>Wallet Accounts</small><h2 id="total">0</h2><small>Account records</small></div>
-  <div class="card"><span class="card-icon">₦</span><small>Total Naira Balance</small><h2 id="naira">₦0</h2><small>Recorded balances</small></div>
-  <div class="card"><span class="card-icon">◉</span><small>Total Coin Balance</small><h2 id="coins">0</h2><small>Recorded coins</small></div>
-  <div class="card"><span class="card-icon">↗</span><small>Coin Purchases</small><h2 id="purchases">0</h2><small>Recorded purchases</small></div>
+ <div class="notice">
+  <strong>This page is only for coin withdrawal requests.</strong> Coin purchases are tracked separately in Coin Purchases. Ordinary Naira wallet withdrawals remain in User Naira Withdrawals. The displayed Naira equivalent uses the existing conversion reference of 10 coins = ₦1; any withdrawal eligibility, fees or limits must be configured by EarnGig before live processing.
  </div>
 
- <section class="panel">
-  <div class="panel-head"><h2>Wallet Accounts</h2><span class="badge">Wallet Directory</span></div>
-  <div class="toolbar">
-   <input id="search" placeholder="Search user name, email or wallet ID..." oninput="renderWallets()">
-   <select id="typeFilter" onchange="renderWallets()">
-    <option value="">All account types</option>
-    <option>Regular User</option><option>Writer</option><option>Seller</option>
-   </select>
-  </div>
-  <div class="tablewrap" id="walletTable"></div>
+ <section class="stats">
+  <div class="stat"><div class="stat-label">Withdrawal requests</div><div class="stat-value" id="totalCount">0</div><div class="stat-foot">All recorded requests</div></div>
+  <div class="stat"><div class="stat-label">Pending review</div><div class="stat-value" id="pendingCount">0</div><div class="stat-foot">Waiting for admin review</div></div>
+  <div class="stat"><div class="stat-label">Coins requested</div><div class="stat-value" id="requestedCoins">0</div><div class="stat-foot">Across recorded requests</div></div>
+  <div class="stat"><div class="stat-label">Completed</div><div class="stat-value" id="paidCount">0</div><div class="stat-foot">Marked as paid</div></div>
  </section>
 
  <section class="panel">
-  <div class="panel-head"><h2>Coin Purchase Records</h2><span class="badge">Purchase History</span></div>
-  <div class="toolbar">
-   <input id="purchaseSearch" placeholder="Search purchase ID or user..." oninput="renderPurchases()">
-   <select id="purchaseFilter" onchange="renderPurchases()">
-    <option value="">All payment statuses</option><option>Paid</option><option>Pending</option><option>Failed</option><option>Refunded</option>
-   </select>
+  <div class="panel-head">
+   <div><div class="panel-title">Coin withdrawal request register</div><div class="panel-sub">Review requests, user details, destination and processing status.</div></div>
+   <div class="filters">
+    <input class="field search" id="search" placeholder="Search name, user ID or request..." oninput="render()">
+    <select class="field" id="statusFilter" onchange="render()"><option value="">All statuses</option><option>Pending Review</option><option>Approved</option><option>Processing</option><option>Paid</option><option>Rejected</option></select>
+   </div>
   </div>
-  <div class="tablewrap" id="purchaseTable"></div>
- </section>
-
- <section class="panel">
-  <div class="panel-head"><h2>Wallet Transaction History</h2><span class="badge">Account Activity</span></div>
-  <div class="toolbar">
-   <input id="historySearch" placeholder="Search transaction or wallet ID..." oninput="renderHistory()">
-   <select id="historyFilter" onchange="renderHistory()"><option value="">All transaction types</option><option>Coin Purchase</option><option>Coin Reward</option><option>Wallet Credit</option><option>Wallet Debit</option><option>Adjustment</option></select>
+  <div class="table-wrap">
+   <table><thead><tr><th>USER</th><th>REQUEST ID</th><th>COINS REQUESTED</th><th>NAIRA EQUIVALENT</th><th>DATE</th><th>STATUS</th><th>ACTION</th></tr></thead><tbody id="rows"></tbody></table>
   </div>
-  <div class="tablewrap" id="historyTable"></div>
+  <div class="panel-head" style="border-top:1px solid var(--border);border-bottom:0">
+   <span class="help">Live requests will appear when the backend is connected.</span>
+   <button class="btn primary" onclick="openAdd()">＋ Record request</button>
+  </div>
  </section>
+ <div class="help">Prototype storage: <code>earngig_coin_withdrawals_v1</code>. This page does not debit a live coin balance, initiate a bank transfer or verify a payout.</div>
+</div>
 </main>
 </div>
 
-<div class="modalbg" id="modal">
- <div class="modal">
-  <div class="modalhead"><h2 id="modalTitle">Wallet Details</h2><button class="light" onclick="closeModal()">Close</button></div>
-  <div id="modalContent"></div>
- </div>
+<div class="modal-backdrop" id="addModal" onclick="backdrop(event,'addModal')">
+ <div class="modal"><div class="modal-head"><h2>Record coin withdrawal request</h2><button class="close" onclick="closeModal('addModal')">×</button></div><div class="modal-body">
+  <div class="notice">This is a local administrative record only. It does not create a real request or move coins or money.</div>
+  <div class="form-grid">
+   <div class="form-group"><label>User full name *</label><input class="field" id="fName" placeholder="Full name"></div>
+   <div class="form-group"><label>EarnGig user ID *</label><input class="field" id="fUserId" placeholder="User ID"></div>
+   <div class="form-group"><label>Email address</label><input class="field" id="fEmail" type="email" placeholder="Email"></div>
+   <div class="form-group"><label>Coins requested *</label><input class="field" id="fCoins" type="number" min="1" step="1" placeholder="Number of coins" oninput="updateEquivalent()"></div>
+   <div class="form-group"><label>Bank name</label><input class="field" id="fBank" placeholder="Bank name"></div>
+   <div class="form-group"><label>Account name</label><input class="field" id="fAccountName" placeholder="Account holder"></div>
+   <div class="form-group"><label>Account number</label><input class="field" id="fAccountNumber" placeholder="Account number"></div>
+   <div class="form-group"><label>Estimated Naira equivalent</label><input class="field" id="fEquivalent" readonly placeholder="₦0.00"></div>
+   <div class="form-group full"><label>Admin note</label><textarea class="field" id="fNote" placeholder="Optional note"></textarea></div>
+  </div>
+  <div class="modal-actions"><button class="btn light" onclick="closeModal('addModal')">Cancel</button><button class="btn primary" onclick="saveRequest()">Save request</button></div>
+ </div></div>
+</div>
+
+<div class="modal-backdrop" id="detailModal" onclick="backdrop(event,'detailModal')">
+ <div class="modal"><div class="modal-head"><h2 id="detailTitle">Withdrawal details</h2><button class="close" onclick="closeModal('detailModal')">×</button></div><div class="modal-body" id="detailBody"></div></div>
+</div>
+
+<div class="modal-backdrop" id="statusModal" onclick="backdrop(event,'statusModal')">
+ <div class="modal"><div class="modal-head"><h2>Update withdrawal status</h2><button class="close" onclick="closeModal('statusModal')">×</button></div><div class="modal-body">
+  <div class="form-group"><label>New status</label><select class="field" id="newStatus"><option>Approved</option><option>Processing</option><option>Paid</option><option>Rejected</option></select></div>
+  <div class="form-group"><label>Payment reference (required for Paid)</label><input class="field" id="paymentRef" placeholder="Bank or provider reference"></div>
+  <div class="form-group"><label>Admin note *</label><textarea class="field" id="statusNote" placeholder="Reason or processing details"></textarea></div>
+  <div class="notice" style="margin-top:14px">Only mark a request as Paid after confirming the actual transfer. Saving a reference here does not verify payment.</div>
+  <div class="modal-actions"><button class="btn light" onclick="closeModal('statusModal')">Cancel</button><button class="btn primary" onclick="saveStatus()">Save update</button></div>
+ </div></div>
 </div>
 
 <script>
-const ACCOUNT_KEY="earngig_wallet_accounts_v1";
-const PURCHASE_KEY="earngig_wallet_purchases_v1";
-const HISTORY_KEY="earngig_wallet_history_v1";
-
-function read(key){
- try{const v=JSON.parse(localStorage.getItem(key)||"[]");return Array.isArray(v)?v:[]}
- catch{return []}
+const KEY='earngig_coin_withdrawals_v1';
+let requests=load(),activeId=null;
+function load(){try{let a=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(a)?a:[]}catch(e){return []}}
+function save(){localStorage.setItem(KEY,JSON.stringify(requests))}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function uid(){return 'CWD-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,5).toUpperCase()}
+function money(v){return '₦'+Number(v||0).toLocaleString('en-NG',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function equivalent(coins){return Number(coins||0)/10}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function backdrop(e,id){if(e.target.id===id)closeModal(id)}
+function badge(s){let c={'Pending Review':'pending','Approved':'approved','Processing':'processing','Paid':'paid','Rejected':'rejected'}[s]||'pending';return `<span class="tag ${c}">${esc(s)}</span>`}
+function updateEquivalent(){document.getElementById('fEquivalent').value=money(equivalent(document.getElementById('fCoins').value))}
+function openAdd(){
+ ['fName','fUserId','fEmail','fCoins','fBank','fAccountName','fAccountNumber','fNote'].forEach(id=>document.getElementById(id).value='');
+ updateEquivalent();document.getElementById('addModal').classList.add('show');
 }
-let wallets=read(ACCOUNT_KEY);
-let purchases=read(PURCHASE_KEY);
-let history=read(HISTORY_KEY);
-
-function esc(v){
- return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function saveRequest(){
+ const name=document.getElementById('fName').value.trim(),userId=document.getElementById('fUserId').value.trim(),coins=Number(document.getElementById('fCoins').value);
+ if(!name||!userId||!Number.isSafeInteger(coins)||coins<=0){alert('Enter the user name, user ID and a valid whole number of coins.');return}
+ const now=new Date().toISOString();
+ requests.unshift({id:uid(),name,userId,email:document.getElementById('fEmail').value.trim(),coins,nairaEquivalent:equivalent(coins),bank:document.getElementById('fBank').value.trim(),accountName:document.getElementById('fAccountName').value.trim(),accountNumber:document.getElementById('fAccountNumber').value.trim(),note:document.getElementById('fNote').value.trim(),status:'Pending Review',paymentReference:'',createdAt:now,updatedAt:now,history:[]});
+ save();render();closeModal('addModal');
 }
-function money(v){return "₦"+Number(v||0).toLocaleString("en-NG")}
-function saveWallets(){localStorage.setItem(ACCOUNT_KEY,JSON.stringify(wallets));renderWallets();updateStats()}
-function savePurchases(){localStorage.setItem(PURCHASE_KEY,JSON.stringify(purchases));renderPurchases();updateStats()}
-function saveHistory(){localStorage.setItem(HISTORY_KEY,JSON.stringify(history));renderHistory()}
-
-function updateStats(){
- document.getElementById("total").textContent=wallets.length;
- document.getElementById("naira").textContent=money(wallets.reduce((a,w)=>a+Number(w.naira||0),0));
- document.getElementById("coins").textContent=wallets.reduce((a,w)=>a+Number(w.coins||0),0).toLocaleString();
- document.getElementById("purchases").textContent=purchases.length;
+function render(){
+ document.getElementById('totalCount').textContent=requests.length;
+ document.getElementById('pendingCount').textContent=requests.filter(x=>x.status==='Pending Review').length;
+ document.getElementById('requestedCoins').textContent=requests.reduce((s,x)=>s+Number(x.coins||0),0).toLocaleString('en-NG');
+ document.getElementById('paidCount').textContent=requests.filter(x=>x.status==='Paid').length;
+ const q=document.getElementById('search').value.trim().toLowerCase(),status=document.getElementById('statusFilter').value;
+ const list=requests.filter(x=>(!q||[x.name,x.userId,x.id,x.email].join(' ').toLowerCase().includes(q))&&(!status||x.status===status));
+ document.getElementById('rows').innerHTML=list.length?list.map(x=>`<tr>
+ <td><div class="person"><div class="avatar">${esc((x.name||'?')[0].toUpperCase())}</div><div><div class="person-name">${esc(x.name)}</div><div class="person-meta">${esc(x.userId)}</div></div></div></td>
+ <td>${esc(x.id)}</td><td><strong>${Number(x.coins).toLocaleString('en-NG')}</strong></td><td>${money(x.nairaEquivalent)}</td><td>${new Date(x.createdAt).toLocaleDateString('en-NG')}</td><td>${badge(x.status)}</td><td><button class="action" onclick="showDetails('${x.id}')">View ↗</button></td></tr>`).join(''):'<tr><td colspan="7"><div class="empty"><strong>No coin withdrawal requests</strong><p>Requests will appear here after the live withdrawal service is connected.</p></div></td></tr>';
 }
-
-function renderWallets(){
- const q=document.getElementById("search").value.toLowerCase();
- const type=document.getElementById("typeFilter").value;
- const list=wallets.map((w,i)=>({...w,index:i})).filter(w=>
- [w.id,w.name,w.email].join(" ").toLowerCase().includes(q)&&(!type||w.type===type)
- );
- document.getElementById("walletTable").innerHTML=list.length?`
- <table><thead><tr><th>ACCOUNT HOLDER</th><th>WALLET ID</th><th>ACCOUNT TYPE</th><th>NAIRA BALANCE</th><th>COIN BALANCE</th><th>STATUS</th><th>ACTION</th></tr></thead>
- <tbody>${list.map(w=>`<tr>
- <td><div class="person"><div class="person-avatar">${esc(w.name.charAt(0).toUpperCase())}</div><div><strong>${esc(w.name)}</strong><small>${esc(w.email)}</small></div></div></td>
- <td>${esc(w.id)}</td><td>${esc(w.type)}</td><td>${money(w.naira)}</td><td>${Number(w.coins||0).toLocaleString()}</td>
- <td><span class="badge ${w.status==="Active"?"good":"bad"}">${esc(w.status)}</span></td>
- <td><button class="action" onclick="viewWallet(${w.index})">View Wallet →</button></td>
- </tr>`).join("")}</tbody></table>`:
- `<div class="empty"><h3>No wallet accounts found</h3><p>Live user wallet accounts will appear here when the database is connected.</p></div>`;
+function detail(label,value){return `<div class="detail"><div class="detail-label">${esc(label)}</div><div class="detail-value">${esc(value||'Not provided')}</div></div>`}
+function showDetails(id){
+ const x=requests.find(r=>r.id===id);if(!x)return;activeId=id;
+ document.getElementById('detailTitle').textContent='Request '+x.id;
+ document.getElementById('detailBody').innerHTML=`<div class="detail-grid">
+ ${detail('User',x.name)}${detail('User ID',x.userId)}${detail('Email',x.email)}
+ ${detail('Coins requested',Number(x.coins).toLocaleString('en-NG'))}${detail('Naira equivalent',money(x.nairaEquivalent))}
+ ${detail('Bank',x.bank)}${detail('Account name',x.accountName)}${detail('Account number',x.accountNumber)}
+ ${detail('Status',x.status)}${detail('Payment reference',x.paymentReference)}
+ ${detail('Request date',new Date(x.createdAt).toLocaleString('en-NG'))}</div>
+ <div class="detail" style="margin-top:12px"><div class="detail-label">Request note</div><div class="detail-value">${esc(x.note||'No note')}</div></div>
+ ${x.history?.length?'<h3 style="font-size:12px;margin:18px 0 8px">Status history</h3>'+x.history.map(h=>`<div class="detail" style="margin-top:7px"><strong>${esc(h.status)}</strong><div class="help">${esc(h.note)} · ${new Date(h.date).toLocaleString('en-NG')}</div></div>`).join(''):''}
+ <div class="modal-actions">${!['Paid','Rejected'].includes(x.status)?`<button class="btn primary" onclick="openStatus('${x.id}')">Update status</button>`:''}<button class="btn light" onclick="closeModal('detailModal')">Close</button></div>`;
+ document.getElementById('detailModal').classList.add('show');
 }
-
-function viewWallet(i){
- const w=wallets[i];if(!w)return;
- showModal("Wallet Details",`
- <div class="detailgrid">
- <div class="detail"><small>Account holder</small><b>${esc(w.name)}</b></div>
- <div class="detail"><small>Wallet ID</small>${esc(w.id)}</div>
- <div class="detail"><small>Email</small>${esc(w.email)}</div>
- <div class="detail"><small>Account type</small>${esc(w.type)}</div>
- <div class="detail"><small>Naira wallet</small><b>${money(w.naira)}</b></div>
- <div class="detail"><small>Coin balance</small><b>${Number(w.coins||0).toLocaleString()} coins</b></div>
- <div class="detail"><small>Account status</small>${esc(w.status)}</div>
- <div class="detail"><small>Last updated</small>${esc(w.updated||"Not available")}</div>
- </div>
- <div class="modal-actions">
- <button class="light" onclick="adjustBalance(${i},'naira')">Adjust Naira</button>
- <button class="light" onclick="adjustBalance(${i},'coins')">Adjust Coins</button>
- <button class="danger" onclick="toggleWallet(${i})">${w.status==="Active"?"Freeze Wallet":"Unfreeze Wallet"}</button>
- </div>
- <p style="font-size:11px;color:#9297a5;margin-top:15px">Prototype controls only. Real wallet changes must be performed through secure, audited server-side financial operations.</p>`);
+function openStatus(id){
+ const x=requests.find(r=>r.id===id);if(!x)return;activeId=id;closeModal('detailModal');
+ document.getElementById('newStatus').value=x.status==='Pending Review'?'Approved':x.status;
+ document.getElementById('paymentRef').value=x.paymentReference||'';
+ document.getElementById('statusNote').value='';
+ document.getElementById('statusModal').classList.add('show');
 }
-
-function adjustBalance(i,type){
- const w=wallets[i];
- showModal(type==="coins"?"Adjust Coin Balance":"Adjust Naira Balance",`
- <form onsubmit="saveAdjustment(event,${i},'${type}')">
- <div class="field"><label>Wallet owner</label><input value="${esc(w.name)}" disabled></div>
- <div class="field"><label>Current balance</label><input value="${type==="coins"?Number(w.coins||0).toLocaleString()+" coins":money(w.naira)}" disabled></div>
- <div class="field"><label>Adjustment type</label><select name="operation"><option value="credit">Credit</option><option value="debit">Debit</option></select></div>
- <div class="field"><label>Amount</label><input name="amount" type="number" min="0.01" step="any" required></div>
- <div class="field"><label>Reason for adjustment</label><input name="reason" required placeholder="Explain why this adjustment is needed"></div>
- <div class="modal-actions"><button class="primary">Save Adjustment</button></div>
- </form>`);
+function saveStatus(){
+ const x=requests.find(r=>r.id===activeId);if(!x)return;
+ const status=document.getElementById('newStatus').value,ref=document.getElementById('paymentRef').value.trim(),note=document.getElementById('statusNote').value.trim();
+ if(!note){alert('Enter an admin note.');return}
+ if(status==='Paid'&&!ref){alert('Enter the payment reference before marking as paid.');return}
+ const now=new Date().toISOString();x.status=status;x.paymentReference=ref;x.updatedAt=now;x.history=x.history||[];x.history.unshift({status,note,date:now});
+ save();render();closeModal('statusModal');activeId=null;
 }
-
-function saveAdjustment(e,i,type){
- e.preventDefault();
- const f=new FormData(e.target),amount=Number(f.get("amount"));
- if(!Number.isFinite(amount)||amount<=0){alert("Enter a valid amount.");return}
- const w=wallets[i],field=type==="coins"?"coins":"naira";
- const operation=f.get("operation"),reason=f.get("reason").trim();
- if(operation==="debit"&&amount>Number(w[field]||0)){alert("Insufficient balance.");return}
- if(!confirm("Confirm this prototype wallet adjustment?"))return;
- w[field]=Number(w[field]||0)+(operation==="credit"?amount:-amount);
- w.updated=new Date().toLocaleString();
- history.unshift({id:"WHT-"+Date.now(),walletId:w.id,name:w.name,type:"Adjustment",amount,unit:type==="coins"?"Coins":"Naira",direction:operation,reason,date:new Date().toLocaleString(),status:"Recorded"});
- localStorage.setItem(ACCOUNT_KEY,JSON.stringify(wallets));
- saveHistory();renderWallets();updateStats();closeModal();
+function exportData(){
+ const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),coinWithdrawals:requests},null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='earngig-coin-withdrawals.json';a.click();URL.revokeObjectURL(url);
 }
-
-function toggleWallet(i){
- wallets[i].status=wallets[i].status==="Active"?"Frozen":"Active";
- wallets[i].updated=new Date().toLocaleString();
- saveWallets();viewWallet(i);
-}
-
-function renderPurchases(){
- const q=document.getElementById("purchaseSearch").value.toLowerCase();
- const filter=document.getElementById("purchaseFilter").value;
- const list=purchases.filter(p=>[p.id,p.name,p.email].join(" ").toLowerCase().includes(q)&&(!filter||p.status===filter));
- document.getElementById("purchaseTable").innerHTML=list.length?`
- <table><thead><tr><th>PURCHASE ID</th><th>USER</th><th>COINS PURCHASED</th><th>NAIRA AMOUNT</th><th>PAYMENT REFERENCE</th><th>STATUS</th></tr></thead>
- <tbody>${list.map(p=>`<tr><td>${esc(p.id)}</td><td>${esc(p.name)}</td><td>${Number(p.coins||0).toLocaleString()}</td><td>${money(p.amount)}</td><td>${esc(p.reference||"Not available")}</td><td><span class="badge ${p.status==="Paid"?"good":p.status==="Failed"?"bad":"pending"}">${esc(p.status)}</span></td></tr>`).join("")}</tbody></table>`:
- `<div class="empty">No coin purchase records found.</div>`;
-}
-
-function renderHistory(){
- const q=document.getElementById("historySearch").value.toLowerCase();
- const filter=document.getElementById("historyFilter").value;
- const list=history.filter(h=>[h.id,h.walletId,h.name].join(" ").toLowerCase().includes(q)&&(!filter||h.type===filter));
- document.getElementById("historyTable").innerHTML=list.length?`
- <table><thead><tr><th>REFERENCE</th><th>ACCOUNT HOLDER</th><th>TRANSACTION TYPE</th><th>AMOUNT</th><th>REASON</th><th>DATE</th><th>STATUS</th></tr></thead>
- <tbody>${list.map(h=>`<tr><td>${esc(h.id)}</td><td>${esc(h.name)}</td><td>${esc(h.type)}</td><td>${h.unit==="Coins"?Number(h.amount).toLocaleString()+" coins":money(h.amount)}</td><td>${esc(h.reason||"—")}</td><td>${esc(h.date||"—")}</td><td><span class="badge good">${esc(h.status)}</span></td></tr>`).join("")}</tbody></table>`:
- `<div class="empty">No wallet transaction history found.</div>`;
-}
-
-function showModal(title,html){
- document.getElementById("modalTitle").textContent=title;
- document.getElementById("modalContent").innerHTML=html;
- document.getElementById("modal").style.display="flex";
-}
-function closeModal(){document.getElementById("modal").style.display="none"}
-
-function exportWallets(){
- const blob=new Blob([JSON.stringify({wallets,purchases,history},null,2)],{type:"application/json"});
- const url=URL.createObjectURL(blob),a=document.createElement("a");
- a.href=url;a.download="earngig-wallet-export.json";a.click();URL.revokeObjectURL(url);
-}
-
-renderWallets();
-renderPurchases();
-renderHistory();
-updateStats();
+render();
 </script>
 </body>
 </html>
