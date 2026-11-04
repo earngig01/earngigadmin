@@ -3,303 +3,500 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>EarnGig Admin Dashboard</title>
 <style>
-:root {
-  --purple:#6829c7;
-  --dark-purple:#4d189e;
-  --lavender:#f3edff;
-  --border:#e8def8;
-  --text:#28213a;
-  --muted:#81798f;
-  --bg:#faf9fd;
-}
+:root{--p:#6936c8;--pd:#5124a8;--lav:#f3effc;--line:#e9e3f2;--ink:#292438;--muted:#777286;--green:#16834a;--red:#c43c49;--gold:#d5a333}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
-a{text-decoration:none;color:inherit}
-.layout{display:flex;min-height:100vh}
-.sidebar{
- width:255px;background:#fff;border-right:1px solid var(--border);
- padding:25px 17px;position:fixed;inset:0 auto 0 0;
- overflow-y:auto;z-index:20;transition:transform .25s
-}
-.brand{display:flex;align-items:center;gap:10px;padding:5px 9px 27px;font-size:23px;font-weight:800;color:var(--purple)}
-.crown{width:28px;height:28px}
-.admin-label{font-size:10px;letter-spacing:1.5px;color:var(--muted);font-weight:bold;padding:0 11px 12px}
-.nav-link{display:flex;align-items:center;gap:12px;padding:12px 13px;margin:4px 0;border-radius:10px;color:#686174;font-size:13px;font-weight:600;transition:.2s}
-.nav-link:hover,.nav-link.active{background:var(--lavender);color:var(--purple)}
-.nav-icon{width:20px;text-align:center;font-size:17px}
-.sidebar-bottom{border-top:1px solid var(--border);margin-top:25px;padding-top:15px}
-.main{margin-left:255px;width:calc(100% - 255px);min-width:0}
-.topbar{background:#fff;border-bottom:1px solid var(--border);height:75px;padding:0 30px;display:flex;align-items:center;justify-content:space-between;gap:15px;position:sticky;top:0;z-index:10}
-.topbar-left{display:flex;align-items:center;gap:13px}
-.menu-btn{display:none;background:var(--lavender);color:var(--purple);border:0;border-radius:8px;padding:9px 12px;font-size:19px;cursor:pointer}
-.top-title{font-size:19px;font-weight:800}
-.top-subtitle{font-size:11px;color:var(--muted);margin-top:4px}
-.admin-profile{display:flex;align-items:center;gap:10px}
-.avatar{width:38px;height:38px;border-radius:50%;background:var(--lavender);color:var(--purple);display:grid;place-items:center;font-weight:bold}
-.admin-name{font-size:12px;font-weight:bold}
-.admin-role{color:var(--muted);font-size:10px;margin-top:3px}
-.content{padding:30px;max-width:1500px;margin:auto}
-.welcome{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:25px}
-.welcome h1{font-size:24px;margin:0 0 7px}
-.welcome p{margin:0;color:var(--muted);font-size:13px}
-.date-label{background:#fff;border:1px solid var(--border);border-radius:9px;padding:11px 14px;color:var(--muted);font-size:12px}
-.notice{background:#fff8e8;border:1px solid #f1e1b8;color:#74551b;padding:13px 15px;border-radius:10px;font-size:11px;line-height:1.6;margin-bottom:20px}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:25px}
-.stat-card{background:#fff;border:1px solid var(--border);border-radius:13px;padding:19px}
-.stat-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.stat-name{font-size:12px;color:var(--muted);font-weight:600}
-.stat-icon{width:35px;height:35px;border-radius:10px;display:grid;place-items:center;background:var(--lavender);color:var(--purple);font-size:17px}
-.stat-number{font-size:25px;font-weight:800;margin:15px 0 7px}
-.stat-note{color:var(--muted);font-size:10px}
-.section-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;margin-bottom:22px}
-.panel{background:#fff;border:1px solid var(--border);border-radius:13px;padding:20px;min-width:0}
-.panel-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:17px}
-.panel-heading h2{font-size:15px;margin:0}
-.view-link{font-size:11px;color:var(--purple);font-weight:bold}
-.activity{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #f1edf6}
-.activity:last-child{border-bottom:0}
-.activity-icon{width:36px;height:36px;border-radius:10px;background:var(--lavender);display:grid;place-items:center;color:var(--purple);flex-shrink:0}
-.activity-info{flex:1;min-width:0}
-.activity-title{font-size:12px;font-weight:bold}
-.activity-desc{font-size:10px;color:var(--muted);margin-top:4px}
-.activity-time{color:var(--muted);font-size:10px;white-space:nowrap}
-.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
-.quick-link{border:1px solid var(--border);border-radius:10px;padding:15px 12px;transition:.2s}
-.quick-link:hover{background:var(--lavender);border-color:#c9b2ef}
-.quick-link span{display:block;font-size:20px;margin-bottom:9px}
-.quick-link strong{display:block;font-size:11px}
-.quick-link small{display:block;color:var(--muted);font-size:9px;margin-top:5px}
-.status-list{display:grid;gap:15px}
-.status-row{display:flex;justify-content:space-between;gap:10px;font-size:12px}
-.status-row span:first-child{color:#625c70}
-.status-number{font-weight:bold;color:var(--purple)}
-.footer{text-align:center;padding:20px;color:var(--muted);font-size:10px}
-@media(max-width:1050px){
- .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
- .section-grid{grid-template-columns:1fr}
-}
-@media(max-width:700px){
- .sidebar{transform:translateX(-100%);box-shadow:none}
- .sidebar.open{transform:translateX(0);box-shadow:10px 0 30px #24103a22}
- .main{margin-left:0;width:100%}
- .menu-btn{display:block}
- .topbar{padding:0 15px;height:67px}
- .content{padding:20px 14px}
- .welcome h1{font-size:21px}
- .stats{gap:10px}
- .stat-card{padding:14px}
- .stat-number{font-size:21px}
- .admin-name,.admin-role{display:none}
-}
+body{margin:0;background:#fff;color:var(--ink);font-family:Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px;background:var(--p);color:#fff;font-weight:700}
+button:hover{background:var(--pd)}
+button.secondary{background:var(--lav);color:var(--p)}
+button.danger{background:#fff0f0;color:var(--red)}
+input,select,textarea{border:1px solid var(--line);border-radius:8px;padding:11px;background:#fff;color:var(--ink);width:100%;min-width:0}
+textarea{min-height:90px;resize:vertical}
+.topbar{height:65px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;background:white;z-index:3}
+.logo{font-size:22px;font-weight:800;color:var(--p)}.crown{color:var(--gold);font-size:23px}
+.topright{font-size:12px;color:var(--muted)}
+.layout{display:flex;min-height:calc(100vh - 65px)}
+.sidebar{width:245px;border-right:1px solid var(--line);padding:16px 12px;background:#fff;flex-shrink:0;height:calc(100vh - 65px);position:sticky;top:65px;overflow:auto}
+.navlabel{font-size:10px;letter-spacing:1px;color:#aaa2b4;font-weight:800;padding:15px 10px 7px}
+.nav{width:100%;text-align:left;background:white;color:#514b60;padding:11px 12px;margin:2px 0;font-weight:600;border-radius:8px;font-size:13px}
+.nav:hover,.nav.active{background:var(--lav);color:var(--p)}
+.main{padding:25px;width:calc(100% - 245px);max-width:1600px}
+.page{display:none}.page.active{display:block}
+h1{font-size:25px;margin:0 0 7px}h2{font-size:18px;margin:0 0 15px}h3{font-size:15px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 20px}
+.notice{background:#fff8e9;border:1px solid #f0dfb8;color:#79551b;padding:12px 14px;border-radius:9px;font-size:12px;margin-bottom:20px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:13px;margin:18px 0}
+.stat,.panel{border:1px solid var(--line);border-radius:11px;padding:16px;background:white}
+.stat small{font-size:12px;color:var(--muted)}.stat strong{display:block;font-size:25px;margin-top:10px}
+.panel{margin:18px 0}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:15px 0}.toolbar input{flex:1;min-width:180px}.toolbar select{width:auto;min-width:150px}
+.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th,td{padding:12px;text-align:left;border-bottom:1px solid var(--line);font-size:12px;vertical-align:middle}
+th{background:#faf8fd;color:#655d72}tr:last-child td{border-bottom:0}
+.tag{display:inline-block;padding:5px 8px;border-radius:20px;background:#f1edf7;color:#665b76;font-size:10px;font-weight:700}
+.tag.good{background:#e8f7ed;color:var(--green)}.tag.bad{background:#fff0f0;color:var(--red)}.tag.warn{background:#fff4e3;color:#a36b13}
+.action{background:none;color:var(--p);padding:4px;font-size:12px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.field label{font-size:12px;color:var(--muted);font-weight:700}
+.modalbg{display:none;position:fixed;inset:0;background:#17102088;z-index:10;align-items:center;justify-content:center;padding:15px}
+.modal{background:white;width:min(680px,100%);max-height:90vh;overflow:auto;border-radius:13px;padding:22px}
+.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.modalhead h2{margin:0}.modalfoot{display:flex;justify-content:flex-end;gap:9px;margin-top:15px}
+.mobilemenu{display:none}
+.empty{padding:25px;text-align:center;color:var(--muted);font-size:13px}
+@media(max-width:900px){.sidebar{width:205px}.main{width:calc(100% - 205px);padding:17px}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.layout{display:block}.sidebar{display:none;position:fixed;z-index:5;top:65px;left:0;width:270px;height:calc(100vh - 65px);box-shadow:5px 0 20px #0001}.sidebar.open{display:block}.main{width:100%;padding:16px}.mobilemenu{display:inline-block}.grid2,.grid3{grid-template-columns:1fr}.topbar{padding:0 13px}}
 </style>
 </head>
 <body>
 
+<header class="topbar">
+  <div style="display:flex;align-items:center;gap:12px">
+    <button class="mobilemenu secondary" onclick="toggleMenu()">☰</button>
+    <div class="logo"><span class="crown">♛</span> EarnGig <span style="font-size:11px;color:#8b8498">ADMIN</span></div>
+  </div>
+  <div class="topright">Administrator Dashboard</div>
+</header>
+
 <div class="layout">
 <aside class="sidebar" id="sidebar">
-  <a class="brand" href="admin.html">
-    <svg class="crown" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M9 18L20 29L31 10L43 29L55 18L50 43H14L9 18Z" stroke="#D5A52E" stroke-width="4" stroke-linejoin="round"/>
-      <path d="M14 50H50" stroke="#D5A52E" stroke-width="4" stroke-linecap="round"/>
-      <circle cx="9" cy="16" r="4" fill="#D5A52E"/>
-      <circle cx="31" cy="8" r="4" fill="#D5A52E"/>
-      <circle cx="55" cy="16" r="4" fill="#D5A52E"/>
-    </svg>
-    EarnGig
-  </a>
+  <div class="navlabel">MAIN</div>
+  <button class="nav active" data-page="overview">▦ Dashboard Overview</button>
 
-  <div class="admin-label">ADMINISTRATION</div>
+  <div class="navlabel">USERS & ACCOUNTS</div>
+  <button class="nav" data-page="users">♙ User Management</button>
+  <button class="nav" data-page="membership">♧ Membership</button>
+  <button class="nav" data-page="wallet">◈ Wallet & Coins</button>
+  <button class="nav" data-page="referrals">♧ Referrals & Rewards</button>
 
-  <nav>
-    <a class="nav-link active" href="admin.html"><span class="nav-icon">▦</span>Dashboard</a>
-    <a class="nav-link" href="admin-users.html"><span class="nav-icon">♙</span>User Management</a>
-    <a class="nav-link" href="admin-writers.html"><span class="nav-icon">✎</span>Writer Approvals</a>
-    <a class="nav-link" href="admin-novels.html"><span class="nav-icon">▤</span>Novel Management</a>
-    <a class="nav-link" href="admin-payments.html"><span class="nav-icon">₦</span>Payments & Withdrawals</a>
-    <a class="nav-link" href="admin-games.html"><span class="nav-icon">♧</span>Games Management</a>
-    <a class="nav-link" href="admin-ads.html"><span class="nav-icon">▣</span>Advertisements</a>
-    <a class="nav-link" href="admin-marketplace.html"><span class="nav-icon">🛍</span>Marketplace</a>
-    <a class="nav-link" href="admin-referrals.html"><span class="nav-icon">♧</span>Referrals & Rewards</a>
-    <a class="nav-link" href="admin-reports.html"><span class="nav-icon">▥</span>Reports & Analytics</a>
-    <a class="nav-link" href="admin-settings.html"><span class="nav-icon">⚙</span>Settings</a>
-  </nav>
+  <div class="navlabel">FINANCE</div>
+  <button class="nav" data-page="transactions">▤ Transactions</button>
+  <button class="nav" data-page="deposits">＋ Deposits & Payments</button>
+  <button class="nav" data-page="withdrawals">↗ Withdrawals</button>
+  <button class="nav" data-page="sellerwallet">▣ Seller Store Wallet</button>
 
-  <div class="sidebar-bottom">
-    <a class="nav-link" href="https://earngig01.github.io/earngig/">
-      <span class="nav-icon">⌂</span>Back to Website
-    </a>
-    <a class="nav-link" href="index.html">
-      <span class="nav-icon">⇥</span>Login Page
-    </a>
-  </div>
+  <div class="navlabel">CONTENT & CREATORS</div>
+  <button class="nav" data-page="writers">✎ Writer Applications</button>
+  <button class="nav" data-page="novels">▤ Novel Management</button>
+  <button class="nav" data-page="readers">♡ Readers & Rewards</button>
+
+  <div class="navlabel">BUSINESS & MARKETPLACE</div>
+  <button class="nav" data-page="ads">▧ Advertisements</button>
+  <button class="nav" data-page="billboard">▦ Billboard Bookings</button>
+  <button class="nav" data-page="marketplace">▣ Marketplace</button>
+  <button class="nav" data-page="stores">✓ Store Verification</button>
+  <button class="nav" data-page="delivery">♧ Delivery Management</button>
+
+  <div class="navlabel">ADMINISTRATION</div>
+  <button class="nav" data-page="notifications">♧ Notifications</button>
+  <button class="nav" data-page="reports">▥ Reports & Analytics</button>
+  <button class="nav" data-page="settings">⚙ Admin Settings</button>
 </aside>
 
 <main class="main">
-<header class="topbar">
-  <div class="topbar-left">
-    <button class="menu-btn" onclick="toggleSidebar()" aria-label="Toggle menu">☰</button>
-    <div>
-      <div class="top-title">Admin Dashboard</div>
-      <div class="top-subtitle">EarnGig Platform Control Centre</div>
+<div class="notice">Prototype dashboard: information entered here is stored in this browser only. Secure server-side authentication, database access, payment verification and private document storage must be connected before handling real users or transactions.</div>
+
+<section class="page active" id="page-overview">
+  <h1>Dashboard Overview</h1><p class="sub">Your EarnGig platform administration centre.</p>
+  <div class="stats">
+    <div class="stat"><small>Total users</small><strong id="overviewUsers">0</strong></div>
+    <div class="stat"><small>Transactions recorded</small><strong id="overviewTransactions">0</strong></div>
+    <div class="stat"><small>Pending withdrawals</small><strong id="overviewWithdrawals">0</strong></div>
+    <div class="stat"><small>Delivery orders</small><strong id="overviewDeliveries">0</strong></div>
+  </div>
+  <div class="panel"><h2>Admin workspace</h2><p class="sub">Use the navigation to manage EarnGig's accounts, finances, writers, novels, marketplace, stores, deliveries and platform settings.</p></div>
+  <div class="panel"><h2>Important platform rules</h2>
+    <div class="grid2">
+      <div>Coin conversion: <b>10 coins = ₦1</b></div>
+      <div>Minimum coin purchase: <b>1,000 coins</b></div>
+      <div>Coin purchase fee: <b>2%</b></div>
+      <div>Withdrawal fee: <b>2%</b></div>
+      <div>Minimum withdrawal: <b>₦100</b></div>
+      <div>Withdrawal day: <b>Friday, WAT</b></div>
+      <div>Referral reward: <b>5,000 coins</b></div>
+      <div>Store opening fee: <b>₦20,000</b></div>
     </div>
   </div>
-  <div class="admin-profile">
-    <div class="avatar">A</div>
-    <div>
-      <div class="admin-name">Platform Owner</div>
-      <div class="admin-role">Administrator</div>
-    </div>
+</section>
+
+<section class="page" id="page-users">
+  <h1>User Management</h1><p class="sub">Review and manage platform accounts.</p>
+  <div class="toolbar"><input id="userSearch" placeholder="Search users..." oninput="render('users')"><button onclick="addRecord('users')">+ Add user record</button></div>
+  <div id="usersTable"></div>
+</section>
+
+<section class="page" id="page-membership">
+  <h1>Membership</h1><p class="sub">Review membership records and account levels.</p>
+  <div class="toolbar"><input id="membershipSearch" placeholder="Search membership..." oninput="render('membership')"><button onclick="addRecord('membership')">+ Add membership record</button></div>
+  <div id="membershipTable"></div>
+</section>
+
+<section class="page" id="page-wallet">
+  <h1>Wallet & Coins</h1><p class="sub">Review wallet balances and coin account adjustments.</p>
+  <div class="toolbar"><input id="walletSearch" placeholder="Search wallet records..." oninput="render('wallet')"><button onclick="addRecord('wallet')">+ Add wallet record</button></div>
+  <div id="walletTable"></div>
+</section>
+
+<section class="page" id="page-referrals">
+  <h1>Referrals & Rewards</h1><p class="sub">Review referral activity and rewards.</p>
+  <div class="toolbar"><input id="referralsSearch" placeholder="Search referrals..." oninput="render('referrals')"><button onclick="addRecord('referrals')">+ Add referral record</button></div>
+  <div id="referralsTable"></div>
+</section>
+
+<section class="page" id="page-transactions">
+  <h1>Transactions</h1><p class="sub">Review financial activity across EarnGig.</p>
+  <div class="toolbar"><input id="transactionsSearch" placeholder="Search transactions..." oninput="render('transactions')"><button onclick="addRecord('transactions')">+ Add transaction record</button></div>
+  <div id="transactionsTable"></div>
+</section>
+
+<section class="page" id="page-deposits">
+  <h1>Deposits & Payments</h1><p class="sub">Review incoming payments and payment references.</p>
+  <div class="toolbar"><input id="depositsSearch" placeholder="Search deposits..." oninput="render('deposits')"><button onclick="addRecord('deposits')">+ Add payment record</button></div>
+  <div id="depositsTable"></div>
+</section>
+
+<section class="page" id="page-withdrawals">
+  <h1>Withdrawals</h1><p class="sub">Review payout requests. Withdrawals are scheduled for Friday, 12am–11:59pm WAT.</p>
+  <div class="toolbar"><input id="withdrawalsSearch" placeholder="Search withdrawals..." oninput="render('withdrawals')"><button onclick="addRecord('withdrawals')">+ Add withdrawal record</button></div>
+  <div id="withdrawalsTable"></div>
+</section>
+
+<section class="page" id="page-sellerwallet">
+  <h1>Seller Store Wallet</h1><p class="sub">Review seller balances and funds awaiting delivery confirmation.</p>
+  <div class="toolbar"><input id="sellerwalletSearch" placeholder="Search seller wallet..." oninput="render('sellerwallet')"><button onclick="addRecord('sellerwallet')">+ Add seller wallet record</button></div>
+  <div id="sellerwalletTable"></div>
+</section>
+
+<section class="page" id="page-writers">
+  <h1>Writer Applications</h1><p class="sub">Review writer applications and approval decisions.</p>
+  <div class="toolbar"><input id="writersSearch" placeholder="Search writers..." oninput="render('writers')"><button onclick="addRecord('writers')">+ Add writer application</button></div>
+  <div id="writersTable"></div>
+</section>
+
+<section class="page" id="page-novels">
+  <h1>Novel Management</h1><p class="sub">Review novels, chapters and submissions.</p>
+  <div class="toolbar"><input id="novelsSearch" placeholder="Search novels..." oninput="render('novels')"><button onclick="addRecord('novels')">+ Add novel record</button></div>
+  <div id="novelsTable"></div>
+</section>
+
+<section class="page" id="page-readers">
+  <h1>Readers & Rewards</h1><p class="sub">Review reader activity, completed novels and quiz rewards.</p>
+  <div class="toolbar"><input id="readersSearch" placeholder="Search readers..." oninput="render('readers')"><button onclick="addRecord('readers')">+ Add reader record</button></div>
+  <div id="readersTable"></div>
+</section>
+
+<section class="page" id="page-ads">
+  <h1>Advertisements</h1><p class="sub">Review ad campaigns, creative submissions and payment status.</p>
+  <div class="panel"><h2>Advertising packages</h2><div class="grid3">
+    <div>24 hours <b>₦10,000</b></div><div>72 hours <b>₦25,000</b></div><div>7 days <b>₦50,000</b></div>
+    <div>14 days <b>₦85,000</b></div><div>30 days <b>₦150,000</b></div>
+  </div></div>
+  <div class="panel"><h2>View packages</h2><div class="grid3">
+    <div>100 views <b>₦1,500</b></div><div>500 views <b>₦6,500</b></div><div>1,000 views <b>₦12,000</b></div>
+    <div>2,500 views <b>₦27,500</b></div><div>5,000 views <b>₦50,000</b></div><div>10,000 views <b>₦90,000</b></div>
+  </div></div>
+  <div class="toolbar"><input id="adsSearch" placeholder="Search ads..." oninput="render('ads')"><button onclick="addRecord('ads')">+ Add ad record</button></div><div id="adsTable"></div>
+</section>
+
+<section class="page" id="page-billboard">
+  <h1>Billboard Bookings</h1><p class="sub">Manage billboard slot requests and approvals.</p>
+  <div class="panel"><b>10 slots per week · ₦100,000 per slot</b><p class="sub">Bookings open Saturday and Sunday for the following week. Each slot has its own creative and requires admin approval.</p></div>
+  <div class="toolbar"><input id="billboardSearch" placeholder="Search bookings..." oninput="render('billboard')"><button onclick="addRecord('billboard')">+ Add booking</button></div><div id="billboardTable"></div>
+</section>
+
+<section class="page" id="page-marketplace">
+  <h1>Marketplace</h1><p class="sub">Review marketplace listings, orders and seller activity.</p>
+  <div class="toolbar"><input id="marketplaceSearch" placeholder="Search marketplace..." oninput="render('marketplace')"><button onclick="addRecord('marketplace')">+ Add marketplace record</button></div><div id="marketplaceTable"></div>
+</section>
+
+<section class="page" id="page-stores">
+  <h1>Store Verification</h1><p class="sub">Review seller applications and store verification decisions.</p>
+  <div class="panel"><b>Store opening fee: ₦20,000</b><p class="sub">Collected after approval. Optional store customisation: ₦10,000.</p></div>
+  <div class="toolbar"><input id="storesSearch" placeholder="Search store applications..." oninput="render('stores')"><button onclick="addRecord('stores')">+ Add store application</button></div><div id="storesTable"></div>
+</section>
+
+<section class="page" id="page-delivery">
+  <h1>Delivery Management</h1><p class="sub">Manage marketplace deliveries, track order progress, assign riders and review delivery complaints.</p>
+  <div class="stats">
+    <div class="stat"><small>Total deliveries</small><strong id="dTotal">0</strong></div>
+    <div class="stat"><small>Awaiting pickup</small><strong id="dPending">0</strong></div>
+    <div class="stat"><small>In transit</small><strong id="dTransit">0</strong></div>
+    <div class="stat"><small>Delivered</small><strong id="dDelivered">0</strong></div>
   </div>
-</header>
-
-<div class="content">
-  <div class="welcome">
-    <div>
-      <h1>Welcome to EarnGig Admin</h1>
-      <p>Manage your platform, members and daily operations.</p>
-    </div>
-    <div class="date-label" id="todayDate"></div>
+  <div class="toolbar">
+    <input id="deliverySearch" placeholder="Search order, buyer, seller or rider..." oninput="renderDelivery()">
+    <select id="deliveryFilter" onchange="renderDelivery()">
+      <option value="">All delivery statuses</option>
+      <option>Pending</option><option>Assigned</option><option>Picked Up</option><option>In Transit</option><option>Delivered</option><option>Failed</option><option>Cancelled</option><option>Disputed</option>
+    </select>
+    <button onclick="newDelivery()">+ Add delivery</button>
   </div>
-
-  <div class="notice">
-    <strong>Backend connection pending:</strong>
-    Dashboard figures and activity will remain placeholders until the secure EarnGig admin backend is connected. This page is not yet protected by authentication.
+  <div class="tablewrap" id="deliveryTable"></div>
+  <div class="panel"><h2>Delivery fees and issues</h2>
+    <div class="grid2">
+      <div><small>Total recorded fees</small><h2 id="deliveryFees">₦0</h2></div>
+      <div><small>Fees marked paid</small><h2 id="deliveryPaid">₦0</h2></div>
+    </div>
+    <h3>Delivery complaints / failed orders</h3><div id="deliveryIssues" class="sub">No delivery issues recorded.</div>
   </div>
+</section>
 
-  <section class="stats">
-    <div class="stat-card">
-      <div class="stat-top"><div class="stat-name">Total Members</div><div class="stat-icon">♙</div></div>
-      <div class="stat-number">—</div>
-      <div class="stat-note">Live member data pending</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-top"><div class="stat-name">Platform Revenue</div><div class="stat-icon">₦</div></div>
-      <div class="stat-number">—</div>
-      <div class="stat-note">Live revenue data pending</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-top"><div class="stat-name">Pending Withdrawals</div><div class="stat-icon">⇧</div></div>
-      <div class="stat-number">—</div>
-      <div class="stat-note">Awaiting backend connection</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-top"><div class="stat-name">Pending Approvals</div><div class="stat-icon">✓</div></div>
-      <div class="stat-number">—</div>
-      <div class="stat-note">Awaiting backend connection</div>
-    </div>
-  </section>
-
-  <div class="section-grid">
-    <section class="panel">
-      <div class="panel-heading">
-        <h2>Platform Activity</h2>
-        <span class="view-link">Live feed pending</span>
-      </div>
-      <div class="activity">
-        <div class="activity-icon">♙</div>
-        <div class="activity-info">
-          <div class="activity-title">New member registrations</div>
-          <div class="activity-desc">Registration activity will appear here.</div>
-        </div>
-        <div class="activity-time">—</div>
-      </div>
-      <div class="activity">
-        <div class="activity-icon">₦</div>
-        <div class="activity-info">
-          <div class="activity-title">Payment notifications</div>
-          <div class="activity-desc">Verified payment events will appear here.</div>
-        </div>
-        <div class="activity-time">—</div>
-      </div>
-      <div class="activity">
-        <div class="activity-icon">✎</div>
-        <div class="activity-info">
-          <div class="activity-title">Writer applications</div>
-          <div class="activity-desc">New applications will appear here.</div>
-        </div>
-        <div class="activity-time">—</div>
-      </div>
-      <div class="activity">
-        <div class="activity-icon">▣</div>
-        <div class="activity-info">
-          <div class="activity-title">Advertisement submissions</div>
-          <div class="activity-desc">Submitted adverts will appear here.</div>
-        </div>
-        <div class="activity-time">—</div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-heading"><h2>Quick Actions</h2></div>
-      <div class="quick-grid">
-        <a class="quick-link" href="admin-users.html"><span>♙</span><strong>Manage Users</strong><small>Accounts and members</small></a>
-        <a class="quick-link" href="admin-payments.html"><span>₦</span><strong>Payments</strong><small>Transactions and payouts</small></a>
-        <a class="quick-link" href="admin-writers.html"><span>✎</span><strong>Review Writers</strong><small>Applications and approvals</small></a>
-        <a class="quick-link" href="admin-ads.html"><span>▣</span><strong>Manage Ads</strong><small>Campaigns and bookings</small></a>
-      </div>
-    </section>
+<section class="page" id="page-notifications">
+  <h1>Notifications</h1><p class="sub">Prepare platform announcements and notification messages.</p>
+  <div class="panel">
+    <div class="field"><label>Notification title</label><input id="noticeTitle" placeholder="Announcement title"></div>
+    <div class="field"><label>Message</label><textarea id="noticeMessage" placeholder="Write your announcement..."></textarea></div>
+    <button onclick="saveNotice()">Save announcement draft</button>
   </div>
+  <div id="noticeList"></div>
+</section>
 
-  <div class="section-grid">
-    <section class="panel">
-      <div class="panel-heading"><h2>Pending Tasks</h2></div>
-      <div class="status-list">
-        <div class="status-row"><span>Writer applications</span><span class="status-number">—</span></div>
-        <div class="status-row"><span>Novel submissions</span><span class="status-number">—</span></div>
-        <div class="status-row"><span>Withdrawal requests</span><span class="status-number">—</span></div>
-        <div class="status-row"><span>Advert approval requests</span><span class="status-number">—</span></div>
-        <div class="status-row"><span>Marketplace reports</span><span class="status-number">—</span></div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-heading"><h2>Platform Management</h2></div>
-      <div class="status-list">
-        <div class="status-row"><span>Users and account security</span><span class="status-number">→</span></div>
-        <div class="status-row"><span>Games and coin entries</span><span class="status-number">→</span></div>
-        <div class="status-row"><span>Referral rewards</span><span class="status-number">→</span></div>
-        <div class="status-row"><span>Platform settings</span><span class="status-number">→</span></div>
-      </div>
-    </section>
+<section class="page" id="page-reports">
+  <h1>Reports & Analytics</h1><p class="sub">View summary counts from records entered into this browser prototype.</p>
+  <div class="stats">
+    <div class="stat"><small>User records</small><strong id="reportUsers">0</strong></div>
+    <div class="stat"><small>Novel records</small><strong id="reportNovels">0</strong></div>
+    <div class="stat"><small>Store records</small><strong id="reportStores">0</strong></div>
+    <div class="stat"><small>Delivery records</small><strong id="reportDeliveries">0</strong></div>
   </div>
+  <button onclick="exportData()">Export prototype records as JSON</button>
+</section>
 
-  <div class="footer">© <span id="year"></span> EarnGig. Admin Control Centre.</div>
-</div>
+<section class="page" id="page-settings">
+  <h1>Admin Settings</h1><p class="sub">Platform administration notes and configuration reference.</p>
+  <div class="panel"><h2>Administrator access</h2><p>Authorised owner email: <b>earngigofficial@gmail.com</b></p><p class="sub">This page does not enforce secure authentication. Enforce the owner allowlist and session permissions on the backend.</p></div>
+  <div class="panel"><h2>Platform configuration reference</h2>
+    <div class="field"><label>Coins per naira</label><input value="10 coins = ₦1" disabled></div>
+    <div class="field"><label>Minimum coin purchase</label><input value="1,000 coins" disabled></div>
+    <div class="field"><label>Withdrawal day</label><input value="Friday, 12am–11:59pm WAT" disabled></div>
+    <div class="field"><label>Referral reward</label><input value="5,000 coins" disabled></div>
+  </div>
+</section>
 </main>
 </div>
 
+<div class="modalbg" id="modal">
+  <div class="modal">
+    <div class="modalhead"><h2 id="modalTitle">Manage record</h2><button class="secondary" onclick="closeModal()">Close</button></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
 <script>
-function toggleSidebar(){
-  document.getElementById("sidebar").classList.toggle("open");
+const sections={
+users:"User Management",membership:"Membership",wallet:"Wallet & Coins",
+referrals:"Referrals & Rewards",transactions:"Transactions",deposits:"Deposits & Payments",
+withdrawals:"Withdrawals",sellerwallet:"Seller Store Wallet",writers:"Writer Applications",
+novels:"Novel Management",readers:"Readers & Rewards",ads:"Advertisements",
+billboard:"Billboard Bookings",marketplace:"Marketplace",stores:"Store Verification"
+};
+const storeKey="earngig_admin_workspace_v2";
+const deliveryKey="earngig_delivery_records";
+let data={};
+try{data=JSON.parse(localStorage.getItem(storeKey)||"{}")||{}}catch{data={}}
+Object.keys(sections).forEach(k=>{if(!Array.isArray(data[k]))data[k]=[]});
+let deliveries=[];
+try{deliveries=JSON.parse(localStorage.getItem(deliveryKey)||"[]");if(!Array.isArray(deliveries))deliveries=[]}catch{deliveries=[]}
+let announcements=[];
+try{announcements=JSON.parse(localStorage.getItem("earngig_admin_announcements")||"[]")}catch{announcements=[]}
+
+function persist(){localStorage.setItem(storeKey,JSON.stringify(data));}
+function persistDelivery(){localStorage.setItem(deliveryKey,JSON.stringify(deliveries));}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function naira(v){return "₦"+Number(v||0).toLocaleString("en-NG")}
+function toggleMenu(){document.getElementById("sidebar").classList.toggle("open")}
+
+document.querySelectorAll(".nav").forEach(btn=>btn.addEventListener("click",()=>{
+ document.querySelectorAll(".nav").forEach(x=>x.classList.remove("active"));
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ btn.classList.add("active");
+ document.getElementById("page-"+btn.dataset.page).classList.add("active");
+ document.getElementById("sidebar").classList.remove("open");
+ if(sections[btn.dataset.page])render(btn.dataset.page);
+ if(btn.dataset.page==="delivery")renderDelivery();
+ if(btn.dataset.page==="overview")updateOverview();
+ if(btn.dataset.page==="reports")updateReports();
+ if(btn.dataset.page==="notifications")renderNotices();
+}));
+
+function showModal(title,html){
+ document.getElementById("modalTitle").textContent=title;
+ document.getElementById("modalBody").innerHTML=html;
+ document.getElementById("modal").style.display="flex";
+}
+function closeModal(){document.getElementById("modal").style.display="none"}
+
+function render(key){
+ const target=document.getElementById(key+"Table");
+ if(!target)return;
+ const search=(document.getElementById(key+"Search")?.value||"").toLowerCase();
+ const rows=data[key].filter(r=>Object.values(r).join(" ").toLowerCase().includes(search));
+ target.innerHTML=rows.length?`<table><thead><tr><th>Reference</th><th>Name / Description</th><th>Amount / Detail</th><th>Status</th><th>Action</th></tr></thead><tbody>${rows.map((r,i)=>`
+ <tr><td>${esc(r.ref)}</td><td>${esc(r.name)}</td><td>${esc(r.detail)}</td><td><span class="tag ${r.status==="Approved"||r.status==="Completed"||r.status==="Paid"?"good":r.status==="Rejected"||r.status==="Failed"?"bad":"warn"}">${esc(r.status)}</span></td><td><button class="action" onclick="manageRecord('${key}',${data[key].indexOf(r)})">Manage</button></td></tr>`).join("")}</tbody></table>`:`<div class="empty">No records yet. Add a record to begin.</div>`;
+}
+function addRecord(key){
+ showModal("Add "+sections[key],`
+ <form onsubmit="saveRecord(event,'${key}')">
+ <div class="field"><label>Reference / ID</label><input name="ref" required placeholder="Enter reference"></div>
+ <div class="field"><label>Name / Description</label><input name="name" required placeholder="Enter name or description"></div>
+ <div class="field"><label>Amount / Detail</label><input name="detail" placeholder="Enter amount or details"></div>
+ <div class="field"><label>Status</label><select name="status"><option>Pending</option><option>Under Review</option><option>Approved</option><option>Completed</option><option>Paid</option><option>Rejected</option><option>Failed</option></select></div>
+ <div class="modalfoot"><button type="submit">Save record</button></div></form>`);
+}
+function saveRecord(e,key){
+ e.preventDefault();const f=new FormData(e.target);
+ data[key].unshift({ref:f.get("ref"),name:f.get("name"),detail:f.get("detail"),status:f.get("status")});
+ persist();render(key);closeModal();updateOverview();
+}
+function manageRecord(key,index){
+ const r=data[key][index];if(!r)return;
+ showModal("Manage "+sections[key],`
+ <form onsubmit="updateRecord(event,'${key}',${index})">
+ <div class="field"><label>Reference</label><input name="ref" value="${esc(r.ref)}" required></div>
+ <div class="field"><label>Name / Description</label><input name="name" value="${esc(r.name)}" required></div>
+ <div class="field"><label>Amount / Detail</label><input name="detail" value="${esc(r.detail)}"></div>
+ <div class="field"><label>Status</label><select name="status">${["Pending","Under Review","Approved","Completed","Paid","Rejected","Failed"].map(s=>`<option ${r.status===s?"selected":""}>${s}</option>`).join("")}</select></div>
+ <div class="modalfoot"><button type="button" class="danger" onclick="deleteRecord('${key}',${index})">Delete</button><button type="submit">Save changes</button></div></form>`);
+}
+function updateRecord(e,key,index){
+ e.preventDefault();const f=new FormData(e.target);
+ data[key][index]={ref:f.get("ref"),name:f.get("name"),detail:f.get("detail"),status:f.get("status")};
+ persist();render(key);closeModal();updateOverview();
+}
+function deleteRecord(key,index){
+ if(!confirm("Delete this record?"))return;
+ data[key].splice(index,1);persist();render(key);closeModal();updateOverview();
 }
 
-const today = new Date();
-document.getElementById("todayDate").textContent =
-  today.toLocaleDateString("en-NG", {
-    weekday:"short",
-    day:"numeric",
-    month:"short",
-    year:"numeric"
-  });
+function updateOverview(){
+ document.getElementById("overviewUsers").textContent=data.users.length;
+ document.getElementById("overviewTransactions").textContent=data.transactions.length;
+ document.getElementById("overviewWithdrawals").textContent=data.withdrawals.filter(x=>x.status==="Pending").length;
+ document.getElementById("overviewDeliveries").textContent=deliveries.length;
+}
+function updateReports(){
+ document.getElementById("reportUsers").textContent=data.users.length;
+ document.getElementById("reportNovels").textContent=data.novels.length;
+ document.getElementById("reportStores").textContent=data.stores.length;
+ document.getElementById("reportDeliveries").textContent=deliveries.length;
+}
+function saveNotice(){
+ const title=document.getElementById("noticeTitle").value.trim();
+ const message=document.getElementById("noticeMessage").value.trim();
+ if(!title||!message){alert("Enter a title and message.");return}
+ announcements.unshift({title,message,date:new Date().toLocaleString()});
+ localStorage.setItem("earngig_admin_announcements",JSON.stringify(announcements));
+ document.getElementById("noticeTitle").value="";
+ document.getElementById("noticeMessage").value="";
+ renderNotices();
+}
+function renderNotices(){
+ document.getElementById("noticeList").innerHTML=announcements.length?announcements.map(a=>`<div class="panel"><b>${esc(a.title)}</b><p>${esc(a.message)}</p><small>${esc(a.date)}</small></div>`).join(""):"<div class='empty'>No announcement drafts saved.</div>";
+}
+function exportData(){
+ const blob=new Blob([JSON.stringify({data,deliveries,announcements},null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob);const a=document.createElement("a");
+ a.href=url;a.download="earngig-admin-prototype-export.json";a.click();URL.revokeObjectURL(url);
+}
 
-document.getElementById("year").textContent = today.getFullYear();
+/* DELIVERY MANAGEMENT */
+function renderDelivery(){
+ const q=(document.getElementById("deliverySearch").value||"").toLowerCase();
+ const filter=document.getElementById("deliveryFilter").value;
+ const list=deliveries.filter(d=>
+ [d.id,d.buyer,d.seller,d.rider,d.company].join(" ").toLowerCase().includes(q)&&(!filter||d.status===filter)
+ );
+ const cls=s=>s==="Delivered"?"good":["Failed","Cancelled","Disputed"].includes(s)?"bad":["In Transit","Picked Up"].includes(s)?"warn":"";
+ document.getElementById("deliveryTable").innerHTML=list.length?`<table><thead><tr>
+ <th>Order ID</th><th>Buyer</th><th>Seller</th><th>Delivery method</th><th>Rider / Company</th><th>Fee</th><th>Status</th><th>Action</th>
+ </tr></thead><tbody>${list.map(d=>`<tr>
+ <td><b>${esc(d.id)}</b></td><td>${esc(d.buyer)}</td><td>${esc(d.seller)}</td>
+ <td>${esc(d.method)}</td><td>${esc(d.rider||d.company||"Not assigned")}</td>
+ <td>${naira(d.fee)}</td><td><span class="tag ${cls(d.status)}">${esc(d.status)}</span></td>
+ <td><button class="action" onclick="manageDelivery('${encodeURIComponent(d.id)}')">Manage →</button></td>
+ </tr>`).join("")}</tbody></table>`:`<div class="empty">No delivery records found. Add a delivery to begin.</div>`;
+ const count=s=>deliveries.filter(d=>d.status===s).length;
+ document.getElementById("dTotal").textContent=deliveries.length;
+ document.getElementById("dPending").textContent=deliveries.filter(d=>["Pending","Assigned"].includes(d.status)).length;
+ document.getElementById("dTransit").textContent=deliveries.filter(d=>["Picked Up","In Transit"].includes(d.status)).length;
+ document.getElementById("dDelivered").textContent=count("Delivered");
+ document.getElementById("deliveryFees").textContent=naira(deliveries.reduce((a,d)=>a+Number(d.fee||0),0));
+ document.getElementById("deliveryPaid").textContent=naira(deliveries.filter(d=>d.feeStatus==="Paid").reduce((a,d)=>a+Number(d.fee||0),0));
+ const issues=deliveries.filter(d=>["Failed","Disputed"].includes(d.status)||d.issue);
+ document.getElementById("deliveryIssues").innerHTML=issues.length?issues.map(d=>`<div style="padding:10px 0;border-bottom:1px solid var(--line)"><b>${esc(d.id)}</b> — ${esc(d.status)}<p>${esc(d.issue||"No complaint details entered.")}</p><button class="secondary" onclick="manageDelivery('${encodeURIComponent(d.id)}')">Review</button></div>`).join(""):"No delivery issues recorded.";
+}
+function newDelivery(){
+ showModal("Add delivery record",`
+ <form onsubmit="saveDelivery(event)">
+ <div class="grid2">
+ <div class="field"><label>Order ID *</label><input name="id" required placeholder="EG-ORDER-001"></div>
+ <div class="field"><label>Buyer name *</label><input name="buyer" required></div>
+ <div class="field"><label>Seller name *</label><input name="seller" required></div>
+ <div class="field"><label>Delivery method</label><select name="method"><option>EarnGig rider</option><option>Seller-arranged</option></select></div>
+ <div class="field"><label>Rider name</label><input name="rider"></div>
+ <div class="field"><label>Dispatch company</label><input name="company"></div>
+ <div class="field"><label>Delivery fee (₦)</label><input name="fee" type="number" min="0" value="0"></div>
+ <div class="field"><label>Fee payment status</label><select name="feeStatus"><option>Unpaid</option><option>Paid</option><option>Refunded</option></select></div>
+ <div class="field"><label>Initial status</label><select name="status"><option>Pending</option><option>Assigned</option></select></div>
+ <div class="field"><label>Tracking reference</label><input name="tracking"></div>
+ </div>
+ <div class="field"><label>Pickup address</label><textarea name="pickup"></textarea></div>
+ <div class="field"><label>Delivery address *</label><textarea name="address" required></textarea></div>
+ <div class="modalfoot"><button type="submit">Save delivery</button></div></form>`);
+}
+function saveDelivery(e){
+ e.preventDefault();const f=new FormData(e.target);const id=f.get("id").trim();
+ if(deliveries.some(d=>d.id.toLowerCase()===id.toLowerCase())){alert("This order ID already exists.");return}
+ const status=f.get("status");
+ deliveries.unshift({id,buyer:f.get("buyer"),seller:f.get("seller"),method:f.get("method"),rider:f.get("rider"),company:f.get("company"),fee:Number(f.get("fee")||0),feeStatus:f.get("feeStatus"),status,tracking:f.get("tracking"),pickup:f.get("pickup"),address:f.get("address"),proof:"",issue:"",history:[{status,date:new Date().toLocaleString()}]});
+ persistDelivery();renderDelivery();updateOverview();closeModal();
+}
+function manageDelivery(encoded){
+ const id=decodeURIComponent(encoded),d=deliveries.find(x=>x.id===id);if(!d)return;
+ showModal("Manage delivery: "+d.id,`
+ <div class="grid2">
+ <div><small>Buyer</small><p>${esc(d.buyer)}</p></div><div><small>Seller</small><p>${esc(d.seller)}</p></div>
+ <div><small>Method</small><p>${esc(d.method)}</p></div><div><small>Rider / Company</small><p>${esc(d.rider||d.company||"Not assigned")}</p></div>
+ <div><small>Pickup address</small><p>${esc(d.pickup||"Not provided")}</p></div><div><small>Delivery address</small><p>${esc(d.address||"Not provided")}</p></div>
+ </div>
+ <form onsubmit="updateDelivery(event,'${encodeURIComponent(id)}')">
+ <div class="grid2">
+ <div class="field"><label>Delivery status</label><select name="status">${["Pending","Assigned","Picked Up","In Transit","Delivered","Failed","Cancelled","Disputed"].map(s=>`<option ${d.status===s?"selected":""}>${s}</option>`).join("")}</select></div>
+ <div class="field"><label>Rider name</label><input name="rider" value="${esc(d.rider)}"></div>
+ <div class="field"><label>Dispatch company</label><input name="company" value="${esc(d.company)}"></div>
+ <div class="field"><label>Delivery fee (₦)</label><input name="fee" type="number" min="0" value="${Number(d.fee||0)}"></div>
+ <div class="field"><label>Fee payment status</label><select name="feeStatus">${["Unpaid","Paid","Refunded"].map(s=>`<option ${d.feeStatus===s?"selected":""}>${s}</option>`).join("")}</select></div>
+ <div class="field"><label>Tracking reference</label><input name="tracking" value="${esc(d.tracking)}"></div>
+ </div>
+ <div class="field"><label>Proof of delivery URL / reference</label><input name="proof" value="${esc(d.proof)}"></div>
+ <div class="field"><label>Complaint / delivery issue</label><textarea name="issue">${esc(d.issue)}</textarea></div>
+ <div class="modalfoot"><button type="submit">Save delivery updates</button></div>
+ </form>
+ <h3>Delivery status history</h3>
+ ${(d.history||[]).map(h=>`<p style="font-size:12px;border-bottom:1px solid var(--line);padding:8px 0"><b>${esc(h.status)}</b> — ${esc(h.date)}</p>`).join("")}
+ <div class="modalfoot"><button class="danger" onclick="deleteDelivery('${encodeURIComponent(id)}')">Delete record</button></div>
+ `);
+}
+function updateDelivery(e,encoded){
+ e.preventDefault();const id=decodeURIComponent(encoded),d=deliveries.find(x=>x.id===id);if(!d)return;
+ const f=new FormData(e.target),status=f.get("status");
+ if(status!==d.status){d.history=d.history||[];d.history.push({status,date:new Date().toLocaleString()})}
+ d.status=status;d.rider=f.get("rider");d.company=f.get("company");d.fee=Number(f.get("fee")||0);d.feeStatus=f.get("feeStatus");d.tracking=f.get("tracking");d.proof=f.get("proof");d.issue=f.get("issue");
+ persistDelivery();renderDelivery();updateOverview();closeModal();
+}
+function deleteDelivery(encoded){
+ const id=decodeURIComponent(encoded);if(!confirm("Delete this delivery record?"))return;
+ deliveries=deliveries.filter(d=>d.id!==id);persistDelivery();renderDelivery();updateOverview();closeModal();
+}
 
-document.addEventListener("click", function(event){
-  const sidebar = document.getElementById("sidebar");
-  const menu = document.querySelector(".menu-btn");
-
-  if(
-    window.innerWidth <= 700 &&
-    sidebar.classList.contains("open") &&
-    !sidebar.contains(event.target) &&
-    !menu.contains(event.target)
-  ){
-    sidebar.classList.remove("open");
-  }
-});
+Object.keys(sections).forEach(render);
+updateOverview();updateReports();renderDelivery();renderNotices();
 </script>
 </body>
 </html>
