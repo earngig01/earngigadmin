@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EarnGig Admin | Wallet & Coins</title>
+<style>
+:root{--navy:#151b2d;--purple:#713cf0;--lav:#f2edff;--bg:#f5f6fb;--ink:#192033;--muted:#7b8295;--line:#e9ebf3;--green:#16a765;--red:#e34d59;--orange:#efa638}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif;font-size:14px}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:245px;background:var(--navy);padding:22px 15px;color:white;overflow-y:auto}
+.brand{font-size:23px;font-weight:800;padding:10px 12px 35px}.brand span{color:#e6bd59}
+.nav-label{font-size:10px;letter-spacing:1px;color:#778198;padding:15px 12px 8px}
+.nav{display:block;text-decoration:none;color:#cbd0de;padding:12px;border-radius:9px;margin:3px 0;font-size:13px}
+.nav:hover,.nav.active{background:#49347e;color:white}
+.main{margin-left:245px}
+.topbar{height:72px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px}
+.searchtop{width:45%;background:#f2f3f8;border-radius:9px;padding:12px;border:0}
+.profile{display:flex;align-items:center;gap:10px;font-size:12px}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-weight:bold}
+.content{padding:28px;max-width:1600px;margin:auto}
+.heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+h1{font-size:27px;margin:0 0 7px}.subtitle{color:var(--muted);font-size:13px;margin:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
+.card,.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:0 3px 12px #17203a05}
+.card small{color:var(--muted)}.card h2{font-size:25px;margin:12px 0 5px}
+.card-icon{float:right;width:39px;height:39px;border-radius:11px;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-size:20px}
+.panel{margin-bottom:18px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:17px}.panel-head h2{font-size:16px;margin:0}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.toolbar input{flex:1;min-width:190px}
+input,select,textarea{border:1px solid var(--line);border-radius:8px;padding:11px;background:white;color:var(--ink);outline:none;width:100%}
+button.primary{background:var(--purple);color:white;border:0;padding:11px 16px;border-radius:8px;font-weight:bold}
+button.light{background:var(--lav);color:var(--purple);border:0;padding:10px 13px;border-radius:8px;font-weight:bold}
+button.danger{background:#fff0f0;color:var(--red);border:0;padding:9px 12px;border-radius:8px;font-weight:bold}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:780px}
+th,td{padding:14px 11px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}
+th{background:#f8f8fc;color:#747b8e;font-size:11px}
+.person{display:flex;align-items:center;gap:9px}.person-avatar{width:35px;height:35px;border-radius:50%;background:#eee8ff;color:var(--purple);display:grid;place-items:center;font-weight:bold}
+.person strong{display:block}.person small{color:var(--muted)}
+.badge{display:inline-block;border-radius:20px;padding:6px 9px;font-size:10px;font-weight:bold;background:#f0f1f5;color:#70788a}
+.badge.good{background:#e5f8ed;color:#159557}.badge.pending{background:#fff4e2;color:#ba7b19}.badge.bad{background:#fff0f0;color:var(--red)}
+.action{background:none;border:0;color:var(--purple);font-weight:bold}
+.empty{padding:40px 15px;text-align:center;color:var(--muted)}
+.notice{background:#fff8e9;color:#805c1d;border:1px solid #f0dfb8;padding:12px;border-radius:9px;font-size:12px;margin-bottom:17px}
+.modalbg{display:none;position:fixed;inset:0;background:#10172799;z-index:20;align-items:center;justify-content:center;padding:15px}
+.modal{background:white;border-radius:14px;padding:23px;width:min(650px,100%);max-height:90vh;overflow:auto}
+.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modalhead h2{font-size:18px;margin:0}
+.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.detail{background:#f7f7fb;padding:13px;border-radius:9px;font-size:13px;overflow-wrap:anywhere}
+.detail small{display:block;color:var(--muted);margin-bottom:6px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:13px}
+.field label{font-size:11px;color:var(--muted);font-weight:bold}
+.modal-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:20px}
+@media(max-width:950px){.sidebar{width:205px}.main{margin-left:205px}.stats{grid-template-columns:repeat(2,1fr)}.content{padding:18px}}
+@media(max-width:600px){.sidebar{display:none}.main{margin-left:0}.topbar{padding:0 13px}.content{padding:15px}.stats{gap:9px}.card{padding:13px}.card h2{font-size:21px}.detailgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+ <div class="brand">♛ <span>Earn</span>Gig</div>
+ <div class="nav-label">MAIN MENU</div>
+ <a class="nav" href="admin.html">▦ Dashboard</a>
+ <div class="nav-label">USERS & ACCOUNTS</div>
+ <a class="nav" href="users.html">♙ User Management</a>
+ <a class="nav" href="membership.html">♧ Membership</a>
+ <a class="nav active" href="wallet.html">◈ Wallet & Coins</a>
+ <a class="nav" href="referrals.html">♧ Referrals & Rewards</a>
+ <div class="nav-label">FINANCE</div>
+ <a class="nav" href="transactions.html">▤ Transactions</a>
+ <a class="nav" href="deposits.html">＋ Deposits & Payments</a>
+ <a class="nav" href="withdrawals.html">↗ Withdrawals</a>
+ <a class="nav" href="seller-wallet.html">▣ Seller Store Wallet</a>
+ <div class="nav-label">CONTENT</div>
+ <a class="nav" href="writers.html">✎ Writer Applications</a>
+ <a class="nav" href="novels.html">▤ Novel Management</a>
+ <a class="nav" href="readers.html">♡ Readers & Rewards</a>
+ <div class="nav-label">BUSINESS</div>
+ <a class="nav" href="ads.html">▧ Advertisements</a>
+ <a class="nav" href="billboard.html">▦ Billboard Bookings</a>
+ <a class="nav" href="marketplace.html">▣ Marketplace</a>
+ <a class="nav" href="stores.html">✓ Store Verification</a>
+ <a class="nav" href="delivery.html">🚚 Delivery Management</a>
+ <div class="nav-label">SYSTEM</div>
+ <a class="nav" href="notifications.html">♧ Notifications</a>
+ <a class="nav" href="reports.html">▥ Reports</a>
+ <a class="nav" href="settings.html">⚙ Settings</a>
+</aside>
+
+<div class="main">
+<header class="topbar">
+ <input class="searchtop" placeholder="Search EarnGig administration...">
+ <div class="profile"><div class="avatar">A</div><div><b>EarnGig Admin</b><br><span style="color:#858b9c">Administrator</span></div></div>
+</header>
+
+<main class="content">
+ <div class="heading">
+  <div><h1>Wallet & Coins</h1><p class="subtitle">Manage user Naira wallets, coin balances, purchases and wallet activity.</p></div>
+  <button class="light" onclick="exportWallets()">↓ Export Wallet Data</button>
+ </div>
+
+ <div class="notice">Prototype mode: balances and transactions are not connected to live EarnGig accounts. Do not use manual adjustments for real financial operations until server-side verification and audit controls are implemented.</div>
+
+ <div class="stats">
+  <div class="card"><span class="card-icon">◈</span><small>Wallet Accounts</small><h2 id="total">0</h2><small>Account records</small></div>
+  <div class="card"><span class="card-icon">₦</span><small>Total Naira Balance</small><h2 id="naira">₦0</h2><small>Recorded balances</small></div>
+  <div class="card"><span class="card-icon">◉</span><small>Total Coin Balance</small><h2 id="coins">0</h2><small>Recorded coins</small></div>
+  <div class="card"><span class="card-icon">↗</span><small>Coin Purchases</small><h2 id="purchases">0</h2><small>Recorded purchases</small></div>
+ </div>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Wallet Accounts</h2><span class="badge">Wallet Directory</span></div>
+  <div class="toolbar">
+   <input id="search" placeholder="Search user name, email or wallet ID..." oninput="renderWallets()">
+   <select id="typeFilter" onchange="renderWallets()">
+    <option value="">All account types</option>
+    <option>Regular User</option><option>Writer</option><option>Seller</option>
+   </select>
+  </div>
+  <div class="tablewrap" id="walletTable"></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Coin Purchase Records</h2><span class="badge">Purchase History</span></div>
+  <div class="toolbar">
+   <input id="purchaseSearch" placeholder="Search purchase ID or user..." oninput="renderPurchases()">
+   <select id="purchaseFilter" onchange="renderPurchases()">
+    <option value="">All payment statuses</option><option>Paid</option><option>Pending</option><option>Failed</option><option>Refunded</option>
+   </select>
+  </div>
+  <div class="tablewrap" id="purchaseTable"></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Wallet Transaction History</h2><span class="badge">Account Activity</span></div>
+  <div class="toolbar">
+   <input id="historySearch" placeholder="Search transaction or wallet ID..." oninput="renderHistory()">
+   <select id="historyFilter" onchange="renderHistory()"><option value="">All transaction types</option><option>Coin Purchase</option><option>Coin Reward</option><option>Wallet Credit</option><option>Wallet Debit</option><option>Adjustment</option></select>
+  </div>
+  <div class="tablewrap" id="historyTable"></div>
+ </section>
+</main>
+</div>
+
+<div class="modalbg" id="modal">
+ <div class="modal">
+  <div class="modalhead"><h2 id="modalTitle">Wallet Details</h2><button class="light" onclick="closeModal()">Close</button></div>
+  <div id="modalContent"></div>
+ </div>
+</div>
+
+<script>
+const ACCOUNT_KEY="earngig_wallet_accounts_v1";
+const PURCHASE_KEY="earngig_wallet_purchases_v1";
+const HISTORY_KEY="earngig_wallet_history_v1";
+
+function read(key){
+ try{const v=JSON.parse(localStorage.getItem(key)||"[]");return Array.isArray(v)?v:[]}
+ catch{return []}
+}
+let wallets=read(ACCOUNT_KEY);
+let purchases=read(PURCHASE_KEY);
+let history=read(HISTORY_KEY);
+
+function esc(v){
+ return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function money(v){return "₦"+Number(v||0).toLocaleString("en-NG")}
+function saveWallets(){localStorage.setItem(ACCOUNT_KEY,JSON.stringify(wallets));renderWallets();updateStats()}
+function savePurchases(){localStorage.setItem(PURCHASE_KEY,JSON.stringify(purchases));renderPurchases();updateStats()}
+function saveHistory(){localStorage.setItem(HISTORY_KEY,JSON.stringify(history));renderHistory()}
+
+function updateStats(){
+ document.getElementById("total").textContent=wallets.length;
+ document.getElementById("naira").textContent=money(wallets.reduce((a,w)=>a+Number(w.naira||0),0));
+ document.getElementById("coins").textContent=wallets.reduce((a,w)=>a+Number(w.coins||0),0).toLocaleString();
+ document.getElementById("purchases").textContent=purchases.length;
+}
+
+function renderWallets(){
+ const q=document.getElementById("search").value.toLowerCase();
+ const type=document.getElementById("typeFilter").value;
+ const list=wallets.map((w,i)=>({...w,index:i})).filter(w=>
+ [w.id,w.name,w.email].join(" ").toLowerCase().includes(q)&&(!type||w.type===type)
+ );
+ document.getElementById("walletTable").innerHTML=list.length?`
+ <table><thead><tr><th>ACCOUNT HOLDER</th><th>WALLET ID</th><th>ACCOUNT TYPE</th><th>NAIRA BALANCE</th><th>COIN BALANCE</th><th>STATUS</th><th>ACTION</th></tr></thead>
+ <tbody>${list.map(w=>`<tr>
+ <td><div class="person"><div class="person-avatar">${esc(w.name.charAt(0).toUpperCase())}</div><div><strong>${esc(w.name)}</strong><small>${esc(w.email)}</small></div></div></td>
+ <td>${esc(w.id)}</td><td>${esc(w.type)}</td><td>${money(w.naira)}</td><td>${Number(w.coins||0).toLocaleString()}</td>
+ <td><span class="badge ${w.status==="Active"?"good":"bad"}">${esc(w.status)}</span></td>
+ <td><button class="action" onclick="viewWallet(${w.index})">View Wallet →</button></td>
+ </tr>`).join("")}</tbody></table>`:
+ `<div class="empty"><h3>No wallet accounts found</h3><p>Live user wallet accounts will appear here when the database is connected.</p></div>`;
+}
+
+function viewWallet(i){
+ const w=wallets[i];if(!w)return;
+ showModal("Wallet Details",`
+ <div class="detailgrid">
+ <div class="detail"><small>Account holder</small><b>${esc(w.name)}</b></div>
+ <div class="detail"><small>Wallet ID</small>${esc(w.id)}</div>
+ <div class="detail"><small>Email</small>${esc(w.email)}</div>
+ <div class="detail"><small>Account type</small>${esc(w.type)}</div>
+ <div class="detail"><small>Naira wallet</small><b>${money(w.naira)}</b></div>
+ <div class="detail"><small>Coin balance</small><b>${Number(w.coins||0).toLocaleString()} coins</b></div>
+ <div class="detail"><small>Account status</small>${esc(w.status)}</div>
+ <div class="detail"><small>Last updated</small>${esc(w.updated||"Not available")}</div>
+ </div>
+ <div class="modal-actions">
+ <button class="light" onclick="adjustBalance(${i},'naira')">Adjust Naira</button>
+ <button class="light" onclick="adjustBalance(${i},'coins')">Adjust Coins</button>
+ <button class="danger" onclick="toggleWallet(${i})">${w.status==="Active"?"Freeze Wallet":"Unfreeze Wallet"}</button>
+ </div>
+ <p style="font-size:11px;color:#9297a5;margin-top:15px">Prototype controls only. Real wallet changes must be performed through secure, audited server-side financial operations.</p>`);
+}
+
+function adjustBalance(i,type){
+ const w=wallets[i];
+ showModal(type==="coins"?"Adjust Coin Balance":"Adjust Naira Balance",`
+ <form onsubmit="saveAdjustment(event,${i},'${type}')">
+ <div class="field"><label>Wallet owner</label><input value="${esc(w.name)}" disabled></div>
+ <div class="field"><label>Current balance</label><input value="${type==="coins"?Number(w.coins||0).toLocaleString()+" coins":money(w.naira)}" disabled></div>
+ <div class="field"><label>Adjustment type</label><select name="operation"><option value="credit">Credit</option><option value="debit">Debit</option></select></div>
+ <div class="field"><label>Amount</label><input name="amount" type="number" min="0.01" step="any" required></div>
+ <div class="field"><label>Reason for adjustment</label><input name="reason" required placeholder="Explain why this adjustment is needed"></div>
+ <div class="modal-actions"><button class="primary">Save Adjustment</button></div>
+ </form>`);
+}
+
+function saveAdjustment(e,i,type){
+ e.preventDefault();
+ const f=new FormData(e.target),amount=Number(f.get("amount"));
+ if(!Number.isFinite(amount)||amount<=0){alert("Enter a valid amount.");return}
+ const w=wallets[i],field=type==="coins"?"coins":"naira";
+ const operation=f.get("operation"),reason=f.get("reason").trim();
+ if(operation==="debit"&&amount>Number(w[field]||0)){alert("Insufficient balance.");return}
+ if(!confirm("Confirm this prototype wallet adjustment?"))return;
+ w[field]=Number(w[field]||0)+(operation==="credit"?amount:-amount);
+ w.updated=new Date().toLocaleString();
+ history.unshift({id:"WHT-"+Date.now(),walletId:w.id,name:w.name,type:"Adjustment",amount,unit:type==="coins"?"Coins":"Naira",direction:operation,reason,date:new Date().toLocaleString(),status:"Recorded"});
+ localStorage.setItem(ACCOUNT_KEY,JSON.stringify(wallets));
+ saveHistory();renderWallets();updateStats();closeModal();
+}
+
+function toggleWallet(i){
+ wallets[i].status=wallets[i].status==="Active"?"Frozen":"Active";
+ wallets[i].updated=new Date().toLocaleString();
+ saveWallets();viewWallet(i);
+}
+
+function renderPurchases(){
+ const q=document.getElementById("purchaseSearch").value.toLowerCase();
+ const filter=document.getElementById("purchaseFilter").value;
+ const list=purchases.filter(p=>[p.id,p.name,p.email].join(" ").toLowerCase().includes(q)&&(!filter||p.status===filter));
+ document.getElementById("purchaseTable").innerHTML=list.length?`
+ <table><thead><tr><th>PURCHASE ID</th><th>USER</th><th>COINS PURCHASED</th><th>NAIRA AMOUNT</th><th>PAYMENT REFERENCE</th><th>STATUS</th></tr></thead>
+ <tbody>${list.map(p=>`<tr><td>${esc(p.id)}</td><td>${esc(p.name)}</td><td>${Number(p.coins||0).toLocaleString()}</td><td>${money(p.amount)}</td><td>${esc(p.reference||"Not available")}</td><td><span class="badge ${p.status==="Paid"?"good":p.status==="Failed"?"bad":"pending"}">${esc(p.status)}</span></td></tr>`).join("")}</tbody></table>`:
+ `<div class="empty">No coin purchase records found.</div>`;
+}
+
+function renderHistory(){
+ const q=document.getElementById("historySearch").value.toLowerCase();
+ const filter=document.getElementById("historyFilter").value;
+ const list=history.filter(h=>[h.id,h.walletId,h.name].join(" ").toLowerCase().includes(q)&&(!filter||h.type===filter));
+ document.getElementById("historyTable").innerHTML=list.length?`
+ <table><thead><tr><th>REFERENCE</th><th>ACCOUNT HOLDER</th><th>TRANSACTION TYPE</th><th>AMOUNT</th><th>REASON</th><th>DATE</th><th>STATUS</th></tr></thead>
+ <tbody>${list.map(h=>`<tr><td>${esc(h.id)}</td><td>${esc(h.name)}</td><td>${esc(h.type)}</td><td>${h.unit==="Coins"?Number(h.amount).toLocaleString()+" coins":money(h.amount)}</td><td>${esc(h.reason||"—")}</td><td>${esc(h.date||"—")}</td><td><span class="badge good">${esc(h.status)}</span></td></tr>`).join("")}</tbody></table>`:
+ `<div class="empty">No wallet transaction history found.</div>`;
+}
+
+function showModal(title,html){
+ document.getElementById("modalTitle").textContent=title;
+ document.getElementById("modalContent").innerHTML=html;
+ document.getElementById("modal").style.display="flex";
+}
+function closeModal(){document.getElementById("modal").style.display="none"}
+
+function exportWallets(){
+ const blob=new Blob([JSON.stringify({wallets,purchases,history},null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="earngig-wallet-export.json";a.click();URL.revokeObjectURL(url);
+}
+
+renderWallets();
+renderPurchases();
+renderHistory();
+updateStats();
+</script>
+</body>
+</html>
