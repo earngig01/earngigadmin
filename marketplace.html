@@ -1,0 +1,619 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketplace Activity | EarnGig Admin</title>
+<style>
+:root{
+ --navy:#111a35;--navy2:#202d50;--purple:#7154d9;--purple2:#8c75ed;
+ --lav:#f1edff;--bg:#f6f7fb;--white:#fff;--text:#202943;
+ --muted:#8490a6;--line:#e8eaf2;--green:#15966b;--red:#d94c61;
+ --orange:#d78a25;--gold:#e8bd62;--shadow:0 8px 28px rgba(25,35,65,.06)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:250px;background:var(--navy);color:#dce2f3;padding:23px 15px;position:fixed;inset:0 auto 0 0;overflow:auto;z-index:5}
+.brand{display:flex;align-items:center;gap:10px;padding:3px 10px 27px;font-size:21px;font-weight:800;color:white}
+.brand svg{width:27px;height:27px;flex:none}
+.nav-label{font-size:10px;letter-spacing:1.5px;color:#8995b3;padding:17px 12px 9px;font-weight:700}
+.nav a{display:flex;align-items:center;gap:12px;text-decoration:none;color:#c0c9df;padding:11px 12px;border-radius:9px;font-size:13px;margin:3px 0}
+.nav a:hover,.nav a.active{background:#29365b;color:white}
+.nav a.active{box-shadow:inset 3px 0 var(--purple2)}
+.nav .ico{width:19px;text-align:center;font-size:16px}
+.sidebar-note{margin:25px 7px 0;padding:13px;border:1px solid #344263;border-radius:10px;color:#aab5ce;font-size:11px;line-height:1.6}
+.main{margin-left:250px;width:calc(100% - 250px);min-width:0}
+.topbar{height:68px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:4}
+.top-left{display:flex;align-items:center;gap:12px}
+.topbar small{color:var(--muted)}
+.admin-chip{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700}
+.avatar{width:33px;height:33px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center}
+.content{padding:27px 30px 50px;max-width:1600px;margin:auto}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}
+h1{font-size:24px;margin:0 0 7px;letter-spacing:-.5px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.5}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:700;font-size:12px}
+.btn-primary{background:var(--purple);color:white}
+.btn-primary:hover{background:#6043c7}
+.btn-light{background:#f0edff;color:var(--purple)}
+.btn-outline{background:white;border:1px solid var(--line);color:var(--text)}
+.btn-danger{background:#fff0f2;color:var(--red)}
+.btn-success{background:#e8f7f0;color:var(--green)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.stat{background:white;border:1px solid var(--line);border-radius:12px;padding:17px;box-shadow:var(--shadow)}
+.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px}
+.stat-icon{width:31px;height:31px;border-radius:9px;background:var(--lav);color:var(--purple);display:grid;place-items:center}
+.stat strong{display:block;font-size:25px;margin-top:13px;letter-spacing:-.5px}
+.stat small{font-size:10px;color:var(--muted)}
+.panel{background:white;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);margin-bottom:19px}
+.panel-head{padding:17px 19px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.panel-head h2{font-size:14px;margin:0}
+.panel-body{padding:18px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{border:0;background:transparent;padding:9px 12px;border-radius:7px;color:#7c879e;font-size:12px;font-weight:700}
+.tab.active{background:var(--lav);color:var(--purple)}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}
+.toolbar input,.toolbar select,.field input,.field select,.field textarea{
+ border:1px solid var(--line);border-radius:8px;padding:10px 11px;background:white;color:var(--text);font-size:12px;outline:none;width:100%
+}
+.toolbar input{max-width:270px}
+.toolbar select{width:auto;min-width:145px}
+input:focus,select:focus,textarea:focus{border-color:var(--purple2)!important;box-shadow:0 0 0 3px #7154d91a}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:750px}
+th{text-align:left;background:#fafbfe;color:#8a94a9;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:12px 14px;white-space:nowrap}
+td{padding:13px 14px;border-top:1px solid #f0f1f6;font-size:12px;vertical-align:middle}
+td strong{font-size:12px}
+.muted{color:var(--muted)}
+.subline{display:block;font-size:10px;color:var(--muted);margin-top:4px}
+.pill{display:inline-block;border-radius:20px;padding:5px 8px;font-size:10px;font-weight:700;background:#f0f1f5;color:#68738a;white-space:nowrap}
+.pill.completed,.pill.delivered,.pill.active{background:#e7f7ef;color:#14845e}
+.pill.cancelled,.pill.disputed,.pill.suspended{background:#ffedf0;color:#c44156}
+.pill.pending,.pill.processing,.pill.inprogress{background:#fff4df;color:#a96c12}
+.pill.shipped,.pill.confirmed{background:#f1edff;color:#7054d4}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.actions button{border:1px solid var(--line);background:white;border-radius:6px;padding:7px 9px;font-size:10px;color:#59647b}
+.actions button:hover{border-color:var(--purple);color:var(--purple)}
+.empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:12px}
+.empty b{display:block;color:var(--text);margin-bottom:7px;font-size:13px}
+.notice{padding:12px 14px;background:#f4f1ff;border:1px solid #e8e1ff;border-radius:9px;color:#6551b0;font-size:11px;line-height:1.6;margin-bottom:15px}
+.notice.warn{background:#fff8e9;border-color:#f6e5bd;color:#94651d}
+.hidden{display:none!important}
+.modal-backdrop{position:fixed;inset:0;background:#10182d99;z-index:20;display:none;align-items:center;justify-content:center;padding:18px}
+.modal-backdrop.show{display:flex}
+.modal{background:white;width:min(760px,100%);max-height:92vh;overflow:auto;border-radius:14px;box-shadow:0 20px 70px #0003}
+.modal-head{padding:18px 21px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:white;z-index:2}
+.modal-head h3{margin:0;font-size:15px}
+.close{border:0;background:#f1f2f7;border-radius:7px;width:30px;height:30px;font-size:18px}
+.modal-content{padding:20px}
+.modal-foot{padding:15px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px;position:sticky;bottom:0;background:white}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:700;margin-bottom:7px}
+.field textarea{min-height:100px;resize:vertical;line-height:1.6}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:17px}
+.detail-box{background:#f8f9fc;border-radius:8px;padding:11px;min-width:0}
+.detail-box small{display:block;color:var(--muted);font-size:10px;margin-bottom:6px}
+.detail-box strong{font-size:12px;overflow-wrap:anywhere}
+.leader-rank{width:27px;height:27px;display:grid;place-items:center;border-radius:8px;background:#f1edff;color:var(--purple);font-weight:800}
+.medal{color:#c18b2b;font-size:16px}
+.milestone-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.milestone{border:1px solid var(--line);border-radius:11px;padding:17px}
+.milestone h3{font-size:13px;margin:0 0 7px}
+.milestone .big{font-size:24px;font-weight:800;margin:10px 0}
+.milestone p{font-size:11px;color:var(--muted);line-height:1.5}
+.progress{height:7px;background:#eeeef5;border-radius:10px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;background:var(--purple);border-radius:10px}
+.mobile-menu{display:none}
+.footer-note{font-size:10px;color:var(--muted);line-height:1.6;margin-top:12px}
+@media(max-width:1100px){.stats{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){
+ .sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:translateX(0)}
+ .main{margin-left:0;width:100%}.topbar{padding:0 16px}.content{padding:20px 14px 40px}
+ .mobile-menu{display:inline-block;border:0;background:var(--lav);color:var(--purple);border-radius:7px;padding:7px 10px}
+ .stats{grid-template-columns:repeat(2,1fr)}.page-head{flex-direction:column}
+ .grid2,.detail-grid,.milestone-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+   <path d="M5 12L12 18L19.5 6L27 18L35 12L31 30H9L5 12Z" stroke="#E8BD62" stroke-width="2.3" stroke-linejoin="round"/>
+   <path d="M10 34H30" stroke="#E8BD62" stroke-width="2.3" stroke-linecap="round"/>
+   <circle cx="5" cy="11" r="2" fill="#E8BD62"/><circle cx="19.5" cy="5" r="2" fill="#E8BD62"/><circle cx="35" cy="11" r="2" fill="#E8BD62"/>
+  </svg>
+  EarnGig
+ </div>
+ <nav class="nav">
+  <div class="nav-label">MAIN</div>
+  <a href="admin.html"><span class="ico">▦</span>Dashboard</a>
+  <div class="nav-label">USER MANAGEMENT</div>
+  <a href="users.html"><span class="ico">♙</span>Users</a>
+  <a href="membership.html"><span class="ico">◇</span>Membership</a>
+  <a href="wallet.html"><span class="ico">◈</span>Coin Withdrawals</a>
+  <a href="coin-purchases.html"><span class="ico">◉</span>Coin Purchases</a>
+  <a href="referrals.html"><span class="ico">⇄</span>Referrals</a>
+  <div class="nav-label">FINANCE</div>
+  <a href="transactions.html"><span class="ico">▤</span>Transactions</a>
+  <a href="deposits.html"><span class="ico">↓</span>Deposits</a>
+  <a href="withdrawals.html"><span class="ico">↑</span>Wallet Withdrawals</a>
+  <a href="seller-wallet.html"><span class="ico">▣</span>Seller Wallet</a>
+  <a href="payouts.html"><span class="ico">₦</span>Payouts</a>
+  <div class="nav-label">CONTENT & COMMUNITY</div>
+  <a href="writers.html"><span class="ico">✎</span>Writer Management</a>
+  <a href="novels.html"><span class="ico">▥</span>Novel Management</a>
+  <a class="active" href="marketplace.html"><span class="ico">▧</span>Marketplace Activity</a>
+  <div class="nav-label">ADVERTISING</div>
+  <a href="advertising.html"><span class="ico">▣</span>Advertisement Bookings</a>
+  <a href="watch-earn.html"><span class="ico">▶</span>Watch & Earn</a>
+  <a href="billboard.html"><span class="ico">▤</span>Billboard Management</a>
+ </nav>
+ <div class="sidebar-note">EarnGig Administration<br>Owner access only<br><span style="color:#e8bd62">●</span> Admin workspace prototype</div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+  <div><strong style="font-size:13px">Marketplace Activity</strong><br><small>Orders, delivery and vendor performance</small></div>
+ </div>
+ <div class="admin-chip"><div class="avatar">A</div><span>Administrator</span></div>
+</header>
+
+<div class="content">
+ <div class="page-head">
+  <div>
+   <h1>Marketplace Performance</h1>
+   <div class="subtitle">Monitor order activity, delivery progress, vendor sales performance and completed-order milestones.</div>
+  </div>
+  <div class="actions">
+   <button class="btn btn-outline" onclick="exportOrders()">Export orders ↓</button>
+   <button class="btn btn-outline" onclick="exportVendors()">Export vendors ↓</button>
+  </div>
+ </div>
+
+ <div class="notice warn">
+  <strong>Performance rule:</strong> Vendor rankings and milestone counts are based on valid completed orders only. Pending, in-progress, cancelled and disputed orders do not count towards the 100-order or 1,000-order milestones. This page is a local prototype and is not connected to live marketplace orders.
+ </div>
+
+ <section class="stats">
+  <div class="stat"><div class="stat-top">Total orders <span class="stat-icon">▤</span></div><strong id="statTotal">0</strong><small>All recorded orders</small></div>
+  <div class="stat"><div class="stat-top">In progress <span class="stat-icon">◷</span></div><strong id="statProgress">0</strong><small>Orders being fulfilled</small></div>
+  <div class="stat"><div class="stat-top">Pending <span class="stat-icon">…</span></div><strong id="statPending">0</strong><small>Awaiting next action</small></div>
+  <div class="stat"><div class="stat-top">Completed <span class="stat-icon">✓</span></div><strong id="statCompleted">0</strong><small>Valid completed orders</small></div>
+  <div class="stat"><div class="stat-top">Disputed / cancelled <span class="stat-icon">!</span></div><strong id="statIssues">0</strong><small>Orders requiring attention</small></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Vendor sales leaderboard</h2><span class="pill">Ranked by completed orders</span></div>
+  <div class="panel-body">
+   <div class="toolbar">
+    <input id="vendorSearch" placeholder="Search vendor name or ID..." oninput="renderVendors()">
+    <select id="vendorStatusFilter" onchange="renderVendors()"><option value="">All vendor statuses</option><option>Active</option><option>Suspended</option></select>
+   </div>
+   <div class="table-wrap">
+    <table>
+     <thead><tr><th>Rank</th><th>Vendor</th><th>Completed orders</th><th>In progress</th><th>Cancelled</th><th>Disputed</th><th>Milestone progress</th><th>Profile</th></tr></thead>
+     <tbody id="vendorRows"></tbody>
+    </table>
+   </div>
+   <div class="empty" id="vendorEmpty"><b>No vendor performance records</b>Vendor rankings will appear when marketplace order data is connected or imported.</div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Vendor order milestones</h2><span class="pill">100 and 1,000 completed orders</span></div>
+  <div class="panel-body">
+   <div class="milestone-grid">
+    <div class="milestone">
+     <h3>First 100 completed orders</h3>
+     <div class="big" id="milestone100Count">0 vendors</div>
+     <p>Vendors who have reached at least 100 valid completed marketplace orders.</p>
+     <div class="progress"><span id="milestone100Bar" style="width:0%"></span></div>
+     <small class="muted">Milestone award records are tracked below.</small>
+    </div>
+    <div class="milestone">
+     <h3>First 1,000 completed orders</h3>
+     <div class="big" id="milestone1000Count">0 vendors</div>
+     <p>Vendors who have reached at least 1,000 valid completed marketplace orders.</p>
+     <div class="progress"><span id="milestone1000Bar" style="width:0%"></span></div>
+     <small class="muted">Milestone award records are tracked below.</small>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head">
+   <h2>Milestone achievement & award records</h2>
+   <button class="btn btn-outline" onclick="exportMilestones()">Export milestone records ↓</button>
+  </div>
+  <div class="panel-body">
+   <div class="notice">This area records which vendor reached each order milestone, the date reached and award status. No award item, cash value or reward has been assumed. Enter the award details only when the platform owner has defined them.</div>
+   <div class="table-wrap">
+    <table>
+     <thead><tr><th>Vendor</th><th>Milestone</th><th>Completed orders</th><th>Date reached</th><th>Award status</th><th>Award note</th><th>Action</th></tr></thead>
+     <tbody id="milestoneRows"></tbody>
+    </table>
+   </div>
+   <div class="empty" id="milestoneEmpty"><b>No milestone achievements recorded</b>Milestone records will be generated from valid completed-order totals.</div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head">
+   <h2>Marketplace order tracking</h2>
+   <div class="tabs" id="orderTabs">
+    <button class="tab active" data-filter="all">All orders</button>
+    <button class="tab" data-filter="Pending">Pending</button>
+    <button class="tab" data-filter="In Progress">In progress</button>
+    <button class="tab" data-filter="Completed">Completed</button>
+    <button class="tab" data-filter="Cancelled">Cancelled</button>
+    <button class="tab" data-filter="Disputed">Disputed</button>
+   </div>
+  </div>
+  <div class="panel-body">
+   <div class="toolbar">
+    <input id="orderSearch" placeholder="Search order ID, vendor or buyer..." oninput="renderOrders()">
+    <select id="orderVendorFilter" onchange="renderOrders()"><option value="">All vendors</option></select>
+    <select id="orderDateFilter" onchange="renderOrders()">
+     <option value="">All dates</option><option value="today">Today</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option>
+    </select>
+   </div>
+   <div class="table-wrap">
+    <table>
+     <thead><tr><th>Order ID</th><th>Buyer</th><th>Vendor</th><th>Order amount</th><th>Order date</th><th>Delivery status</th><th>Last update</th><th>Details</th></tr></thead>
+     <tbody id="orderRows"></tbody>
+    </table>
+   </div>
+   <div class="empty" id="orderEmpty"><b>No marketplace orders found</b>Orders will appear here after the marketplace backend is connected.</div>
+  </div>
+ </section>
+</div>
+</main>
+</div>
+
+<!-- Vendor profile -->
+<div class="modal-backdrop" id="vendorModal">
+ <div class="modal">
+  <div class="modal-head"><h3 id="vendorHeading">Vendor performance profile</h3><button class="close" onclick="closeModal('vendorModal')">×</button></div>
+  <div class="modal-content" id="vendorContent"></div>
+  <div class="modal-foot" id="vendorActions"></div>
+ </div>
+</div>
+
+<!-- Order details -->
+<div class="modal-backdrop" id="orderModal">
+ <div class="modal">
+  <div class="modal-head"><h3>Order details & delivery tracking</h3><button class="close" onclick="closeModal('orderModal')">×</button></div>
+  <div class="modal-content" id="orderContent"></div>
+  <div class="modal-foot" id="orderActions"></div>
+ </div>
+</div>
+
+<!-- Milestone award -->
+<div class="modal-backdrop" id="awardModal">
+ <div class="modal">
+  <div class="modal-head"><h3>Update milestone award record</h3><button class="close" onclick="closeModal('awardModal')">×</button></div>
+  <div class="modal-content">
+   <div id="awardVendorInfo" class="notice"></div>
+   <div class="field"><label>Award status</label>
+    <select id="awardStatus"><option>Not Yet Awarded</option><option>Award Pending</option><option>Awarded</option></select>
+   </div>
+   <div class="field"><label>Award details / administration note</label><textarea id="awardNote" placeholder="Record the actual award details or administrative note. Do not assume a reward amount or item."></textarea></div>
+  </div>
+  <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('awardModal')">Cancel</button><button class="btn btn-primary" onclick="saveAward()">Save award record</button></div>
+ </div>
+</div>
+
+<!-- Prototype data entry -->
+<div class="modal-backdrop" id="dataModal">
+ <div class="modal">
+  <div class="modal-head"><h3 id="dataHeading">Add marketplace record</h3><button class="close" onclick="closeModal('dataModal')">×</button></div>
+  <div class="modal-content" id="dataContent"></div>
+  <div class="modal-foot"><button class="btn btn-outline" onclick="closeModal('dataModal')">Cancel</button><button class="btn btn-primary" onclick="saveDataRecord()">Save record</button></div>
+ </div>
+</div>
+
+<script>
+const ORDER_KEY='earngig_marketplace_orders_v1';
+const VENDOR_KEY='earngig_marketplace_vendors_v1';
+const MILESTONE_KEY='earngig_marketplace_milestones_v1';
+
+let orders=load(ORDER_KEY,[]);
+let vendors=load(VENDOR_KEY,[]);
+let milestones=load(MILESTONE_KEY,[]);
+let orderFilter='all';
+let activeVendorId=null,activeOrderId=null,activeMilestoneId=null;
+let dataMode='';
+
+function load(key,fallback){
+ try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch(e){return fallback}
+}
+function save(key,value){localStorage.setItem(key,JSON.stringify(value))}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function money(v){return '₦'+Number(v||0).toLocaleString('en-NG')}
+function dateValue(v){if(!v)return '—';const d=new Date(v);return isNaN(d)?esc(v):d.toLocaleDateString('en-NG',{day:'numeric',month:'short',year:'numeric'})}
+function dateTime(v){if(!v)return '—';const d=new Date(v);return isNaN(d)?esc(v):d.toLocaleString('en-NG')}
+function newId(prefix){return prefix+'-'+Date.now().toString(36).toUpperCase()}
+function completedCount(vendorId){
+ return orders.filter(o=>o.vendorId===vendorId&&o.status==='Completed').length;
+}
+function vendorOrders(vendorId,status){
+ return orders.filter(o=>o.vendorId===vendorId&&(!status||o.status===status)).length;
+}
+function getVendor(id){return vendors.find(v=>v.id===id)}
+function statusClass(s){
+ if(['Completed','Awarded','Active'].includes(s))return 'completed';
+ if(['Cancelled','Disputed','Suspended'].includes(s))return 'cancelled';
+ if(['In Progress','Pending','Award Pending','Not Yet Awarded'].includes(s))return 'pending';
+ if(['Shipped','Confirmed'].includes(s))return 'shipped';
+ return '';
+}
+function pill(s){return `<span class="pill ${statusClass(s)}">${esc(s||'Not set')}</span>`}
+
+function ensureMilestones(){
+ vendors.forEach(v=>{
+  const total=completedCount(v.id);
+  [100,1000].forEach(target=>{
+   if(total>=target){
+    let record=milestones.find(m=>m.vendorId===v.id&&m.target===target);
+    if(!record){
+     record={id:newId('MS'),vendorId:v.id,target,completedAt:new Date().toISOString(),awardStatus:'Not Yet Awarded',awardNote:''};
+     milestones.push(record);
+    }
+   }
+  });
+ });
+ save(MILESTONE_KEY,milestones);
+}
+function updateStats(){
+ const count=s=>orders.filter(o=>o.status===s).length;
+ document.getElementById('statTotal').textContent=orders.length;
+ document.getElementById('statProgress').textContent=count('In Progress');
+ document.getElementById('statPending').textContent=count('Pending');
+ document.getElementById('statCompleted').textContent=count('Completed');
+ document.getElementById('statIssues').textContent=count('Cancelled')+count('Disputed');
+ const first100=vendors.filter(v=>completedCount(v.id)>=100).length;
+ const first1000=vendors.filter(v=>completedCount(v.id)>=1000).length;
+ document.getElementById('milestone100Count').textContent=first100+' vendors';
+ document.getElementById('milestone1000Count').textContent=first1000+' vendors';
+ document.getElementById('milestone100Bar').style.width=Math.min(100,first100*10)+'%';
+ document.getElementById('milestone1000Bar').style.width=Math.min(100,first1000*10)+'%';
+}
+function renderVendorFilter(){
+ const select=document.getElementById('orderVendorFilter'),current=select.value;
+ select.innerHTML='<option value="">All vendors</option>'+vendors.map(v=>`<option value="${esc(v.id)}">${esc(v.name)}</option>`).join('');
+ select.value=vendors.some(v=>v.id===current)?current:'';
+}
+function renderVendors(){
+ const q=document.getElementById('vendorSearch').value.toLowerCase();
+ const status=document.getElementById('vendorStatusFilter').value;
+ const list=vendors.filter(v=>(v.name+' '+v.id+' '+(v.email||'')).toLowerCase().includes(q)&&(!status||v.status===status))
+ .sort((a,b)=>completedCount(b.id)-completedCount(a.id));
+ document.getElementById('vendorRows').innerHTML=list.map((v,i)=>{
+  const total=completedCount(v.id);
+  const next=total>=1000?1000:100;
+  const pct=Math.min(100,total/next*100);
+  return `<tr>
+   <td><span class="leader-rank">${i+1}</span></td>
+   <td><strong>${esc(v.name)}</strong><span class="subline">${esc(v.id)} · ${esc(v.email||'')}</span></td>
+   <td><strong>${total.toLocaleString('en-NG')}</strong></td>
+   <td>${vendorOrders(v.id,'In Progress')}</td>
+   <td>${vendorOrders(v.id,'Cancelled')}</td>
+   <td>${vendorOrders(v.id,'Disputed')}</td>
+   <td><div style="min-width:110px"><div class="progress"><span style="width:${pct}%"></span></div><small class="muted">${total.toLocaleString('en-NG')} / ${next.toLocaleString('en-NG')}</small></div></td>
+   <td><button class="btn btn-light" onclick="viewVendor('${v.id}')">View profile</button></td>
+  </tr>`;
+ }).join('');
+ document.getElementById('vendorEmpty').classList.toggle('hidden',list.length>0);
+}
+function renderMilestones(){
+ ensureMilestones();
+ const list=milestones.slice().sort((a,b)=>new Date(b.completedAt)-new Date(a.completedAt));
+ document.getElementById('milestoneRows').innerHTML=list.map(m=>{
+  const v=getVendor(m.vendorId);
+  return `<tr><td><strong>${esc(v?.name||'Unknown vendor')}</strong><span class="subline">${esc(m.vendorId)}</span></td>
+  <td><strong>${Number(m.target).toLocaleString('en-NG')} orders</strong></td>
+  <td>${completedCount(m.vendorId).toLocaleString('en-NG')}</td>
+  <td>${dateValue(m.completedAt)}</td><td>${pill(m.awardStatus)}</td>
+  <td>${esc(m.awardNote||'—')}</td><td><button class="btn btn-light" onclick="editAward('${m.id}')">Update award</button></td></tr>`;
+ }).join('');
+ document.getElementById('milestoneEmpty').classList.toggle('hidden',list.length>0);
+}
+function renderOrders(){
+ const q=document.getElementById('orderSearch').value.toLowerCase();
+ const vendorId=document.getElementById('orderVendorFilter').value;
+ const dateFilter=document.getElementById('orderDateFilter').value;
+ const now=new Date();
+ const list=orders.filter(o=>{
+  const v=getVendor(o.vendorId);
+  const text=[o.id,o.buyer,o.buyerEmail,v?.name,o.deliveryReference].join(' ').toLowerCase();
+  let dateOk=true;
+  if(dateFilter){
+   const d=new Date(o.createdAt);
+   if(!isNaN(d)){
+    if(dateFilter==='today')dateOk=d.toDateString()===now.toDateString();
+    else dateOk=(now-d)<=Number(dateFilter)*86400000&&(now-d)>=0;
+   }else dateOk=false;
+  }
+  return text.includes(q)&&(!vendorId||o.vendorId===vendorId)&&dateOk&&(orderFilter==='all'||o.status===orderFilter);
+ }).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+ document.getElementById('orderRows').innerHTML=list.map(o=>{
+  const v=getVendor(o.vendorId);
+  return `<tr><td><strong>${esc(o.id)}</strong></td>
+  <td>${esc(o.buyer||'—')}<span class="subline">${esc(o.buyerEmail||'')}</span></td>
+  <td>${esc(v?.name||o.vendorName||'Unknown vendor')}</td>
+  <td><strong>${money(o.amount)}</strong></td>
+  <td>${dateValue(o.createdAt)}</td>
+  <td>${pill(o.status)}</td>
+  <td>${dateValue(o.updatedAt||o.createdAt)}</td>
+  <td><button class="btn btn-light" onclick="viewOrder('${o.id}')">Details</button></td></tr>`;
+ }).join('');
+ document.getElementById('orderEmpty').classList.toggle('hidden',list.length>0);
+}
+function renderAll(){
+ updateStats();renderVendorFilter();renderVendors();renderMilestones();renderOrders();
+}
+function viewVendor(vendorId){
+ const v=getVendor(vendorId);if(!v)return;activeVendorId=vendorId;
+ const total=completedCount(vendorId);
+ const history=milestones.filter(m=>m.vendorId===vendorId);
+ document.getElementById('vendorHeading').textContent=v.name+' — Vendor profile';
+ document.getElementById('vendorContent').innerHTML=`
+ <div class="detail-grid">
+  <div class="detail-box"><small>Vendor ID</small><strong>${esc(v.id)}</strong></div>
+  <div class="detail-box"><small>Account status</small><strong>${esc(v.status)}</strong></div>
+  <div class="detail-box"><small>Completed orders</small><strong>${total.toLocaleString('en-NG')}</strong></div>
+  <div class="detail-box"><small>In progress</small><strong>${vendorOrders(vendorId,'In Progress')}</strong></div>
+  <div class="detail-box"><small>Cancelled</small><strong>${vendorOrders(vendorId,'Cancelled')}</strong></div>
+  <div class="detail-box"><small>Disputed</small><strong>${vendorOrders(vendorId,'Disputed')}</strong></div>
+ </div>
+ <div class="field"><label>Vendor contact</label><div>${esc(v.email||'Not provided')}</div></div>
+ <div class="field"><label>Completed-order milestone history</label>
+ ${history.length?history.map(m=>`<div class="detail-box" style="margin-bottom:8px"><strong>${m.target.toLocaleString('en-NG')} completed orders</strong><small>Reached: ${dateValue(m.completedAt)} · ${esc(m.awardStatus)}</small></div>`).join(''):'<span class="muted">No milestone achieved yet.</span>'}
+ </div>
+ <div class="field"><label>Vendor administration note</label><div>${esc(v.adminNote||'No note recorded.')}</div></div>`;
+ document.getElementById('vendorActions').innerHTML=`<button class="btn btn-outline" onclick="closeModal('vendorModal')">Close</button><button class="btn ${v.status==='Suspended'?'btn-success':'btn-danger'}" onclick="toggleVendorStatus()">${v.status==='Suspended'?'Reactivate vendor':'Suspend vendor'}</button>`;
+ document.getElementById('vendorModal').classList.add('show');
+}
+function toggleVendorStatus(){
+ const v=getVendor(activeVendorId);if(!v)return;
+ v.status=v.status==='Suspended'?'Active':'Suspended';
+ save(VENDOR_KEY,vendors);closeModal('vendorModal');renderAll();
+}
+function viewOrder(orderId){
+ const o=orders.find(x=>x.id===orderId);if(!o)return;activeOrderId=orderId;
+ const v=getVendor(o.vendorId);
+ document.getElementById('orderContent').innerHTML=`
+ <div class="detail-grid">
+  <div class="detail-box"><small>Order ID</small><strong>${esc(o.id)}</strong></div>
+  <div class="detail-box"><small>Order status</small><strong>${esc(o.status)}</strong></div>
+  <div class="detail-box"><small>Order amount</small><strong>${money(o.amount)}</strong></div>
+  <div class="detail-box"><small>Buyer</small><strong>${esc(o.buyer||'—')}</strong></div>
+  <div class="detail-box"><small>Vendor</small><strong>${esc(v?.name||o.vendorName||'—')}</strong></div>
+  <div class="detail-box"><small>Order date</small><strong>${dateTime(o.createdAt)}</strong></div>
+ </div>
+ <div class="field"><label>Buyer contact</label><div>${esc(o.buyerEmail||'Not provided')}</div></div>
+ <div class="field"><label>Delivery reference</label><div>${esc(o.deliveryReference||'Not provided')}</div></div>
+ <div class="field"><label>Delivery details</label><div style="white-space:pre-wrap;line-height:1.6;font-size:12px">${esc(o.deliveryNote||'No delivery note recorded.')}</div></div>
+ <div class="field"><label>Last update</label><div>${dateTime(o.updatedAt||o.createdAt)}</div></div>
+ <div class="notice warn">Changing an order status here changes only the local prototype record. Actual order completion, buyer/seller delivery confirmation, dispute resolution and seller wallet release must be validated by the backend.</div>`;
+ document.getElementById('orderActions').innerHTML=`
+ <button class="btn btn-outline" onclick="closeModal('orderModal')">Close</button>
+ <button class="btn btn-light" onclick="changeOrderStatus('In Progress')">In progress</button>
+ <button class="btn btn-success" onclick="changeOrderStatus('Completed')">Completed</button>
+ <button class="btn btn-danger" onclick="changeOrderStatus('Disputed')">Disputed</button>
+ <button class="btn btn-outline" onclick="changeOrderStatus('Cancelled')">Cancelled</button>`;
+ document.getElementById('orderModal').classList.add('show');
+}
+function changeOrderStatus(status){
+ const o=orders.find(x=>x.id===activeOrderId);if(!o)return;
+ if(status==='Completed'&&o.status!=='Completed'){
+  if(!confirm('Record this order as completed in the local prototype? Only do this if the real delivery has been confirmed.'))return;
+ }
+ if(status==='Cancelled'||status==='Disputed'){
+  if(!confirm('Change this order to '+status+'?'))return;
+ }
+ o.status=status;o.updatedAt=new Date().toISOString();
+ save(ORDER_KEY,orders);ensureMilestones();closeModal('orderModal');renderAll();
+}
+function editAward(milestoneId){
+ const m=milestones.find(x=>x.id===milestoneId);if(!m)return;activeMilestoneId=milestoneId;
+ const v=getVendor(m.vendorId);
+ document.getElementById('awardVendorInfo').innerHTML=`<strong>${esc(v?.name||'Unknown vendor')}</strong><br>${m.target.toLocaleString('en-NG')} completed-order milestone · Reached ${dateValue(m.completedAt)}`;
+ document.getElementById('awardStatus').value=m.awardStatus||'Not Yet Awarded';
+ document.getElementById('awardNote').value=m.awardNote||'';
+ document.getElementById('awardModal').classList.add('show');
+}
+function saveAward(){
+ const m=milestones.find(x=>x.id===activeMilestoneId);if(!m)return;
+ m.awardStatus=document.getElementById('awardStatus').value;
+ m.awardNote=document.getElementById('awardNote').value.trim();
+ m.awardUpdatedAt=new Date().toISOString();
+ save(MILESTONE_KEY,milestones);closeModal('awardModal');renderMilestones();
+}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function exportFile(name,data){
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();URL.revokeObjectURL(url);
+}
+function exportOrders(){exportFile('earngig-marketplace-orders.json',orders)}
+function exportVendors(){exportFile('earngig-marketplace-vendors.json',vendors.map(v=>({...v,completedOrders:completedCount(v.id),inProgress:vendorOrders(v.id,'In Progress'),cancelled:vendorOrders(v.id,'Cancelled'),disputed:vendorOrders(v.id,'Disputed')})))}
+function exportMilestones(){exportFile('earngig-marketplace-milestones.json',milestones)}
+
+/* Optional manual record entry for existing platform records.
+   No fake marketplace data is created automatically. */
+function openDataEntry(mode){
+ dataMode=mode;
+ document.getElementById('dataHeading').textContent=mode==='vendor'?'Add existing vendor record':'Add existing order record';
+ const content=document.getElementById('dataContent');
+ if(mode==='vendor'){
+  content.innerHTML=`
+   <div class="notice warn">Enter a real vendor account already present on EarnGig. This does not create a marketplace vendor account.</div>
+   <div class="grid2">
+    <div class="field"><label>Vendor name</label><input id="dataName" placeholder="Vendor name"></div>
+    <div class="field"><label>Vendor email</label><input id="dataEmail" type="email" placeholder="Vendor email"></div>
+    <div class="field"><label>Vendor ID</label><input id="dataId" placeholder="Existing vendor ID"></div>
+    <div class="field"><label>Account status</label><select id="dataStatus"><option>Active</option><option>Suspended</option></select></div>
+   </div>`;
+ }else{
+  content.innerHTML=`
+   <div class="notice warn">Enter a real marketplace order. Only mark an order completed when valid delivery completion has been confirmed.</div>
+   <div class="grid2">
+    <div class="field"><label>Order ID</label><input id="dataOrderId" placeholder="Existing order ID"></div>
+    <div class="field"><label>Vendor</label><select id="dataVendor">${vendors.map(v=>`<option value="${esc(v.id)}">${esc(v.name)}</option>`).join('')}</select></div>
+    <div class="field"><label>Buyer</label><input id="dataBuyer" placeholder="Buyer name"></div>
+    <div class="field"><label>Buyer email</label><input id="dataBuyerEmail" type="email" placeholder="Buyer email"></div>
+    <div class="field"><label>Order amount (₦)</label><input id="dataAmount" type="number" min="0" placeholder="Order amount"></div>
+    <div class="field"><label>Order status</label><select id="dataOrderStatus"><option>Pending</option><option>In Progress</option><option>Completed</option><option>Cancelled</option><option>Disputed</option></select></div>
+    <div class="field"><label>Order date</label><input id="dataDate" type="date"></div>
+    <div class="field"><label>Delivery reference</label><input id="dataDeliveryRef" placeholder="Delivery reference (optional)"></div>
+   </div>
+   <div class="field"><label>Delivery note</label><textarea id="dataDeliveryNote" placeholder="Delivery information or tracking note"></textarea></div>`;
+ }
+ document.getElementById('dataModal').classList.add('show');
+}
+function saveDataRecord(){
+ if(dataMode==='vendor'){
+  const name=document.getElementById('dataName').value.trim();
+  const email=document.getElementById('dataEmail').value.trim();
+  const id=document.getElementById('dataId').value.trim();
+  if(!name||!id){alert('Enter the vendor name and existing vendor ID.');return}
+  if(vendors.some(v=>v.id===id)){alert('That vendor ID already exists.');return}
+  vendors.push({id,name,email,status:document.getElementById('dataStatus').value,adminNote:'',createdAt:new Date().toISOString()});
+  save(VENDOR_KEY,vendors);
+ }else{
+  if(!vendors.length){alert('Add an existing vendor record first.');return}
+  const id=document.getElementById('dataOrderId').value.trim();
+  const vendorId=document.getElementById('dataVendor').value;
+  const amount=Number(document.getElementById('dataAmount').value);
+  const buyer=document.getElementById('dataBuyer').value.trim();
+  const date=document.getElementById('dataDate').value;
+  if(!id||!vendorId||!buyer||!date||!Number.isFinite(amount)||amount<0){alert('Complete the order ID, vendor, buyer, valid amount and date.');return}
+  if(orders.some(o=>o.id===id)){alert('That order ID already exists.');return}
+  const status=document.getElementById('dataOrderStatus').value;
+  orders.push({id,vendorId,buyer,buyerEmail:document.getElementById('dataBuyerEmail').value.trim(),amount,status,createdAt:new Date(date+'T12:00:00').toISOString(),updatedAt:new Date().toISOString(),deliveryReference:document.getElementById('dataDeliveryRef').value.trim(),deliveryNote:document.getElementById('dataDeliveryNote').value.trim()});
+  save(ORDER_KEY,orders);ensureMilestones();
+ }
+ save(VENDOR_KEY,vendors);closeModal('dataModal');renderAll();
+}
+document.querySelectorAll('#orderTabs .tab').forEach(btn=>btn.addEventListener('click',()=>{
+ document.querySelectorAll('#orderTabs .tab').forEach(x=>x.classList.remove('active'));
+ btn.classList.add('active');orderFilter=btn.dataset.filter;renderOrders();
+}));
+['vendorModal','orderModal','awardModal','dataModal'].forEach(id=>{
+ document.getElementById(id).addEventListener('click',e=>{if(e.target.id===id)closeModal(id)});
+});
+renderAll();
+</script>
+</body>
+</html>
