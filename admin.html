@@ -3,151 +3,111 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EarnGig | Admin Dashboard</title>
 <style>
 :root{
- --navy:#111a35;--navy2:#1c2747;--purple:#7154d9;--purple2:#8b73ec;
- --lav:#f1edff;--bg:#f6f7fb;--white:#fff;--text:#202943;
- --muted:#8490a6;--line:#e8eaf2;--green:#15966b;
- --red:#d94c61;--orange:#d78a25;--blue:#3995ed;
+ --purple:#7154d9;--purple2:#8b73ec;--lav:#f1edff;
+ --bg:#f6f7fb;--white:#fff;--text:#202943;
+ --muted:#8490a6;--line:#e8eaf2;
+ --green:#15966b;--orange:#d78a25;--blue:#3995ed;
  --shadow:0 8px 28px rgba(25,35,65,.05)
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;font-size:14px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;font-size:14px}
+a{text-decoration:none;color:inherit}
 button,input{font:inherit}
-button{cursor:pointer}
-.app{display:flex;min-height:100vh}
-.sidebar{
- width:255px;background:var(--navy);color:#dce2f3;
- position:fixed;inset:0 auto 0 0;overflow-y:auto;
- padding:22px 15px;z-index:10;transition:.25s
-}
-.brand{display:flex;align-items:center;gap:10px;padding:5px 10px 27px;color:white;font-size:22px;font-weight:800;letter-spacing:-.6px}
-.brand svg{width:34px;height:34px;flex:none}
-.brand-name span{color:#e8bd62}
-.nav-label{font-size:10px;letter-spacing:1.5px;color:#8995b3;padding:17px 12px 8px;font-weight:800}
-.nav-item{
- width:100%;display:flex;align-items:center;gap:12px;
- padding:11px 12px;border:0;border-radius:9px;background:transparent;
- color:#c0c9df;text-align:left;font-size:12px;font-weight:600;
- text-decoration:none;margin:3px 0;transition:.2s
-}
-.nav-item:hover,.nav-item.active{background:#29365b;color:white}
-.nav-item.active{box-shadow:inset 3px 0 var(--purple2)}
-.nav-item .ico{width:20px;text-align:center;font-size:16px;flex:none}
-.nav-bottom{border-top:1px solid #344263;margin:22px 7px 0;padding-top:12px}
-.sidebar-note{margin:20px 7px 0;padding:12px;border:1px solid #344263;border-radius:9px;color:#aab5ce;font-size:10px;line-height:1.7}
-.main-area{margin-left:255px;width:calc(100% - 255px);min-width:0}
 .topbar{
- height:72px;background:white;border-bottom:1px solid var(--line);
+ min-height:76px;background:white;border-bottom:1px solid var(--line);
  display:flex;align-items:center;justify-content:space-between;
- padding:0 30px;position:sticky;top:0;z-index:5;gap:15px
+ padding:12px 35px;gap:15px
 }
-.top-left{display:flex;align-items:center;gap:12px;min-width:0}
-.mobile-menu{display:none;border:0;background:var(--lav);color:var(--purple);padding:8px 11px;border-radius:8px}
-.search{position:relative;width:min(420px,45vw)}
-.search input{width:100%;border:0;background:#f2f3f8;border-radius:9px;padding:12px 14px 12px 39px;outline:none;font-size:12px}
-.search span{position:absolute;left:13px;top:9px;color:var(--muted);font-size:18px}
-.top-actions{display:flex;align-items:center;gap:20px}
-.icon-button{border:0;background:transparent;color:#68738b;font-size:19px;position:relative}
-.dot{position:absolute;width:7px;height:7px;background:var(--purple);border-radius:50%;right:0;top:0}
+.brand{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:800}
+.brand svg{width:37px;height:37px}
+.brand-name span{color:#d9aa42}
 .profile{display:flex;align-items:center;gap:10px}
-.avatar{width:36px;height:36px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-weight:800}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-weight:bold}
 .profile strong{display:block;font-size:12px}
 .profile small{font-size:10px;color:var(--muted)}
-.content{max-width:1650px;margin:auto;padding:28px 30px 50px}
-.page-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;flex-wrap:wrap;margin-bottom:22px}
-.page-heading h1{font-size:25px;margin:0 0 7px;letter-spacing:-.6px}
-.page-heading p{margin:0;color:var(--muted);font-size:12px;line-height:1.6}
-.btn{border:0;border-radius:8px;padding:10px 14px;font-size:11px;font-weight:700}
-.btn-primary{background:var(--purple);color:white}
-.btn-primary:hover{background:#6043c7}
-.btn-light{background:var(--lav);color:var(--purple)}
-.btn-outline{background:white;border:1px solid var(--line);color:var(--text)}
-.notice{padding:12px 14px;border-radius:9px;background:#f2efff;border:1px solid #e6e0ff;color:#6551b0;font-size:11px;line-height:1.6;margin-bottom:18px}
-.notice.warn{background:#fff8e9;border-color:#f4e4bd;color:#94651d}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:19px}
-.stat-card{background:white;border:1px solid var(--line);border-radius:13px;padding:17px;box-shadow:var(--shadow);min-width:0}
+.content{max-width:1500px;margin:auto;padding:30px 35px 55px}
+.heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:23px}
+.heading h1{font-size:27px;margin:0 0 7px}
+.heading p{font-size:12px;color:var(--muted);margin:0;line-height:1.6}
+.search{width:min(340px,100%);border:1px solid var(--line);border-radius:9px;padding:12px 14px;background:white}
+.notice{padding:13px 15px;border-radius:9px;background:#fff8e9;border:1px solid #f4e4bd;color:#94651d;font-size:11px;line-height:1.6;margin-bottom:20px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:27px}
+.stat-card{background:white;border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:var(--shadow)}
 .stat-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .stat-top small{font-size:11px;color:var(--muted)}
-.stat-icon{width:39px;height:39px;border-radius:11px;display:grid;place-items:center;font-size:19px;flex:none}
+.stat-icon{width:39px;height:39px;border-radius:11px;display:grid;place-items:center;font-size:19px}
 .purple-bg{background:#f0eaff;color:#7845e8}
 .blue-bg{background:#e9f1ff;color:#397de7}
 .green-bg{background:#e5f8ed;color:#15966b}
 .orange-bg{background:#fff3e3;color:#d78a25}
-.stat-card h2{font-size:25px;margin:12px 0 5px;letter-spacing:-.6px}
-.stat-card p{font-size:10px;color:var(--muted);margin:0;line-height:1.5}
-.grid-two{display:grid;grid-template-columns:1.45fr 1fr;gap:17px;margin-bottom:18px}
-.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:19px;box-shadow:var(--shadow);min-width:0;margin-bottom:18px}
-.panel-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-.panel-heading h2{font-size:14px;margin:0}
-.panel-heading p{font-size:10px;color:var(--muted);margin:5px 0 0}
-.text-link{color:var(--purple);font-weight:700;text-decoration:none;font-size:11px}
-.status{display:inline-block;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
-.status.good{background:#e5f8ed;color:#15966b}
-.status.pending{background:#fff4e2;color:#bd801c}
-.status.info{background:#e9f2ff;color:#287bd7}
-.status.off{background:#f0f1f5;color:#687084}
-.chart{width:100%;height:180px;display:block}
-.chart-labels{display:flex;justify-content:space-between;color:var(--muted);font-size:9px;margin-top:5px}
-.module-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.stat-card h2{font-size:26px;margin:12px 0 5px}
+.stat-card p{font-size:10px;color:var(--muted);margin:0}
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:28px 0 15px}
+.section-heading h2{font-size:17px;margin:0 0 5px}
+.section-heading p{font-size:11px;color:var(--muted);margin:0}
+.section-heading a{font-size:11px;color:var(--purple);font-weight:bold}
+.module-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .module-card{
- border:1px solid var(--line);border-radius:10px;padding:14px;
- display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);
- transition:.2s;background:white;min-width:0
+ background:white;border:1px solid var(--line);border-radius:13px;
+ padding:18px;display:flex;align-items:center;gap:13px;
+ min-height:90px;box-shadow:var(--shadow);
+ transition:.2s;min-width:0
 }
-.module-card:hover{border-color:#cfc3ff;background:#fbfaff;transform:translateY(-1px)}
-.module-icon{width:37px;height:37px;border-radius:10px;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-size:17px;flex:none}
-.module-card strong{display:block;font-size:11px;margin-bottom:4px}
-.module-card small{font-size:9px;color:var(--muted);line-height:1.4;display:block}
-.module-arrow{margin-left:auto;color:#a3a9b8}
-.integration-list{display:grid;gap:0}
-.integration-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #f0f1f6}
-.integration-row:last-child{border-bottom:0}
-.integration-row strong{font-size:11px}
-.integration-row small{display:block;color:var(--muted);font-size:9px;margin-top:4px}
-.table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;min-width:480px}
-th{text-align:left;background:#fafbfe;color:#8a94a9;font-size:9px;letter-spacing:.5px;text-transform:uppercase;padding:12px}
-td{padding:12px;border-top:1px solid #f0f1f6;font-size:10px}
-.empty{text-align:center;padding:25px;color:var(--muted);font-size:11px}
-.quick-list{display:grid;gap:9px}
-.quick-item{display:flex;align-items:center;gap:11px;padding:11px;border:1px solid var(--line);border-radius:9px;text-decoration:none;color:var(--text)}
-.quick-item:hover{background:#faf9ff;border-color:#d9d0ff}
-.quick-icon{width:34px;height:34px;border-radius:9px;background:var(--lav);color:var(--purple);display:grid;place-items:center}
-.quick-item strong{font-size:11px;display:block}
-.quick-item small{font-size:9px;color:var(--muted);display:block;margin-top:3px}
-.quick-item .arrow{margin-left:auto;color:var(--purple)}
-.footer{padding:20px 0 0;color:var(--muted);font-size:10px;text-align:center}
+.module-card:hover{
+ border-color:#cfc3ff;background:#fbfaff;
+ transform:translateY(-3px);
+ box-shadow:0 10px 25px rgba(65,45,130,.09)
+}
+.module-icon{
+ width:43px;height:43px;flex:none;border-radius:11px;
+ background:var(--lav);color:var(--purple);
+ display:grid;place-items:center;font-size:19px
+}
+.module-card strong{display:block;font-size:12px;margin-bottom:5px}
+.module-card small{font-size:10px;color:var(--muted);line-height:1.5;display:block}
+.module-arrow{margin-left:auto;color:var(--purple);font-size:20px}
+.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:20px;box-shadow:var(--shadow);margin-top:25px}
+.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:15px}
+.panel-heading h2{font-size:15px;margin:0}
+.panel-heading p{font-size:10px;color:var(--muted);margin:5px 0 0}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-size:11px;font-weight:bold;cursor:pointer}
+.btn-light{background:var(--lav);color:var(--purple)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:450px}
+th{text-align:left;background:#fafbfe;color:#8a94a9;font-size:10px;padding:13px}
+td{padding:13px;border-top:1px solid #f0f1f6;font-size:11px}
+.text-link{color:var(--purple);font-weight:bold}
+.status{display:inline-block;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:bold}
+.status.off{background:#f0f1f5;color:#687084}
+.footer{text-align:center;padding:30px 0 0;color:var(--muted);font-size:10px}
 .hidden{display:none!important}
-@media(max-width:1150px){.stats{grid-template-columns:repeat(2,1fr)}.grid-two{grid-template-columns:1fr}.module-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:760px){
- .sidebar{transform:translateX(-100%);transition:.25s}
- .sidebar.open{transform:translateX(0)}
- .main-area{margin-left:0;width:100%}
- .mobile-menu{display:inline-block}
- .topbar{padding:0 14px;height:64px}
- .content{padding:20px 14px 35px}
- .search{width:min(55vw,300px)}
- .profile .profile-text{display:none}
- .top-actions{gap:10px}
- .module-grid{grid-template-columns:1fr}
+@media(max-width:1050px){
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .module-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-@media(max-width:430px){
+@media(max-width:600px){
+ .topbar{padding:13px 16px}
+ .content{padding:22px 14px 35px}
+ .brand{font-size:20px}
+ .brand svg{width:32px;height:32px}
+ .profile .profile-text{display:none}
+ .heading h1{font-size:23px}
  .stats{gap:9px}
- .stat-card{padding:12px}
- .stat-card h2{font-size:20px}
+ .stat-card{padding:13px}
+ .stat-card h2{font-size:21px}
  .stat-icon{width:33px;height:33px}
- .top-actions{gap:5px}
- .search input{font-size:10px}
+ .module-grid{grid-template-columns:1fr;gap:10px}
+ .module-card{min-height:78px;padding:14px}
 }
 </style>
 </head>
 <body>
-<div class="app">
 
-<aside class="sidebar" id="sidebar">
+<header class="topbar">
  <div class="brand">
   <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
    <path d="M5 12L12 18L19.5 6L27 18L35 12L31 30H9L5 12Z" stroke="#E8BD62" stroke-width="2.3" stroke-linejoin="round"/>
@@ -158,85 +118,27 @@ td{padding:12px;border-top:1px solid #f0f1f6;font-size:10px}
   </svg>
   <div class="brand-name"><span>Earn</span>Gig</div>
  </div>
-
- <div class="nav-label">MAIN</div>
- <a class="nav-item active" href="admin.html"><span class="ico">▦</span>Dashboard</a>
-
- <div class="nav-label">USERS & ACCOUNTS</div>
- <a class="nav-item" href="users.html"><span class="ico">♙</span>Users</a>
- <a class="nav-item" href="membership.html"><span class="ico">◇</span>Membership</a>
- <a class="nav-item" href="wallet.html"><span class="ico">◈</span>Coin Withdrawals</a>
- <a class="nav-item" href="coin-purchases.html"><span class="ico">◉</span>Coin Purchases</a>
- <a class="nav-item" href="referrals.html"><span class="ico">⇄</span>Referrals & Rewards</a>
-
- <div class="nav-label">FINANCIAL MANAGEMENT</div>
- <a class="nav-item" href="transactions.html"><span class="ico">▤</span>Transactions</a>
- <a class="nav-item" href="deposits.html"><span class="ico">↓</span>Deposits & Payments</a>
- <a class="nav-item" href="withdrawals.html"><span class="ico">↑</span>Wallet Withdrawals</a>
- <a class="nav-item" href="seller-wallet.html"><span class="ico">▣</span>Seller Wallet</a>
- <a class="nav-item" href="payouts.html"><span class="ico">₦</span>Payouts</a>
-
- <div class="nav-label">CONTENT & CREATORS</div>
- <a class="nav-item" href="writers.html"><span class="ico">✎</span>Writer Management</a>
- <a class="nav-item" href="novels.html"><span class="ico">▥</span>Novel Management</a>
-
- <div class="nav-label">MARKETPLACE</div>
- <a class="nav-item" href="marketplace.html"><span class="ico">▧</span>Marketplace Activity</a>
- <a class="nav-item" href="store-verification.html"><span class="ico">✓</span>Store Verification</a>
-
- <div class="nav-label">ADVERTISING</div>
- <a class="nav-item" href="advertising.html"><span class="ico">▣</span>Advertisement Bookings</a>
- <a class="nav-item" href="watch-earn.html"><span class="ico">▶</span>Watch & Earn</a>
- <a class="nav-item" href="billboard.html"><span class="ico">▤</span>Billboard Management</a>
-
- <div class="nav-label">SYSTEM</div>
- <a class="nav-item" href="notifications.html"><span class="ico">♢</span>Notifications</a>
- <a class="nav-item" href="reports.html"><span class="ico">▥</span>Reports & Analysis</a>
- <a class="nav-item" href="settings.html"><span class="ico">⚙</span>Settings</a>
-
- <div class="nav-bottom">
-  <a class="nav-item" href="mailto:earngigofficial@gmail.com"><span class="ico">ⓘ</span>Help & Support</a>
-  <button class="nav-item" onclick="logoutNotice()"><span class="ico">⇥</span>Log Out</button>
- </div>
- <div class="sidebar-note">
-  EarnGig Administration<br>
-  Owner access only<br>
-  <span style="color:#e8bd62">●</span> Dashboard prototype
- </div>
-</aside>
-
-<div class="main-area">
-<header class="topbar">
- <div class="top-left">
-  <button class="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
-  <div class="search">
-   <span>⌕</span>
-   <input id="globalSearch" placeholder="Find an admin section..." oninput="searchModules()">
-  </div>
- </div>
- <div class="top-actions">
-  <button class="icon-button" title="Notifications" onclick="location.href='notifications.html'">♢<i class="dot"></i></button>
-  <div class="profile">
-   <div class="avatar">A</div>
-   <div class="profile-text">
-    <strong>EarnGig Admin</strong>
-    <small>Administrator</small>
-   </div>
+ <div class="profile">
+  <div class="avatar">A</div>
+  <div class="profile-text">
+   <strong>EarnGig Admin</strong>
+   <small>Administrator</small>
   </div>
  </div>
 </header>
 
 <main class="content">
- <div class="page-heading">
+
+ <div class="heading">
   <div>
    <h1>Dashboard Overview</h1>
-   <p>Welcome to EarnGig Administration. Monitor your platform and open each department below.</p>
+   <p>Welcome to EarnGig Administration. Select any department card below to manage it.</p>
   </div>
-  <a href="reports.html" class="btn btn-light">View Reports & Analysis →</a>
+  <input class="search" id="globalSearch" placeholder="Search dashboard sections..." oninput="searchModules()">
  </div>
 
- <div class="notice warn">
-  <strong>Data connection notice:</strong> This dashboard currently reads records saved in this browser by supported admin pages. It is not connected to a live central database. Figures shown are local record counts, not verified platform-wide totals.
+ <div class="notice">
+  <b>Data connection notice:</b> This dashboard currently reads records saved in this browser where available. It is not connected to a central live database. Figures shown are local record counts, not verified platform-wide totals.
  </div>
 
  <section class="stats">
@@ -262,222 +164,252 @@ td{padding:12px;border-top:1px solid #f0f1f6;font-size:10px}
   </div>
  </section>
 
- <div class="grid-two">
-  <section class="panel">
-   <div class="panel-heading">
-    <div><h2>Platform Management</h2><p>Open a department to manage its records.</p></div>
-    <span class="status info">Department links</span>
-   </div>
-   <div class="module-grid" id="moduleGrid">
-    <a class="module-card" href="users.html" data-search="users accounts profiles">
-     <div class="module-icon">♙</div><div><strong>User Management</strong><small>Accounts, verification and status</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="membership.html" data-search="membership subscriptions plans">
-     <div class="module-icon">◇</div><div><strong>Membership</strong><small>Plans and subscriptions</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="wallet.html" data-search="coin wallet withdrawals">
-     <div class="module-icon">◈</div><div><strong>Coin Withdrawals</strong><small>Review coin withdrawal requests</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="coin-purchases.html" data-search="coin purchases payments">
-     <div class="module-icon">◉</div><div><strong>Coin Purchases</strong><small>Purchase records and payment status</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="referrals.html" data-search="referrals rewards">
-     <div class="module-icon">⇄</div><div><strong>Referrals & Rewards</strong><small>Referral activity and reward records</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="transactions.html" data-search="transactions ledger">
-     <div class="module-icon">▤</div><div><strong>Transactions</strong><small>Financial transaction ledger</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="deposits.html" data-search="deposits payments">
-     <div class="module-icon">↓</div><div><strong>Deposits & Payments</strong><small>Incoming payment records</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="withdrawals.html" data-search="withdrawals bank user wallet">
-     <div class="module-icon">↑</div><div><strong>Wallet Withdrawals</strong><small>User Naira withdrawal requests</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="seller-wallet.html" data-search="seller store wallet marketplace">
-     <div class="module-icon">▣</div><div><strong>Seller Wallet</strong><small>Marketplace seller balances</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="payouts.html" data-search="payouts payments">
-     <div class="module-icon">₦</div><div><strong>Payouts</strong><small>Business and worker payouts</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="writers.html" data-search="writers applications">
-     <div class="module-icon">✎</div><div><strong>Writer Management</strong><small>Applications and submissions</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="novels.html" data-search="novels manuscripts quizzes readers">
-     <div class="module-icon">▥</div><div><strong>Novel Management</strong><small>Manuscripts, quizzes and rewards</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="marketplace.html" data-search="marketplace orders vendors">
-     <div class="module-icon">▧</div><div><strong>Marketplace Activity</strong><small>Orders and vendor performance</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="store-verification.html" data-search="store verification seller applications">
-     <div class="module-icon">✓</div><div><strong>Store Verification</strong><small>Review seller store applications</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="advertising.html" data-search="advertising bookings advertisers">
-     <div class="module-icon">▣</div><div><strong>Advertisement Bookings</strong><small>Advertiser requests and approvals</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="watch-earn.html" data-search="watch earn videos adverts">
-     <div class="module-icon">▶</div><div><strong>Watch & Earn</strong><small>Video advert inventory</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="billboard.html" data-search="billboard weekly slots">
-     <div class="module-icon">▤</div><div><strong>Billboard Management</strong><small>Weekly billboard slots</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="notifications.html" data-search="notifications announcements messages">
-     <div class="module-icon">♢</div><div><strong>Notifications</strong><small>Draft and manage announcements</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="reports.html" data-search="reports analytics financial analysis">
-     <div class="module-icon">▥</div><div><strong>Reports & Analysis</strong><small>Platform and financial reports</small></div><span class="module-arrow">›</span>
-    </a>
-    <a class="module-card" href="settings.html" data-search="settings configuration security">
-     <div class="module-icon">⚙</div><div><strong>Platform Settings</strong><small>Rules and admin preferences</small></div><span class="module-arrow">›</span>
-    </a>
-   </div>
-   <div id="noModules" class="empty hidden">No matching admin sections found.</div>
-  </section>
+ <div class="section-heading">
+  <div>
+   <h2>Admin Departments</h2>
+   <p>Click a card to open its dedicated management page.</p>
+  </div>
+  <span id="moduleCount" style="font-size:10px;color:var(--muted)">20 departments</span>
+ </div>
 
-  <section>
-   <div class="panel">
-    <div class="panel-heading">
-     <div><h2>Quick Management</h2><p>Frequently used admin areas.</p></div>
-    </div>
-    <div class="quick-list">
-     <a class="quick-item" href="users.html">
-      <div class="quick-icon">♙</div><div><strong>Review Users</strong><small>Open account management</small></div><span class="arrow">→</span>
-     </a>
-     <a class="quick-item" href="transactions.html">
-      <div class="quick-icon">▤</div><div><strong>View Transactions</strong><small>Open financial records</small></div><span class="arrow">→</span>
-     </a>
-     <a class="quick-item" href="writers.html">
-      <div class="quick-icon">✎</div><div><strong>Review Writers</strong><small>Open writer applications</small></div><span class="arrow">→</span>
-     </a>
-     <a class="quick-item" href="marketplace.html">
-      <div class="quick-icon">▧</div><div><strong>Marketplace Activity</strong><small>Monitor orders and vendors</small></div><span class="arrow">→</span>
-     </a>
-     <a class="quick-item" href="reports.html">
-      <div class="quick-icon">▥</div><div><strong>Open Reports</strong><small>Review available reports</small></div><span class="arrow">→</span>
-     </a>
-    </div>
-   </div>
+ <section class="module-grid" id="moduleGrid">
 
-   <div class="panel">
-    <div class="panel-heading">
-     <div><h2>Platform Integrations</h2><p>Current connection status in this admin prototype.</p></div>
-    </div>
-    <div class="integration-list">
-     <div class="integration-row"><div><strong>Authentication backend</strong><small>Owner-only login and sessions</small></div><span class="status pending">Not connected</span></div>
-     <div class="integration-row"><div><strong>Central database</strong><small>Live platform records</small></div><span class="status pending">Not connected</span></div>
-     <div class="integration-row"><div><strong>Paystack verification</strong><small>Payment verification and crediting</small></div><span class="status pending">Not connected</span></div>
-     <div class="integration-row"><div><strong>Private file storage</strong><small>Uploaded documents and media</small></div><span class="status pending">Not connected</span></div>
-     <div class="integration-row"><div><strong>Notification provider</strong><small>Email, SMS and push delivery</small></div><span class="status pending">Not connected</span></div>
-    </div>
-    <div class="footer-note" style="font-size:9px;color:var(--muted);line-height:1.6;margin-top:12px">
-     These statuses describe this prototype. They are not live connectivity tests.
-    </div>
-   </div>
-  </section>
+  <a class="module-card" href="users.html" data-search="users accounts profiles verification">
+   <div class="module-icon">♙</div>
+   <div><strong>User Management</strong><small>Manage user accounts, profiles and verification</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="membership.html" data-search="membership registered members total users">
+   <div class="module-icon">◇</div>
+   <div><strong>Membership</strong><small>View all registered members and member counts</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="wallet.html" data-search="coin withdrawals wallet coins">
+   <div class="module-icon">◈</div>
+   <div><strong>Coin Withdrawals</strong><small>Review users' coin withdrawal requests</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="coin-purchases.html" data-search="coin purchases payment">
+   <div class="module-icon">◉</div>
+   <div><strong>Coin Purchases</strong><small>Review coin purchases and payment records</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="referrals.html" data-search="referrals rewards">
+   <div class="module-icon">⇄</div>
+   <div><strong>Referrals & Rewards</strong><small>Manage referrals and reward records</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="transactions.html" data-search="transactions ledger financial">
+   <div class="module-icon">▤</div>
+   <div><strong>Transactions</strong><small>View the financial transaction ledger</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="deposits.html" data-search="deposits payments incoming">
+   <div class="module-icon">↓</div>
+   <div><strong>Deposits & Payments</strong><small>Review incoming payment records</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="withdrawals.html" data-search="wallet withdrawals bank naira">
+   <div class="module-icon">↑</div>
+   <div><strong>Wallet Withdrawals</strong><small>Process users' Naira withdrawal requests</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="seller-wallet.html" data-search="seller wallet marketplace store">
+   <div class="module-icon">▣</div>
+   <div><strong>Seller Wallet</strong><small>Manage marketplace seller balances and payouts</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="payouts.html" data-search="payouts business workers">
+   <div class="module-icon">₦</div>
+   <div><strong>Payouts</strong><small>Manage business and worker payouts</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="writers.html" data-search="writers applications submissions">
+   <div class="module-icon">✎</div>
+   <div><strong>Writer Management</strong><small>Review writer applications and submissions</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="novels.html" data-search="novels manuscripts quizzes readers">
+   <div class="module-icon">▥</div>
+   <div><strong>Novel Management</strong><small>Review manuscripts, quizzes and reader rewards</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="marketplace.html" data-search="marketplace orders vendors">
+   <div class="module-icon">▧</div>
+   <div><strong>Marketplace Activity</strong><small>Monitor orders and vendor performance</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="store-verification.html" data-search="store verification seller applications">
+   <div class="module-icon">✓</div>
+   <div><strong>Store Verification</strong><small>Review seller store applications</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="advertising.html" data-search="advertising bookings advertisers">
+   <div class="module-icon">▣</div>
+   <div><strong>Advertisement Bookings</strong><small>Review advertiser bookings and approvals</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="watch-earn.html" data-search="watch earn videos adverts">
+   <div class="module-icon">▶</div>
+   <div><strong>Watch & Earn</strong><small>Manage video advertisements and campaigns</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="billboard.html" data-search="billboard weekly slots">
+   <div class="module-icon">▤</div>
+   <div><strong>Billboard Management</strong><small>Manage weekly billboard bookings and slots</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="notifications.html" data-search="notifications announcements messages">
+   <div class="module-icon">♢</div>
+   <div><strong>Notifications</strong><small>Create and manage platform announcements</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="reports.html" data-search="reports analytics financial analysis">
+   <div class="module-icon">▥</div>
+   <div><strong>Reports & Analysis</strong><small>Review available platform and financial reports</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+  <a class="module-card" href="settings.html" data-search="settings configuration security">
+   <div class="module-icon">⚙</div>
+   <div><strong>Platform Settings</strong><small>Manage platform rules and admin preferences</small></div>
+   <span class="module-arrow">›</span>
+  </a>
+
+ </section>
+
+ <div id="noModules" class="panel hidden" style="text-align:center;color:var(--muted)">
+  No matching department found.
  </div>
 
  <section class="panel">
   <div class="panel-heading">
-   <div><h2>Local Record Overview</h2><p>Counts from browser storage where matching department records are available.</p></div>
-   <button class="btn btn-outline" onclick="refreshDashboard()">↻ Refresh</button>
+   <div>
+    <h2>Local Record Overview</h2>
+    <p>Available records in this browser for each department.</p>
+   </div>
+   <button class="btn btn-light" onclick="refreshDashboard()">↻ Refresh</button>
   </div>
   <div class="table-wrap">
    <table>
-    <thead><tr><th>Department</th><th>Local records</th><th>Destination</th></tr></thead>
+    <thead>
+     <tr><th>Department</th><th>Local Records</th><th>Open Page</th></tr>
+    </thead>
     <tbody id="recordOverview"></tbody>
    </table>
   </div>
  </section>
 
  <div class="footer">
-  EarnGig Admin Workspace · Owner-only administration · Prototype version
+  EarnGig Admin Workspace · Owner-only administration · Dashboard prototype
  </div>
+
 </main>
-</div>
-</div>
 
 <script>
 const DATA_SOURCES=[
- {name:'Users',key:'earngig_users_v1',link:'users.html'},
- {name:'Membership',key:'earngig_membership_v1',link:'membership.html'},
- {name:'Coin withdrawals',key:'earngig_coin_withdrawals_v1',link:'wallet.html'},
- {name:'Coin purchases',key:'earngig_coin_purchase_history_v1',link:'coin-purchases.html'},
- {name:'Referrals',key:'earngig_referral_management_v1',link:'referrals.html'},
- {name:'Transactions',key:'earngig_transaction_ledger_v1',link:'transactions.html'},
- {name:'Deposits',key:'earngig_deposit_payment_records_v1',link:'deposits.html'},
- {name:'Wallet withdrawals',key:'earngig_withdrawal_requests_v1',link:'withdrawals.html'},
- {name:'Seller wallets',key:'earngig_seller_wallet_accounts_v1',link:'seller-wallet.html'},
- {name:'Writer applications',key:'earngig_writer_applications_v1',link:'writers.html'},
- {name:'Writer submissions',key:'earngig_writer_submissions_v1',link:'writers.html'},
- {name:'Novel records',key:'earngig_novel_management_v1',link:'novels.html'},
- {name:'Marketplace orders',key:'earngig_marketplace_orders_v1',link:'marketplace.html'},
- {name:'Store applications',key:'earngig_store_applications',link:'store-verification.html'},
- {name:'Advertisement bookings',key:'earngig_advertiser_bookings_v1',link:'advertising.html'},
- {name:'Watch & Earn adverts',key:'earngig_watch_earn_ads_v1',link:'watch-earn.html'},
- {name:'Billboard bookings',key:'earngig_billboard_bookings_v1',link:'billboard.html'},
- {name:'Notifications',key:'earngig_admin_notifications_v1',link:'notifications.html'}
+ {name:"Users",key:"earngig_users_v1",link:"users.html"},
+ {name:"Membership",key:"earngig_users_v1",link:"membership.html"},
+ {name:"Coin withdrawals",key:"earngig_coin_withdrawals_v1",link:"wallet.html"},
+ {name:"Coin purchases",key:"earngig_coin_purchase_history_v1",link:"coin-purchases.html"},
+ {name:"Referrals",key:"earngig_referral_management_v1",link:"referrals.html"},
+ {name:"Transactions",key:"earngig_transaction_ledger_v1",link:"transactions.html"},
+ {name:"Deposits",key:"earngig_deposit_payment_records_v1",link:"deposits.html"},
+ {name:"Wallet withdrawals",key:"earngig_withdrawal_requests_v1",link:"withdrawals.html"},
+ {name:"Seller wallets",key:"earngig_seller_wallet_accounts_v1",link:"seller-wallet.html"},
+ {name:"Writer applications",key:"earngig_writer_applications_v1",link:"writers.html"},
+ {name:"Writer submissions",key:"earngig_writer_submissions_v1",link:"writers.html"},
+ {name:"Novel records",key:"earngig_novel_management_v1",link:"novels.html"},
+ {name:"Marketplace orders",key:"earngig_marketplace_orders_v1",link:"marketplace.html"},
+ {name:"Store applications",key:"earngig_store_applications",link:"store-verification.html"},
+ {name:"Advertisement bookings",key:"earngig_advertiser_bookings_v1",link:"advertising.html"},
+ {name:"Watch & Earn adverts",key:"earngig_watch_earn_ads_v1",link:"watch-earn.html"},
+ {name:"Billboard bookings",key:"earngig_billboard_bookings_v1",link:"billboard.html"},
+ {name:"Notifications",key:"earngig_admin_notifications_v1",link:"notifications.html"}
 ];
 
 function readArray(key){
  try{
-  const value=JSON.parse(localStorage.getItem(key)||'null');
+  const value=JSON.parse(localStorage.getItem(key)||"null");
   if(Array.isArray(value))return value;
-  if(value&&typeof value==='object'){
-   for(const name of ['records','items','applications','orders','transactions','data']){
+  if(value&&typeof value==="object"){
+   for(const name of ["records","items","applications","orders","transactions","data"]){
     if(Array.isArray(value[name]))return value[name];
    }
   }
   return null;
  }catch(e){return null}
 }
+
 function getCount(key){
  const value=readArray(key);
  return value===null?null:value.length;
 }
+
 function displayCount(value){
- return value===null?'—':Number(value).toLocaleString('en-NG');
+ return value===null?"—":Number(value).toLocaleString("en-NG");
 }
+
+function escapeHTML(value){
+ return String(value??"").replace(/[&<>"']/g,char=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[char]));
+}
+
 function refreshDashboard(){
- const userCount=getCount('earngig_users_v1');
- const transactionCount=getCount('earngig_transaction_ledger_v1');
- const orderCount=getCount('earngig_marketplace_orders_v1');
- const writerCount=getCount('earngig_writer_applications_v1');
+ const userCount=getCount("earngig_users_v1");
+ const transactionCount=getCount("earngig_transaction_ledger_v1");
+ const orderCount=getCount("earngig_marketplace_orders_v1");
+ const writerCount=getCount("earngig_writer_applications_v1");
 
- document.getElementById('statUsers').textContent=displayCount(userCount);
- document.getElementById('statTransactions').textContent=displayCount(transactionCount);
- document.getElementById('statOrders').textContent=displayCount(orderCount);
- document.getElementById('statWriters').textContent=displayCount(writerCount);
+ document.getElementById("statUsers").textContent=displayCount(userCount);
+ document.getElementById("statTransactions").textContent=displayCount(transactionCount);
+ document.getElementById("statOrders").textContent=displayCount(orderCount);
+ document.getElementById("statWriters").textContent=displayCount(writerCount);
 
- const body=document.getElementById('recordOverview');
- body.innerHTML=DATA_SOURCES.map(item=>{
+ document.getElementById("recordOverview").innerHTML=DATA_SOURCES.map(item=>{
   const count=getCount(item.key);
   return `<tr>
    <td>${escapeHTML(item.name)}</td>
-   <td>${count===null?'<span class="status off">No matching local data</span>':`<strong>${count.toLocaleString('en-NG')}</strong>`}</td>
-   <td><a class="text-link" href="${item.link}">Open department →</a></td>
+   <td>${count===null?'<span class="status off">No matching local data</span>':`<strong>${count.toLocaleString("en-NG")}</strong>`}</td>
+   <td><a class="text-link" href="${item.link}">Open page →</a></td>
   </tr>`;
- }).join('');
+ }).join("");
 }
-function escapeHTML(value){
- return String(value??'').replace(/[&<>"']/g,char=>({
-  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
- }[char]));
-}
+
 function searchModules(){
- const query=document.getElementById('globalSearch').value.trim().toLowerCase();
+ const query=document.getElementById("globalSearch").value.trim().toLowerCase();
  let visible=0;
- document.querySelectorAll('.module-card').forEach(card=>{
-  const match=(card.innerText+' '+card.dataset.search).toLowerCase().includes(query);
-  card.classList.toggle('hidden',!match);
+
+ document.querySelectorAll(".module-card").forEach(card=>{
+  const match=(card.innerText+" "+card.dataset.search).toLowerCase().includes(query);
+  card.classList.toggle("hidden",!match);
   if(match)visible++;
  });
- document.getElementById('noModules').classList.toggle('hidden',visible>0);
+
+ document.getElementById("noModules").classList.toggle("hidden",visible>0);
+ document.getElementById("moduleCount").textContent=
+  visible+" department"+(visible===1?"":"s");
 }
-function logoutNotice(){
- alert('Secure logout will be connected when the authentication backend is implemented. This static dashboard cannot securely end an authenticated session.');
-}
-document.getElementById('sidebar').addEventListener('click',event=>{
- if(event.target.closest('a'))document.getElementById('sidebar').classList.remove('open');
-});
+
 refreshDashboard();
 </script>
 </body>
