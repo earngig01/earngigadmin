@@ -1,0 +1,481 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EarnGig Admin | Watch & Earn Management</title>
+<style>
+:root{--navy:#111827;--purple:#7047eb;--lav:#f1edff;--bg:#f5f6fa;--text:#20283a;--muted:#8991a3;--border:#e9eaf1;--green:#16865c;--greenbg:#e9f8f1;--orange:#bd761b;--orangebg:#fff4e5;--red:#d34b58;--redbg:#fff0f1;--blue:#3976c8;--bluebg:#edf4ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer}
+.layout{display:flex;min-height:100vh}.sidebar{width:250px;background:var(--navy);color:white;position:fixed;inset:0 auto 0 0;padding:25px 15px;overflow:auto;z-index:10}
+.brand{display:flex;align-items:center;gap:10px;padding:0 12px 28px;font-size:22px;font-weight:800}.crown{width:27px;height:25px}
+.nav-label{font-size:10px;letter-spacing:1.5px;color:#8290a9;padding:18px 13px 9px;font-weight:700}
+.nav-link{display:flex;align-items:center;gap:12px;color:#aeb8ca;text-decoration:none;padding:11px 13px;margin:3px 0;border-radius:8px;font-size:13px}
+.nav-link:hover,.nav-link.active{background:#292344;color:white}.nav-link.active{box-shadow:inset 3px 0 var(--purple)}
+.nav-icon{width:19px;text-align:center}.sidebar-footer{border-top:1px solid #30394b;margin-top:28px;padding:18px 12px;color:#8996aa;font-size:11px;line-height:1.7}
+.main{margin-left:250px;width:calc(100% - 250px);min-width:0}.topbar{height:72px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:5}
+.top-title{font-size:14px;font-weight:700}.top-sub{font-size:11px;color:var(--muted);margin-top:3px}.admin-pill{background:var(--lav);color:var(--purple);padding:8px 13px;border-radius:20px;font-size:11px;font-weight:700}
+.content{padding:29px 30px 50px;max-width:1600px;margin:auto}.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}
+h1{font-size:24px;margin:0 0 7px;letter-spacing:-.6px}.subtitle{font-size:12px;color:var(--muted);line-height:1.6}
+.btn{border:0;border-radius:7px;padding:10px 14px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.primary{background:var(--purple);color:white}.light{background:white;border:1px solid var(--border);color:#535d70}.danger{background:var(--redbg);color:var(--red)}.success{background:var(--greenbg);color:var(--green)}.warning{background:var(--orangebg);color:var(--orange)}
+.notice{background:#f0edff;border:1px solid #e1d9ff;border-radius:9px;padding:13px 15px;color:#51418c;font-size:11px;line-height:1.7;margin-bottom:20px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:20px}.stat,.panel{background:white;border:1px solid var(--border);border-radius:10px;box-shadow:0 5px 20px #181f350b}
+.stat{padding:18px}.stat-label{font-size:11px;color:var(--muted);font-weight:600}.stat-value{font-size:23px;font-weight:800;margin-top:12px}.stat-foot{font-size:10px;color:var(--muted);margin-top:7px}
+.panel{margin-bottom:20px}.panel-head{padding:17px 19px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.panel-title{font-size:13px;font-weight:800}.panel-sub{font-size:10px;color:var(--muted);margin-top:4px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}.field{border:1px solid var(--border);background:white;border-radius:7px;padding:10px;font-size:11px;color:var(--text);outline:none;min-width:130px}.field:focus{border-color:var(--purple)}.search{min-width:220px}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:left;font-size:10px;color:#8c94a5;background:#fafbfc;padding:13px 15px}td{padding:14px 15px;border-top:1px solid #f0f1f5;font-size:11px;vertical-align:middle}tbody tr:hover{background:#fcfbff}
+.person{display:flex;align-items:center;gap:9px}.avatar{width:35px;height:35px;border-radius:9px;background:#eee9ff;color:var(--purple);display:grid;place-items:center;font-weight:800;flex-shrink:0}.person-name{font-weight:700}.person-meta{font-size:10px;color:var(--muted);margin-top:4px}
+.tag{display:inline-block;border-radius:20px;padding:5px 9px;font-size:9px;font-weight:800}.draft{background:#f0f2f7;color:#586176}.published{background:var(--greenbg);color:var(--green)}.paused{background:var(--orangebg);color:var(--orange)}.completed{background:var(--bluebg);color:var(--blue)}
+.action{border:1px solid var(--border);background:white;border-radius:6px;padding:7px 9px;font-size:10px;font-weight:700;color:#596276}.action:hover{border-color:var(--purple);color:var(--purple)}
+.empty{text-align:center;padding:42px 20px;color:var(--muted)}.empty strong{display:block;color:#4d5668;font-size:13px;margin-bottom:6px}.empty p{font-size:11px;line-height:1.6;margin:0}
+.modal-backdrop{display:none;position:fixed;inset:0;background:#0a0f1c99;z-index:30;align-items:center;justify-content:center;padding:16px}.modal-backdrop.show{display:flex}.modal{background:white;border-radius:13px;width:100%;max-width:720px;max-height:92vh;overflow-y:auto;box-shadow:0 20px 70px #0003}
+.modal-head{padding:19px 21px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.modal-head h2{font-size:16px;margin:0}.close{border:0;background:#f2f3f7;border-radius:7px;width:30px;height:30px;font-size:17px}
+.modal-body{padding:20px 21px}.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.detail{padding:12px;background:#f8f9fc;border-radius:8px;min-width:0}.detail-label{font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase}.detail-value{font-size:12px;font-weight:700;overflow-wrap:anywhere}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 13px}.form-group{margin-top:13px}.form-group label{display:block;font-size:10px;font-weight:700;margin-bottom:6px}.form-group .field{width:100%}textarea.field{min-height:75px;resize:vertical}
+.form-group.full{grid-column:1/-1}.help{font-size:10px;color:var(--muted);line-height:1.6;margin-top:6px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:20px}
+.video-preview{background:#111827;border-radius:9px;min-height:190px;display:flex;align-items:center;justify-content:center;overflow:hidden;color:white;margin-top:12px}
+.video-preview video{width:100%;max-height:360px;background:#111827}.video-placeholder{text-align:center;color:#aab2c2;font-size:11px;padding:30px}
+.upload-box{border:1px dashed #c8c0ed;background:#faf9ff;padding:17px;border-radius:9px;text-align:center}
+.upload-box input{max-width:100%;font-size:11px}.upload-title{font-size:11px;font-weight:700;margin-bottom:6px}.upload-note{font-size:10px;color:var(--muted);line-height:1.5}
+.preview-card{background:#f8f9fc;border-radius:9px;padding:13px;margin-top:12px}
+.mobile-menu{display:none;border:0;background:white;font-size:20px}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.sidebar{transform:translateX(-100%);transition:.25s}.sidebar.open{transform:translateX(0)}.main{margin-left:0;width:100%}.mobile-menu{display:block}.topbar{padding:0 16px}.content{padding:22px 15px}.heading{flex-direction:column}.search{min-width:100%;width:100%}.filters{width:100%}.filters .field{flex:1}}
+@media(max-width:430px){.detail-grid,.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <svg class="crown" viewBox="0 0 40 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <path d="M4 10L11 16L19.5 4L28 16L36 10L32 28H8L4 10Z" stroke="#E8BD62" stroke-width="2" stroke-linejoin="round"/>
+   <path d="M9 23H31M11 31H29" stroke="#E8BD62" stroke-width="2" stroke-linecap="round"/>
+   <circle cx="4" cy="8" r="2" fill="#E8BD62"/><circle cx="19.5" cy="3" r="2" fill="#E8BD62"/><circle cx="36" cy="8" r="2" fill="#E8BD62"/>
+  </svg><span>EarnGig</span>
+ </div>
+ <div class="nav-label">OVERVIEW</div>
+ <a class="nav-link" href="admin.html"><span class="nav-icon">▦</span>Dashboard</a>
+ <div class="nav-label">USER MANAGEMENT</div>
+ <a class="nav-link" href="users.html"><span class="nav-icon">♙</span>Users</a>
+ <a class="nav-link" href="membership.html"><span class="nav-icon">◇</span>Membership</a>
+ <div class="nav-label">FINANCIAL MANAGEMENT</div>
+ <a class="nav-link" href="wallet.html"><span class="nav-icon">◈</span>User Wallets</a>
+ <a class="nav-link" href="referrals.html"><span class="nav-icon">♧</span>Referrals</a>
+ <a class="nav-link" href="transactions.html"><span class="nav-icon">⇄</span>Transactions</a>
+ <a class="nav-link" href="deposits.html"><span class="nav-icon">↓</span>Deposits</a>
+ <a class="nav-link" href="withdrawals.html"><span class="nav-icon">↑</span>User Withdrawals</a>
+ <a class="nav-link" href="payouts.html"><span class="nav-icon">⇧</span>Payout Management</a>
+ <a class="nav-link" href="seller-wallet.html"><span class="nav-icon">▣</span>Seller Store Wallet</a>
+ <div class="nav-label">MARKETPLACE</div>
+ <a class="nav-link" href="store-verification.html"><span class="nav-icon">✓</span>Store Verification</a>
+ <div class="nav-label">ADVERTISING</div>
+ <a class="nav-link" href="advertising.html"><span class="nav-icon">▤</span>Advertisement Bookings</a>
+ <a class="nav-link active" href="watch-earn.html"><span class="nav-icon">▶</span>Watch &amp; Earn</a>
+ <a class="nav-link" href="billboard.html"><span class="nav-icon">▣</span>Billboard Management</a>
+ <div class="nav-label">CONTENT &amp; OPERATIONS</div>
+ <a class="nav-link" href="writers.html"><span class="nav-icon">✎</span>Writers</a>
+ <div class="sidebar-footer">EarnGig Administration<br>Owner access only<br><span style="color:#e8bd62">●</span> Admin prototype</div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div style="display:flex;align-items:center;gap:13px">
+  <button class="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+  <div><div class="top-title">Watch &amp; Earn Management</div><div class="top-sub">Advertising / Your advert library</div></div>
+ </div>
+ <div class="admin-pill">OWNER ADMIN</div>
+</header>
+
+<div class="content">
+ <div class="heading">
+  <div><h1>Watch &amp; Earn Management</h1><div class="subtitle">Upload, organise, schedule and control the advertisements users can watch to earn.</div></div>
+  <button class="btn primary" onclick="openAdd()">＋ Add advertisement</button>
+ </div>
+
+ <div class="notice">
+  <strong>You control publishing.</strong> Advertisements are not published automatically when a customer booking is approved. Add or upload an advert here, review it, and manually choose when to publish it. This page is currently a local prototype, not connected to the live Watch &amp; Earn service.
+ </div>
+
+ <section class="stats">
+  <div class="stat"><div class="stat-label">Total adverts</div><div class="stat-value" id="totalCount">0</div><div class="stat-foot">Items in your advert library</div></div>
+  <div class="stat"><div class="stat-label">Published</div><div class="stat-value" id="publishedCount">0</div><div class="stat-foot">Marked live in this prototype</div></div>
+  <div class="stat"><div class="stat-label">Draft / paused</div><div class="stat-value" id="draftCount">0</div><div class="stat-foot">Not currently published</div></div>
+  <div class="stat"><div class="stat-label">Completed</div><div class="stat-value" id="completedCount">0</div><div class="stat-foot">Campaigns whose configured period ended</div></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head">
+   <div><div class="panel-title">Your advert library</div><div class="panel-sub">Each advert is managed independently.</div></div>
+   <div class="filters">
+    <input class="field search" id="search" placeholder="Search advert title or ID..." oninput="render()">
+    <select class="field" id="typeFilter" onchange="render()"><option value="">All advert types</option><option value="Views-based">Views-based</option><option value="Duration-based">Duration-based</option></select>
+    <select class="field" id="statusFilter" onchange="render()"><option value="">All statuses</option><option>Draft</option><option>Published</option><option>Paused</option><option>Completed</option></select>
+   </div>
+  </div>
+  <div class="table-wrap">
+   <table>
+    <thead><tr><th>ADVERTISEMENT</th><th>TYPE</th><th>TARGET / DURATION</th><th>START DATE</th><th>STATUS</th><th>ACTION</th></tr></thead>
+    <tbody id="adRows"></tbody>
+   </table>
+  </div>
+  <div class="panel-head" style="border-top:1px solid var(--border);border-bottom:0">
+   <span class="help">Your advert library is separate from customer booking requests.</span>
+   <button class="btn light" onclick="exportData()">⇩ Export library</button>
+  </div>
+ </section>
+
+ <div class="help">
+  Browser prototype storage: <code>earngig_watch_earn_ads_v1</code>. Video files selected here are stored in this browser's IndexedDB when supported. They are not uploaded to a shared server or made available to website visitors. Production use requires secure video storage, backend scheduling and a connection to the Watch &amp; Earn feed.
+ </div>
+</div>
+</main>
+</div>
+
+<!-- ADD / EDIT ADVERTISEMENT -->
+<div class="modal-backdrop" id="editModal" onclick="backdrop(event,'editModal')">
+ <div class="modal">
+  <div class="modal-head"><h2 id="editHeading">Add advertisement</h2><button class="close" onclick="closeModal('editModal')">×</button></div>
+  <div class="modal-body">
+   <div class="form-grid">
+    <div class="form-group full"><label>Advertisement title *</label><input class="field" id="adTitle" placeholder="Enter advert title"></div>
+    <div class="form-group"><label>Advert type *</label>
+     <select class="field" id="adType" onchange="updateTypeFields()">
+      <option value="Views-based">Views-based advert</option>
+      <option value="Duration-based">Duration-based advert</option>
+     </select>
+    </div>
+    <div class="form-group"><label>Advert category</label>
+     <select class="field" id="adCategory">
+      <option value="">Select category</option>
+      <option>Business</option><option>Education</option><option>Technology</option><option>Fashion</option><option>Food</option><option>Entertainment</option><option>Finance</option><option>Other</option>
+     </select>
+    </div>
+    <div class="form-group" id="viewsGroup"><label>Target views *</label><input class="field" id="adViews" type="number" min="1" step="1" placeholder="e.g. 1000"></div>
+    <div class="form-group" id="durationGroup" style="display:none"><label>Advert duration *</label>
+     <select class="field" id="adDuration"><option value="">Select duration</option><option value="1">1 day</option><option value="3">3 days</option><option value="7">7 days</option><option value="14">14 days</option><option value="30">30 days</option><option value="60">60 days</option><option value="90">90 days</option></select>
+    </div>
+    <div class="form-group"><label>Start date *</label><input class="field" id="adStart" type="date"></div>
+    <div class="form-group"><label>Start time</label><input class="field" id="adStartTime" type="time" value="00:00"></div>
+    <div class="form-group full"><label>Video file</label>
+     <div class="upload-box">
+      <div class="upload-title">Choose a video advertisement</div>
+      <input type="file" id="videoFile" accept="video/mp4,video/webm,video/ogg,video/quicktime">
+      <div class="upload-note">Supported browser video formats include MP4, WebM and OGG. Large videos may exceed this browser's local storage capacity.</div>
+      <div class="upload-note" id="selectedFile">No new video selected.</div>
+     </div>
+    </div>
+    <div class="form-group full"><label>Or add an existing video URL</label><input class="field" id="videoUrl" type="url" placeholder="https://example.com/video.mp4"><div class="help">Use a direct video file URL. The URL must be accessible to the browser. A new uploaded file takes priority over this URL.</div></div>
+    <div class="form-group full"><label>Advert description / internal notes</label><textarea class="field" id="adDescription" placeholder="Add information about this advert"></textarea></div>
+   </div>
+   <div class="video-preview" id="editPreview"><div class="video-placeholder">Video preview will appear here when a file or URL is selected.</div></div>
+   <div class="modal-actions">
+    <button class="btn light" onclick="closeModal('editModal')">Cancel</button>
+    <button class="btn primary" onclick="saveAd()">Save as draft</button>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- VIEW ADVERTISEMENT -->
+<div class="modal-backdrop" id="viewModal" onclick="backdrop(event,'viewModal')">
+ <div class="modal">
+  <div class="modal-head"><h2 id="viewHeading">Advertisement details</h2><button class="close" onclick="closeModal('viewModal')">×</button></div>
+  <div class="modal-body" id="viewBody"></div>
+ </div>
+</div>
+
+<script>
+const STORAGE_KEY='earngig_watch_earn_ads_v1';
+const DB_NAME='earngig_watch_earn_media_db';
+const DB_STORE='videos';
+
+let ads=loadAds();
+let editingId=null;
+let selectedFile=null;
+let existingMediaId=null;
+let previewUrl=null;
+let dbPromise=null;
+
+function loadAds(){
+ try{
+  const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+  return Array.isArray(data)?data:[];
+ }catch(e){return []}
+}
+function saveAds(){localStorage.setItem(STORAGE_KEY,JSON.stringify(ads))}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function uid(){return 'WE-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,6).toUpperCase()}
+function fmtDate(v){if(!v)return '—';const d=new Date(v+'T00:00:00');return isNaN(d)?'—':d.toLocaleDateString('en-NG',{dateStyle:'medium'})}
+function badge(s){const cls={Draft:'draft',Published:'published',Paused:'paused',Completed:'completed'}[s]||'draft';return `<span class="tag ${cls}">${esc(s)}</span>`}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function backdrop(e,id){if(e.target.id===id)closeModal(id)}
+
+function openDB(){
+ if(!('indexedDB' in window))return Promise.reject(new Error('IndexedDB is not supported in this browser.'));
+ if(dbPromise)return dbPromise;
+ dbPromise=new Promise((resolve,reject)=>{
+  const request=indexedDB.open(DB_NAME,1);
+  request.onupgradeneeded=()=>{
+   const db=request.result;
+   if(!db.objectStoreNames.contains(DB_STORE))db.createObjectStore(DB_STORE,{keyPath:'id'});
+  };
+  request.onsuccess=()=>resolve(request.result);
+  request.onerror=()=>reject(request.error);
+ });
+ return dbPromise;
+}
+async function storeVideo(file,id){
+ const db=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(DB_STORE,'readwrite');
+  tx.objectStore(DB_STORE).put({id,name:file.name,type:file.type,blob:file,savedAt:new Date().toISOString()});
+  tx.oncomplete=()=>resolve(true);
+  tx.onerror=()=>reject(tx.error);
+ });
+}
+async function getVideo(id){
+ if(!id)return null;
+ const db=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(DB_STORE,'readonly');
+  const request=tx.objectStore(DB_STORE).get(id);
+  request.onsuccess=()=>resolve(request.result||null);
+  request.onerror=()=>reject(request.error);
+ });
+}
+async function deleteVideo(id){
+ if(!id)return;
+ try{
+  const db=await openDB();
+  await new Promise((resolve,reject)=>{
+   const tx=db.transaction(DB_STORE,'readwrite');
+   tx.objectStore(DB_STORE).delete(id);
+   tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);
+  });
+ }catch(e){console.warn('Could not remove local video:',e)}
+}
+function releasePreview(){
+ if(previewUrl){URL.revokeObjectURL(previewUrl);previewUrl=null}
+}
+function showPreview(url){
+ const area=document.getElementById('editPreview');
+ releasePreview();
+ if(!url){
+  area.innerHTML='<div class="video-placeholder">Video preview will appear here when a file or URL is selected.</div>';
+  return;
+ }
+ previewUrl=url;
+ area.innerHTML='<video controls preload="metadata"></video>';
+ area.querySelector('video').src=url;
+}
+document.getElementById('videoFile').addEventListener('change',function(){
+ selectedFile=this.files&&this.files[0]?this.files[0]:null;
+ document.getElementById('selectedFile').textContent=selectedFile?
+  selectedFile.name+' · '+(selectedFile.size/1024/1024).toFixed(1)+' MB':'No new video selected.';
+ if(selectedFile){
+  if(!selectedFile.type.startsWith('video/')){alert('Please choose a video file.');this.value='';selectedFile=null;return}
+  showPreview(URL.createObjectURL(selectedFile));
+ }
+});
+document.getElementById('videoUrl').addEventListener('change',function(){
+ if(!selectedFile&&this.value.trim())showPreview(this.value.trim());
+});
+function updateTypeFields(){
+ const views=document.getElementById('adType').value==='Views-based';
+ document.getElementById('viewsGroup').style.display=views?'block':'none';
+ document.getElementById('durationGroup').style.display=views?'none':'block';
+}
+function openAdd(){
+ editingId=null;selectedFile=null;existingMediaId=null;
+ document.getElementById('editHeading').textContent='Add advertisement';
+ document.getElementById('adTitle').value='';
+ document.getElementById('adType').value='Views-based';
+ document.getElementById('adCategory').value='';
+ document.getElementById('adViews').value='';
+ document.getElementById('adDuration').value='';
+ document.getElementById('adStart').value=new Date().toISOString().slice(0,10);
+ document.getElementById('adStartTime').value='00:00';
+ document.getElementById('videoFile').value='';
+ document.getElementById('videoUrl').value='';
+ document.getElementById('adDescription').value='';
+ document.getElementById('selectedFile').textContent='No new video selected.';
+ updateTypeFields();showPreview(null);
+ document.getElementById('editModal').classList.add('show');
+}
+async function editAd(id){
+ const ad=ads.find(x=>x.id===id);if(!ad)return;
+ editingId=id;selectedFile=null;existingMediaId=ad.mediaId||null;
+ document.getElementById('editHeading').textContent='Edit advertisement';
+ document.getElementById('adTitle').value=ad.title||'';
+ document.getElementById('adType').value=ad.type||'Views-based';
+ document.getElementById('adCategory').value=ad.category||'';
+ document.getElementById('adViews').value=ad.targetViews||'';
+ document.getElementById('adDuration').value=ad.durationDays||'';
+ document.getElementById('adStart').value=ad.startDate||'';
+ document.getElementById('adStartTime').value=ad.startTime||'00:00';
+ document.getElementById('videoFile').value='';
+ document.getElementById('videoUrl').value=ad.videoUrl||'';
+ document.getElementById('adDescription').value=ad.description||'';
+ document.getElementById('selectedFile').textContent=ad.mediaName?'Existing video: '+ad.mediaName:'No uploaded video recorded.';
+ updateTypeFields();
+ showPreview(ad.videoUrl||null);
+ if(ad.mediaId){
+  try{
+   const item=await getVideo(ad.mediaId);
+   if(item){showPreview(URL.createObjectURL(item.blob));document.getElementById('selectedFile').textContent='Existing video: '+item.name+' (stored in this browser).'}
+  }catch(e){}
+ }
+ document.getElementById('editModal').classList.add('show');
+}
+async function saveAd(){
+ const title=document.getElementById('adTitle').value.trim();
+ const type=document.getElementById('adType').value;
+ const category=document.getElementById('adCategory').value;
+ const startDate=document.getElementById('adStart').value;
+ const startTime=document.getElementById('adStartTime').value||'00:00';
+ const targetViews=Number(document.getElementById('adViews').value);
+ const durationDays=Number(document.getElementById('adDuration').value);
+ const videoUrl=document.getElementById('videoUrl').value.trim();
+ if(!title||!startDate){alert('Advertisement title and start date are required.');return}
+ if(type==='Views-based'&&(!Number.isInteger(targetViews)||targetViews<1)){alert('Enter a valid target view count.');return}
+ if(type==='Duration-based'&&(!Number.isInteger(durationDays)||durationDays<1)){alert('Select a valid advert duration.');return}
+ if(!selectedFile&&!videoUrl&&!existingMediaId){alert('Please upload a video or enter a video URL.');return}
+ let mediaId=existingMediaId,mediaName='';
+ const existing=ads.find(x=>x.id===editingId);
+ if(existing)mediaName=existing.mediaName||'';
+ if(selectedFile){
+  mediaId=uid();
+  try{
+   await storeVideo(selectedFile,mediaId);
+   mediaName=selectedFile.name;
+  }catch(e){
+   alert('The video could not be saved in this browser. Try a smaller file or use a video URL. Details: '+(e.message||'Storage error'));
+   return;
+  }
+ }
+ const data={
+  id:editingId||uid(),title,type,category,
+  targetViews:type==='Views-based'?targetViews:null,
+  durationDays:type==='Duration-based'?durationDays:null,
+  startDate,startTime,videoUrl,mediaId,mediaName,
+  description:document.getElementById('adDescription').value.trim(),
+  status:existing?existing.status:'Draft',
+  createdAt:existing?existing.createdAt:new Date().toISOString(),
+  updatedAt:new Date().toISOString(),
+  publishedAt:existing?existing.publishedAt:null
+ };
+ if(existing){
+  if(existing.mediaId&&existing.mediaId!==mediaId)await deleteVideo(existing.mediaId);
+  ads=ads.map(x=>x.id===editingId?data:x);
+ }else ads.unshift(data);
+ saveAds();releasePreview();closeModal('editModal');render();
+}
+function isExpired(ad){
+ if(ad.type!=='Duration-based'||!ad.publishedAt||!ad.durationDays)return false;
+ const end=new Date(ad.publishedAt);
+ end.setDate(end.getDate()+Number(ad.durationDays));
+ return Date.now()>=end.getTime();
+}
+function updateExpired(){
+ let changed=false;
+ ads.forEach(ad=>{
+  if(ad.status==='Published'&&isExpired(ad)){ad.status='Completed';ad.updatedAt=new Date().toISOString();changed=true}
+ });
+ if(changed)saveAds();
+}
+function render(){
+ updateExpired();
+ const q=document.getElementById('search').value.trim().toLowerCase();
+ const type=document.getElementById('typeFilter').value;
+ const status=document.getElementById('statusFilter').value;
+ const filtered=ads.filter(ad=>{
+  const text=[ad.id,ad.title,ad.category,ad.type].join(' ').toLowerCase();
+  return (!q||text.includes(q))&&(!type||ad.type===type)&&(!status||ad.status===status);
+ });
+ document.getElementById('totalCount').textContent=ads.length;
+ document.getElementById('publishedCount').textContent=ads.filter(x=>x.status==='Published').length;
+ document.getElementById('draftCount').textContent=ads.filter(x=>['Draft','Paused'].includes(x.status)).length;
+ document.getElementById('completedCount').textContent=ads.filter(x=>x.status==='Completed').length;
+ const tbody=document.getElementById('adRows');
+ if(!filtered.length){
+  tbody.innerHTML='<tr><td colspan="6"><div class="empty"><div style="font-size:28px;margin-bottom:10px">▶</div><strong>No advertisements in your library</strong><p>Add a video advert to begin building your Watch &amp; Earn inventory.</p></div></td></tr>';
+  return;
+ }
+ tbody.innerHTML=filtered.map(ad=>`
+  <tr>
+   <td><div class="person"><div class="avatar">▶</div><div><div class="person-name">${esc(ad.title)}</div><div class="person-meta">${esc(ad.id)} · ${esc(ad.category||'Uncategorised')}</div></div></div></td>
+   <td>${esc(ad.type)}</td>
+   <td>${ad.type==='Views-based'?Number(ad.targetViews||0).toLocaleString()+' views':esc(ad.durationDays)+' days'}</td>
+   <td>${fmtDate(ad.startDate)}</td>
+   <td>${badge(ad.status)}</td>
+   <td><button class="action" onclick="viewAd('${ad.id}')">Manage ↗</button></td>
+  </tr>`).join('');
+}
+function detail(label,value){return `<div class="detail"><div class="detail-label">${esc(label)}</div><div class="detail-value">${esc(value)}</div></div>`}
+async function viewAd(id){
+ const ad=ads.find(x=>x.id===id);if(!ad)return;
+ document.getElementById('viewHeading').textContent=ad.title;
+ let video='';
+ if(ad.mediaId){
+  try{
+   const item=await getVideo(ad.mediaId);
+   if(item){
+    const url=URL.createObjectURL(item.blob);
+    video=`<div class="video-preview"><video controls preload="metadata" src="${url}"></video></div>`;
+   }
+  }catch(e){}
+ }
+ if(!video&&ad.videoUrl)video=`<div class="video-preview"><video controls preload="metadata" src="${esc(ad.videoUrl)}"></video></div>`;
+ if(!video)video='<div class="video-preview"><div class="video-placeholder">No playable video is available in this browser.</div></div>';
+ document.getElementById('viewBody').innerHTML=`
+  ${video}
+  <div class="detail-grid" style="margin-top:14px">
+   ${detail('Advert ID',ad.id)}${detail('Advert type',ad.type)}
+   ${detail('Category',ad.category||'Not selected')}${detail('Status',ad.status)}
+   ${detail('Target views',ad.type==='Views-based'?Number(ad.targetViews).toLocaleString():'Not applicable')}
+   ${detail('Duration',ad.type==='Duration-based'?ad.durationDays+' days':'Not applicable')}
+   ${detail('Start date',fmtDate(ad.startDate))}${detail('Start time',ad.startTime||'00:00')}
+   ${detail('Video file',ad.mediaName||'External video URL')}
+  </div>
+  <div class="preview-card"><strong style="font-size:11px">Description / notes</strong><p style="font-size:11px;color:#697386;line-height:1.6">${esc(ad.description||'No description added.')}</p></div>
+  <div class="help">Publishing here records your manual decision in this prototype. It does not yet send the video to the live Watch &amp; Earn feed.</div>
+  <div class="modal-actions">
+   <button class="btn light" onclick="editAd('${ad.id}')">Edit advert</button>
+   ${ad.status==='Draft'||ad.status==='Paused'?`<button class="btn success" onclick="setStatus('${ad.id}','Published')">Publish advert</button>`:''}
+   ${ad.status==='Published'?`<button class="btn warning" onclick="setStatus('${ad.id}','Paused')">Pause advert</button>`:''}
+   ${ad.status==='Completed'?`<button class="btn light" onclick="setStatus('${ad.id}','Draft')">Return to draft</button>`:''}
+   <button class="btn danger" onclick="deleteAd('${ad.id}')">Delete advert</button>
+   <button class="btn light" onclick="closeModal('viewModal')">Close</button>
+  </div>`;
+ document.getElementById('viewModal').classList.add('show');
+}
+function setStatus(id,status){
+ const ad=ads.find(x=>x.id===id);if(!ad)return;
+ if(status==='Published'){
+  if(!confirm('Publish this advert in your Watch & Earn inventory? This prototype only records the status and does not publish it to the live site.'))return;
+  ad.publishedAt=new Date().toISOString();
+ }
+ if(status==='Paused'&&!confirm('Pause this advertisement?'))return;
+ ad.status=status;ad.updatedAt=new Date().toISOString();
+ saveAds();closeModal('viewModal');render();
+}
+async function deleteAd(id){
+ const ad=ads.find(x=>x.id===id);if(!ad)return;
+ if(!confirm('Permanently delete "'+ad.title+'"? This cannot be undone.'))return;
+ if(ad.mediaId)await deleteVideo(ad.mediaId);
+ ads=ads.filter(x=>x.id!==id);saveAds();closeModal('viewModal');render();
+}
+function exportData(){
+ const safeAds=ads.map(({mediaId,...rest})=>({...rest,videoStoredInBrowser:!!mediaId}));
+ const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),advertisements:safeAds},null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='earngig-watch-earn-library.json';a.click();URL.revokeObjectURL(url);
+}
+render();
+</script>
+</body>
+</html>
