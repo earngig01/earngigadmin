@@ -1,0 +1,532 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EarnGig Admin | Billboard Management</title>
+<style>
+:root{--navy:#111827;--purple:#7047eb;--lav:#f1edff;--bg:#f5f6fa;--text:#20283a;--muted:#8991a3;--border:#e9eaf1;--green:#16865c;--greenbg:#e9f8f1;--orange:#bd761b;--orangebg:#fff4e5;--red:#d34b58;--redbg:#fff0f1;--blue:#3976c8;--bluebg:#edf4ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer}
+.layout{display:flex;min-height:100vh}.sidebar{width:250px;background:var(--navy);color:white;position:fixed;inset:0 auto 0 0;padding:25px 15px;overflow:auto;z-index:10}
+.brand{display:flex;align-items:center;gap:10px;padding:0 12px 28px;font-size:22px;font-weight:800}.crown{width:27px;height:25px}
+.nav-label{font-size:10px;letter-spacing:1.5px;color:#8290a9;padding:18px 13px 9px;font-weight:700}
+.nav-link{display:flex;align-items:center;gap:12px;color:#aeb8ca;text-decoration:none;padding:11px 13px;margin:3px 0;border-radius:8px;font-size:13px}
+.nav-link:hover,.nav-link.active{background:#292344;color:white}.nav-link.active{box-shadow:inset 3px 0 var(--purple)}
+.nav-icon{width:19px;text-align:center}.sidebar-footer{border-top:1px solid #30394b;margin-top:28px;padding:18px 12px;color:#8996aa;font-size:11px;line-height:1.7}
+.main{margin-left:250px;width:calc(100% - 250px);min-width:0}.topbar{height:72px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:5}
+.top-title{font-size:14px;font-weight:700}.top-sub{font-size:11px;color:var(--muted);margin-top:3px}.admin-pill{background:var(--lav);color:var(--purple);padding:8px 13px;border-radius:20px;font-size:11px;font-weight:700}
+.content{padding:29px 30px 50px;max-width:1600px;margin:auto}.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}
+h1{font-size:24px;margin:0 0 7px;letter-spacing:-.6px}.subtitle{font-size:12px;color:var(--muted);line-height:1.6}
+.btn{border:0;border-radius:7px;padding:10px 14px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.primary{background:var(--purple);color:white}.light{background:white;border:1px solid var(--border);color:#535d70}.danger{background:var(--redbg);color:var(--red)}.success{background:var(--greenbg);color:var(--green)}.warning{background:var(--orangebg);color:var(--orange)}
+.notice{background:#f0edff;border:1px solid #e1d9ff;border-radius:9px;padding:13px 15px;color:#51418c;font-size:11px;line-height:1.7;margin-bottom:20px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:20px}.stat,.panel{background:white;border:1px solid var(--border);border-radius:10px;box-shadow:0 5px 20px #181f350b}
+.stat{padding:18px}.stat-label{font-size:11px;color:var(--muted);font-weight:600}.stat-value{font-size:23px;font-weight:800;margin-top:12px}.stat-foot{font-size:10px;color:var(--muted);margin-top:7px}
+.panel{margin-bottom:20px}.panel-head{padding:17px 19px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.panel-title{font-size:13px;font-weight:800}.panel-sub{font-size:10px;color:var(--muted);margin-top:4px}
+.field{border:1px solid var(--border);background:white;border-radius:7px;padding:10px;font-size:11px;color:var(--text);outline:none;min-width:130px}.field:focus{border-color:var(--purple)}
+.filters{display:flex;gap:8px;flex-wrap:wrap}.search{min-width:220px}
+.slot-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding:18px}
+.slot-card{border:1px solid var(--border);border-radius:10px;padding:14px;background:white;min-width:0}
+.slot-number{font-size:11px;color:var(--muted);font-weight:700}.slot-status{margin-top:10px}.slot-title{font-size:12px;font-weight:800;margin-top:12px;overflow-wrap:anywhere;min-height:28px}.slot-meta{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5}.slot-card .btn{margin-top:12px;width:100%}
+.tag{display:inline-block;border-radius:20px;padding:5px 9px;font-size:9px;font-weight:800}.available{background:#f0f2f7;color:#586176}.pending{background:var(--orangebg);color:var(--orange)}.approved{background:var(--bluebg);color:var(--blue)}.occupied{background:var(--greenbg);color:var(--green)}.rejected{background:var(--redbg);color:var(--red)}.completed{background:#eee9ff;color:var(--purple)}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:left;font-size:10px;color:#8c94a5;background:#fafbfc;padding:13px 15px}td{padding:14px 15px;border-top:1px solid #f0f1f5;font-size:11px;vertical-align:middle}tbody tr:hover{background:#fcfbff}
+.person{display:flex;align-items:center;gap:9px}.avatar{width:34px;height:34px;border-radius:9px;background:#eee9ff;color:var(--purple);display:grid;place-items:center;font-weight:800;flex-shrink:0}.person-name{font-weight:700}.person-meta{font-size:10px;color:var(--muted);margin-top:4px}
+.action{border:1px solid var(--border);background:white;border-radius:6px;padding:7px 9px;font-size:10px;font-weight:700;color:#596276}.action:hover{border-color:var(--purple);color:var(--purple)}
+.empty{text-align:center;padding:42px 20px;color:var(--muted)}.empty strong{display:block;color:#4d5668;font-size:13px;margin-bottom:6px}.empty p{font-size:11px;line-height:1.6;margin:0}
+.modal-backdrop{display:none;position:fixed;inset:0;background:#0a0f1c99;z-index:30;align-items:center;justify-content:center;padding:16px}.modal-backdrop.show{display:flex}.modal{background:white;border-radius:13px;width:100%;max-width:720px;max-height:92vh;overflow-y:auto;box-shadow:0 20px 70px #0003}
+.modal-head{padding:19px 21px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.modal-head h2{font-size:16px;margin:0}.close{border:0;background:#f2f3f7;border-radius:7px;width:30px;height:30px;font-size:17px}
+.modal-body{padding:20px 21px}.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.detail{padding:12px;background:#f8f9fc;border-radius:8px;min-width:0}.detail-label{font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase}.detail-value{font-size:12px;font-weight:700;overflow-wrap:anywhere}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 13px}.form-group{margin-top:13px}.form-group label{display:block;font-size:10px;font-weight:700;margin-bottom:6px}.form-group .field{width:100%}.form-group.full{grid-column:1/-1}textarea.field{min-height:75px;resize:vertical}
+.upload-box{border:1px dashed #c8c0ed;background:#faf9ff;padding:16px;border-radius:9px;text-align:center}.upload-box input{max-width:100%;font-size:11px}.upload-title{font-size:11px;font-weight:700;margin-bottom:7px}.upload-note{font-size:10px;color:var(--muted);line-height:1.5;margin-top:6px}
+.video-preview{background:#111827;border-radius:9px;min-height:190px;display:flex;align-items:center;justify-content:center;overflow:hidden;color:white;margin-top:12px}.video-preview video{width:100%;max-height:360px;background:#111827}.video-placeholder{text-align:center;color:#aab2c2;font-size:11px;padding:30px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:20px}.help{font-size:10px;color:var(--muted);line-height:1.6;margin-top:7px}
+.mobile-menu{display:none;border:0;background:white;font-size:20px}
+@media(max-width:1100px){.slot-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.sidebar{transform:translateX(-100%);transition:.25s}.sidebar.open{transform:translateX(0)}.main{margin-left:0;width:100%}.mobile-menu{display:block}.topbar{padding:0 16px}.content{padding:22px 15px}.heading{flex-direction:column}.search{min-width:100%;width:100%}.filters{width:100%}.filters .field{flex:1}}
+@media(max-width:480px){.slot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.detail-grid,.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <svg class="crown" viewBox="0 0 40 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <path d="M4 10L11 16L19.5 4L28 16L36 10L32 28H8L4 10Z" stroke="#E8BD62" stroke-width="2" stroke-linejoin="round"/>
+   <path d="M9 23H31M11 31H29" stroke="#E8BD62" stroke-width="2" stroke-linecap="round"/>
+   <circle cx="4" cy="8" r="2" fill="#E8BD62"/><circle cx="19.5" cy="3" r="2" fill="#E8BD62"/><circle cx="36" cy="8" r="2" fill="#E8BD62"/>
+  </svg><span>EarnGig</span>
+ </div>
+ <div class="nav-label">OVERVIEW</div>
+ <a class="nav-link" href="admin.html"><span class="nav-icon">▦</span>Dashboard</a>
+ <div class="nav-label">USER MANAGEMENT</div>
+ <a class="nav-link" href="users.html"><span class="nav-icon">♙</span>Users</a>
+ <a class="nav-link" href="membership.html"><span class="nav-icon">◇</span>Membership</a>
+ <div class="nav-label">FINANCIAL MANAGEMENT</div>
+ <a class="nav-link" href="wallet.html"><span class="nav-icon">◈</span>User Wallets</a>
+ <a class="nav-link" href="referrals.html"><span class="nav-icon">♧</span>Referrals</a>
+ <a class="nav-link" href="transactions.html"><span class="nav-icon">⇄</span>Transactions</a>
+ <a class="nav-link" href="deposits.html"><span class="nav-icon">↓</span>Deposits</a>
+ <a class="nav-link" href="withdrawals.html"><span class="nav-icon">↑</span>User Withdrawals</a>
+ <a class="nav-link" href="payouts.html"><span class="nav-icon">⇧</span>Payout Management</a>
+ <a class="nav-link" href="seller-wallet.html"><span class="nav-icon">▣</span>Seller Store Wallet</a>
+ <div class="nav-label">MARKETPLACE</div>
+ <a class="nav-link" href="store-verification.html"><span class="nav-icon">✓</span>Store Verification</a>
+ <div class="nav-label">ADVERTISING</div>
+ <a class="nav-link" href="advertising.html"><span class="nav-icon">▤</span>Advertisement Bookings</a>
+ <a class="nav-link" href="watch-earn.html"><span class="nav-icon">▶</span>Watch &amp; Earn</a>
+ <a class="nav-link active" href="billboard.html"><span class="nav-icon">▣</span>Billboard Management</a>
+ <div class="nav-label">CONTENT &amp; OPERATIONS</div>
+ <a class="nav-link" href="writers.html"><span class="nav-icon">✎</span>Writers</a>
+ <div class="sidebar-footer">EarnGig Administration<br>Owner access only<br><span style="color:#e8bd62">●</span> Admin prototype</div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div style="display:flex;align-items:center;gap:13px">
+  <button class="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+  <div><div class="top-title">Billboard Management</div><div class="top-sub">Advertising / Weekly billboard slots</div></div>
+ </div>
+ <div class="admin-pill">OWNER ADMIN</div>
+</header>
+
+<div class="content">
+ <div class="heading">
+  <div><h1>Billboard Management</h1><div class="subtitle">Inspect customer bookings and manually upload approved videos into your 10 weekly billboard slots.</div></div>
+  <button class="btn light" onclick="exportData()">⇩ Export records</button>
+ </div>
+
+ <div class="notice">
+  <strong>You control every billboard placement.</strong> Advertisers book a numbered slot and submit their creative. You review it, approve or reject it, then separately upload the video into that exact slot. Approval alone never publishes a video. The next week's slots are managed as a new weekly schedule.
+ </div>
+
+ <section class="stats">
+  <div class="stat"><div class="stat-label">Weekly slots</div><div class="stat-value">10</div><div class="stat-foot">Fixed weekly billboard capacity</div></div>
+  <div class="stat"><div class="stat-label">Available slots</div><div class="stat-value" id="availableCount">10</div><div class="stat-foot">Not currently assigned to a live placement</div></div>
+  <div class="stat"><div class="stat-label">Awaiting review</div><div class="stat-value" id="pendingCount">0</div><div class="stat-foot">Submitted bookings to inspect</div></div>
+  <div class="stat"><div class="stat-label">Videos uploaded</div><div class="stat-value" id="uploadedCount">0</div><div class="stat-foot">Manually placed in weekly slots</div></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head">
+   <div><div class="panel-title">Weekly billboard schedule</div><div class="panel-sub">Select a week to manage its 10 numbered positions.</div></div>
+   <div class="filters">
+    <input class="field" type="date" id="weekPicker" onchange="render()">
+    <button class="btn light" onclick="goThisWeek()">Current week</button>
+   </div>
+  </div>
+  <div class="slot-grid" id="slotGrid"></div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head">
+   <div><div class="panel-title">Customer billboard bookings</div><div class="panel-sub">Review submitted videos and requests before deciding whether to approve them.</div></div>
+   <div class="filters">
+    <input class="field search" id="search" placeholder="Search advertiser, ID or slot..." oninput="renderBookings()">
+    <select class="field" id="bookingFilter" onchange="renderBookings()">
+     <option value="">All booking statuses</option><option>Pending Review</option><option>Approved</option><option>Rejected</option><option>Uploaded to Slot</option>
+    </select>
+   </div>
+  </div>
+  <div class="table-wrap">
+   <table><thead><tr><th>ADVERTISER</th><th>BOOKING ID</th><th>REQUESTED SLOT</th><th>WEEK</th><th>CREATIVE</th><th>STATUS</th><th>ACTION</th></tr></thead>
+   <tbody id="bookingRows"></tbody></table>
+  </div>
+  <div class="panel-head" style="border-top:1px solid var(--border);border-bottom:0">
+   <span class="help">Bookings should arrive from the customer booking system when the backend is connected.</span>
+   <button class="btn primary" onclick="openBooking()">＋ Record booking</button>
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><div><div class="panel-title">Weekly slot history</div><div class="panel-sub">Previous weekly placements and recorded clearing actions.</div></div></div>
+  <div class="table-wrap"><table><thead><tr><th>WEEK</th><th>SLOT</th><th>ADVERTISER</th><th>PLACEMENT</th><th>LAST ACTION</th></tr></thead><tbody id="historyRows"></tbody></table></div>
+ </section>
+ <div class="help">Prototype storage: <code>earngig_billboard_bookings_v1</code>, <code>earngig_billboard_slots_v1</code> and IndexedDB video storage. Records and video files are local to this browser. Live booking synchronisation, shared video storage and website billboard publishing require backend integration.</div>
+</div>
+</main>
+</div>
+
+<!-- BOOKING REVIEW -->
+<div class="modal-backdrop" id="reviewModal" onclick="backdrop(event,'reviewModal')">
+ <div class="modal"><div class="modal-head"><h2 id="reviewTitle">Billboard booking review</h2><button class="close" onclick="closeModal('reviewModal')">×</button></div><div class="modal-body" id="reviewBody"></div></div>
+</div>
+
+<!-- RECORD BOOKING -->
+<div class="modal-backdrop" id="bookingModal" onclick="backdrop(event,'bookingModal')">
+ <div class="modal"><div class="modal-head"><h2>Record billboard booking</h2><button class="close" onclick="closeModal('bookingModal')">×</button></div><div class="modal-body">
+  <div class="notice">This form is for testing and recording bookings in the prototype. The live customer booking system is not connected yet.</div>
+  <div class="form-grid">
+   <div class="form-group"><label>Advertiser / business name *</label><input class="field" id="bAdvertiser" placeholder="Business name"></div>
+   <div class="form-group"><label>Account ID</label><input class="field" id="bAccount" placeholder="EarnGig account ID"></div>
+   <div class="form-group"><label>Campaign title *</label><input class="field" id="bTitle" placeholder="Advert title"></div>
+   <div class="form-group"><label>Requested slot *</label><select class="field" id="bSlot"><option value="">Choose slot</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
+   <div class="form-group"><label>Week beginning *</label><input class="field" id="bWeek" type="date"></div>
+   <div class="form-group"><label>Payment reference</label><input class="field" id="bReference" placeholder="Payment reference"></div>
+   <div class="form-group full"><label>Advertiser's submitted video</label><div class="upload-box"><div class="upload-title">Select submitted video</div><input type="file" id="bVideo" accept="video/*"><div class="upload-note" id="bVideoName">No video selected.</div></div></div>
+   <div class="form-group full"><label>Advertiser's video URL (optional)</label><input class="field" id="bVideoUrl" type="url" placeholder="Direct video URL"></div>
+   <div class="form-group full"><label>Booking notes</label><textarea class="field" id="bNotes" placeholder="Additional booking information"></textarea></div>
+  </div>
+  <div class="modal-actions"><button class="btn light" onclick="closeModal('bookingModal')">Cancel</button><button class="btn primary" onclick="saveBooking()">Save booking</button></div>
+ </div></div>
+</div>
+
+<!-- SLOT UPLOAD -->
+<div class="modal-backdrop" id="slotModal" onclick="backdrop(event,'slotModal')">
+ <div class="modal"><div class="modal-head"><h2 id="slotModalTitle">Manage billboard slot</h2><button class="close" onclick="closeModal('slotModal')">×</button></div><div class="modal-body" id="slotModalBody"></div></div>
+</div>
+
+<script>
+const BOOKING_KEY='earngig_billboard_bookings_v1';
+const SLOT_KEY='earngig_billboard_slots_v1';
+const DB_NAME='earngig_billboard_media_db';
+const DB_STORE='videos';
+
+let bookings=load(BOOKING_KEY);
+let slots=load(SLOT_KEY);
+let bookingVideo=null;
+let slotVideo=null;
+let dbPromise=null;
+let activeSlot=null;
+let activeBooking=null;
+let previewUrl=null;
+
+function load(key){
+ try{const data=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(data)?data:[]}catch(e){return []}
+}
+function save(){
+ localStorage.setItem(BOOKING_KEY,JSON.stringify(bookings));
+ localStorage.setItem(SLOT_KEY,JSON.stringify(slots));
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function uid(prefix){return prefix+'-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,5).toUpperCase()}
+function money(v){return '₦'+Number(v||0).toLocaleString('en-NG')}
+function date(v){if(!v)return '—';const d=new Date(v+'T00:00:00');return isNaN(d)?'—':d.toLocaleDateString('en-NG',{dateStyle:'medium'})}
+function todayISO(){return new Date().toISOString().slice(0,10)}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function backdrop(e,id){if(e.target.id===id)closeModal(id)}
+function weekStart(value){
+ const d=new Date(value+'T00:00:00');
+ const day=d.getDay();
+ d.setDate(d.getDate()-((day+6)%7));
+ return d.toISOString().slice(0,10);
+}
+function getWeek(){return weekStart(document.getElementById('weekPicker').value||todayISO())}
+function getSlot(week,number){return slots.find(s=>s.week===week&&Number(s.slot)===Number(number))}
+function getBooking(id){return bookings.find(b=>b.id===id)}
+function statusClass(s){
+ return ({'Available':'available','Pending Review':'pending','Approved':'approved','Rejected':'rejected','Occupied':'occupied','Uploaded to Slot':'occupied','Completed':'completed'})[s]||'available';
+}
+
+function openDB(){
+ if(!('indexedDB' in window))return Promise.reject(new Error('IndexedDB is not supported.'));
+ if(dbPromise)return dbPromise;
+ dbPromise=new Promise((resolve,reject)=>{
+  const req=indexedDB.open(DB_NAME,1);
+  req.onupgradeneeded=()=>{
+   const db=req.result;
+   if(!db.objectStoreNames.contains(DB_STORE))db.createObjectStore(DB_STORE,{keyPath:'id'});
+  };
+  req.onsuccess=()=>resolve(req.result);
+  req.onerror=()=>reject(req.error);
+ });
+ return dbPromise;
+}
+async function storeVideo(file,id){
+ const db=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(DB_STORE,'readwrite');
+  tx.objectStore(DB_STORE).put({id,name:file.name,type:file.type,blob:file,savedAt:new Date().toISOString()});
+  tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error);
+ });
+}
+async function getVideo(id){
+ if(!id)return null;
+ const db=await openDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(DB_STORE,'readonly');
+  const req=tx.objectStore(DB_STORE).get(id);
+  req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>reject(req.error);
+ });
+}
+async function removeVideo(id){
+ if(!id)return;
+ try{
+  const db=await openDB();
+  await new Promise((resolve,reject)=>{
+   const tx=db.transaction(DB_STORE,'readwrite');
+   tx.objectStore(DB_STORE).delete(id);
+   tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);
+  });
+ }catch(e){}
+}
+function releasePreview(){if(previewUrl){URL.revokeObjectURL(previewUrl);previewUrl=null}}
+function videoMarkup(url){
+ return url?`<div class="video-preview"><video controls preload="metadata" src="${esc(url)}"></video></div>`:
+ '<div class="video-preview"><div class="video-placeholder">No video available to preview.</div></div>';
+}
+async function bookingVideoUrl(b){
+ if(b.videoMediaId){
+  try{
+   const item=await getVideo(b.videoMediaId);
+   if(item)return URL.createObjectURL(item.blob);
+  }catch(e){}
+ }
+ return b.videoUrl||'';
+}
+async function slotVideoUrl(s){
+ if(s&&s.mediaId){
+  try{
+   const item=await getVideo(s.mediaId);
+   if(item)return URL.createObjectURL(item.blob);
+  }catch(e){}
+ }
+ return s&&s.videoUrl?s.videoUrl:'';
+}
+
+function goThisWeek(){
+ document.getElementById('weekPicker').value=weekStart(todayISO());
+ render();
+}
+function render(){
+ const week=getWeek();
+ document.getElementById('weekPicker').value=week;
+ renderSlots(week);
+ renderStats(week);
+ renderBookings();
+ renderHistory();
+}
+function renderStats(week){
+ const current=slots.filter(s=>s.week===week);
+ const occupied=current.filter(s=>s.status==='Occupied').length;
+ const pending=bookings.filter(b=>b.status==='Pending Review').length;
+ document.getElementById('availableCount').textContent=10-occupied;
+ document.getElementById('pendingCount').textContent=pending;
+ document.getElementById('uploadedCount').textContent=occupied;
+}
+function renderSlots(week){
+ const grid=document.getElementById('slotGrid');
+ grid.innerHTML=Array.from({length:10},(_,i)=>{
+  const number=i+1;
+  const slot=getSlot(week,number);
+  const status=slot?slot.status:'Available';
+  const title=slot?slot.title:'No video placed';
+  const advertiser=slot?slot.advertiser:'Waiting for your upload';
+  return `<div class="slot-card">
+   <div class="slot-number">BILLBOARD SLOT ${number}</div>
+   <div class="slot-status"><span class="tag ${statusClass(status)}">${esc(status)}</span></div>
+   <div class="slot-title">${esc(title)}</div>
+   <div class="slot-meta">${esc(advertiser)}<br>Week: ${date(week)}</div>
+   <button class="btn ${slot?'light':'primary'}" onclick="manageSlot('${week}',${number})">${slot?'Manage slot':'Open slot'}</button>
+  </div>`;
+ }).join('');
+}
+function renderBookings(){
+ const q=document.getElementById('search').value.trim().toLowerCase();
+ const status=document.getElementById('bookingFilter').value;
+ const list=bookings.filter(b=>{
+  const text=[b.id,b.advertiser,b.accountId,b.title,b.slot].join(' ').toLowerCase();
+  return (!q||text.includes(q))&&(!status||b.status===status);
+ }).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+ document.getElementById('bookingRows').innerHTML=list.length?list.map(b=>`
+ <tr>
+  <td><div class="person"><div class="avatar">${esc(String(b.advertiser||'?').slice(0,1).toUpperCase())}</div><div><div class="person-name">${esc(b.advertiser)}</div><div class="person-meta">${esc(b.accountId||'No account ID')}</div></div></div></td>
+  <td>${esc(b.id)}</td><td>Slot ${esc(b.slot)}</td><td>${date(b.week)}</td>
+  <td>${b.videoMediaId||b.videoUrl?'<span class="tag approved">Submitted</span>':'<span class="tag pending">Missing</span>'}</td>
+  <td><span class="tag ${statusClass(b.status)}">${esc(b.status)}</span></td>
+  <td><button class="action" onclick="reviewBooking('${b.id}')">Inspect ↗</button></td>
+ </tr>`).join(''):'<tr><td colspan="7"><div class="empty"><strong>No billboard bookings found</strong><p>Customer bookings will appear here when recorded or connected to the booking system.</p></div></td></tr>';
+}
+function renderHistory(){
+ const rows=slots.filter(s=>s.status==='Occupied'||s.status==='Completed').sort((a,b)=>new Date(b.updatedAt)-new Date(a.updatedAt));
+ document.getElementById('historyRows').innerHTML=rows.length?rows.map(s=>`
+ <tr><td>${date(s.week)}</td><td>Slot ${s.slot}</td><td>${esc(s.advertiser)}</td><td>${esc(s.status)}</td><td>${date((s.updatedAt||'').slice(0,10))}</td></tr>`).join(''):'<tr><td colspan="5"><div class="empty"><strong>No slot history yet</strong><p>Manual placements will appear here.</p></div></td></tr>';
+}
+
+function openBooking(){
+ bookingVideo=null;
+ document.getElementById('bAdvertiser').value='';
+ document.getElementById('bAccount').value='';
+ document.getElementById('bTitle').value='';
+ document.getElementById('bSlot').value='';
+ document.getElementById('bWeek').value=getWeek();
+ document.getElementById('bReference').value='';
+ document.getElementById('bVideo').value='';
+ document.getElementById('bVideoUrl').value='';
+ document.getElementById('bNotes').value='';
+ document.getElementById('bVideoName').textContent='No video selected.';
+ document.getElementById('bookingModal').classList.add('show');
+}
+document.getElementById('bVideo').addEventListener('change',function(){
+ bookingVideo=this.files&&this.files[0]?this.files[0]:null;
+ document.getElementById('bVideoName').textContent=bookingVideo?bookingVideo.name+' · '+(bookingVideo.size/1024/1024).toFixed(1)+' MB':'No video selected.';
+});
+async function saveBooking(){
+ const advertiser=document.getElementById('bAdvertiser').value.trim();
+ const title=document.getElementById('bTitle').value.trim();
+ const slot=document.getElementById('bSlot').value;
+ const week=document.getElementById('bWeek').value;
+ if(!advertiser||!title||!slot||!week){alert('Advertiser, campaign title, slot and week are required.');return}
+ if(bookings.some(b=>b.week===week&&String(b.slot)===slot&&b.status!=='Rejected')){
+  alert('There is already a non-rejected booking for this slot and week. Review that booking first.');
+  return;
+ }
+ const item={
+  id:uid('BB'),advertiser,title,slot:Number(slot),week,
+  accountId:document.getElementById('bAccount').value.trim(),
+  paymentReference:document.getElementById('bReference').value.trim(),
+  videoUrl:document.getElementById('bVideoUrl').value.trim(),
+  videoMediaId:null,videoName:bookingVideo?bookingVideo.name:'',
+  notes:document.getElementById('bNotes').value.trim(),
+  status:'Pending Review',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()
+ };
+ if(bookingVideo){
+  item.videoMediaId=uid('VID');
+  try{await storeVideo(bookingVideo,item.videoMediaId)}
+  catch(e){alert('Could not save this video in browser storage. Try a smaller file.');return}
+ }
+ bookings.unshift(item);save();render();closeModal('bookingModal');
+}
+
+async function reviewBooking(id){
+ const b=getBooking(id);if(!b)return;
+ activeBooking=id;
+ const url=await bookingVideoUrl(b);
+ document.getElementById('reviewTitle').textContent='Inspect booking · Slot '+b.slot;
+ document.getElementById('reviewBody').innerHTML=`
+  ${videoMarkup(url)}
+  <div class="detail-grid" style="margin-top:14px">
+   ${detail('Advertiser',b.advertiser)}${detail('Account ID',b.accountId||'Not provided')}
+   ${detail('Booking ID',b.id)}${detail('Campaign title',b.title)}
+   ${detail('Requested slot','Slot '+b.slot)}${detail('Week beginning',date(b.week))}
+   ${detail('Payment reference',b.paymentReference||'Not recorded')}${detail('Booking status',b.status)}
+   ${detail('Submitted video',b.videoName||b.videoUrl||'Not submitted')}
+  </div>
+  <div class="preview-card"><strong style="font-size:11px">Advertiser notes</strong><p style="font-size:11px;color:#697386;line-height:1.6">${esc(b.notes||'No notes provided.')}</p></div>
+  <div class="help">Inspect the complete creative, content and payment evidence yourself. Approval only approves the booking. You must still open the requested slot and manually upload the approved creative.</div>
+  <div class="modal-actions">
+   ${b.status==='Pending Review'?`<button class="btn danger" onclick="decideBooking('${b.id}','Rejected')">Reject</button><button class="btn primary" onclick="decideBooking('${b.id}','Approved')">Approve booking</button>`:''}
+   ${b.status==='Approved'?`<button class="btn success" onclick="manageSlot('${b.week}',${b.slot},'${b.id}')">Upload into Slot ${b.slot}</button>`:''}
+   <button class="btn light" onclick="closeModal('reviewModal')">Close</button>
+  </div>`;
+ document.getElementById('reviewModal').classList.add('show');
+}
+function detail(label,value){return `<div class="detail"><div class="detail-label">${esc(label)}</div><div class="detail-value">${esc(value)}</div></div>`}
+function decideBooking(id,status){
+ const b=getBooking(id);if(!b)return;
+ if(status==='Approved'){
+  if(!confirm('Approve this booking for Slot '+b.slot+'? This will NOT publish the video. You must manually upload it into the slot.'))return;
+  b.status='Approved';
+ }else{
+  const reason=prompt('Enter the reason for rejecting this booking:');
+  if(!reason||!reason.trim())return;
+  b.status='Rejected';b.rejectionReason=reason.trim();
+ }
+ b.updatedAt=new Date().toISOString();save();render();closeModal('reviewModal');
+}
+
+async function manageSlot(week,number,bookingId){
+ activeSlot={week,number};
+ const existing=getSlot(week,number);
+ const approvedBookings=bookings.filter(b=>b.week===week&&Number(b.slot)===number&&b.status==='Approved');
+ const selected=bookingId?getBooking(bookingId):null;
+ const chosen=selected||approvedBookings[0]||null;
+ slotVideo=null;
+ document.getElementById('slotModalTitle').textContent='Manage Slot '+number;
+ const currentVideo=await slotVideoUrl(existing);
+ document.getElementById('slotModalBody').innerHTML=`
+  <div class="detail-grid">
+   ${detail('Slot number','Slot '+number)}${detail('Week beginning',date(week))}
+   ${detail('Current placement',existing?existing.title:'Empty')}
+   ${detail('Slot status',existing?existing.status:'Available')}
+  </div>
+  ${currentVideo?videoMarkup(currentVideo):'<div class="video-preview"><div class="video-placeholder">No video is currently placed in this slot.</div></div>'}
+  <div class="section-title" style="font-size:12px;font-weight:800;margin-top:20px">Approved bookings for this slot</div>
+  <div class="form-group"><label>Select an approved advertiser booking</label>
+   <select class="field" id="slotBookingSelect" style="width:100%">
+    <option value="">Choose approved booking</option>
+    ${approvedBookings.map(b=>`<option value="${esc(b.id)}" ${chosen&&chosen.id===b.id?'selected':''}>${esc(b.advertiser)} — ${esc(b.title)} (${esc(b.id)})</option>`).join('')}
+   </select>
+  </div>
+  <div class="help">Only approved bookings for this exact slot and week are listed. Selecting one does not publish it.</div>
+  <div class="section-title" style="font-size:12px;font-weight:800;margin-top:20px">Your manual billboard upload</div>
+  <div class="upload-box">
+   <div class="upload-title">Choose the video to place in Slot ${number}</div>
+   <input type="file" id="slotVideoFile" accept="video/*">
+   <div class="upload-note" id="slotVideoName">Choose a video file from your device.</div>
+  </div>
+  <div class="form-group"><label>Or enter a direct video URL</label><input class="field" id="slotVideoUrl" type="url" placeholder="https://example.com/video.mp4" style="width:100%"></div>
+  <div id="slotNewPreview"></div>
+  <div class="help">This is your manual placement step. The video selected here is assigned to Slot ${number} for the selected week. The prototype does not publish it to the public billboard website.</div>
+  <div class="modal-actions">
+   ${existing?`<button class="btn danger" onclick="clearSlot()">Clear this slot</button>`:''}
+   <button class="btn light" onclick="closeModal('slotModal')">Cancel</button>
+   <button class="btn primary" onclick="uploadToSlot()">Upload to Slot ${number}</button>
+  </div>`;
+ document.getElementById('slotVideoFile').addEventListener('change',function(){
+  slotVideo=this.files&&this.files[0]?this.files[0]:null;
+  document.getElementById('slotVideoName').textContent=slotVideo?slotVideo.name+' · '+(slotVideo.size/1024/1024).toFixed(1)+' MB':'Choose a video file from your device.';
+  if(slotVideo){
+   const url=URL.createObjectURL(slotVideo);
+   document.getElementById('slotNewPreview').innerHTML=videoMarkup(url);
+  }
+ });
+ document.getElementById('slotModal').classList.add('show');
+}
+async function uploadToSlot(){
+ if(!activeSlot)return;
+ const bookingId=document.getElementById('slotBookingSelect').value;
+ const booking=bookingId?getBooking(bookingId):null;
+ const file=slotVideo;
+ const url=document.getElementById('slotVideoUrl').value.trim();
+ if(!booking){alert('Select an approved booking for this slot before uploading.');return}
+ if(!file&&!url){alert('Choose the video file you want to place in this slot, or enter its video URL.');return}
+ if(booking.status!=='Approved'||booking.week!==activeSlot.week||Number(booking.slot)!==activeSlot.number){
+  alert('The selected booking is not approved for this slot and week.');return;
+ }
+ const existing=getSlot(activeSlot.week,activeSlot.number);
+ const mediaId=file?uid('SLOT'):null;
+ if(file){
+  try{await storeVideo(file,mediaId)}
+  catch(e){alert('The video could not be stored in this browser. Try a smaller file.');return}
+ }
+ if(existing&&existing.mediaId)await removeVideo(existing.mediaId);
+ const record={
+  id:existing?existing.id:uid('PLACEMENT'),
+  week:activeSlot.week,slot:activeSlot.number,
+  bookingId:booking.id,advertiser:booking.advertiser,
+  title:booking.title,mediaId,
+  mediaName:file?file.name:'',
+  videoUrl:file?'':url,
+  status:'Occupied',
+  uploadedAt:new Date().toISOString(),
+  updatedAt:new Date().toISOString()
+ };
+ const index=slots.findIndex(s=>s.week===activeSlot.week&&Number(s.slot)===activeSlot.number);
+ if(index>=0)slots[index]=record;else slots.push(record);
+ booking.status='Uploaded to Slot';booking.updatedAt=new Date().toISOString();
+ save();render();closeModal('slotModal');slotVideo=null;
+ alert('Video placement recorded for Slot '+activeSlot.number+'. It has not yet been published to the live billboard website.');
+}
+async function clearSlot(){
+ if(!activeSlot)return;
+ const existing=getSlot(activeSlot.week,activeSlot.number);
+ if(!existing)return;
+ if(!confirm('Clear Slot '+activeSlot.number+' for the week beginning '+date(activeSlot.week)+'? This removes the current local placement record.'))return;
+ if(existing.mediaId)await removeVideo(existing.mediaId);
+ slots=slots.filter(s=>!(s.week===activeSlot.week&&Number(s.slot)===activeSlot.number));
+ const booking=getBooking(existing.bookingId);
+ if(booking&&booking.status==='Uploaded to Slot')booking.status='Approved';
+ save();render();closeModal('slotModal');
+}
+function exportData(){
+ const data={exportedAt:new Date().toISOString(),bookings:bookings.map(b=>({...b,videoMediaId:b.videoMediaId?'Stored in this browser':'None'})),slots:slots.map(s=>({...s,mediaId:s.mediaId?'Stored in this browser':'None'}))};
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='earngig-billboard-management.json';a.click();URL.revokeObjectURL(url);
+}
+document.getElementById('weekPicker').value=weekStart(todayISO());
+render();
+</script>
+</body>
+</html>
