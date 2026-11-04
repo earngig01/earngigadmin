@@ -1,0 +1,678 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnGig Delivery Administration</title>
+<style>
+:root{
+  --purple:#6827c9;--deep:#48149a;--lavender:#f3edff;
+  --gold:#e7b83f;--ink:#211b2b;--muted:#756d80;
+  --border:#e8e0f1;--green:#16834a;--red:#c53b3b;
+  --orange:#a45e00;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font-family:Arial,sans-serif}
+header{padding:15px 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:#fff;position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:center;gap:7px;color:var(--purple);font-size:23px;font-weight:900;text-decoration:none}
+.brand svg{width:25px;height:22px}
+header a:not(.brand){color:var(--purple);text-decoration:none;font-size:13px;font-weight:bold}
+.layout{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 60px)}
+aside{border-right:1px solid var(--border);padding:22px 14px}
+.admin-label{background:var(--lavender);padding:15px;border-radius:12px;margin-bottom:20px}
+.admin-label strong{display:block;color:var(--purple)}
+.admin-label small{color:var(--muted)}
+nav button{width:100%;text-align:left;background:transparent;color:var(--ink);padding:12px;border-radius:9px;margin:4px 0;font-size:13px}
+nav button.active,nav button:hover{background:var(--lavender);color:var(--purple)}
+main{padding:28px 4%;max-width:1500px;width:100%;margin:auto}
+h1{font-size:27px;margin:0 0 7px}
+h2{font-size:18px;margin:0 0 14px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.6}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
+button{border:0;border-radius:9px;background:var(--purple);color:#fff;padding:10px 14px;font-weight:800;cursor:pointer}
+button:hover{background:var(--deep)}
+button.secondary{background:#eee7f8;color:var(--purple)}
+button.success{background:var(--green)}
+button.danger{background:#fff0f0;color:var(--red)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:20px 0}
+.stat,.panel{border:1px solid var(--border);border-radius:14px;padding:17px}
+.stat small{font-size:12px;color:var(--muted)}
+.stat strong{display:block;font-size:24px;margin-top:8px}
+.panel{margin:16px 0}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:16px 0}
+.tabs button{background:#f2eef7;color:var(--muted);font-size:12px}
+.tabs button.active{background:var(--purple);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:12px 9px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+th{font-size:11px;color:var(--muted)}
+.tag{display:inline-block;padding:5px 9px;border-radius:20px;background:var(--lavender);color:var(--purple);font-size:11px;font-weight:800}
+.tag.green{background:#e7f8ed;color:var(--green)}
+.tag.red{background:#fff0f0;color:var(--red)}
+.tag.orange{background:#fff5e5;color:var(--orange)}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.actions button{font-size:11px;padding:8px 10px}
+input,select,textarea{width:100%;padding:10px;border:1px solid #dcd3e7;border-radius:8px;font:inherit;margin:5px 0 12px}
+label{font-size:12px;font-weight:700}
+.filters{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin:14px 0}
+.empty{padding:28px;text-align:center;color:var(--muted);background:#faf8fc;border-radius:12px;font-size:13px}
+.note{background:var(--lavender);padding:13px;border-radius:10px;font-size:12px;line-height:1.7;margin:13px 0}
+.warning{background:#fff8e9;border:1px solid #f0d69a;padding:13px;border-radius:10px;font-size:12px;line-height:1.6;margin:13px 0}
+.hidden{display:none!important}
+.modal{display:none;position:fixed;inset:0;background:#1b102d88;z-index:20;align-items:center;justify-content:center;padding:15px}
+.modal-box{background:white;border-radius:15px;padding:22px;width:100%;max-width:600px;max-height:90vh;overflow:auto}
+.modal-box h2{margin-top:0}
+.modal-actions{display:flex;gap:8px;margin-top:14px}
+.modal-actions button{flex:1}
+.detail-row{padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;line-height:1.6}
+footer{text-align:center;padding:25px;color:var(--muted);font-size:11px}
+@media(max-width:850px){
+ .layout{grid-template-columns:1fr}
+ aside{border:0;border-bottom:1px solid var(--border);padding:10px}
+ .admin-label{display:none}
+ nav{display:flex;overflow-x:auto;gap:5px}
+ nav button{width:auto;white-space:nowrap;flex-shrink:0}
+ main{padding:20px 14px}
+}
+@media(max-width:650px){
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .filters{grid-template-columns:1fr}
+ .topline{align-items:flex-start;flex-direction:column}
+ .panel{overflow-x:auto}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 40 32" fill="none">
+      <path d="M4 9L12 16L20 4L28 16L36 9L32 27H8L4 9Z" fill="#E7B83F" stroke="#C99520" stroke-width="1.5"/>
+      <path d="M9 30H31" stroke="#C99520" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="4" cy="8" r="2.5" fill="#E7B83F"/>
+      <circle cx="20" cy="3" r="2.5" fill="#E7B83F"/>
+      <circle cx="36" cy="8" r="2.5" fill="#E7B83F"/>
+    </svg>
+    EarnGig
+  </a>
+  <a href="admin-dashboard.html">Main Admin Dashboard</a>
+</header>
+
+<div class="layout">
+<aside>
+  <div class="admin-label">
+    <strong>Delivery Administration</strong>
+    <small>Owner / authorised admin area</small>
+  </div>
+  <nav>
+    <button class="active" data-page="overview">▦ Overview</button>
+    <button data-page="applications">♙ Applications</button>
+    <button data-page="orders">▣ Vendor Orders</button>
+    <button data-page="shipments">🚚 Bulk Shipments</button>
+    <button data-page="handover">⇄ Handover History</button>
+    <button data-page="rules">⚙ Delivery Rules</button>
+  </nav>
+</aside>
+
+<main>
+  <div class="warning">
+    <strong>Admin access warning:</strong> This page is a frontend prototype, not a secure admin system. In production, restrict access using server-side admin authentication and role permissions. Do not rely on a hidden link or browser JavaScript for admin security.
+  </div>
+
+  <section id="page-overview">
+    <div class="topline">
+      <div>
+        <h1>Delivery Administration</h1>
+        <p class="subtitle">Monitor applications, parcel movement, collection points and delivery operations.</p>
+      </div>
+      <button onclick="refreshData()">Refresh Data</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><small>Total Applications</small><strong id="totalApplications">0</strong></div>
+      <div class="stat"><small>Awaiting Review</small><strong id="pendingApplications">0</strong></div>
+      <div class="stat"><small>Approved Partners</small><strong id="approvedApplications">0</strong></div>
+      <div class="stat"><small>Active Vendor Orders</small><strong id="activeOrders">0</strong></div>
+    </div>
+
+    <div class="panel">
+      <h2>Verification queue</h2>
+      <div id="verificationSummary" class="empty">No applications yet.</div>
+    </div>
+
+    <div class="panel">
+      <h2>Delivery operations</h2>
+      <div id="operationsSummary" class="empty">No delivery activity yet.</div>
+    </div>
+  </section>
+
+  <section id="page-applications" class="hidden">
+    <h1>Partner Applications</h1>
+    <p class="subtitle">Review rider and storekeeper applications and manage verification decisions.</p>
+
+    <div class="tabs">
+      <button class="active" onclick="setApplicationFilter('all',this)">All</button>
+      <button onclick="setApplicationFilter('pending_review',this)">Pending Review</button>
+      <button onclick="setApplicationFilter('interview_required',this)">Interview Required</button>
+      <button onclick="setApplicationFilter('additional_info_requested',this)">More Information</button>
+      <button onclick="setApplicationFilter('approved',this)">Approved</button>
+      <button onclick="setApplicationFilter('rejected',this)">Rejected</button>
+    </div>
+
+    <div class="filters">
+      <input id="applicationSearch" placeholder="Search name, username, phone..." oninput="renderApplications()">
+      <select id="applicationTypeFilter" onchange="renderApplications()">
+        <option value="all">All partner types</option>
+        <option value="rider">Riders</option>
+        <option value="storekeeper">Storekeepers</option>
+      </select>
+      <select id="riderTypeFilter" onchange="renderApplications()">
+        <option value="all">All rider categories</option>
+        <option value="normal">Normal riders</option>
+        <option value="collection">Collection riders</option>
+      </select>
+    </div>
+
+    <div class="panel" id="applicationsList"></div>
+  </section>
+
+  <section id="page-orders" class="hidden">
+    <h1>Vendor Orders</h1>
+    <p class="subtitle">Review order assignments and delivery progress.</p>
+    <div class="filters">
+      <input id="orderSearch" placeholder="Search order, vendor, rider..." oninput="renderOrders()">
+      <select id="orderStatusFilter" onchange="renderOrders()">
+        <option value="all">All statuses</option>
+        <option value="available">Available</option>
+        <option value="accepted">Accepted</option>
+        <option value="pickup_proof_submitted">Pickup proof submitted</option>
+        <option value="picked_up">Picked up</option>
+        <option value="in_transit_to_storekeeper">In transit to storekeeper</option>
+        <option value="delivered">Delivered</option>
+      </select>
+      <select id="orderDestinationFilter" onchange="renderOrders()">
+        <option value="all">All destinations</option>
+      </select>
+    </div>
+    <div class="panel" id="ordersList"></div>
+  </section>
+
+  <section id="page-shipments" class="hidden">
+    <h1>Bulk Shipments</h1>
+    <p class="subtitle">Monitor collection rider dispatches and storekeeper receipt confirmations.</p>
+    <div class="panel" id="shipmentsList"></div>
+  </section>
+
+  <section id="page-handover" class="hidden">
+    <h1>Permanent Handover History</h1>
+    <p class="subtitle">Review parcel and shipment status transitions recorded in this browser demo.</p>
+    <div class="panel" id="handoverList"></div>
+  </section>
+
+  <section id="page-rules" class="hidden">
+    <h1>Delivery Rules</h1>
+    <p class="subtitle">Reference for the operating rules agreed for the EarnGig delivery network.</p>
+    <div class="panel">
+      <h2>Partner verification</h2>
+      <div class="detail-row">All riders and storekeepers must submit an application and complete verification.</div>
+      <div class="detail-row">Verification may include phone calls, interviews and requests for additional documents.</div>
+      <div class="detail-row">No partner may access delivery operations before admin approval.</div>
+    </div>
+    <div class="panel">
+      <h2>Vendor pickup and delivery</h2>
+      <div class="detail-row">A rider must collect an accepted vendor order before the end of the same calendar day.</div>
+      <div class="detail-row">The maximum delivery period is five calendar days from the original order release date.</div>
+      <div class="detail-row">A handover does not restart the five-day delivery deadline.</div>
+      <div class="detail-row">Delivery completion requires customer confirmation-code verification.</div>
+    </div>
+    <div class="panel">
+      <h2>Collection rider and storekeeper</h2>
+      <div class="detail-row">Collection riders group parcels by destination state and town.</div>
+      <div class="detail-row">Each bulk shipment is assigned to a registered, approved storekeeper.</div>
+      <div class="detail-row">The storekeeper confirms actual physical receipt and parcel count.</div>
+      <div class="detail-row">Confirmed bulk shipments split into individual customer parcels.</div>
+      <div class="detail-row">Collection rider earnings are payable after verified storekeeper receipt.</div>
+      <div class="detail-row">Storekeeper earnings are payable per successfully verified customer pickup.</div>
+    </div>
+    <div class="panel">
+      <h2>Wallet and withdrawal rules</h2>
+      <div class="detail-row">Normal rider, collection rider and storekeeper wallets are separate Naira wallets.</div>
+      <div class="detail-row">All three delivery wallet withdrawals have a 2% service charge.</div>
+      <div class="detail-row">Storekeepers have no minimum withdrawal amount.</div>
+      <div class="detail-row">Earnings must only be credited after the relevant handover or customer collection is securely verified.</div>
+    </div>
+  </section>
+</main>
+</div>
+
+<div class="modal" id="applicationModal">
+  <div class="modal-box">
+    <h2>Review Partner Application</h2>
+    <div id="applicationDetails"></div>
+
+    <label>Verification status</label>
+    <select id="applicationStatus">
+      <option value="pending_review">Pending Review</option>
+      <option value="interview_required">Interview Required</option>
+      <option value="additional_info_requested">Additional Information Required</option>
+      <option value="approved">Approved</option>
+      <option value="rejected">Rejected</option>
+    </select>
+
+    <label>Admin review notes</label>
+    <textarea id="adminNotes" rows="3" placeholder="Record verification notes or requested information"></textarea>
+
+    <div class="modal-actions">
+      <button class="secondary" onclick="closeModal()">Cancel</button>
+      <button onclick="saveApplicationDecision()">Save Decision</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="orderModal">
+  <div class="modal-box">
+    <h2>Vendor Order Details</h2>
+    <div id="orderDetails"></div>
+    <div class="modal-actions">
+      <button class="secondary" onclick="closeOrderModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<footer>© <span id="year"></span> EarnGig Administration</footer>
+
+<script>
+const APP_KEY="earngig_delivery_applications";
+const ORDER_KEY="earngig_delivery_orders";
+const SHIPMENT_KEY="earngig_delivery_shipments";
+
+let applications=[];
+let orders=[];
+let shipments=[];
+let selectedApplication=null;
+let applicationFilter="all";
+
+document.getElementById("year").textContent=new Date().getFullYear();
+
+function readJSON(key,fallback){
+  try{return JSON.parse(localStorage.getItem(key))??fallback}
+  catch{return fallback}
+}
+function saveApplications(){
+  localStorage.setItem(APP_KEY,JSON.stringify(applications));
+}
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+function dateText(value){
+  if(!value)return "Not recorded";
+  return new Date(value).toLocaleString("en-NG",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
+}
+function money(value){
+  return "₦"+Number(value||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function statusLabel(value){
+  return String(value||"unknown").replaceAll("_"," ");
+}
+function statusClass(value){
+  if(value==="approved"||value==="delivered"||value==="receipt_confirmed")return "green";
+  if(value==="rejected"||value==="cancelled")return "red";
+  return "orange";
+}
+
+function refreshData(){
+  applications=readJSON(APP_KEY,[]);
+  orders=readJSON(ORDER_KEY,[]);
+  shipments=readJSON(SHIPMENT_KEY,[]);
+  renderAll();
+}
+
+function showPage(page){
+  document.querySelectorAll("main section[id^='page-']").forEach(s=>s.classList.add("hidden"));
+  document.getElementById("page-"+page).classList.remove("hidden");
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
+  renderAll();
+}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+
+function renderAll(){
+  renderOverview();
+  renderApplications();
+  renderOrders();
+  renderShipments();
+  renderHandover();
+}
+
+function renderOverview(){
+  const pending=applications.filter(a=>
+    ["pending_review","interview_required","additional_info_requested"].includes(a.status)
+  );
+  const approved=applications.filter(a=>a.status==="approved");
+  const active=orders.filter(o=>!["delivered","cancelled"].includes(o.status));
+
+  document.getElementById("totalApplications").textContent=applications.length;
+  document.getElementById("pendingApplications").textContent=pending.length;
+  document.getElementById("approvedApplications").textContent=approved.length;
+  document.getElementById("activeOrders").textContent=active.length;
+
+  const summary=document.getElementById("verificationSummary");
+  summary.innerHTML=pending.length?
+    pending.slice(0,8).map(a=>`
+      <p><strong>${escapeHTML(a.fullName)}</strong> — ${escapeHTML(a.applicationType)} / ${escapeHTML(a.riderType||"")} 
+      <span class="tag orange">${escapeHTML(statusLabel(a.status))}</span></p>
+    `).join("")+
+    '<button onclick="showPage(\'applications\')">Review Applications</button>':
+    '<div class="empty">No applications are awaiting action.</div>';
+
+  const operations=document.getElementById("operationsSummary");
+  const awaiting=shipments.filter(s=>s.status==="awaiting_storekeeper");
+  operations.innerHTML=`
+    <p><strong>${orders.length}</strong> total vendor orders</p>
+    <p><strong>${active.length}</strong> active vendor orders</p>
+    <p><strong>${awaiting.length}</strong> bulk shipments awaiting storekeeper confirmation</p>
+    <p><strong>${shipments.filter(s=>s.status==="receipt_confirmed").length}</strong> confirmed bulk shipments</p>
+  `;
+}
+
+function setApplicationFilter(value,button){
+  applicationFilter=value;
+  document.querySelectorAll("#page-applications .tabs button").forEach(b=>b.classList.remove("active"));
+  button.classList.add("active");
+  renderApplications();
+}
+
+function renderApplications(){
+  const container=document.getElementById("applicationsList");
+  if(!container)return;
+
+  const search=(document.getElementById("applicationSearch")?.value||"").toLowerCase();
+  const type=document.getElementById("applicationTypeFilter")?.value||"all";
+  const riderType=document.getElementById("riderTypeFilter")?.value||"all";
+
+  const filtered=applications.filter(a=>{
+    const matchesStatus=applicationFilter==="all"||a.status===applicationFilter;
+    const matchesType=type==="all"||a.applicationType===type;
+    const matchesRider=riderType==="all"||a.riderType===riderType;
+    const text=[a.fullName,a.username,a.phone,a.email,a.state,a.town,a.storeName].join(" ").toLowerCase();
+    return matchesStatus&&matchesType&&matchesRider&&text.includes(search);
+  });
+
+  if(!filtered.length){
+    container.innerHTML='<div class="empty">No matching applications found.</div>';
+    return;
+  }
+
+  container.innerHTML=`
+    <table>
+      <thead>
+        <tr><th>Applicant</th><th>Type</th><th>Location</th><th>Submitted</th><th>Status</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        ${filtered.map(a=>{
+          const index=applications.indexOf(a);
+          return `
+            <tr>
+              <td><strong>${escapeHTML(a.fullName)}</strong><br>@${escapeHTML(a.username)}<br>${escapeHTML(a.phone)}</td>
+              <td>${escapeHTML(a.applicationType)}<br>${escapeHTML(a.riderType||a.storeName||"")}</td>
+              <td>${escapeHTML(a.town)}, ${escapeHTML(a.state)}</td>
+              <td>${dateText(a.submittedAt)}</td>
+              <td><span class="tag ${statusClass(a.status)}">${escapeHTML(statusLabel(a.status))}</span></td>
+              <td><button onclick="openApplication(${index})">Review</button></td>
+            </tr>`;
+        }).join("")}
+      </tbody>
+    </table>
+  `;
+}
+
+function openApplication(index){
+  selectedApplication=index;
+  const a=applications[index];
+  if(!a)return;
+
+  const details=[
+    ["Full name",a.fullName],
+    ["Username",a.username],
+    ["Phone",a.phone],
+    ["Email",a.email],
+    ["Address",a.address],
+    ["State and town",(a.state||"")+" / "+(a.town||"")],
+    ["Application type",a.applicationType],
+    ["Rider category",a.riderType],
+    ["ID type",a.idType],
+    ["ID number",a.idNumber],
+    ["Vehicle type",a.vehicleType],
+    ["Vehicle registration",a.vehicleNumber],
+    ["Licence number",a.licenceNumber],
+    ["Operating area",a.serviceArea],
+    ["Collection point",a.storeName],
+    ["Collection point address",a.storeAddress],
+    ["Parcel capacity",a.storeCapacity],
+    ["Opening hours",a.openingHours],
+    ["Bank name",a.bankName],
+    ["Account name",a.accountName],
+    ["Account number",a.accountNumber],
+    ["Submitted",dateText(a.submittedAt)],
+    ["Current status",statusLabel(a.status)]
+  ];
+
+  document.getElementById("applicationDetails").innerHTML=details
+    .filter(([key,value])=>value)
+    .map(([key,value])=>`<div class="detail-row"><strong>${escapeHTML(key)}:</strong> ${escapeHTML(value)}</div>`)
+    .join("");
+
+  const files=a.uploadedFileNames||{};
+  document.getElementById("applicationDetails").innerHTML+=`
+    <div class="detail-row"><strong>Uploaded file names:</strong><br>
+    ${Object.entries(files).map(([key,value])=>
+      escapeHTML(key)+": "+escapeHTML((value||[]).join(", ")||"None recorded")
+    ).join("<br>")}
+    </div>
+    <div class="warning">This prototype only records uploaded filenames. It does not store or display the actual documents or photographs.</div>
+  `;
+
+  document.getElementById("applicationStatus").value=a.status||"pending_review";
+  document.getElementById("adminNotes").value=a.adminNotes||"";
+  document.getElementById("applicationModal").style.display="flex";
+}
+
+function saveApplicationDecision(){
+  if(selectedApplication===null)return;
+  const a=applications[selectedApplication];
+  if(!a)return;
+
+  const newStatus=document.getElementById("applicationStatus").value;
+  a.status=newStatus;
+  a.verificationStage=newStatus;
+  a.adminNotes=document.getElementById("adminNotes").value.trim();
+  a.reviewedAt=new Date().toISOString();
+
+  a.statusHistory=a.statusHistory||[];
+  a.statusHistory.push({
+    status:newStatus,
+    notes:a.adminNotes,
+    date:a.reviewedAt
+  });
+
+  saveApplications();
+  closeModal();
+  refreshData();
+
+  alert("Application status saved in this browser demo. A live backend must send the applicant a secure notification and enforce the new access permissions.");
+}
+
+function renderOrders(){
+  const container=document.getElementById("ordersList");
+  if(!container)return;
+
+  const search=(document.getElementById("orderSearch")?.value||"").toLowerCase();
+  const status=document.getElementById("orderStatusFilter")?.value||"all";
+  const destination=document.getElementById("orderDestinationFilter")?.value||"all";
+
+  const states=[...new Set(orders.map(o=>o.destinationState).filter(Boolean))];
+  const select=document.getElementById("orderDestinationFilter");
+  const previous=select.value;
+  select.innerHTML='<option value="all">All destinations</option>'+
+    states.map(s=>`<option value="${escapeHTML(s)}">${escapeHTML(s)}</option>`).join("");
+  if(states.includes(previous))select.value=previous;
+
+  const filtered=orders.filter(o=>{
+    const text=[o.reference,o.id,o.vendorName,o.riderName,o.riderUsername,o.customerName,o.destinationState,o.destinationTown].join(" ").toLowerCase();
+    return text.includes(search)&&
+      (status==="all"||o.status===status)&&
+      (destination==="all"||o.destinationState===destination);
+  });
+
+  if(!filtered.length){
+    container.innerHTML='<div class="empty">No matching vendor orders found.</div>';
+    return;
+  }
+
+  container.innerHTML=`
+    <table>
+      <thead><tr><th>Order</th><th>Vendor</th><th>Destination</th><th>Rider</th><th>Status</th><th>Deadlines</th><th>Action</th></tr></thead>
+      <tbody>
+        ${filtered.map(o=>{
+          const index=orders.indexOf(o);
+          return `<tr>
+            <td>${escapeHTML(o.reference||o.id)}</td>
+            <td>${escapeHTML(o.vendorName||"Vendor")}</td>
+            <td>${escapeHTML(o.destinationTown||"")}, ${escapeHTML(o.destinationState||"")}</td>
+            <td>${escapeHTML(o.riderName||o.riderUsername||"Unassigned")}</td>
+            <td><span class="tag ${statusClass(o.status)}">${escapeHTML(statusLabel(o.status))}</span></td>
+            <td>Pickup: ${dateText(o.pickupDeadline)}<br>Delivery: ${dateText(o.deliveryDeadline)}</td>
+            <td><button onclick="openOrder(${index})">Details</button></td>
+          </tr>`;
+        }).join("")}
+      </tbody>
+    </table>`;
+}
+
+function openOrder(index){
+  const o=orders[index];
+  if(!o)return;
+  const details=[
+    ["Order reference",o.reference||o.id],
+    ["Vendor",o.vendorName],
+    ["Vendor pickup address",o.pickupAddress],
+    ["Customer",o.customerName],
+    ["Customer phone",o.customerPhone],
+    ["Destination",`${o.destinationTown||""}, ${o.destinationState||""}`],
+    ["Assigned rider",o.riderName||o.riderUsername],
+    ["Status",statusLabel(o.status)],
+    ["Original release",dateText(o.originalReleaseAt||o.createdAt)],
+    ["Accepted",dateText(o.acceptedAt)],
+    ["Pickup deadline",dateText(o.pickupDeadline)],
+    ["Delivery deadline",dateText(o.deliveryDeadline)],
+    ["Pickup proof filename",o.pickupProofFileName],
+    ["Delivery proof filename",o.deliveryProofFileName]
+  ];
+
+  document.getElementById("orderDetails").innerHTML=details
+    .filter(([k,v])=>v)
+    .map(([k,v])=>`<div class="detail-row"><strong>${escapeHTML(k)}:</strong> ${escapeHTML(v)}</div>`)
+    .join("");
+
+  const history=o.handoverHistory||[];
+  document.getElementById("orderDetails").innerHTML+=`
+    <h3>Order handover history</h3>
+    ${history.length?history.map(h=>`
+      <div class="detail-row">${escapeHTML(statusLabel(h.stage))}<br>
+      ${escapeHTML(h.actor)} — ${dateText(h.time)}</div>
+    `).join(""):"<p>No handover records.</p>"}
+  `;
+
+  document.getElementById("orderModal").style.display="flex";
+}
+
+function renderShipments(){
+  const container=document.getElementById("shipmentsList");
+  if(!shipments.length){
+    container.innerHTML='<div class="empty">No bulk shipments recorded.</div>';
+    return;
+  }
+  container.innerHTML=`
+    <table>
+      <thead><tr><th>Shipment</th><th>Collection Rider</th><th>Storekeeper</th><th>Destination</th><th>Parcels</th><th>Transport</th><th>Status</th></tr></thead>
+      <tbody>
+        ${shipments.map(s=>`
+          <tr>
+            <td>${escapeHTML(s.reference||s.id)}<br>${dateText(s.dispatchedAt)}</td>
+            <td>${escapeHTML(s.collectionRiderName||s.collectionRiderUsername)}</td>
+            <td>${escapeHTML(s.storeName||s.storekeeperName||s.storekeeperUsername)}</td>
+            <td>${escapeHTML(s.destinationTown)}, ${escapeHTML(s.destinationState)}</td>
+            <td>${Number(s.parcelCount||0)}<br>Received: ${s.actualParcelCount===undefined?"Pending":Number(s.actualParcelCount)}</td>
+            <td>${escapeHTML(s.transportDriver||"")}<br>${money(s.transportFee)}</td>
+            <td><span class="tag ${statusClass(s.status)}">${escapeHTML(statusLabel(s.status))}</span></td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>`;
+}
+
+function renderHandover(){
+  const container=document.getElementById("handoverList");
+  const records=[];
+
+  orders.forEach(o=>(o.handoverHistory||[]).forEach(h=>records.push({
+    reference:o.reference||o.id,
+    ...h
+  })));
+
+  shipments.forEach(s=>(s.handoverHistory||[]).forEach(h=>records.push({
+    reference:s.reference||s.id,
+    ...h
+  })));
+
+  records.sort((a,b)=>new Date(b.time||0)-new Date(a.time||0));
+
+  if(!records.length){
+    container.innerHTML='<div class="empty">No handover history is available.</div>';
+    return;
+  }
+
+  container.innerHTML=`
+    <table>
+      <thead><tr><th>Order / Shipment</th><th>Stage</th><th>Actor</th><th>Date</th></tr></thead>
+      <tbody>${records.map(r=>`
+        <tr>
+          <td>${escapeHTML(r.reference)}</td>
+          <td>${escapeHTML(statusLabel(r.stage))}</td>
+          <td>${escapeHTML(r.actor||"System")}</td>
+          <td>${dateText(r.time)}</td>
+        </tr>
+      `).join("")}</tbody>
+    </table>`;
+}
+
+function closeModal(){
+  document.getElementById("applicationModal").style.display="none";
+}
+function closeOrderModal(){
+  document.getElementById("orderModal").style.display="none";
+}
+
+/*
+  PRODUCTION ADMIN REQUIREMENTS:
+
+  1. Secure admin authentication and server-side permission checks.
+  2. Private document storage with restricted access.
+  3. Audit trail for every application decision.
+  4. Real SMS/email/push notifications to applicants.
+  5. Shared database for all vendor, rider and storekeeper dashboards.
+  6. Atomic order assignment to prevent two riders accepting the same order.
+  7. Automatic pickup and five-day deadline monitoring.
+  8. Server-side verification of vendor, rider and storekeeper handovers.
+  9. Server-side customer confirmation-code verification.
+  10. Immutable financial ledger and payment reconciliation.
+
+  Do not use browser localStorage as the production admin database.
+*/
+
+refreshData();
+</script>
+</body>
+</html>
