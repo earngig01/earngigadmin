@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports & Analysis | EarnGig Admin</title>
+<style>
+:root{
+ --navy:#111a35;--purple:#7154d9;--purple2:#8b73ec;--lav:#f1edff;
+ --bg:#f6f7fb;--white:#fff;--text:#202943;--muted:#8490a6;
+ --line:#e8eaf2;--green:#15966b;--red:#d94c61;--orange:#d78a25;
+ --gold:#e8bd62;--shadow:0 8px 28px rgba(25,35,65,.06)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:250px;background:var(--navy);color:#dce2f3;padding:23px 15px;position:fixed;inset:0 auto 0 0;overflow:auto;z-index:5}
+.brand{display:flex;align-items:center;gap:10px;padding:3px 10px 27px;font-size:21px;font-weight:800;color:white}
+.brand svg{width:27px;height:27px;flex:none}
+.nav-label{font-size:10px;letter-spacing:1.5px;color:#8995b3;padding:17px 12px 9px;font-weight:700}
+.nav a{display:flex;align-items:center;gap:12px;text-decoration:none;color:#c0c9df;padding:11px 12px;border-radius:9px;font-size:13px;margin:3px 0}
+.nav a:hover,.nav a.active{background:#29365b;color:white}
+.nav a.active{box-shadow:inset 3px 0 var(--purple2)}
+.nav .ico{width:19px;text-align:center;font-size:16px}
+.sidebar-note{margin:25px 7px 0;padding:13px;border:1px solid #344263;border-radius:10px;color:#aab5ce;font-size:11px;line-height:1.6}
+.main{margin-left:250px;width:calc(100% - 250px);min-width:0}
+.topbar{height:68px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:4}
+.top-left{display:flex;align-items:center;gap:12px}
+.topbar small{color:var(--muted)}
+.admin-chip{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700}
+.avatar{width:33px;height:33px;border-radius:50%;background:var(--lav);color:var(--purple);display:grid;place-items:center}
+.content{padding:27px 30px 50px;max-width:1600px;margin:auto}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}
+h1{font-size:24px;margin:0 0 7px;letter-spacing:-.5px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.5}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:700;font-size:12px}
+.btn-primary{background:var(--purple);color:white}
+.btn-primary:hover{background:#6043c7}
+.btn-light{background:#f0edff;color:var(--purple)}
+.btn-outline{background:white;border:1px solid var(--line);color:var(--text)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.panel{background:white;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);margin-bottom:19px}
+.panel-head{padding:17px 19px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.panel-head h2{font-size:14px;margin:0}
+.panel-body{padding:18px}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:end}
+.toolbar input,.toolbar select{
+ border:1px solid var(--line);border-radius:8px;padding:10px 11px;background:white;color:var(--text);font-size:12px;outline:none
+}
+.toolbar label{font-size:10px;font-weight:700;color:var(--muted);display:grid;gap:6px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.stat{background:white;border:1px solid var(--line);border-radius:12px;padding:17px;box-shadow:var(--shadow)}
+.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px}
+.stat-icon{width:31px;height:31px;border-radius:9px;background:var(--lav);color:var(--purple);display:grid;place-items:center}
+.stat strong{display:block;font-size:25px;margin-top:13px;letter-spacing:-.5px}
+.stat small{font-size:10px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.chart{width:100%;height:240px;display:block}
+.chart-legend{display:flex;gap:15px;flex-wrap:wrap;font-size:10px;color:var(--muted);margin-top:10px}
+.legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:650px}
+th{text-align:left;background:#fafbfe;color:#8a94a9;font-size:10px;letter-spacing:.5px;text-transform:uppercase;padding:12px 14px;white-space:nowrap}
+td{padding:13px 14px;border-top:1px solid #f0f1f6;font-size:12px;vertical-align:middle}
+td strong{font-size:12px}
+.muted{color:var(--muted)}
+.subline{display:block;font-size:10px;color:var(--muted);margin-top:4px}
+.pill{display:inline-block;border-radius:20px;padding:5px 8px;font-size:10px;font-weight:700;background:#f0f1f5;color:#68738a;white-space:nowrap}
+.pill.good{background:#e7f7ef;color:#14845e}
+.pill.warn{background:#fff4df;color:#a96c12}
+.pill.bad{background:#ffedf0;color:#c44156}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{border:0;background:transparent;padding:9px 12px;border-radius:7px;color:#7c879e;font-size:12px;font-weight:700}
+.tab.active{background:var(--lav);color:var(--purple)}
+.notice{padding:12px 14px;background:#f4f1ff;border:1px solid #e8e1ff;border-radius:9px;color:#6551b0;font-size:11px;line-height:1.6;margin-bottom:15px}
+.notice.warn{background:#fff8e9;border-color:#f6e5bd;color:#94651d}
+.empty{text-align:center;padding:25px 15px;color:var(--muted);font-size:12px}
+.empty b{display:block;color:var(--text);margin-bottom:7px;font-size:13px}
+.mobile-menu{display:none}
+.footer-note{font-size:10px;color:var(--muted);line-height:1.6;margin-top:12px}
+.hidden{display:none!important}
+@media(max-width:1100px){.stats{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+@media(max-width:760px){
+ .sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:translateX(0)}
+ .main{margin-left:0;width:100%}.topbar{padding:0 16px}.content{padding:20px 14px 40px}
+ .mobile-menu{display:inline-block;border:0;background:var(--lav);color:var(--purple);border-radius:7px;padding:7px 10px}
+ .page-head{flex-direction:column}.grid3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+   <path d="M5 12L12 18L19.5 6L27 18L35 12L31 30H9L5 12Z" stroke="#E8BD62" stroke-width="2.3" stroke-linejoin="round"/>
+   <path d="M10 34H30" stroke="#E8BD62" stroke-width="2.3" stroke-linecap="round"/>
+   <circle cx="5" cy="11" r="2" fill="#E8BD62"/><circle cx="19.5" cy="5" r="2" fill="#E8BD62"/><circle cx="35" cy="11" r="2" fill="#E8BD62"/>
+  </svg>
+  EarnGig
+ </div>
+ <nav class="nav">
+  <div class="nav-label">MAIN</div>
+  <a href="admin.html"><span class="ico">▦</span>Dashboard</a>
+  <div class="nav-label">USER MANAGEMENT</div>
+  <a href="users.html"><span class="ico">♙</span>Users</a>
+  <a href="membership.html"><span class="ico">◇</span>Membership</a>
+  <a href="wallet.html"><span class="ico">◈</span>Coin Withdrawals</a>
+  <a href="coin-purchases.html"><span class="ico">◉</span>Coin Purchases</a>
+  <a href="referrals.html"><span class="ico">⇄</span>Referrals</a>
+  <div class="nav-label">FINANCE</div>
+  <a href="transactions.html"><span class="ico">▤</span>Transactions</a>
+  <a href="deposits.html"><span class="ico">↓</span>Deposits</a>
+  <a href="withdrawals.html"><span class="ico">↑</span>Wallet Withdrawals</a>
+  <a href="seller-wallet.html"><span class="ico">▣</span>Seller Wallet</a>
+  <a href="payouts.html"><span class="ico">₦</span>Payouts</a>
+  <div class="nav-label">CONTENT & COMMUNITY</div>
+  <a href="writers.html"><span class="ico">✎</span>Writer Management</a>
+  <a href="novels.html"><span class="ico">▥</span>Novel Management</a>
+  <a href="marketplace.html"><span class="ico">▧</span>Marketplace Activity</a>
+  <div class="nav-label">ADVERTISING</div>
+  <a href="advertising.html"><span class="ico">▣</span>Advertisement Bookings</a>
+  <a href="watch-earn.html"><span class="ico">▶</span>Watch & Earn</a>
+  <a href="billboard.html"><span class="ico">▤</span>Billboard Management</a>
+  <div class="nav-label">ADMINISTRATION</div>
+  <a href="notifications.html"><span class="ico">♢</span>Notifications</a>
+  <a class="active" href="reports.html"><span class="ico">▥</span>Reports & Analysis</a>
+  <a href="settings.html"><span class="ico">⚙</span>Settings</a>
+ </nav>
+ <div class="sidebar-note">EarnGig Administration<br>Owner access only<br><span style="color:#e8bd62">●</span> Admin workspace prototype</div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+  <div><strong style="font-size:13px">Reports & Analysis</strong><br><small>Platform performance and business intelligence</small></div>
+ </div>
+ <div class="admin-chip"><div class="avatar">A</div><span>Administrator</span></div>
+</header>
+
+<div class="content">
+ <div class="page-head">
+  <div>
+   <h1>Reports & Analysis</h1>
+   <div class="subtitle">Review platform performance across users, finance, marketplace, content and advertising.</div>
+  </div>
+  <button class="btn btn-primary" onclick="exportCurrentReport()">Export current report ↓</button>
+ </div>
+
+ <div class="notice warn">
+  <strong>Data integrity:</strong> Reports are calculated from locally stored prototype records in this browser. Missing records are not treated as zero activity on the live platform. Connect the backend data sources before using these figures for financial or operational decisions.
+ </div>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Report period</h2><span class="pill">Local prototype data</span></div>
+  <div class="panel-body">
+   <div class="toolbar">
+    <label>Start date<input type="date" id="startDate"></label>
+    <label>End date<input type="date" id="endDate"></label>
+    <label>Report section<select id="sectionFilter">
+     <option value="all">All sections</option><option value="users">Users</option>
+     <option value="finance">Finance</option><option value="coins">Coins</option>
+     <option value="referrals">Referrals</option><option value="marketplace">Marketplace</option>
+     <option value="novels">Novels & Writers</option><option value="advertising">Advertising</option>
+    </select></label>
+    <button class="btn btn-primary" onclick="refreshReports()">Apply filters</button>
+    <button class="btn btn-outline" onclick="resetDates()">Reset</button>
+   </div>
+   <div class="footer-note" id="periodLabel">Showing all available records.</div>
+  </div>
+ </section>
+
+ <section class="stats">
+  <div class="stat"><div class="stat-top">Users in period <span class="stat-icon">♙</span></div><strong id="kpiUsers">—</strong><small>Registration records</small></div>
+  <div class="stat"><div class="stat-top">Recorded revenue <span class="stat-icon">₦</span></div><strong id="kpiRevenue">—</strong><small>Successful payment records only</small></div>
+  <div class="stat"><div class="stat-top">Completed orders <span class="stat-icon">✓</span></div><strong id="kpiOrders">—</strong><small>Marketplace completed orders</small></div>
+  <div class="stat"><div class="stat-top">Coin rewards recorded <span class="stat-icon">◈</span></div><strong id="kpiCoins">—</strong><small>Available reward records</small></div>
+ </section>
+
+ <div class="grid2">
+  <section class="panel">
+   <div class="panel-head"><h2>Activity over time</h2><span class="muted" style="font-size:10px">Monthly record counts</span></div>
+   <div class="panel-body">
+    <svg id="activityChart" class="chart" viewBox="0 0 640 240" preserveAspectRatio="none" role="img" aria-label="Monthly activity chart"></svg>
+    <div class="chart-legend">
+     <span><i class="legend-dot" style="background:#7154d9"></i>Users</span>
+     <span><i class="legend-dot" style="background:#15966b"></i>Completed orders</span>
+     <span><i class="legend-dot" style="background:#d78a25"></i>Novel submissions</span>
+    </div>
+   </div>
+  </section>
+  <section class="panel">
+   <div class="panel-head"><h2>Financial overview</h2><span class="muted" style="font-size:10px">Recorded successful transactions</span></div>
+   <div class="panel-body">
+    <svg id="financeChart" class="chart" viewBox="0 0 480 240" preserveAspectRatio="none" role="img" aria-label="Financial report chart"></svg>
+    <div class="chart-legend">
+     <span><i class="legend-dot" style="background:#7154d9"></i>Incoming payments</span>
+     <span><i class="legend-dot" style="background:#d78a25"></i>Withdrawals</span>
+    </div>
+   </div>
+  </section>
+ </div>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Business performance by department</h2></div>
+  <div class="panel-body">
+   <div class="table-wrap">
+    <table>
+     <thead><tr><th>Department</th><th>Key metric</th><th>Records in period</th><th>Performance indicator</th><th>Report source</th></tr></thead>
+     <tbody id="departmentRows"></tbody>
+    </table>
+   </div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head">
+   <h2>Finance report</h2>
+   <button class="btn btn-outline" onclick="exportFinance()">Export finance ↓</button>
+  </div>
+  <div class="panel-body">
+   <div class="grid3" style="margin-bottom:18px">
+    <div class="stat"><div class="stat-top">Incoming payments</div><strong id="financeIn">—</strong><small>Successful records</small></div>
+    <div class="stat"><div class="stat-top">User withdrawals</div><strong id="financeOut">—</strong><small>Recorded withdrawal amounts</small></div>
+    <div class="stat"><div class="stat-top">Coin purchases</div><strong id="financeCoin">—</strong><small>Successful purchase records</small></div>
+   </div>
+   <div class="table-wrap">
+    <table><thead><tr><th>Finance category</th><th>Transaction count</th><th>Recorded amount</th><th>Interpretation</th></tr></thead>
+    <tbody id="financeRows"></tbody></table>
+   </div>
+   <div class="footer-note">This is a report of recorded amounts, not a full accounting profit-and-loss statement. It excludes unverified payments and does not infer platform profit, fees collected or liabilities.</div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head">
+   <h2>Marketplace performance</h2>
+   <button class="btn btn-outline" onclick="exportMarketplace()">Export marketplace ↓</button>
+  </div>
+  <div class="panel-body">
+   <div class="grid3" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-top">Completed orders</div><strong id="marketCompleted">—</strong></div>
+    <div class="stat"><div class="stat-top">In-progress orders</div><strong id="marketProgress">—</strong></div>
+    <div class="stat"><div class="stat-top">Disputed orders</div><strong id="marketDisputed">—</strong></div>
+   </div>
+   <div class="table-wrap"><table><thead><tr><th>Vendor</th><th>Completed orders</th><th>In progress</th><th>Cancelled</th><th>Disputed</th></tr></thead><tbody id="marketRows"></tbody></table></div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head">
+   <h2>Novel & writer performance</h2>
+   <button class="btn btn-outline" onclick="exportNovels()">Export content report ↓</button>
+  </div>
+  <div class="panel-body">
+   <div class="grid3" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-top">Novel submissions</div><strong id="novelTotal">—</strong></div>
+    <div class="stat"><div class="stat-top">Editorially approved</div><strong id="novelApproved">—</strong></div>
+    <div class="stat"><div class="stat-top">Published novels</div><strong id="novelPublished">—</strong></div>
+   </div>
+   <div class="table-wrap"><table><thead><tr><th>Editorial status</th><th>Novel count</th></tr></thead><tbody id="novelRows"></tbody></table></div>
+   <div class="footer-note">Reader completion and quiz pass rates are not estimated. They can be reported once verified reader activity records are connected.</div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head">
+   <h2>Advertising performance</h2>
+   <button class="btn btn-outline" onclick="exportAdvertising()">Export advertising ↓</button>
+  </div>
+  <div class="panel-body">
+   <div class="grid3" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-top">Bookings</div><strong id="adTotal">—</strong></div>
+    <div class="stat"><div class="stat-top">Approved bookings</div><strong id="adApproved">—</strong></div>
+    <div class="stat"><div class="stat-top">Published Watch & Earn ads</div><strong id="watchPublished">—</strong></div>
+   </div>
+   <div class="table-wrap"><table><thead><tr><th>Advertising status</th><th>Booking count</th></tr></thead><tbody id="adRows"></tbody></table></div>
+   <div class="footer-note">Advertisement bookings, Watch & Earn inventory and billboard slots are separate workflows. Approval of a booking is not counted as a published advert.</div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="panel-head"><h2>Report data availability</h2></div>
+  <div class="panel-body">
+   <div class="notice">This panel shows whether this browser contains locally stored records for each report source. It does not test backend connectivity.</div>
+   <div class="table-wrap"><table><thead><tr><th>Data source</th><th>Local records</th><th>Availability</th></tr></thead><tbody id="sourceRows"></tbody></table></div>
+  </div>
+ </section>
+</div>
+</main>
+</div>
+
+<script>
+const KEYS={
+ users:['earngig_users_v1','earngig_admin_users_v1'],
+ transactions:['earngig_transaction_ledger_v1'],
+ deposits:['earngig_deposit_payment_records_v1'],
+ coinPurchases:['earngig_coin_purchase_history_v1'],
+ coinWithdrawals:['earngig_coin_withdrawals_v1'],
+ withdrawals:['earngig_withdrawal_requests_v1'],
+ referrals:['earngig_referral_management_v1'],
+ referralRewards:['earngig_referral_rewards_v1'],
+ orders:['earngig_marketplace_orders_v1'],
+ vendors:['earngig_marketplace_vendors_v1'],
+ novels:['earngig_novel_management_v1'],
+ readers:['earngig_novel_reader_activity_v1'],
+ writers:['earngig_writer_applications_v1','earngig_writer_accounts_v1','earngig_writer_submissions_v1'],
+ adBookings:['earngig_advertiser_bookings_v1'],
+ watchAds:['earngig_watch_earn_ads_v1'],
+ billboard:['earngig_billboard_bookings_v1','earngig_billboard_slots_v1']
+};
+let reportData={};
+let currentReport={};
+let reportPeriod={start:null,end:null,section:'all'};
+
+function read(key){
+ try{const value=localStorage.getItem(key);return value?JSON.parse(value):[]}catch(e){return []}
+}
+function combine(keys){return keys.flatMap(k=>{const x=read(k);return Array.isArray(x)?x:[]})}
+function money(v){return '₦'+Number(v||0).toLocaleString('en-NG')}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function dateOf(x){return x?.createdAt||x?.date||x?.submittedAt||x?.created_at||x?.timestamp||x?.requestedAt||x?.updatedAt||null}
+function amountOf(x){return Number(x?.amount??x?.nairaAmount??x?.totalAmount??x?.value??0)||0}
+function isSuccessful(x){
+ const s=String(x?.status||x?.paymentStatus||x?.payment_status||'').toLowerCase();
+ return ['success','successful','completed','verified','paid'].includes(s);
+}
+function inPeriod(x){
+ const raw=dateOf(x);if(!raw)return false;
+ const d=new Date(raw);if(isNaN(d))return false;
+ if(reportPeriod.start){const start=new Date(reportPeriod.start+'T00:00:00');if(d<start)return false}
+ if(reportPeriod.end){const end=new Date(reportPeriod.end+'T23:59:59');if(d>end)return false}
+ return true;
+}
+function filtered(name){return (reportData[name]||[]).filter(inPeriod)}
+function countStatus(list,statuses){
+ return list.filter(x=>statuses.includes(String(x.status||x.paymentStatus||''))).length;
+}
+function setText(id,value){document.getElementById(id).textContent=value}
+function loadData(){
+ reportData={};
+ Object.keys(KEYS).forEach(k=>reportData[k]=combine(KEYS[k]));
+}
+function setDefaultDates(){
+ const today=new Date(),start=new Date(today.getFullYear(),today.getMonth(),1);
+ document.getElementById('startDate').value=start.toISOString().slice(0,10);
+ document.getElementById('endDate').value=today.toISOString().slice(0,10);
+}
+function resetDates(){
+ document.getElementById('startDate').value='';
+ document.getElementById('endDate').value='';
+ document.getElementById('sectionFilter').value='all';
+ refreshReports();
+}
+function refreshReports(){
+ const start=document.getElementById('startDate').value;
+ const end=document.getElementById('endDate').value;
+ if(start&&end&&start>end){alert('The start date must be before the end date.');return}
+ reportPeriod={start:start||null,end:end||null,section:document.getElementById('sectionFilter').value};
+ loadData();buildReport();
+}
+function buildReport(){
+ const users=filtered('users');
+ const orders=filtered('orders');
+ const novels=filtered('novels');
+ const tx=filtered('transactions');
+ const deposits=filtered('deposits');
+ const purchases=filtered('coinPurchases');
+ const withdrawals=filtered('withdrawals');
+ const successfulIncoming=[...tx,...deposits,...purchases].filter(isSuccessful);
+ const uniqueIncoming=[...new Map(successfulIncoming.map(x=>[x.reference||x.referenceId||x.id||JSON.stringify(x),x])).values()];
+ const revenue=uniqueIncoming.reduce((s,x)=>s+amountOf(x),0);
+ const completed=orders.filter(x=>x.status==='Completed');
+ const rewards=filtered('referralRewards');
+ const coinRewardTotal=rewards.reduce((s,x)=>s+Number(x.coins||x.amountCoins||x.rewardCoins||0),0);
+ currentReport={users,orders,novels,transactions:tx,deposits,purchases,withdrawals,incoming:uniqueIncoming,rewards};
+ const section=reportPeriod.section;
+ const allowed=name=>section==='all'||(
+  (section==='users'&&name==='users')||
+  (section==='finance'&&['finance','deposits','withdrawals'].includes(name))||
+  (section==='coins'&&name==='coins')||
+  (section==='referrals'&&name==='referrals')||
+  (section==='marketplace'&&name==='marketplace')||
+  (section==='novels'&&name==='novels')||
+  (section==='advertising'&&name==='advertising')
+ );
+ setText('kpiUsers',allowed('users')?users.length.toLocaleString():'—');
+ setText('kpiRevenue',allowed('finance')?money(revenue):'—');
+ setText('kpiOrders',allowed('marketplace')?completed.length.toLocaleString():'—');
+ setText('kpiCoins',allowed('coins')?coinRewardTotal.toLocaleString():'—');
+ setText('periodLabel',reportPeriod.start||reportPeriod.end?
+  'Period: '+(reportPeriod.start||'Earliest available')+' to '+(reportPeriod.end||'Latest available'):'Showing all available records.');
+ renderActivityChart();
+ renderFinanceChart();
+ renderDepartmentTable();
+ renderFinance();
+ renderMarketplace();
+ renderNovels();
+ renderAdvertising();
+ renderSources();
+}
+function monthlyCount(list){
+ const result={};
+ list.forEach(x=>{
+  const d=new Date(dateOf(x));if(isNaN(d))return;
+  const key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  result[key]=(result[key]||0)+1;
+ });
+ return result;
+}
+function lastMonths(n=6){
+ const now=new Date(),arr=[];
+ for(let i=n-1;i>=0;i--){
+  const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+  arr.push({key:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),label:d.toLocaleDateString('en-NG',{month:'short'})});
+ }
+ return arr;
+}
+function renderActivityChart(){
+ const months=lastMonths(6);
+ const userCounts=monthlyCount(currentReport.users);
+ const orderCounts=monthlyCount(currentReport.orders.filter(x=>x.status==='Completed'));
+ const novelCounts=monthlyCount(currentReport.novels);
+ const series=[userCounts,orderCounts,novelCounts];
+ const max=Math.max(1,...series.flatMap(s=>months.map(m=>s[m.key]||0)));
+ const W=640,H=240,L=38,R=12,T=15,B=35,plotH=H-T-B,plotW=W-L-R;
+ let svg='';
+ for(let i=0;i<=4;i++){
+  const y=T+i*plotH/4,val=Math.round(max*(4-i)/4);
+  svg+=`<line x1="${L}" y1="${y}" x2="${W-R}" y2="${y}" stroke="#edf0f6"/><text x="${L-8}" y="${y+4}" text-anchor="end" font-size="10" fill="#8490a6">${val}</text>`;
+ }
+ const colors=['#7154d9','#15966b','#d78a25'];
+ series.forEach((s,si)=>{
+  const points=months.map((m,i)=>{
+   const x=L+(i+.5)*plotW/months.length;
+   const y=T+plotH-(s[m.key]||0)/max*plotH;
+   return `${x},${y}`;
+  }).join(' ');
+  svg+=`<polyline points="${points}" fill="none" stroke="${colors[si]}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>`;
+  months.forEach((m,i)=>{
+   const x=L+(i+.5)*plotW/months.length,y=T+plotH-(s[m.key]||0)/max*plotH;
+   svg+=`<circle cx="${x}" cy="${y}" r="3.5" fill="${colors[si]}"/>`;
+  });
+ });
+ months.forEach((m,i)=>{
+  const x=L+(i+.5)*plotW/months.length;
+  svg+=`<text x="${x}" y="${H-10}" text-anchor="middle" font-size="10" fill="#8490a6">${m.label}</text>`;
+ });
+ document.getElementById('activityChart').innerHTML=svg;
+}
+function renderFinanceChart(){
+ const months=lastMonths(6);
+ const incoming=monthlyCount(currentReport.incoming);
+ const outgoing=monthlyCount(currentReport.withdrawals.filter(isSuccessful));
+ const series=[incoming,outgoing];
+ const max=Math.max(1,...series.flatMap(s=>months.map(m=>s[m.key]||0)));
+ const W=480,H=240,L=38,R=12,T=15,B=35,plotH=H-T-B,plotW=W-L-R;
+ let svg='';
+ for(let i=0;i<=4;i++){
+  const y=T+i*plotH/4;
+  svg+=`<line x1="${L}" y1="${y}" x2="${W-R}" y2="${y}" stroke="#edf0f6"/>`;
+ }
+ const colors=['#7154d9','#d78a25'];
+ series.forEach((s,si)=>{
+  const points=months.map((m,i)=>{
+   const x=L+(i+.5)*plotW/months.length,y=T+plotH-(s[m.key]||0)/max*plotH;
+   return `${x},${y}`;
+  }).join(' ');
+  svg+=`<polyline points="${points}" fill="none" stroke="${colors[si]}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>`;
+  months.forEach((m,i)=>{
+   const x=L+(i+.5)*plotW/months.length,y=T+plotH-(s[m.key]||0)/max*plotH;
+   svg+=`<circle cx="${x}" cy="${y}" r="3.5" fill="${colors[si]}"/>`;
+  });
+ });
+ months.forEach((m,i)=>{
+  const x=L+(i+.5)*plotW/months.length;
+  svg+=`<text x="${x}" y="${H-10}" text-anchor="middle" font-size="10" fill="#8490a6">${m.label}</text>`;
+ });
+ document.getElementById('financeChart').innerHTML=svg;
+}
+function renderDepartmentTable(){
+ const data=[
+  ['Users','New user records',filtered('users').length,'users'],
+  ['Finance','Successful transaction records',currentReport.incoming.length,'finance'],
+  ['Coin purchases','Purchase records',filtered('coinPurchases').length,'coins'],
+  ['Referrals','Referral records',filtered('referrals').length,'referrals'],
+  ['Marketplace','Completed orders',filtered('orders').filter(x=>x.status==='Completed').length,'marketplace'],
+  ['Novels','Novel submissions',filtered('novels').length,'novels'],
+  ['Writers','Writer applications',filtered('writers').length,'novels'],
+  ['Advertising','Advertiser bookings',filtered('adBookings').length,'advertising']
+ ];
+ document.getElementById('departmentRows').innerHTML=data.map(row=>`
+ <tr><td><strong>${row[0]}</strong></td><td>${row[1]}</td><td>${row[2].toLocaleString('en-NG')}</td>
+ <td>${row[2]?'Records available':'No matching local records'}</td><td><span class="pill ${row[2]?'good':'warn'}">${row[2]?'Available locally':'No local records'}</span></td></tr>`).join('');
+}
+function renderFinance(){
+ const incoming=currentReport.incoming;
+ const outgoing=currentReport.withdrawals.filter(isSuccessful);
+ const purchases=filtered('coinPurchases').filter(isSuccessful);
+ const inTotal=incoming.reduce((s,x)=>s+amountOf(x),0);
+ const outTotal=outgoing.reduce((s,x)=>s+amountOf(x),0);
+ const coinTotal=purchases.reduce((s,x)=>s+amountOf(x),0);
+ setText('financeIn',money(inTotal));setText('financeOut',money(outTotal));setText('financeCoin',money(coinTotal));
+ const categories=[
+  ['Successful incoming payments',incoming.length,inTotal,'Recorded successful payment entries'],
+  ['User wallet withdrawals',outgoing.length,outTotal,'Recorded successful withdrawal entries'],
+  ['Coin purchases',purchases.length,coinTotal,'Successful coin purchase records']
+ ];
+ document.getElementById('financeRows').innerHTML=categories.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td><strong>${money(x[2])}</strong></td><td>${x[3]}</td></tr>`).join('');
+}
+function renderMarketplace(){
+ const orders=filtered('orders');
+ const completed=orders.filter(x=>x.status==='Completed');
+ const progress=orders.filter(x=>x.status==='In Progress');
+ const disputed=orders.filter(x=>x.status==='Disputed');
+ setText('marketCompleted',completed.length);setText('marketProgress',progress.length);setText('marketDisputed',disputed.length);
+ const vendors=filtered('vendors');
+ const vendorRows=vendors.map(v=>{
+  const own=orders.filter(o=>o.vendorId===v.id);
+  return {name:v.name||v.vendorName||v.id,completed:own.filter(o=>o.status==='Completed').length,progress:own.filter(o=>o.status==='In Progress').length,cancelled:own.filter(o=>o.status==='Cancelled').length,disputed:own.filter(o=>o.status==='Disputed').length};
+ }).sort((a,b)=>b.completed-a.completed);
+ document.getElementById('marketRows').innerHTML=vendorRows.map(v=>`<tr><td><strong>${esc(v.name)}</strong></td><td>${v.completed}</td><td>${v.progress}</td><td>${v.cancelled}</td><td>${v.disputed}</td></tr>`).join('')||'<tr><td colspan="5" class="muted">No vendor records available in this period.</td></tr>';
+}
+function renderNovels(){
+ const novels=filtered('novels');
+ const approved=novels.filter(n=>String(n.status||'').includes('Approved')||n.status==='Published');
+ const published=novels.filter(n=>n.status==='Published');
+ setText('novelTotal',novels.length);setText('novelApproved',approved.length);setText('novelPublished',published.length);
+ const statuses={};
+ novels.forEach(n=>{const s=n.status||'Unspecified';statuses[s]=(statuses[s]||0)+1});
+ document.getElementById('novelRows').innerHTML=Object.entries(statuses).map(([s,c])=>`<tr><td>${esc(s)}</td><td>${c}</td></tr>`).join('')||'<tr><td colspan="2" class="muted">No novel records available.</td></tr>';
+}
+function renderAdvertising(){
+ const bookings=filtered('adBookings');
+ const watch=filtered('watchAds');
+ setText('adTotal',bookings.length);
+ setText('adApproved',bookings.filter(x=>String(x.status||'').toLowerCase().includes('approv')).length);
+ setText('watchPublished',watch.filter(x=>x.status==='Published'||x.published===true).length);
+ const statuses={};
+ bookings.forEach(b=>{const s=b.status||'Unspecified';statuses[s]=(statuses[s]||0)+1});
+ document.getElementById('adRows').innerHTML=Object.entries(statuses).map(([s,c])=>`<tr><td>${esc(s)}</td><td>${c}</td></tr>`).join('')||'<tr><td colspan="2" class="muted">No advertising booking records available.</td></tr>';
+}
+function renderSources(){
+ const rows=Object.entries(KEYS).map(([name,keys])=>{
+  const count=combine(keys).length;
+  return `<tr><td>${esc(name)}</td><td>${count}</td><td><span class="pill ${count?'good':'warn'}">${count?'Local records found':'No local records'}</span></td></tr>`;
+ });
+ document.getElementById('sourceRows').innerHTML=rows.join('');
+}
+function exportFile(name,data){
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download=name;a.click();URL.revokeObjectURL(url);
+}
+function exportCurrentReport(){
+ exportFile('earngig-report-summary.json',{
+  generatedAt:new Date().toISOString(),period:reportPeriod,
+  summary:{
+   users:currentReport.users?.length||0,
+   completedOrders:currentReport.orders?.filter(x=>x.status==='Completed').length||0,
+   successfulIncoming:currentReport.incoming?.reduce((s,x)=>s+amountOf(x),0)||0
+  },
+  data:currentReport
+ });
+}
+function exportFinance(){exportFile('earngig-finance-report.json',{period:reportPeriod,transactions:currentReport.transactions,deposits:currentReport.deposits,purchases:currentReport.purchases,withdrawals:currentReport.withdrawals,incoming:currentReport.incoming})}
+function exportMarketplace(){exportFile('earngig-marketplace-report.json',{period:reportPeriod,orders:currentReport.orders,vendors:reportData.vendors})}
+function exportNovels(){exportFile('earngig-novel-writer-report.json',{period:reportPeriod,novels:currentReport.novels,writers:reportData.writers,readers:reportData.readers})}
+function exportAdvertising(){exportFile('earngig-advertising-report.json',{period:reportPeriod,bookings:reportData.adBookings,watchAds:reportData.watchAds,billboard:reportData.billboard})}
+setDefaultDates();
+refreshReports();
+</script>
+</body>
+</html>
