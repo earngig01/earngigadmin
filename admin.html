@@ -5,26 +5,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#102A56">
-<title>Ahruh | Admin Dashboard</title>
+<title>AHRUH | Admin Workspace</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --navy:#102A56;
-  --navy2:#193D70;
-  --royal:#3478E5;
-  --royal2:#2866CB;
+  --royal:#1768D5;
+  --blue:#3478E5;
   --soft:#D5E6FF;
   --light:#EAF2FF;
-  --pale:#F5F8FF;
+  --pale:#F4F8FF;
   --white:#FFFFFF;
   --gold:#D6B66F;
-  --text:#253653;
-  --muted:#8492A9;
-  --line:#E6ECF5;
-  --green:#15966B;
-  --orange:#D78A25;
-  --red:#D45D65;
-  --shadow:0 8px 28px rgba(16,42,86,.055);
+  --text:#243653;
+  --muted:#8996AA;
+  --line:#E8EDF5;
+  --shadow:0 5px 18px rgba(35,76,140,.07);
 }
 
 *{box-sizing:border-box}
@@ -33,1140 +33,818 @@ body{
   margin:0;
   background:var(--pale);
   color:var(--text);
-  font-family:Arial,sans-serif;
+  font-family:'DM Sans',Arial,sans-serif;
   font-size:14px;
 }
 
-a{text-decoration:none;color:inherit}
 button,input{font:inherit}
 button{cursor:pointer}
+a{text-decoration:none;color:inherit}
 
-/* LAYOUT */
-
-.layout{min-height:100vh}
-
-.sidebar{
-  width:255px;
-  position:fixed;
-  inset:0 auto 0 0;
-  background:linear-gradient(180deg,#102A56 0%,#173C70 100%);
-  color:white;
-  padding:24px 16px;
-  display:flex;
-  flex-direction:column;
-  overflow-y:auto;
-  z-index:30;
-  transition:transform .25s ease;
-}
+/* BRAND */
 
 .brand{
   display:flex;
   align-items:center;
   gap:11px;
-  padding:0 9px 26px;
-  border-bottom:1px solid rgba(255,255,255,.13);
 }
 
 .brand-mark{
-  width:43px;
-  height:43px;
-  border-radius:13px;
+  width:39px;
+  height:39px;
   background:var(--gold);
   color:var(--navy);
   display:grid;
   place-items:center;
-  font-size:25px;
-  font-weight:900;
+  border-radius:10px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:30px;
+  font-weight:700;
+}
+
+.brand-word{
+  position:relative;
+  padding-bottom:5px;
 }
 
 .brand-name{
-  font-size:25px;
-  font-weight:800;
-  letter-spacing:-1px;
-}
-
-.brand-name span{color:var(--gold)}
-
-.brand small{
-  display:block;
-  font-size:9px;
-  color:#C5D6F1;
-  letter-spacing:1.7px;
-  margin-top:4px;
-  text-transform:uppercase;
-}
-
-.nav-label{
-  font-size:9px;
-  color:#AFC4E4;
-  letter-spacing:1.5px;
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:30px;
+  line-height:.9;
   font-weight:700;
-  padding:23px 11px 9px;
-}
-
-.nav-link{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:12px 13px;
-  border-radius:9px;
-  color:#D8E5F7;
-  font-size:11px;
-  margin:2px 0;
-  transition:.2s;
-}
-
-.nav-link:hover,
-.nav-link.active{
-  background:rgba(255,255,255,.13);
+  letter-spacing:2px;
   color:white;
 }
 
-.nav-link.active{
-  border-left:3px solid var(--gold);
-  padding-left:10px;
+.brand-flourish{
+  position:absolute;
+  height:5px;
+  width:100%;
+  bottom:0;
+  left:0;
+  border-bottom:1.5px solid var(--gold);
+  border-radius:0 0 70% 25%;
+  transform:skewX(-20deg);
 }
 
-.nav-icon{
-  width:22px;
-  text-align:center;
-  font-size:17px;
-  color:#AFCFFF;
+.brand-tagline{
+  font-size:8px;
+  letter-spacing:2.2px;
+  color:#D6E5FA;
+  margin-top:7px;
+  font-weight:600;
 }
 
-.sidebar-bottom{margin-top:auto;padding-top:22px}
-
-.admin-mini{
-  border-top:1px solid rgba(255,255,255,.13);
-  padding:17px 8px 0;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.admin-avatar{
-  width:37px;
-  height:37px;
-  border-radius:50%;
-  background:var(--gold);
-  color:var(--navy);
-  display:grid;
-  place-items:center;
-  font-weight:800;
-}
-
-.admin-mini strong{display:block;font-size:11px}
-.admin-mini small{font-size:9px;color:#C5D6F1}
-
-/* MAIN */
-
-.main{
-  margin-left:255px;
-  min-height:100vh;
-  min-width:0;
-}
+/* TOP BAR */
 
 .topbar{
-  height:72px;
-  padding:0 32px;
-  background:white;
-  border-bottom:1px solid var(--line);
+  height:67px;
+  background:var(--royal);
+  color:white;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:15px;
+  padding:0 25px;
   position:sticky;
   top:0;
-  z-index:20;
+  z-index:30;
+  box-shadow:0 3px 12px #123d7920;
 }
 
 .top-left,.top-right{
   display:flex;
   align-items:center;
-  gap:13px;
+  gap:15px;
 }
 
-.page-label{font-size:11px;color:var(--muted)}
-
-.menu-toggle{
-  display:none;
+.menu-btn{
   border:0;
-  background:var(--light);
-  color:var(--navy);
-  border-radius:8px;
-  padding:9px 11px;
+  background:transparent;
+  color:white;
+  font-size:25px;
+  padding:4px;
 }
 
-.top-search{
-  width:245px;
-  border:1px solid var(--line);
-  background:#F9FBFF;
-  border-radius:9px;
-  padding:10px 13px;
-  font-size:11px;
-  outline:none;
-}
-
-.top-search:focus{border-color:var(--royal)}
-
-.top-icon{
-  position:relative;
-  width:38px;
-  height:38px;
-  background:white;
-  border:1px solid var(--line);
-  border-radius:9px;
-  color:var(--navy);
+.top-action{
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  border:0;
+  border-radius:50%;
+  background:#ffffff20;
+  color:white;
   font-size:17px;
+  position:relative;
 }
 
-.notification-dot{
+.dot{
   position:absolute;
+  top:5px;
+  right:5px;
   width:7px;
   height:7px;
-  background:var(--red);
   border-radius:50%;
-  right:7px;
-  top:7px;
+  background:#FFCB69;
 }
 
-.content{
-  max-width:1550px;
+.avatar{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  background:white;
+  color:var(--royal);
+  display:grid;
+  place-items:center;
+  font-weight:800;
+}
+
+/* MAIN */
+
+.main{
+  max-width:1250px;
   margin:auto;
-  padding:30px 32px 50px;
+  padding:23px 25px 100px;
 }
 
-/* PAGE HEADING */
+/* WELCOME BANNER */
 
 .welcome{
+  background:linear-gradient(115deg,#102A56,#1768D5 65%,#438FF0);
+  border-radius:20px;
+  padding:25px;
+  color:white;
+  min-height:170px;
+  position:relative;
+  overflow:hidden;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:15px;
-  flex-wrap:wrap;
-  margin-bottom:23px;
+  box-shadow:0 9px 25px #1768D52b;
+}
+
+.welcome::before{
+  content:"";
+  position:absolute;
+  width:230px;
+  height:230px;
+  border:1px solid #ffffff22;
+  border-radius:50%;
+  right:70px;
+  top:-100px;
+}
+
+.welcome::after{
+  content:"";
+  position:absolute;
+  width:160px;
+  height:160px;
+  border:1px solid #ffffff20;
+  border-radius:50%;
+  right:-35px;
+  bottom:-100px;
+}
+
+.welcome-content{
+  position:relative;
+  z-index:2;
+}
+
+.welcome-date{
+  font-size:9px;
+  letter-spacing:1.5px;
+  color:#D8E8FF;
+  font-weight:700;
+  margin-bottom:12px;
 }
 
 .welcome h1{
-  color:var(--navy);
   font-size:27px;
+  margin:0 0 8px;
   letter-spacing:-.7px;
-  margin:0 0 7px;
+  font-weight:700;
 }
 
 .welcome p{
-  color:var(--muted);
+  color:#E1EDFF;
   font-size:11px;
   margin:0;
   line-height:1.6;
 }
 
-.date-chip{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:9px;
-  padding:11px 14px;
+.welcome-art{
+  position:relative;
+  z-index:2;
+  width:150px;
+  height:115px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:none;
+}
+
+.shopping-bag{
+  width:72px;
+  height:76px;
+  background:#fff;
+  border-radius:10px 10px 14px 14px;
+  transform:rotate(-6deg);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--royal);
+  font-size:30px;
+  box-shadow:0 10px 20px #123d7930;
+  position:relative;
+}
+
+.shopping-bag::before{
+  content:"";
+  position:absolute;
+  width:27px;
+  height:19px;
+  border:4px solid var(--gold);
+  border-bottom:0;
+  border-radius:15px 15px 0 0;
+  top:-15px;
+}
+
+.small-bag{
+  position:absolute;
+  width:47px;
+  height:52px;
+  background:var(--gold);
+  border-radius:7px;
+  right:8px;
+  bottom:5px;
+  display:grid;
+  place-items:center;
   color:var(--navy);
-  font-size:10px;
+  font-size:21px;
+  box-shadow:0 7px 16px #123d7930;
+  transform:rotate(9deg);
+}
+
+/* SECTIONS */
+
+.section{margin-top:25px}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:13px;
+  gap:10px;
+}
+
+.section-head h2{
+  font-size:16px;
+  color:var(--navy);
+  margin:0;
   font-weight:700;
 }
 
-/* NOTICE */
-
-.notice{
-  background:#FFF9EB;
-  border:1px solid #F0E5C7;
-  color:#8A6C2F;
-  padding:13px 16px;
-  border-radius:10px;
+.section-head small{
+  color:var(--muted);
   font-size:10px;
-  line-height:1.7;
-  margin-bottom:21px;
 }
 
-/* STATISTICS */
+/* STAT CARDS */
 
 .stats{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:15px;
+  gap:12px;
 }
 
-.stat-card{
+.stat{
   background:white;
   border:1px solid var(--line);
-  border-radius:13px;
-  padding:19px;
+  border-radius:15px;
+  padding:16px;
   box-shadow:var(--shadow);
   min-width:0;
 }
 
-.stat-head{
+.stat-top{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:8px;
-}
-
-.stat-head small{
-  color:var(--muted);
-  font-size:10px;
+  gap:6px;
 }
 
 .stat-icon{
-  width:39px;
-  height:39px;
-  border-radius:11px;
+  width:37px;
+  height:37px;
   display:grid;
   place-items:center;
-  font-size:18px;
-}
-
-.si-blue{background:var(--light);color:var(--royal)}
-.si-soft{background:var(--soft);color:var(--navy)}
-.si-gold{background:#FAF4E6;color:#A78336}
-.si-green{background:#E7F7EF;color:var(--green)}
-.si-red{background:#FCEDEE;color:var(--red)}
-
-.stat-card h2{
-  font-size:25px;
-  color:var(--navy);
-  margin:13px 0 5px;
-}
-
-.stat-card p{
-  font-size:10px;
-  color:var(--muted);
-  margin:0;
-}
-
-/* SECTION HEADINGS */
-
-.section-heading{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-  margin:31px 0 15px;
-}
-
-.section-heading h2{
-  font-size:16px;
-  color:var(--navy);
-  margin:0 0 5px;
-}
-
-.section-heading p{
-  font-size:10px;
-  color:var(--muted);
-  margin:0;
-}
-
-/* QUICK ACTIONS */
-
-.actions{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:12px;
-}
-
-.action-card{
-  background:linear-gradient(120deg,#102A56,#1D4B85);
-  color:white;
   border-radius:12px;
-  padding:17px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  min-width:0;
-  transition:.2s;
-}
-
-.action-card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 10px 22px rgba(16,42,86,.15);
-}
-
-.action-icon{
-  width:39px;
-  height:39px;
-  border-radius:10px;
-  background:rgba(255,255,255,.13);
-  color:var(--gold);
-  display:grid;
-  place-items:center;
   font-size:18px;
-  flex:none;
 }
 
-.action-card strong{
-  display:block;
-  font-size:11px;
-  margin-bottom:5px;
+.stat:nth-child(1) .stat-icon{
+  background:#E4F0FF;color:#3478E5;
+}
+.stat:nth-child(2) .stat-icon{
+  background:#FFF1D9;color:#D99A29;
+}
+.stat:nth-child(3) .stat-icon{
+  background:#EBE9FF;color:#7563D9;
+}
+.stat:nth-child(4) .stat-icon{
+  background:#FFE9EF;color:#D45B7C;
 }
 
-.action-card small{
-  display:block;
+.stat small{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.stat h2{
+  font-size:24px;
+  color:var(--navy);
+  margin:12px 0 4px;
+}
+
+.stat p{
+  color:var(--muted);
   font-size:9px;
-  color:#CFDDF2;
-  line-height:1.5;
+  margin:0;
 }
 
-/* DEPARTMENTS */
+/* MANAGEMENT GRID */
 
-.departments{
+.manage-grid{
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:13px;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:12px;
 }
 
-.department{
+.manage-item{
   background:white;
   border:1px solid var(--line);
-  border-radius:12px;
-  padding:17px;
+  border-radius:15px;
+  min-height:105px;
   display:flex;
+  flex-direction:column;
+  justify-content:center;
   align-items:center;
-  gap:12px;
-  min-height:89px;
-  min-width:0;
+  gap:9px;
+  text-align:center;
+  padding:12px 6px;
   box-shadow:var(--shadow);
   transition:.2s;
 }
 
-.department:hover{
-  border-color:#B9D0F5;
-  transform:translateY(-2px);
-  box-shadow:0 10px 25px rgba(16,42,86,.09);
+.manage-item:hover{
+  border-color:#B8D3FA;
+  transform:translateY(-3px);
+  box-shadow:0 9px 20px #3478E51a;
 }
 
-.department-icon{
+.manage-icon{
   width:43px;
   height:43px;
-  flex:none;
-  border-radius:11px;
-  background:var(--light);
-  color:var(--royal);
   display:grid;
   place-items:center;
-  font-size:19px;
-}
-
-.department strong{
-  display:block;
-  color:var(--text);
-  font-size:11px;
-  margin-bottom:5px;
-}
-
-.department small{
-  display:block;
-  color:var(--muted);
-  font-size:9px;
-  line-height:1.5;
-}
-
-.arrow{
-  margin-left:auto;
+  border-radius:13px;
+  background:var(--light);
   color:var(--royal);
   font-size:21px;
-  flex:none;
 }
 
-/* PANELS */
+.manage-item strong{
+  font-size:10px;
+  color:var(--text);
+  line-height:1.3;
+}
 
-.panel{
+/* ACTIVITY */
+
+.activity-card{
   background:white;
   border:1px solid var(--line);
-  border-radius:13px;
-  padding:20px;
-  margin-top:25px;
+  border-radius:15px;
+  padding:17px;
   box-shadow:var(--shadow);
 }
 
-.panel-heading{
+.activity-empty{
+  text-align:center;
+  color:var(--muted);
+  font-size:10px;
+  padding:20px 5px;
+  line-height:1.7;
+}
+
+/* MORE MENU */
+
+.more-menu{
+  position:fixed;
+  inset:0;
+  background:#102A5670;
+  z-index:80;
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+}
+
+.more-menu.show{display:flex}
+
+.more-content{
+  background:white;
+  width:100%;
+  max-width:600px;
+  border-radius:22px 22px 0 0;
+  padding:22px 20px 35px;
+  max-height:85vh;
+  overflow-y:auto;
+}
+
+.more-head{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-bottom:17px;
+  margin-bottom:18px;
 }
 
-.panel-heading h2{
+.more-head h2{
   color:var(--navy);
-  font-size:14px;
-  margin:0 0 5px;
-}
-
-.panel-heading p{
-  color:var(--muted);
-  font-size:10px;
+  font-size:17px;
   margin:0;
 }
 
-.btn{
+.close-btn{
+  width:32px;
+  height:32px;
   border:0;
-  border-radius:8px;
-  padding:10px 14px;
-  font-size:10px;
-  font-weight:700;
-}
-
-.btn-primary{
-  background:var(--royal);
-  color:white;
-}
-
-.btn-primary:hover{background:var(--royal2)}
-
-.btn-light{
+  border-radius:50%;
   background:var(--light);
+  color:var(--navy);
+  font-size:18px;
+}
+
+.more-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.more-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  background:var(--pale);
+  border-radius:12px;
+  min-height:82px;
+  text-align:center;
+  padding:10px 5px;
+}
+
+.more-item span{
+  font-size:21px;
   color:var(--royal);
 }
 
-.table-wrap{overflow-x:auto}
+.more-item strong{font-size:9px}
 
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:520px;
+/* BOTTOM NAVIGATION */
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:67px;
+  background:white;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  z-index:40;
+  box-shadow:0 -4px 15px #123d790b;
 }
 
-th{
-  text-align:left;
-  background:#F7F9FE;
+.bottom-link{
+  border:0;
+  background:none;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
   color:var(--muted);
   font-size:9px;
-  padding:13px;
+  min-width:60px;
 }
 
-td{
-  padding:13px;
-  border-top:1px solid #EDF1F7;
-  font-size:10px;
-}
+.bottom-link span{font-size:19px}
 
-.status{
-  display:inline-block;
-  padding:5px 9px;
-  border-radius:20px;
-  font-size:9px;
+.bottom-link.active{
+  color:var(--royal);
   font-weight:700;
 }
 
-.status-open{background:#E6F7EE;color:#168054}
-.status-closed{background:#F0F2F6;color:#6E7888}
-.status-upcoming{background:#FFF5DF;color:#9A742B}
-
-.empty{
-  text-align:center;
-  padding:23px;
-  color:var(--muted);
-  font-size:10px;
+.bottom-link.active span{
+  background:var(--light);
+  border-radius:10px;
+  padding:4px 12px;
 }
 
-.footer{
-  text-align:center;
-  padding:30px 0 0;
-  color:var(--muted);
-  font-size:9px;
+/* RESPONSIVE */
+
+@media(max-width:800px){
+  .main{padding:18px 17px 95px}
+  .manage-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
-.hidden{display:none!important}
-
-/* MOBILE */
-
-@media(max-width:1100px){
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .actions{grid-template-columns:repeat(2,1fr)}
-  .departments{grid-template-columns:repeat(2,1fr)}
-}
-
-@media(max-width:700px){
-  .sidebar{
-    transform:translateX(-100%);
-    box-shadow:10px 0 30px rgba(0,0,0,.15);
-  }
-
-  .sidebar.show{transform:translateX(0)}
-
-  .main{margin-left:0}
-
-  .topbar{
-    height:64px;
-    padding:0 14px;
-  }
-
-  .menu-toggle{display:block}
-  .page-label{display:none}
-  .top-search{width:min(190px,42vw)}
-  .top-right{gap:8px}
-
-  .content{padding:22px 14px 35px}
-  .welcome h1{font-size:23px}
-  .date-chip{font-size:9px}
-
+@media(max-width:520px){
+  .topbar{height:59px;padding:0 14px}
+  .brand-name{font-size:27px}
+  .brand-mark{width:35px;height:35px}
+  .main{padding:16px 12px 90px}
+  .welcome{min-height:140px;padding:20px 16px;border-radius:16px}
+  .welcome h1{font-size:22px}
+  .welcome p{font-size:10px;max-width:210px;line-height:1.6}
+  .welcome-art{width:95px;height:90px}
+  .shopping-bag{width:54px;height:61px;font-size:24px}
+  .small-bag{width:35px;height:40px;font-size:16px}
+  .section{margin-top:21px}
+  .section-head h2{font-size:14px}
   .stats{gap:9px}
-  .stat-card{padding:13px}
-  .stat-card h2{font-size:21px}
+  .stat{padding:12px;border-radius:13px}
+  .stat h2{font-size:21px}
   .stat-icon{width:33px;height:33px}
-
-  .departments{
-    grid-template-columns:1fr;
-    gap:9px;
-  }
-
-  .department{
-    min-height:77px;
-    padding:13px;
-  }
-
-  .actions{gap:9px}
-  .action-card{padding:12px;gap:8px}
-  .action-icon{width:33px;height:33px;font-size:15px}
-  .action-card strong{font-size:10px}
-  .action-card small{font-size:8px}
-
-  .panel{padding:14px}
+  .manage-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+  .manage-item{min-height:94px;border-radius:13px;padding:10px 4px}
+  .manage-icon{width:39px;height:39px;font-size:19px}
+  .manage-item strong{font-size:9px}
+  .bottom-nav{height:64px}
 }
 
-@media(max-width:380px){
-  .actions{grid-template-columns:1fr}
+@media(min-width:801px){
+  .bottom-nav{left:0;right:0}
+}
+
+@media(max-width:350px){
+  .welcome-art{width:70px}
+  .welcome h1{font-size:19px}
+  .manage-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 </style>
 </head>
 
 <body>
 
-<div class="layout">
+<header class="topbar">
+  <div class="top-left">
+    <button class="menu-btn" onclick="openMore()" aria-label="Open menu">☰</button>
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
-
-  <div class="brand">
-    <div class="brand-mark">A</div>
-    <div>
-      <div class="brand-name">Ah<span>ruh</span></div>
-      <small>Admin workspace</small>
-    </div>
-  </div>
-
-  <div class="nav-label">MAIN MENU</div>
-
-  <a class="nav-link active" href="admin.html">
-    <span class="nav-icon">⌂</span> Dashboard Overview
-  </a>
-
-  <div class="nav-label">SHOPPING OPERATIONS</div>
-
-  <a class="nav-link" href="batches.html">
-    <span class="nav-icon">▦</span> Batch Management
-  </a>
-
-  <a class="nav-link" href="products.html">
-    <span class="nav-icon">▣</span> Product Management
-  </a>
-
-  <a class="nav-link" href="categories.html">
-    <span class="nav-icon">▤</span> Category Management
-  </a>
-
-  <a class="nav-link" href="orders.html">
-    <span class="nav-icon">▧</span> Orders & Receipts
-  </a>
-
-  <a class="nav-link" href="artwork.html">
-    <span class="nav-icon">▧</span> Custom Artwork
-  </a>
-
-  <a class="nav-link" href="customers.html">
-    <span class="nav-icon">♙</span> Customers
-  </a>
-
-  <div class="nav-label">MONEY & REWARDS</div>
-
-  <a class="nav-link" href="wallet.html">
-    <span class="nav-icon">₦</span> Naira Wallet
-  </a>
-
-  <a class="nav-link" href="rewards.html">
-    <span class="nav-icon">◈</span> G-Coin Rewards
-  </a>
-
-  <a class="nav-link" href="games.html">
-    <span class="nav-icon">♟</span> Games Management
-  </a>
-
-  <a class="nav-link" href="mining.html">
-    <span class="nav-icon">✧</span> Mining Management
-  </a>
-
-  <div class="nav-label">GROWTH & DELIVERY</div>
-
-  <a class="nav-link" href="promotions.html">
-    <span class="nav-icon">◇</span> Coupons & Promotions
-  </a>
-
-  <a class="nav-link" href="shipping.html">
-    <span class="nav-icon">⌖</span> Shipping & Delivery
-  </a>
-
-  <a class="nav-link" href="notifications.html">
-    <span class="nav-icon">♢</span> Notifications
-  </a>
-
-  <a class="nav-link" href="reviews.html">
-    <span class="nav-icon">☆</span> Product Reviews
-  </a>
-
-  <div class="nav-label">CONTROL CENTRE</div>
-
-  <a class="nav-link" href="reports.html">
-    <span class="nav-icon">▥</span> Reports & Analytics
-  </a>
-
-  <a class="nav-link" href="settings.html">
-    <span class="nav-icon">⚙</span> Platform Settings
-  </a>
-
-  <div class="sidebar-bottom">
-    <div class="admin-mini">
-      <div class="admin-avatar">A</div>
-      <div>
-        <strong>Ahruh Admin</strong>
-        <small>Owner account</small>
+    <div class="brand">
+      <div class="brand-mark">A</div>
+      <div class="brand-word">
+        <div class="brand-name">AHRUH</div>
+        <div class="brand-flourish"></div>
+        <div class="brand-tagline">ADMIN SPACE</div>
       </div>
     </div>
-  </div>
-
-</aside>
-
-<!-- MAIN -->
-<main class="main">
-
-<header class="topbar">
-
-  <div class="top-left">
-    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-    <span class="page-label">Admin / Dashboard Overview</span>
   </div>
 
   <div class="top-right">
-    <input
-      class="top-search"
-      id="globalSearch"
-      placeholder="Search departments..."
-      oninput="searchDepartments()"
-    >
-
-    <button class="top-icon"
-      title="Notifications"
-      onclick="location.href='notifications.html'">
-      ♧<span class="notification-dot"></span>
+    <button class="top-action"
+      onclick="location.href='notifications.html'"
+      aria-label="Notifications">
+      ♧<i class="dot"></i>
     </button>
+    <div class="avatar">A</div>
   </div>
-
 </header>
 
-<div class="content">
+<main class="main">
 
-  <!-- WELCOME -->
   <section class="welcome">
-    <div>
-      <h1>Welcome to Ahruh</h1>
-      <p>Your shopping, batch orders and rewards operations at a glance.</p>
+    <div class="welcome-content">
+      <div class="welcome-date" id="welcomeDate"></div>
+      <h1>Good day, Admin! 👋</h1>
+      <p>Here's what's happening on AHRUH today.</p>
     </div>
 
-    <div class="date-chip" id="todayDate">
-      Admin Workspace
+    <div class="welcome-art" aria-hidden="true">
+      <div class="shopping-bag">⌑</div>
+      <div class="small-bag">✦</div>
     </div>
   </section>
 
-  <div class="notice">
-    <strong>Dashboard connection notice:</strong>
-    This is the Ahruh admin dashboard interface. Live customer, order,
-    wallet and sales figures will appear after the secure central database
-    and backend have been connected. No sample financial figures are
-    presented as real transactions.
-  </div>
-
-  <!-- STATISTICS -->
-  <section class="stats">
-
-    <div class="stat-card">
-      <div class="stat-head">
-        <small>Total Customers</small>
-        <div class="stat-icon si-blue">♙</div>
-      </div>
-      <h2>—</h2>
-      <p>Registered customer accounts</p>
+  <section class="section">
+    <div class="section-head">
+      <h2>Store Overview</h2>
+      <small>At a glance</small>
     </div>
 
-    <div class="stat-card">
-      <div class="stat-head">
-        <small>Active Batch</small>
-        <div class="stat-icon si-gold">▦</div>
-      </div>
-      <h2>—</h2>
-      <p>Current shopping batch</p>
-    </div>
+    <div class="stats">
 
-    <div class="stat-card">
-      <div class="stat-head">
-        <small>Total Orders</small>
-        <div class="stat-icon si-green">▧</div>
-      </div>
-      <h2>—</h2>
-      <p>Orders across all batches</p>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-head">
-        <small>Pending Orders</small>
-        <div class="stat-icon si-red">◷</div>
-      </div>
-      <h2>—</h2>
-      <p>Orders awaiting fulfilment</p>
-    </div>
-
-  </section>
-
-  <!-- QUICK ACTIONS -->
-  <section>
-
-    <div class="section-heading">
-      <div>
-        <h2>Quick Actions</h2>
-        <p>Frequently used administration tasks.</p>
-      </div>
-    </div>
-
-    <div class="actions">
-
-      <a class="action-card" href="batches.html">
-        <div class="action-icon">＋</div>
-        <div>
-          <strong>Create New Batch</strong>
-          <small>Set opening and closing dates</small>
+      <div class="stat">
+        <div class="stat-top">
+          <small>Customers</small>
+          <div class="stat-icon">♙</div>
         </div>
-      </a>
+        <h2 id="customerCount">—</h2>
+        <p>Registered accounts</p>
+      </div>
 
-      <a class="action-card" href="products.html">
-        <div class="action-icon">＋</div>
-        <div>
-          <strong>Add Product</strong>
-          <small>Add a new shopping product</small>
+      <div class="stat">
+        <div class="stat-top">
+          <small>Orders</small>
+          <div class="stat-icon">🛒</div>
         </div>
-      </a>
+        <h2 id="orderCount">—</h2>
+        <p>Total shopping orders</p>
+      </div>
 
-      <a class="action-card" href="orders.html">
-        <div class="action-icon">⌕</div>
-        <div>
-          <strong>Find an Order</strong>
-          <small>Search using order number</small>
+      <div class="stat">
+        <div class="stat-top">
+          <small>Active Batch</small>
+          <div class="stat-icon">▱</div>
         </div>
-      </a>
+        <h2 id="activeBatch">—</h2>
+        <p>Current shopping batch</p>
+      </div>
 
-      <a class="action-card" href="promotions.html">
-        <div class="action-icon">◇</div>
-        <div>
-          <strong>Create Promotion</strong>
-          <small>Set up discounts and coupons</small>
+      <div class="stat">
+        <div class="stat-top">
+          <small>Pending</small>
+          <div class="stat-icon">◷</div>
         </div>
-      </a>
+        <h2 id="pendingCount">—</h2>
+        <p>Awaiting fulfilment</p>
+      </div>
 
     </div>
   </section>
 
-  <!-- DEPARTMENTS -->
-  <section>
-
-    <div class="section-heading">
-      <div>
-        <h2>Management Departments</h2>
-        <p>Choose a department to manage that part of Ahruh.</p>
-      </div>
-
-      <span id="departmentCount"
-        style="font-size:10px;color:var(--muted)">
-        17 departments
-      </span>
+  <section class="section">
+    <div class="section-head">
+      <h2>Manage AHRUH</h2>
+      <small>All departments</small>
     </div>
 
-    <div class="departments" id="departmentGrid">
+    <div class="manage-grid">
 
-      <a class="department" href="batches.html"
-         data-search="batch management orders schedules open close">
-        <div class="department-icon">▦</div>
-        <div>
-          <strong>Batch Management</strong>
-          <small>Create batches, set opening and closing dates, and monitor sales.</small>
-        </div>
-        <span class="arrow">›</span>
+      <a class="manage-item" href="batches.html">
+        <div class="manage-icon">▦</div>
+        <strong>Batches</strong>
       </a>
 
-      <a class="department" href="products.html"
-         data-search="products catalogue prices variants stock">
-        <div class="department-icon">▣</div>
-        <div>
-          <strong>Product Management</strong>
-          <small>Add products, photos, prices, colours, sizes and variants.</small>
-        </div>
-        <span class="arrow">›</span>
+      <a class="manage-item" href="products.html">
+        <div class="manage-icon">▣</div>
+        <strong>Products</strong>
       </a>
 
-      <a class="department" href="categories.html"
-         data-search="categories subcategories banners">
-        <div class="department-icon">▤</div>
-        <div>
-          <strong>Category Management</strong>
-          <small>Create, edit, arrange and organise shopping categories.</small>
-        </div>
-        <span class="arrow">›</span>
+      <a class="manage-item" href="categories.html">
+        <div class="manage-icon">▤</div>
+        <strong>Categories</strong>
       </a>
 
-      <a class="department" href="orders.html"
-         data-search="orders receipts print tracking">
-        <div class="department-icon">▧</div>
-        <div>
-          <strong>Orders & Receipts</strong>
-          <small>View orders, print receipts and prepare batch quantity summaries.</small>
-        </div>
-        <span class="arrow">›</span>
+      <a class="manage-item" href="orders.html">
+        <div class="manage-icon">🛒</div>
+        <strong>Orders</strong>
       </a>
 
-      <a class="department" href="artwork.html"
-         data-search="artwork custom uploads images designs">
-        <div class="department-icon">▧</div>
-        <div>
-          <strong>Custom Artwork</strong>
-          <small>Review customer uploads and manage artwork attached to orders.</small>
-        </div>
-        <span class="arrow">›</span>
+      <a class="manage-item" href="wallet.html">
+        <div class="manage-icon">₦</div>
+        <strong>Wallet</strong>
       </a>
 
-      <a class="department" href="customers.html"
-         data-search="customers accounts profiles addresses">
-        <div class="department-icon">♙</div>
-        <div>
-          <strong>Customer Management</strong>
-          <small>View profiles, saved addresses and order histories.</small>
-        </div>
-        <span class="arrow">›</span>
+      <a class="manage-item" href="rewards.html">
+        <div class="manage-icon">✧</div>
+        <strong>Rewards</strong>
       </a>
 
-      <a class="department" href="wallet.html"
-         data-search="naira wallet deposits withdrawals balance">
-        <div class="department-icon">₦</div>
-        <div>
-          <strong>Naira Wallet</strong>
-          <small>Review wallet records, deposits, payments and withdrawals.</small>
-        </div>
-        <span class="arrow">›</span>
+      <a class="manage-item" href="games.html">
+        <div class="manage-icon">♟</div>
+        <strong>Games</strong>
       </a>
 
-      <a class="department" href="rewards.html"
-         data-search="g coins rewards conversion check in">
-        <div class="department-icon">◈</div>
-        <div>
-          <strong>G-Coin Rewards</strong>
-          <small>Control coin rewards, daily check-ins and coin conversion.</small>
-        </div>
-        <span class="arrow">›</span>
+      <a class="manage-item" href="shipping.html">
+        <div class="manage-icon">🚚</div>
+        <strong>Delivery</strong>
       </a>
 
-      <a class="department" href="games.html"
-         data-search="games levels competitions prizes">
-        <div class="department-icon">♟</div>
-        <div>
-          <strong>Games Management</strong>
-          <small>Manage game levels, challenges and competitions.</small>
-        </div>
-        <span class="arrow">›</span>
+      <a class="manage-item" href="reports.html">
+        <div class="manage-icon">▥</div>
+        <strong>Reports</strong>
       </a>
 
-      <a class="department" href="mining.html"
-         data-search="mining taps daily coins limits">
-        <div class="department-icon">✧</div>
-        <div>
-          <strong>Mining Management</strong>
-          <small>Set daily mining limits, coin rates and activity controls.</small>
-        </div>
-        <span class="arrow">›</span>
+      <a class="manage-item" href="customers.html">
+        <div class="manage-icon">♙</div>
+        <strong>Customers</strong>
       </a>
 
-      <a class="department" href="promotions.html"
-         data-search="coupons flash sales discounts vouchers campaigns">
-        <div class="department-icon">◇</div>
-        <div>
-          <strong>Coupons & Promotions</strong>
-          <small>Create batch coupons, discounts and flash sales.</small>
-        </div>
-        <span class="arrow">›</span>
+      <a class="manage-item" href="promotions.html">
+        <div class="manage-icon">◇</div>
+        <strong>Promotions</strong>
       </a>
 
-      <a class="department" href="shipping.html"
-         data-search="shipping delivery addresses free delivery">
-        <div class="department-icon">⌖</div>
-        <div>
-          <strong>Shipping & Delivery</strong>
-          <small>Manage delivery fees, fulfilment and tracking stages.</small>
-        </div>
-        <span class="arrow">›</span>
-      </a>
-
-      <a class="department" href="notifications.html"
-         data-search="notifications announcements email messages">
-        <div class="department-icon">♢</div>
-        <div>
-          <strong>Notifications</strong>
-          <small>Send batch announcements and customer order updates.</small>
-        </div>
-        <span class="arrow">›</span>
-      </a>
-
-      <a class="department" href="reviews.html"
-         data-search="reviews ratings customer feedback">
-        <div class="department-icon">☆</div>
-        <div>
-          <strong>Product Reviews</strong>
-          <small>Moderate verified customer reviews and ratings.</small>
-        </div>
-        <span class="arrow">›</span>
-      </a>
-
-      <a class="department" href="reports.html"
-         data-search="reports analytics sales revenue">
-        <div class="department-icon">▥</div>
-        <div>
-          <strong>Reports & Analytics</strong>
-          <small>Analyse sales, batch performance, rewards and transactions.</small>
-        </div>
-        <span class="arrow">›</span>
-      </a>
-
-      <a class="department" href="settings.html"
-         data-search="settings configuration security">
-        <div class="department-icon">⚙</div>
-        <div>
-          <strong>Platform Settings</strong>
-          <small>Configure platform rules, admin access and preferences.</small>
-        </div>
-        <span class="arrow">›</span>
-      </a>
-
-      <a class="department" href="promotions.html"
-         data-search="campaigns sponsored products featured offers">
-        <div class="department-icon">✦</div>
-        <div>
-          <strong>Campaign Management</strong>
-          <small>Manage featured products, sponsored placements and shopping events.</small>
-        </div>
-        <span class="arrow">›</span>
+      <a class="manage-item" href="settings.html">
+        <div class="manage-icon">⚙</div>
+        <strong>Settings</strong>
       </a>
 
     </div>
-
-    <div id="noResults" class="panel hidden empty">
-      No matching department found.
-    </div>
-
   </section>
 
-  <!-- BATCH OVERVIEW -->
-  <section class="panel">
+  <section class="section">
+    <div class="section-head">
+      <h2>Recent Activity</h2>
+      <small>Latest updates</small>
+    </div>
 
-    <div class="panel-heading">
-      <div>
-        <h2>Batch Overview</h2>
-        <p>Monitor batch activity, orders and total goods value.</p>
+    <div class="activity-card">
+      <div class="activity-empty">
+        Your latest order, batch and reward activities will appear here
+        when the central database is connected.
       </div>
-
-      <a class="btn btn-light" href="batches.html">
-        Manage Batches →
-      </a>
     </div>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>BATCH</th>
-            <th>ORDERS</th>
-            <th>GOODS VALUE</th>
-            <th>STATUS</th>
-            <th>ACTION</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td colspan="5" class="empty">
-              Batch records will appear here after the database is connected.
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
   </section>
 
-  <footer class="footer">
-    <strong>Ahruh Admin Workspace</strong>
-    <br><br>
-    Owner administration · Shopping made simpler. Rewards made meaningful.
-  </footer>
-
-</div>
 </main>
+
+<!-- MORE MENU -->
+<div class="more-menu" id="moreMenu" onclick="closeMoreOutside(event)">
+  <div class="more-content">
+
+    <div class="more-head">
+      <h2>All Departments</h2>
+      <button class="close-btn" onclick="closeMore()">×</button>
+    </div>
+
+    <div class="more-grid">
+      <a class="more-item" href="artwork.html"><span>▧</span><strong>Custom Artwork</strong></a>
+      <a class="more-item" href="mining.html"><span>✧</span><strong>Mining</strong></a>
+      <a class="more-item" href="notifications.html"><span>♢</span><strong>Notifications</strong></a>
+      <a class="more-item" href="reviews.html"><span>☆</span><strong>Reviews</strong></a>
+      <a class="more-item" href="reports.html"><span>▥</span><strong>Analytics</strong></a>
+      <a class="more-item" href="settings.html"><span>⚙</span><strong>Settings</strong></a>
+    </div>
+
+  </div>
 </div>
+
+<!-- BOTTOM NAVIGATION -->
+<nav class="bottom-nav">
+
+  <a class="bottom-link active" href="admin.html">
+    <span>⌂</span>Home
+  </a>
+
+  <a class="bottom-link" href="batches.html">
+    <span>▦</span>Batches
+  </a>
+
+  <a class="bottom-link" href="orders.html">
+    <span>🛒</span>Orders
+  </a>
+
+  <a class="bottom-link" href="products.html">
+    <span>▣</span>Products
+  </a>
+
+  <button class="bottom-link" onclick="openMore()">
+    <span>☰</span>More
+  </button>
+
+</nav>
 
 <script>
-function toggleSidebar(){
-  document.getElementById("sidebar").classList.toggle("show");
+function openMore(){
+  document.getElementById("moreMenu").classList.add("show");
 }
 
-function searchDepartments(){
-  const query=document
-    .getElementById("globalSearch")
-    .value.trim().toLowerCase();
-
-  const cards=document.querySelectorAll(".department");
-  let visible=0;
-
-  cards.forEach(card=>{
-    const text=(
-      card.innerText+" "+(card.dataset.search||"")
-    ).toLowerCase();
-
-    const match=text.includes(query);
-    card.classList.toggle("hidden",!match);
-
-    if(match) visible++;
-  });
-
-  document.getElementById("departmentCount").textContent=
-    visible+" department"+(visible===1?"":"s");
-
-  document.getElementById("noResults")
-    .classList.toggle("hidden",visible>0);
+function closeMore(){
+  document.getElementById("moreMenu").classList.remove("show");
 }
 
-document.getElementById("todayDate").textContent=
+function closeMoreOutside(event){
+  if(event.target.id==="moreMenu") closeMore();
+}
+
+document.getElementById("welcomeDate").textContent =
   new Date().toLocaleDateString("en-NG",{
-    weekday:"short",
+    weekday:"long",
     day:"numeric",
-    month:"short",
+    month:"long",
     year:"numeric"
   });
 
-document.querySelectorAll(".nav-link").forEach(link=>{
-  link.addEventListener("click",()=>{
-    document.getElementById("sidebar").classList.remove("show");
-  });
-});
+/*
+  Live figures will be connected to the secure Ahruh backend.
+  Do not use browser-only storage for wallet balances,
+  payment records, authentication or customer financial data.
+*/
 </script>
 
 </body>
