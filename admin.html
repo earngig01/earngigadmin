@@ -26,553 +26,128 @@
   --line:#E8EDF5;
   --shadow:0 5px 18px rgba(35,76,140,.07);
 }
-
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:var(--pale);
-  color:var(--text);
-  font-family:'DM Sans',Arial,sans-serif;
-  font-size:14px;
-}
-
+body{margin:0;background:var(--pale);color:var(--text);font-family:'DM Sans',Arial,sans-serif;font-size:14px}
 button,input{font:inherit}
 button{cursor:pointer}
 a{text-decoration:none;color:inherit}
 
 /* BRAND */
-
-.brand-word{
-  position:relative;
-  display:inline-block;
-  padding-bottom:5px;
-}
-
-.brand-name{
-  font-family:'Cormorant Garamond',Georgia,serif;
-  font-size:34px;
-  line-height:.9;
-  font-weight:700;
-  letter-spacing:2.5px;
-  color:white;
-}
-
-.brand-flourish{
-  position:absolute;
-  height:5px;
-  width:100%;
-  bottom:0;
-  left:0;
-  border-bottom:1.5px solid var(--gold);
-  border-radius:0 0 70% 25%;
-  transform:skewX(-20deg);
-}
-
-.brand-tagline{
-  font-size:8px;
-  letter-spacing:2.2px;
-  color:#D6E5FA;
-  margin-top:8px;
-  font-weight:600;
-}
+.brand-word{position:relative;display:inline-block;padding-bottom:5px}
+.brand-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:34px;line-height:.9;font-weight:700;letter-spacing:2.5px;color:white}
+.brand-flourish{position:absolute;height:5px;width:100%;bottom:0;left:0;border-bottom:1.5px solid var(--gold);border-radius:0 0 70% 25%;transform:skewX(-20deg)}
+.brand-tagline{font-size:8px;letter-spacing:2.2px;color:#D6E5FA;margin-top:8px;font-weight:600}
 
 /* TOP BAR */
+.topbar{min-height:67px;background:var(--navy);color:white;display:flex;align-items:center;justify-content:space-between;padding:12px 22px;gap:15px;position:sticky;top:0;z-index:30;box-shadow:0 3px 12px #123d7920}
+.top-right{display:flex;align-items:center;gap:13px}
+.top-action{width:37px;height:37px;display:grid;place-items:center;border:0;border-radius:50%;background:#ffffff20;color:white;font-size:19px;position:relative}
+.dot{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:#FFCB69}
+.avatar{width:36px;height:36px;border-radius:50%;background:white;color:var(--royal);display:grid;place-items:center;font-weight:800}
 
-.topbar{
-  min-height:67px;
-  background:var(--navy);
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:12px 22px;
-  gap:15px;
-  position:sticky;
-  top:0;
-  z-index:30;
-  box-shadow:0 3px 12px #123d7920;
-}
-
-.top-right{
-  display:flex;
-  align-items:center;
-  gap:13px;
-}
-
-.top-action{
-  width:37px;
-  height:37px;
-  display:grid;
-  place-items:center;
-  border:0;
-  border-radius:50%;
-  background:#ffffff20;
-  color:white;
-  font-size:19px;
-  position:relative;
-}
-
-.dot{
-  position:absolute;
-  top:5px;
-  right:5px;
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#FFCB69;
-}
-
-.avatar{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  background:white;
-  color:var(--royal);
-  display:grid;
-  place-items:center;
-  font-weight:800;
-}
-
-/* TOP DEPARTMENT SHORTCUTS */
-
-.quick-nav-wrap{
-  background:white;
-  border-bottom:1px solid var(--line);
-  padding:10px 18px;
-  position:relative;
-  z-index:20;
-}
-
-.quick-nav{
-  max-width:1250px;
-  margin:auto;
-  display:flex;
-  gap:9px;
-  overflow-x:auto;
-  scrollbar-width:none;
-  padding-bottom:2px;
-}
-
+/* QUICK NAV */
+.quick-nav-wrap{background:white;border-bottom:1px solid var(--line);padding:10px 18px;position:relative;z-index:20}
+.quick-nav{max-width:1250px;margin:auto;display:flex;gap:9px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .quick-nav::-webkit-scrollbar{display:none}
-
-.quick-link{
-  flex:0 0 100px;
-  min-height:75px;
-  border:1px solid var(--line);
-  border-radius:13px;
-  background:white;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  gap:6px;
-  color:var(--navy);
-  transition:.2s;
-}
-
-.quick-link:hover{
-  border-color:#B8D3FA;
-  background:var(--pale);
-}
-
-.quick-link.active{
-  background:var(--light);
-  border-color:#B9D4FA;
-  color:var(--royal);
-}
-
-.quick-icon{
-  width:31px;
-  height:31px;
-  display:grid;
-  place-items:center;
-  font-size:21px;
-}
-
-.quick-link strong{
-  font-size:9px;
-  font-weight:800;
-  white-space:nowrap;
-}
+.quick-link{flex:0 0 100px;min-height:75px;border:1px solid var(--line);border-radius:13px;background:white;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;color:var(--navy);transition:.2s}
+.quick-link:hover{border-color:#B8D3FA;background:var(--pale)}
+.quick-link.active{background:var(--light);border-color:#B9D4FA;color:var(--royal)}
+.quick-icon{width:31px;height:31px;display:grid;place-items:center;font-size:21px}
+.quick-link strong{font-size:9px;font-weight:800;white-space:nowrap}
 
 /* MAIN */
+.main{max-width:1250px;margin:auto;padding:22px 25px 100px}
 
-.main{
-  max-width:1250px;
-  margin:auto;
-  padding:22px 25px 100px;
-}
-
-/* WELCOME BANNER */
-
-.welcome{
-  background:linear-gradient(115deg,#102A56,#1768D5 65%,#438FF0);
-  border-radius:20px;
-  padding:25px;
-  color:white;
-  min-height:170px;
-  position:relative;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  box-shadow:0 9px 25px #1768D52b;
-}
-
-.welcome::before{
-  content:"";
-  position:absolute;
-  width:230px;
-  height:230px;
-  border:1px solid #ffffff22;
-  border-radius:50%;
-  right:70px;
-  top:-100px;
-}
-
-.welcome::after{
-  content:"";
-  position:absolute;
-  width:160px;
-  height:160px;
-  border:1px solid #ffffff20;
-  border-radius:50%;
-  right:-35px;
-  bottom:-100px;
-}
-
+/* WELCOME */
+.welcome{background:linear-gradient(115deg,#102A56,#1768D5 65%,#438FF0);border-radius:20px;padding:25px;color:white;min-height:170px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:15px;box-shadow:0 9px 25px #1768D52b}
+.welcome::before{content:"";position:absolute;width:230px;height:230px;border:1px solid #ffffff22;border-radius:50%;right:70px;top:-100px}
+.welcome::after{content:"";position:absolute;width:160px;height:160px;border:1px solid #ffffff20;border-radius:50%;right:-35px;bottom:-100px}
 .welcome-content{position:relative;z-index:2}
-
-.welcome-date{
-  font-size:9px;
-  letter-spacing:1.5px;
-  color:#D8E8FF;
-  font-weight:700;
-  margin-bottom:12px;
-}
-
-.welcome h1{
-  font-size:27px;
-  margin:0 0 8px;
-  letter-spacing:-.7px;
-  font-weight:700;
-}
-
-.welcome p{
-  color:#E1EDFF;
-  font-size:11px;
-  margin:0;
-  line-height:1.6;
-}
-
-.welcome-art{
-  position:relative;
-  z-index:2;
-  width:150px;
-  height:115px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex:none;
-}
-
-.shopping-bag{
-  width:72px;
-  height:76px;
-  background:#fff;
-  border-radius:10px 10px 14px 14px;
-  transform:rotate(-6deg);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--royal);
-  font-size:30px;
-  box-shadow:0 10px 20px #123d7930;
-  position:relative;
-}
-
-.shopping-bag::before{
-  content:"";
-  position:absolute;
-  width:27px;
-  height:19px;
-  border:4px solid var(--gold);
-  border-bottom:0;
-  border-radius:15px 15px 0 0;
-  top:-15px;
-}
-
-.small-bag{
-  position:absolute;
-  width:47px;
-  height:52px;
-  background:var(--gold);
-  border-radius:7px;
-  right:8px;
-  bottom:5px;
-  display:grid;
-  place-items:center;
-  color:var(--navy);
-  font-size:21px;
-  box-shadow:0 7px 16px #123d7930;
-  transform:rotate(9deg);
-}
+.welcome-date{font-size:9px;letter-spacing:1.5px;color:#D8E8FF;font-weight:700;margin-bottom:12px}
+.welcome h1{font-size:27px;margin:0 0 8px;letter-spacing:-.7px;font-weight:700}
+.welcome p{color:#E1EDFF;font-size:11px;margin:0;line-height:1.6}
+.welcome-art{position:relative;z-index:2;width:150px;height:115px;display:flex;align-items:center;justify-content:center;flex:none}
+.shopping-bag{width:72px;height:76px;background:#fff;border-radius:10px 10px 14px 14px;transform:rotate(-6deg);display:flex;align-items:center;justify-content:center;color:var(--royal);font-size:30px;box-shadow:0 10px 20px #123d7930;position:relative}
+.shopping-bag::before{content:"";position:absolute;width:27px;height:19px;border:4px solid var(--gold);border-bottom:0;border-radius:15px 15px 0 0;top:-15px}
+.small-bag{position:absolute;width:47px;height:52px;background:var(--gold);border-radius:7px;right:8px;bottom:5px;display:grid;place-items:center;color:var(--navy);font-size:21px;box-shadow:0 7px 16px #123d7930;transform:rotate(9deg)}
 
 /* SECTIONS */
-
 .section{margin-top:25px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;gap:10px}
+.section-head h2{font-size:16px;color:var(--navy);margin:0;font-weight:700}
+.section-head small{color:var(--muted);font-size:10px}
 
-.section-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:13px;
-  gap:10px;
-}
+/* BILLBOARD PANEL */
+.billboard-panel{background:white;border:1px solid var(--line);border-radius:17px;padding:16px;box-shadow:var(--shadow)}
+.billboard-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.billboard-top p{font-size:10px;color:var(--muted);margin:4px 0 0;line-height:1.5}
+.billboard-status{display:inline-flex;align-items:center;gap:6px;background:#E7F8EF;color:#16835B;border-radius:20px;padding:6px 10px;font-size:9px;font-weight:800;white-space:nowrap}
+.billboard-status::before{content:"";width:6px;height:6px;background:#18A66D;border-radius:50%}
+.billboard-preview{width:100%;aspect-ratio:16/5;min-height:130px;max-height:300px;border-radius:12px;background:linear-gradient(120deg,#EAF2FF,#D5E6FF);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
+.billboard-preview img{width:100%;height:100%;object-fit:cover;display:none}
+.billboard-empty{text-align:center;padding:20px;color:#7185A4}
+.billboard-empty span{font-size:32px;display:block;margin-bottom:8px}
+.billboard-empty strong{font-size:12px;color:var(--navy);display:block}
+.billboard-empty small{font-size:10px;display:block;margin-top:5px}
+.billboard-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:13px;flex-wrap:wrap}
+.billboard-info{font-size:10px;color:var(--muted)}
+.billboard-info strong{color:var(--navy)}
+.billboard-actions{display:flex;gap:8px;flex-wrap:wrap}
+.billboard-btn{border:0;border-radius:9px;padding:10px 14px;font-size:10px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.billboard-btn.primary{background:var(--royal);color:white}
+.billboard-btn.secondary{background:var(--light);color:var(--royal)}
+.billboard-btn:hover{filter:brightness(.96)}
+.billboard-note{font-size:9px;color:var(--muted);line-height:1.6;margin:12px 0 0;padding-top:10px;border-top:1px solid var(--line)}
 
-.section-head h2{
-  font-size:16px;
-  color:var(--navy);
-  margin:0;
-  font-weight:700;
-}
-
-.section-head small{
-  color:var(--muted);
-  font-size:10px;
-}
-
-/* STAT CARDS */
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:12px;
-}
-
-.stat{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:15px;
-  padding:16px;
-  box-shadow:var(--shadow);
-  min-width:0;
-}
-
-.stat-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:6px;
-}
-
-.stat-icon{
-  width:37px;
-  height:37px;
-  display:grid;
-  place-items:center;
-  border-radius:12px;
-  font-size:18px;
-}
-
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stat{background:white;border:1px solid var(--line);border-radius:15px;padding:16px;box-shadow:var(--shadow);min-width:0}
+.stat-top{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.stat-icon{width:37px;height:37px;display:grid;place-items:center;border-radius:12px;font-size:18px}
 .stat:nth-child(1) .stat-icon{background:#E4F0FF;color:#3478E5}
 .stat:nth-child(2) .stat-icon{background:#FFF1D9;color:#D99A29}
 .stat:nth-child(3) .stat-icon{background:#EBE9FF;color:#7563D9}
 .stat:nth-child(4) .stat-icon{background:#E6F7EE;color:#15966B}
-
 .stat small{color:var(--muted);font-size:10px}
-
-.stat h2{
-  font-size:24px;
-  color:var(--navy);
-  margin:12px 0 4px;
-}
-
+.stat h2{font-size:24px;color:var(--navy);margin:12px 0 4px}
 .stat p{color:var(--muted);font-size:9px;margin:0}
 
-/* MANAGEMENT GRID */
-
-.manage-grid{
-  display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:12px;
-}
-
-.manage-item{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:15px;
-  min-height:105px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  gap:9px;
-  text-align:center;
-  padding:12px 6px;
-  box-shadow:var(--shadow);
-  transition:.2s;
-}
-
-.manage-item:hover{
-  border-color:#B8D3FA;
-  transform:translateY(-3px);
-  box-shadow:0 9px 20px #3478E51a;
-}
-
-.manage-icon{
-  width:43px;
-  height:43px;
-  display:grid;
-  place-items:center;
-  border-radius:13px;
-  background:var(--light);
-  color:var(--royal);
-  font-size:21px;
-}
-
-.manage-item strong{
-  font-size:10px;
-  color:var(--text);
-  line-height:1.3;
-}
+/* MANAGEMENT */
+.manage-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.manage-item{background:white;border:1px solid var(--line);border-radius:15px;min-height:105px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:9px;text-align:center;padding:12px 6px;box-shadow:var(--shadow);transition:.2s}
+.manage-item:hover{border-color:#B8D3FA;transform:translateY(-3px);box-shadow:0 9px 20px #3478E51a}
+.manage-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:var(--light);color:var(--royal);font-size:21px}
+.manage-item strong{font-size:10px;color:var(--text);line-height:1.3}
 
 /* ACTIVITY */
-
-.activity-card{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:15px;
-  padding:17px;
-  box-shadow:var(--shadow);
-}
-
-.activity-empty{
-  text-align:center;
-  color:var(--muted);
-  font-size:10px;
-  padding:20px 5px;
-  line-height:1.7;
-}
+.activity-card{background:white;border:1px solid var(--line);border-radius:15px;padding:17px;box-shadow:var(--shadow)}
+.activity-empty{text-align:center;color:var(--muted);font-size:10px;padding:20px 5px;line-height:1.7}
 
 /* MORE MENU */
-
-.more-menu{
-  position:fixed;
-  inset:0;
-  background:#102A5670;
-  z-index:80;
-  display:none;
-  align-items:flex-end;
-  justify-content:center;
-}
-
+.more-menu{position:fixed;inset:0;background:#102A5670;z-index:80;display:none;align-items:flex-end;justify-content:center}
 .more-menu.show{display:flex}
-
-.more-content{
-  background:white;
-  width:100%;
-  max-width:600px;
-  border-radius:22px 22px 0 0;
-  padding:22px 20px 35px;
-  max-height:85vh;
-  overflow-y:auto;
-}
-
-.more-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
-
-.more-head h2{
-  color:var(--navy);
-  font-size:17px;
-  margin:0;
-}
-
-.close-btn{
-  width:32px;
-  height:32px;
-  border:0;
-  border-radius:50%;
-  background:var(--light);
-  color:var(--navy);
-  font-size:18px;
-}
-
-.more-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-
-.more-item{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  background:var(--pale);
-  border-radius:12px;
-  min-height:82px;
-  text-align:center;
-  padding:10px 5px;
-}
-
+.more-content{background:white;width:100%;max-width:600px;border-radius:22px 22px 0 0;padding:22px 20px 35px;max-height:85vh;overflow-y:auto}
+.more-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.more-head h2{color:var(--navy);font-size:17px;margin:0}
+.close-btn{width:32px;height:32px;border:0;border-radius:50%;background:var(--light);color:var(--navy);font-size:18px}
+.more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.more-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--pale);border-radius:12px;min-height:82px;text-align:center;padding:10px 5px}
 .more-item span{font-size:21px;color:var(--royal)}
 .more-item strong{font-size:9px}
 
-/* BOTTOM NAVIGATION */
-
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  height:67px;
-  background:white;
-  border-top:1px solid var(--line);
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-  z-index:40;
-  box-shadow:0 -4px 15px #123d790b;
-}
-
-.bottom-link{
-  border:0;
-  background:none;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:5px;
-  color:var(--muted);
-  font-size:9px;
-  min-width:60px;
-}
-
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:67px;background:white;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:center;z-index:40;box-shadow:0 -4px 15px #123d790b}
+.bottom-link{border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--muted);font-size:9px;min-width:60px}
 .bottom-link span{font-size:19px}
 .bottom-link.active{color:var(--royal);font-weight:700}
-
-.bottom-link.active span{
-  background:var(--light);
-  border-radius:10px;
-  padding:4px 12px;
-}
+.bottom-link.active span{background:var(--light);border-radius:10px;padding:4px 12px}
 
 /* RESPONSIVE */
-
 @media(max-width:800px){
   .main{padding:18px 17px 95px}
   .manage-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
   .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-
 @media(max-width:520px){
   .topbar{min-height:59px;padding:8px 14px}
   .brand-name{font-size:30px}
@@ -599,8 +174,12 @@ a{text-decoration:none;color:inherit}
   .manage-icon{width:39px;height:39px;font-size:19px}
   .manage-item strong{font-size:9px}
   .bottom-nav{height:64px}
+  .billboard-panel{padding:12px}
+  .billboard-preview{aspect-ratio:16/7;min-height:120px}
+  .billboard-footer{align-items:flex-start;flex-direction:column}
+  .billboard-actions{width:100%}
+  .billboard-btn{flex:1}
 }
-
 @media(max-width:350px){
   .welcome-art{width:70px}
   .welcome h1{font-size:19px}
@@ -616,76 +195,27 @@ a{text-decoration:none;color:inherit}
     <div class="brand-flourish"></div>
     <div class="brand-tagline">ADMIN SPACE</div>
   </div>
-
   <div class="top-right">
-    <button class="top-action"
-      onclick="location.href='notifications.html'"
-      aria-label="Notifications">
+    <button class="top-action" onclick="location.href='notifications.html'" aria-label="Notifications">
       ♧<i class="dot"></i>
     </button>
     <div class="avatar">A</div>
   </div>
 </header>
 
-<!-- QUICK ACCESS ICONS -->
 <nav class="quick-nav-wrap" aria-label="Admin departments">
   <div class="quick-nav">
-
-    <a class="quick-link active" href="admin.html">
-      <span class="quick-icon">▦</span>
-      <strong>Dashboard</strong>
-    </a>
-
-    <a class="quick-link" href="batches.html">
-      <span class="quick-icon">▱</span>
-      <strong>Batches</strong>
-    </a>
-
-    <a class="quick-link" href="products.html">
-      <span class="quick-icon">◇</span>
-      <strong>Products</strong>
-    </a>
-
-    <a class="quick-link" href="categories.html">
-      <span class="quick-icon">▤</span>
-      <strong>Categories</strong>
-    </a>
-
-    <a class="quick-link" href="orders.html">
-      <span class="quick-icon">🛍</span>
-      <strong>Orders</strong>
-    </a>
-
-    <a class="quick-link" href="wallet.html">
-      <span class="quick-icon">▣</span>
-      <strong>Wallet</strong>
-    </a>
-
-    <a class="quick-link" href="promotions.html">
-      <span class="quick-icon">◇</span>
-      <strong>Promotions</strong>
-    </a>
-
-    <a class="quick-link" href="customers.html">
-      <span class="quick-icon">♙</span>
-      <strong>Customers</strong>
-    </a>
-
-    <a class="quick-link" href="delivery.html">
-      <span class="quick-icon">🚚</span>
-      <strong>Delivery</strong>
-    </a>
-
-    <a class="quick-link" href="notifications.html">
-      <span class="quick-icon">♧</span>
-      <strong>Notifications</strong>
-    </a>
-
-    <a class="quick-link" href="settings.html">
-      <span class="quick-icon">⚙</span>
-      <strong>Settings</strong>
-    </a>
-
+    <a class="quick-link active" href="admin.html"><span class="quick-icon">▦</span><strong>Dashboard</strong></a>
+    <a class="quick-link" href="batches.html"><span class="quick-icon">▱</span><strong>Batches</strong></a>
+    <a class="quick-link" href="products.html"><span class="quick-icon">◇</span><strong>Products</strong></a>
+    <a class="quick-link" href="categories.html"><span class="quick-icon">▤</span><strong>Categories</strong></a>
+    <a class="quick-link" href="orders.html"><span class="quick-icon">🛍</span><strong>Orders</strong></a>
+    <a class="quick-link" href="wallet.html"><span class="quick-icon">▣</span><strong>Wallet</strong></a>
+    <a class="quick-link" href="promotions.html"><span class="quick-icon">◇</span><strong>Promotions</strong></a>
+    <a class="quick-link" href="customers.html"><span class="quick-icon">♙</span><strong>Customers</strong></a>
+    <a class="quick-link" href="delivery.html"><span class="quick-icon">🚚</span><strong>Delivery</strong></a>
+    <a class="quick-link" href="notifications.html"><span class="quick-icon">♧</span><strong>Notifications</strong></a>
+    <a class="quick-link" href="settings.html"><span class="quick-icon">⚙</span><strong>Settings</strong></a>
   </div>
 </nav>
 
@@ -697,10 +227,51 @@ a{text-decoration:none;color:inherit}
       <h1>Good day, Admin! 👋</h1>
       <p>Here's what's happening on AHRUH today.</p>
     </div>
-
     <div class="welcome-art" aria-hidden="true">
       <div class="shopping-bag">⌑</div>
       <div class="small-bag">✦</div>
+    </div>
+  </section>
+
+  <!-- BILLBOARD MANAGEMENT -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Homepage Billboard</h2>
+      <small>Customer homepage display</small>
+    </div>
+
+    <div class="billboard-panel">
+      <div class="billboard-top">
+        <div>
+          <strong style="font-size:12px;color:var(--navy)">Billboard Slides</strong>
+          <p>Manage the promotional images customers see on the AHRUH homepage.</p>
+        </div>
+        <span class="billboard-status" id="billboardStatus">Checking</span>
+      </div>
+
+      <div class="billboard-preview">
+        <img id="billboardImage" alt="Current AHRUH homepage billboard">
+        <div class="billboard-empty" id="billboardEmpty">
+          <span>▧</span>
+          <strong>No billboard preview available</strong>
+          <small>Upload and manage your homepage slides.</small>
+        </div>
+      </div>
+
+      <div class="billboard-footer">
+        <div class="billboard-info">
+          <strong id="billboardCount">Checking slides...</strong>
+          <span id="billboardSlideName"></span>
+        </div>
+        <div class="billboard-actions">
+          <button class="billboard-btn secondary" onclick="refreshBillboard()">↻ Refresh preview</button>
+          <a class="billboard-btn primary" href="billboard.html">＋ Manage billboard</a>
+        </div>
+      </div>
+
+      <p class="billboard-note">
+        Images are managed through the Billboard Manager. The homepage and dashboard must be opened on the same website origin to access the same browser database. For all customers to see updates across different devices, connect the billboard to shared cloud storage.
+      </p>
     </div>
   </section>
 
@@ -711,43 +282,26 @@ a{text-decoration:none;color:inherit}
     </div>
 
     <div class="stats">
-
       <div class="stat">
-        <div class="stat-top">
-          <small>Customers</small>
-          <div class="stat-icon">♙</div>
-        </div>
+        <div class="stat-top"><small>Customers</small><div class="stat-icon">♙</div></div>
         <h2 id="customerCount">—</h2>
         <p>Registered accounts</p>
       </div>
-
       <div class="stat">
-        <div class="stat-top">
-          <small>Orders</small>
-          <div class="stat-icon">🛒</div>
-        </div>
+        <div class="stat-top"><small>Orders</small><div class="stat-icon">🛒</div></div>
         <h2 id="orderCount">—</h2>
         <p>Total shopping orders</p>
       </div>
-
       <div class="stat">
-        <div class="stat-top">
-          <small>Active Batch</small>
-          <div class="stat-icon">▱</div>
-        </div>
+        <div class="stat-top"><small>Active Batch</small><div class="stat-icon">▱</div></div>
         <h2 id="activeBatch">—</h2>
         <p>Current shopping batch</p>
       </div>
-
       <div class="stat">
-        <div class="stat-top">
-          <small>Awaiting Fulfilment</small>
-          <div class="stat-icon">◷</div>
-        </div>
+        <div class="stat-top"><small>Awaiting Fulfilment</small><div class="stat-icon">◷</div></div>
         <h2 id="pendingCount">—</h2>
         <p>Orders not yet fulfilled</p>
       </div>
-
     </div>
   </section>
 
@@ -758,62 +312,17 @@ a{text-decoration:none;color:inherit}
     </div>
 
     <div class="manage-grid">
-
-      <a class="manage-item" href="batches.html">
-        <div class="manage-icon">▦</div>
-        <strong>Batch Management</strong>
-      </a>
-
-      <a class="manage-item" href="products.html">
-        <div class="manage-icon">◇</div>
-        <strong>Products</strong>
-      </a>
-
-      <a class="manage-item" href="categories.html">
-        <div class="manage-icon">▤</div>
-        <strong>Categories</strong>
-      </a>
-
-      <a class="manage-item" href="orders.html">
-        <div class="manage-icon">🛍</div>
-        <strong>Orders</strong>
-      </a>
-
-      <a class="manage-item" href="wallet.html">
-        <div class="manage-icon">₦</div>
-        <strong>Wallet</strong>
-      </a>
-
-      <a class="manage-item" href="promotions.html">
-        <div class="manage-icon">◇</div>
-        <strong>Promotions</strong>
-      </a>
-
-      <a class="manage-item" href="rewards.html">
-        <div class="manage-icon">✧</div>
-        <strong>Rewards</strong>
-      </a>
-
-      <a class="manage-item" href="customers.html">
-        <div class="manage-icon">♙</div>
-        <strong>Customers</strong>
-      </a>
-
-      <a class="manage-item" href="delivery.html">
-        <div class="manage-icon">🚚</div>
-        <strong>Delivery</strong>
-      </a>
-
-      <a class="manage-item" href="reports.html">
-        <div class="manage-icon">▥</div>
-        <strong>Reports</strong>
-      </a>
-
-      <a class="manage-item" href="settings.html">
-        <div class="manage-icon">⚙</div>
-        <strong>Settings</strong>
-      </a>
-
+      <a class="manage-item" href="batches.html"><div class="manage-icon">▦</div><strong>Batch Management</strong></a>
+      <a class="manage-item" href="products.html"><div class="manage-icon">◇</div><strong>Products</strong></a>
+      <a class="manage-item" href="categories.html"><div class="manage-icon">▤</div><strong>Categories</strong></a>
+      <a class="manage-item" href="orders.html"><div class="manage-icon">🛍</div><strong>Orders</strong></a>
+      <a class="manage-item" href="wallet.html"><div class="manage-icon">₦</div><strong>Wallet</strong></a>
+      <a class="manage-item" href="promotions.html"><div class="manage-icon">◇</div><strong>Promotions</strong></a>
+      <a class="manage-item" href="rewards.html"><div class="manage-icon">✧</div><strong>Rewards</strong></a>
+      <a class="manage-item" href="customers.html"><div class="manage-icon">♙</div><strong>Customers</strong></a>
+      <a class="manage-item" href="delivery.html"><div class="manage-icon">🚚</div><strong>Delivery</strong></a>
+      <a class="manage-item" href="reports.html"><div class="manage-icon">▥</div><strong>Reports</strong></a>
+      <a class="manage-item" href="settings.html"><div class="manage-icon">⚙</div><strong>Settings</strong></a>
     </div>
   </section>
 
@@ -822,7 +331,6 @@ a{text-decoration:none;color:inherit}
       <h2>Recent Activity</h2>
       <small>Latest updates</small>
     </div>
-
     <div class="activity-card">
       <div class="activity-empty">
         Your latest order, batch and reward activities will appear here
@@ -836,12 +344,10 @@ a{text-decoration:none;color:inherit}
 <!-- MORE MENU -->
 <div class="more-menu" id="moreMenu" onclick="closeMoreOutside(event)">
   <div class="more-content">
-
     <div class="more-head">
       <h2>All Departments</h2>
       <button class="close-btn" onclick="closeMore()">×</button>
     </div>
-
     <div class="more-grid">
       <a class="more-item" href="artwork.html"><span>▧</span><strong>Custom Artwork</strong></a>
       <a class="more-item" href="mining.html"><span>✧</span><strong>Mining</strong></a>
@@ -849,45 +355,26 @@ a{text-decoration:none;color:inherit}
       <a class="more-item" href="reviews.html"><span>☆</span><strong>Reviews</strong></a>
       <a class="more-item" href="reports.html"><span>▥</span><strong>Analytics</strong></a>
       <a class="more-item" href="settings.html"><span>⚙</span><strong>Settings</strong></a>
+      <a class="more-item" href="billboard.html"><span>▧</span><strong>Billboard</strong></a>
     </div>
-
   </div>
 </div>
 
-<!-- BOTTOM NAVIGATION -->
 <nav class="bottom-nav">
-
-  <a class="bottom-link active" href="admin.html">
-    <span>⌂</span>Home
-  </a>
-
-  <a class="bottom-link" href="batches.html">
-    <span>▦</span>Batches
-  </a>
-
-  <a class="bottom-link" href="orders.html">
-    <span>🛍</span>Orders
-  </a>
-
-  <a class="bottom-link" href="products.html">
-    <span>◇</span>Products
-  </a>
-
-  <button class="bottom-link" onclick="openMore()">
-    <span>☰</span>More
-  </button>
-
+  <a class="bottom-link active" href="admin.html"><span>⌂</span>Home</a>
+  <a class="bottom-link" href="batches.html"><span>▦</span>Batches</a>
+  <a class="bottom-link" href="orders.html"><span>🛍</span>Orders</a>
+  <a class="bottom-link" href="products.html"><span>◇</span>Products</a>
+  <button class="bottom-link" onclick="openMore()"><span>☰</span>More</button>
 </nav>
 
 <script>
 function openMore(){
   document.getElementById("moreMenu").classList.add("show");
 }
-
 function closeMore(){
   document.getElementById("moreMenu").classList.remove("show");
 }
-
 function closeMoreOutside(event){
   if(event.target.id==="moreMenu")closeMore();
 }
@@ -899,6 +386,151 @@ document.getElementById("welcomeDate").textContent =
     month:"long",
     year:"numeric"
   });
+
+/*
+  BILLBOARD PREVIEW
+  Reads the existing AHRUH billboard IndexedDB database.
+  It does not create a second database or overwrite slides.
+*/
+const BILLBOARD_DB = "ahruh_billboard_db";
+const BILLBOARD_STORE = "slides";
+let billboardObjectUrls = [];
+
+function setBillboardStatus(message, isReady){
+  const status = document.getElementById("billboardStatus");
+  status.textContent = message;
+  status.style.background = isReady ? "#E7F8EF" : "#FFF4E2";
+  status.style.color = isReady ? "#16835B" : "#A66A12";
+  status.style.setProperty("--status-dot", isReady ? "#18A66D" : "#D99A29");
+  status.style.setProperty("border-color", "transparent");
+}
+
+function openBillboardDatabase(){
+  return new Promise((resolve,reject)=>{
+    if(!("indexedDB" in window)){
+      reject(new Error("IndexedDB is not supported in this browser."));
+      return;
+    }
+
+    const request = indexedDB.open(BILLBOARD_DB);
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error || new Error("Could not open billboard database."));
+    request.onblocked = () => reject(new Error("Billboard database is blocked by another tab."));
+  });
+}
+
+function getSlideImageSource(slide){
+  if(!slide) return null;
+
+  const possible = [
+    slide.blob,
+    slide.imageBlob,
+    slide.file,
+    slide.image,
+    slide.data
+  ];
+
+  for(const value of possible){
+    if(value instanceof Blob) return URL.createObjectURL(value);
+
+    if(typeof value === "string" && value.trim()){
+      if(value.startsWith("data:") || value.startsWith("blob:") || value.startsWith("http://") || value.startsWith("https://")){
+        return value;
+      }
+    }
+  }
+
+  return null;
+}
+
+async function refreshBillboard(){
+  const image = document.getElementById("billboardImage");
+  const empty = document.getElementById("billboardEmpty");
+  const count = document.getElementById("billboardCount");
+  const name = document.getElementById("billboardSlideName");
+
+  image.style.display = "none";
+  image.removeAttribute("src");
+  empty.style.display = "block";
+  count.textContent = "Checking slides...";
+  name.textContent = "";
+
+  billboardObjectUrls.forEach(url => URL.revokeObjectURL(url));
+  billboardObjectUrls = [];
+
+  let db;
+
+  try{
+    db = await openBillboardDatabase();
+
+    if(!db.objectStoreNames.contains(BILLBOARD_STORE)){
+      count.textContent = "No billboard slides found yet";
+      setBillboardStatus("Not configured", false);
+      db.close();
+      return;
+    }
+
+    const slides = await new Promise((resolve,reject)=>{
+      const transaction = db.transaction(BILLBOARD_STORE,"readonly");
+      const request = transaction.objectStore(BILLBOARD_STORE).getAll();
+      request.onsuccess = () => resolve(request.result || []);
+      request.onerror = () => reject(request.error || new Error("Could not read slides."));
+    });
+
+    db.close();
+
+    if(!slides.length){
+      count.textContent = "0 slides uploaded";
+      setBillboardStatus("No slides yet", false);
+      return;
+    }
+
+    const usableSlides = slides.map(slide => ({
+      slide,
+      source:getSlideImageSource(slide)
+    })).filter(item => item.source);
+
+    usableSlides.forEach(item=>{
+      if(item.source.startsWith("blob:")) billboardObjectUrls.push(item.source);
+    });
+
+    count.textContent = slides.length + (slides.length === 1 ? " slide saved" : " slides saved");
+
+    if(usableSlides.length){
+      const first = usableSlides[0];
+      image.src = first.source;
+      image.style.display = "block";
+      empty.style.display = "none";
+
+      const slideName = first.slide.name || first.slide.title || first.slide.fileName || first.slide.filename || "Billboard slide preview";
+      name.textContent = " • " + slideName;
+      setBillboardStatus("Slides available", true);
+    }else{
+      empty.querySelector("strong").textContent = "Slides saved, preview unavailable";
+      empty.querySelector("small").textContent = "Open Billboard Manager to view and manage your images.";
+      setBillboardStatus("Preview unavailable", false);
+    }
+
+  }catch(error){
+    count.textContent = "Billboard database not available";
+    name.textContent = "";
+    setBillboardStatus("Not connected", false);
+    console.warn("AHRUH billboard preview:", error);
+  }
+}
+
+document.addEventListener("DOMContentLoaded",refreshBillboard);
+
+window.addEventListener("focus",refreshBillboard);
+
+document.addEventListener("visibilitychange",()=>{
+  if(!document.hidden) refreshBillboard();
+});
+
+window.addEventListener("beforeunload",()=>{
+  billboardObjectUrls.forEach(url=>URL.revokeObjectURL(url));
+});
 
 /*
   Dashboard figures remain placeholders until a secure
