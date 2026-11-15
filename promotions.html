@@ -1,0 +1,555 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101d3a">
+<title>AHRUH | Promotions</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --navy:#101d3a;--navy2:#182b50;--blue:#315fba;--soft:#edf3ff;
+ --gold:#c9a96e;--bg:#f4f6fa;--white:#fff;--text:#18233b;
+ --muted:#7b8497;--border:#e7eaf0;--green:#16865b;--red:#c84e54;
+ --orange:#ad7225;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{background:var(--navy);color:white;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5}
+.brand{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;letter-spacing:2px}
+.tagline{font-size:9px;letter-spacing:3px;color:var(--gold);margin-top:-4px}
+.top-right{font-size:12px;color:#d8dfed}
+.container{max-width:1050px;margin:auto;padding:19px 15px 45px}
+.back{color:var(--blue);text-decoration:none;font-size:13px;font-weight:700;display:inline-block;margin-bottom:15px}
+.heading{font-size:23px;font-weight:700;margin:0}
+.subheading{font-size:12px;color:var(--muted);margin:5px 0 18px}
+.shortcuts{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:17px}
+.shortcut{background:white;border:1px solid var(--border);border-radius:13px;padding:13px 8px;text-align:center;color:var(--navy);font-size:11px;font-weight:700;min-height:78px}
+.shortcut span{display:block;font-size:21px;margin-bottom:6px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:17px}
+.stat{background:white;border:1px solid var(--border);border-radius:15px;padding:15px}
+.stat-label{font-size:11px;color:var(--muted)}
+.stat-value{font-size:22px;font-weight:700;margin-top:7px}
+.stat-note{font-size:10px;color:var(--muted);margin-top:5px}
+.section{background:white;border:1px solid var(--border);border-radius:15px;padding:15px;margin-bottom:15px}
+.section-title{font-size:15px;font-weight:700;margin:0 0 12px}
+.small{font-size:11px;color:var(--muted);line-height:1.5}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;font-weight:700;margin-bottom:6px}
+input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10px;padding:11px;background:white;color:var(--text);outline:none;min-width:0}
+input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+textarea{min-height:70px;resize:vertical}
+.grid-two{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.btn{border:0;border-radius:10px;padding:11px 14px;background:var(--navy);color:white;font-weight:700;font-size:12px}
+.btn.blue{background:var(--blue)}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.btn.light{background:var(--soft);color:var(--navy)}
+.btn.red{background:#fff0f0;color:var(--red)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.actions .btn{flex:1}
+.tabs{display:flex;gap:7px;overflow-x:auto;margin-bottom:13px}
+.tab{padding:9px 13px;border:1px solid var(--border);border-radius:30px;background:white;font-size:11px;font-weight:700;white-space:nowrap}
+.tab.active{background:var(--navy);color:white;border-color:var(--navy)}
+.promo-card{background:white;border:1px solid var(--border);border-radius:13px;padding:14px;margin-top:10px}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.card-title{font-size:13px;font-weight:700}
+.pill{font-size:10px;border-radius:30px;padding:5px 9px;background:var(--soft);color:var(--blue);white-space:nowrap}
+.pill.active{background:#e9f7f0;color:var(--green)}
+.pill.paused{background:#fff5e5;color:var(--orange)}
+.pill.expired{background:#f1f1f3;color:var(--muted)}
+.pill.scheduled{background:#edf3ff;color:var(--blue)}
+.promo-value{font-size:19px;font-weight:700;color:var(--navy);margin-top:9px}
+.meta{font-size:10px;color:var(--muted);margin-top:5px;line-height:1.5}
+.balance-line{display:flex;justify-content:space-between;gap:10px;margin-top:9px;font-size:11px}
+.balance-line strong{color:var(--navy)}
+.empty{text-align:center;padding:24px 10px;color:var(--muted);font-size:12px}
+.notice{background:#fff8e9;color:#755b2c;padding:11px;border-radius:10px;font-size:11px;line-height:1.55;margin-top:12px}
+.modal-bg{position:fixed;inset:0;background:#071329aa;z-index:10;display:none;align-items:center;justify-content:center;padding:15px}
+.modal{width:100%;max-width:520px;background:white;border-radius:17px;padding:19px;max-height:92vh;overflow:auto}
+.modal h3{margin:0 0 6px;font-size:17px}
+.modal-actions{display:flex;gap:8px;margin-top:16px}
+.modal-actions button{flex:1}
+.hidden{display:none!important}
+@media(max-width:540px){
+ .shortcuts{grid-template-columns:repeat(2,1fr)}
+ .grid-two{grid-template-columns:1fr}
+ .container{padding:16px 12px 35px}
+ .topbar{padding:14px}
+ .stat-value{font-size:19px}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+ <div>
+  <div class="brand">AHRUH</div>
+  <div class="tagline">ADMIN SPACE</div>
+ </div>
+ <div class="top-right">Promotions Management</div>
+</header>
+
+<main class="container">
+ <a class="back" href="admin.html">← Back to Dashboard</a>
+ <h1 class="heading">Promotions</h1>
+ <p class="subheading">Create and manage discounts, coupons, flash sales and special offers.</p>
+
+ <div class="shortcuts">
+  <button class="shortcut" onclick="openCreate()"><span>＋</span>Create Promotion</button>
+  <button class="shortcut" onclick="setView('all')"><span>🎟️</span>All Promotions</button>
+  <button class="shortcut" onclick="setView('active')"><span>⚡</span>Active Offers</button>
+  <button class="shortcut" onclick="document.getElementById('trackingSection').scrollIntoView({behavior:'smooth'})"><span>📊</span>Promotion Tracking</button>
+ </div>
+
+ <div class="stats">
+  <div class="stat">
+   <div class="stat-label">Total Promotions</div>
+   <div class="stat-value" id="totalPromos">0</div>
+   <div class="stat-note">All saved promotions</div>
+  </div>
+  <div class="stat">
+   <div class="stat-label">Currently Active</div>
+   <div class="stat-value" id="activePromos">0</div>
+   <div class="stat-note">Within their scheduled dates</div>
+  </div>
+  <div class="stat">
+   <div class="stat-label">Total Uses</div>
+   <div class="stat-value" id="totalUses">0</div>
+   <div class="stat-note">Recorded promotion redemptions</div>
+  </div>
+  <div class="stat">
+   <div class="stat-label">Total Discounts Given</div>
+   <div class="stat-value" id="totalDiscount">₦0.00</div>
+   <div class="stat-note">Recorded discount value</div>
+  </div>
+ </div>
+
+ <section class="section" id="promotionSection">
+  <h2 class="section-title">Promotion List</h2>
+  <div class="tabs">
+   <button class="tab active" onclick="setView('all',this)">All</button>
+   <button class="tab" onclick="setView('active',this)">Active</button>
+   <button class="tab" onclick="setView('scheduled',this)">Scheduled</button>
+   <button class="tab" onclick="setView('paused',this)">Paused</button>
+   <button class="tab" onclick="setView('expired',this)">Expired</button>
+  </div>
+  <div class="field">
+   <input id="searchPromo" placeholder="Search promotion name or coupon code..." oninput="renderPromotions()">
+  </div>
+  <div id="promotionList"></div>
+ </section>
+
+ <section class="section" id="trackingSection">
+  <h2 class="section-title">Promotion Tracking</h2>
+  <p class="small">Usage and discount totals are based on redemption records saved in this prototype.</p>
+  <div id="trackingList"></div>
+ </section>
+
+ <section class="section">
+  <h2 class="section-title">Promotion Guidelines</h2>
+  <div class="balance-line"><span>Example minimum-spend offer</span><strong>₦7,000 off ₦45,000+</strong></div>
+  <div class="balance-line"><span>Free delivery threshold</span><strong>₦15,000+</strong></div>
+  <div class="notice">
+   Promotions must be checked at checkout. The live AHRUH backend must validate dates, eligibility, usage limits, product conditions and discount amounts before accepting an order. A browser-only promotion cannot securely enforce these rules.
+  </div>
+ </section>
+</main>
+
+<div class="modal-bg" id="createModal">
+ <div class="modal">
+  <h3 id="modalHeading">Create Promotion</h3>
+  <p class="small">Set up a new AHRUH promotion. All fields marked required must be completed.</p>
+  <input type="hidden" id="editId">
+
+  <div class="field">
+   <label>Promotion Name *</label>
+   <input id="promoName" maxlength="80" placeholder="e.g. Weekend Shopping Offer">
+  </div>
+  <div class="grid-two">
+   <div class="field">
+    <label>Promotion Type *</label>
+    <select id="promoType" onchange="updateTypeFields()">
+     <option value="coupon">Coupon</option>
+     <option value="minimum">Minimum Spend Offer</option>
+     <option value="flash">Flash Sale</option>
+     <option value="bundle">Bundle Offer</option>
+     <option value="delivery">Free Delivery</option>
+    </select>
+   </div>
+   <div class="field">
+    <label>Discount Type *</label>
+    <select id="discountType">
+     <option value="fixed">Fixed Amount (₦)</option>
+     <option value="percent">Percentage (%)</option>
+    </select>
+   </div>
+  </div>
+  <div class="field" id="couponField">
+   <label>Coupon Code</label>
+   <input id="promoCode" maxlength="30" placeholder="e.g. AHRUH7000">
+  </div>
+  <div class="grid-two">
+   <div class="field" id="discountField">
+    <label>Discount Value *</label>
+    <input id="promoValue" type="number" min="0" step="0.01" placeholder="Enter discount">
+   </div>
+   <div class="field" id="minimumField">
+    <label>Minimum Order Value (₦)</label>
+    <input id="minimumSpend" type="number" min="0" step="0.01" placeholder="e.g. 45000">
+   </div>
+  </div>
+  <div class="field hidden" id="bundleField">
+   <label>Bundle Details</label>
+   <textarea id="bundleDetails" maxlength="300" placeholder="Describe the products included in this bundle"></textarea>
+  </div>
+  <div class="field hidden" id="deliveryField">
+   <label>Delivery Promotion Details</label>
+   <input id="deliveryDetails" maxlength="200" placeholder="e.g. Free delivery for qualifying orders">
+  </div>
+  <div class="grid-two">
+   <div class="field">
+    <label>Start Date & Time *</label>
+    <input id="startDate" type="datetime-local">
+   </div>
+   <div class="field">
+    <label>End Date & Time *</label>
+    <input id="endDate" type="datetime-local">
+   </div>
+  </div>
+  <div class="grid-two">
+   <div class="field">
+    <label>Maximum Total Uses (0 = unlimited)</label>
+    <input id="usageLimit" type="number" min="0" step="1" value="0">
+   </div>
+   <div class="field">
+    <label>Maximum Uses Per Customer (0 = unlimited)</label>
+    <input id="perCustomerLimit" type="number" min="0" step="1" value="0">
+   </div>
+  </div>
+  <div class="field">
+   <label>Promotion Description</label>
+   <textarea id="promoDescription" maxlength="300" placeholder="Explain the offer and who can use it"></textarea>
+  </div>
+  <div class="field">
+   <label>Initial Status</label>
+   <select id="promoStatus">
+    <option value="active">Active (according to schedule)</option>
+    <option value="paused">Paused</option>
+   </select>
+  </div>
+  <div class="notice">For a flash sale, use the discount value to specify the discount. The live system must also connect the offer to selected products and enforce the sale price at checkout.</div>
+  <div class="modal-actions">
+   <button class="btn light" onclick="closeCreate()">Cancel</button>
+   <button class="btn" onclick="savePromotion()">Save Promotion</button>
+  </div>
+ </div>
+</div>
+
+<div class="modal-bg" id="usageModal">
+ <div class="modal">
+  <h3>Record Promotion Redemption</h3>
+  <p class="small" id="usagePromoName"></p>
+  <input type="hidden" id="usagePromoId">
+  <div class="field">
+   <label>Customer ID *</label>
+   <input id="usageCustomer" placeholder="Enter customer ID">
+  </div>
+  <div class="field">
+   <label>Order Number *</label>
+   <input id="usageOrder" placeholder="Enter order number">
+  </div>
+  <div class="field">
+   <label>Discount Given (₦) *</label>
+   <input id="usageDiscount" type="number" min="0" step="0.01" placeholder="Enter actual discount">
+  </div>
+  <div class="modal-actions">
+   <button class="btn light" onclick="closeUsage()">Cancel</button>
+   <button class="btn" onclick="saveUsage()">Save Redemption</button>
+  </div>
+ </div>
+</div>
+
+<script>
+const PROMO_KEY="ahruh_promotions_prototype_v1";
+const USAGE_KEY="ahruh_promotion_usage_prototype_v1";
+
+function readList(key){
+ try{
+  const value=JSON.parse(localStorage.getItem(key)||"[]");
+  return Array.isArray(value)?value:[];
+ }catch(e){return []}
+}
+let promotions=readList(PROMO_KEY);
+let usages=readList(USAGE_KEY);
+let currentView="all";
+
+function saveData(){
+ localStorage.setItem(PROMO_KEY,JSON.stringify(promotions));
+ localStorage.setItem(USAGE_KEY,JSON.stringify(usages));
+}
+function escapeHTML(value){
+ return String(value??"").replace(/[&<>"']/g,ch=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[ch]));
+}
+function money(value){
+ return "₦"+Number(value||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function dateValue(value){
+ const d=new Date(value);
+ return isNaN(d)?"Date unavailable":d.toLocaleString();
+}
+function typeName(type){
+ return {
+  coupon:"Coupon",
+  minimum:"Minimum Spend Offer",
+  flash:"Flash Sale",
+  bundle:"Bundle Offer",
+  delivery:"Free Delivery"
+ }[type]||type;
+}
+function getStatus(p){
+ if(p.status==="paused")return "paused";
+ const now=Date.now();
+ const start=new Date(p.start).getTime();
+ const end=new Date(p.end).getTime();
+ if(!Number.isFinite(start)||!Number.isFinite(end))return "expired";
+ if(now<start)return "scheduled";
+ if(now>end)return "expired";
+ return "active";
+}
+function discountLabel(p){
+ if(p.type==="delivery")return "Free Delivery";
+ if(p.discountType==="percent")return Number(p.value)+"% off";
+ return money(p.value)+" off";
+}
+function refreshStats(){
+ const active=promotions.filter(p=>getStatus(p)==="active").length;
+ const totalDiscount=usages.reduce((sum,u)=>sum+Number(u.discount||0),0);
+ document.getElementById("totalPromos").textContent=promotions.length;
+ document.getElementById("activePromos").textContent=active;
+ document.getElementById("totalUses").textContent=usages.length;
+ document.getElementById("totalDiscount").textContent=money(totalDiscount);
+}
+function renderPromotions(){
+ const query=document.getElementById("searchPromo").value.trim().toLowerCase();
+ const list=promotions.filter(p=>{
+  const matches=[p.name,p.code,p.description,p.type].join(" ").toLowerCase().includes(query);
+  const status=getStatus(p);
+  return matches&&(currentView==="all"||status===currentView);
+ }).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+ const holder=document.getElementById("promotionList");
+ if(!list.length){
+  holder.innerHTML='<div class="empty">'+(promotions.length?"No promotions match this filter.":"No promotions created yet.")+'</div>';
+  return;
+ }
+ holder.innerHTML=list.map(p=>{
+  const status=getStatus(p);
+  return `<article class="promo-card">
+   <div class="card-top">
+    <div>
+     <div class="card-title">${escapeHTML(p.name)}</div>
+     <div class="meta">${escapeHTML(typeName(p.type))}${p.code?" · Code: "+escapeHTML(p.code):""}</div>
+    </div>
+    <span class="pill ${status}">${status.charAt(0).toUpperCase()+status.slice(1)}</span>
+   </div>
+   <div class="promo-value">${escapeHTML(discountLabel(p))}</div>
+   ${p.minimumSpend>0?`<div class="meta">Minimum spend: ${money(p.minimumSpend)}</div>`:""}
+   ${p.bundleDetails?`<div class="meta">${escapeHTML(p.bundleDetails)}</div>`:""}
+   ${p.deliveryDetails?`<div class="meta">${escapeHTML(p.deliveryDetails)}</div>`:""}
+   <div class="meta">${escapeHTML(p.description||"No additional description")}</div>
+   <div class="balance-line"><span>Starts</span><strong>${dateValue(p.start)}</strong></div>
+   <div class="balance-line"><span>Ends</span><strong>${dateValue(p.end)}</strong></div>
+   <div class="balance-line"><span>Redemptions</span><strong>${usages.filter(u=>u.promoId===p.id).length}${p.usageLimit>0?" / "+p.usageLimit:""}</strong></div>
+   <div class="actions">
+    <button class="btn light" onclick="editPromotion('${p.id}')">Edit</button>
+    <button class="btn light" onclick="openUsage('${p.id}')">Record Use</button>
+    <button class="btn ${p.status==="paused"?"blue":"gold"}" onclick="togglePause('${p.id}')">${p.status==="paused"?"Resume":"Pause"}</button>
+    <button class="btn red" onclick="deletePromotion('${p.id}')">Delete</button>
+   </div>
+  </article>`;
+ }).join("");
+}
+function renderTracking(){
+ const holder=document.getElementById("trackingList");
+ if(!promotions.length){
+  holder.innerHTML='<div class="empty">Promotion tracking will appear after promotions are created.</div>';
+  return;
+ }
+ holder.innerHTML=promotions.map(p=>{
+  const records=usages.filter(u=>u.promoId===p.id);
+  const discount=records.reduce((sum,u)=>sum+Number(u.discount||0),0);
+  return `<div class="promo-card">
+   <div class="card-title">${escapeHTML(p.name)}</div>
+   <div class="balance-line"><span>Redemptions</span><strong>${records.length}</strong></div>
+   <div class="balance-line"><span>Discount value given</span><strong>${money(discount)}</strong></div>
+   <div class="balance-line"><span>Promotion type</span><strong>${escapeHTML(typeName(p.type))}</strong></div>
+  </div>`;
+ }).join("");
+}
+function setView(view,button){
+ currentView=view;
+ document.querySelectorAll("#promotionSection .tab").forEach(t=>t.classList.remove("active"));
+ if(button)button.classList.add("active");
+ else{
+  const match=[...document.querySelectorAll("#promotionSection .tab")].find(t=>t.textContent.toLowerCase()===view);
+  if(match)match.classList.add("active");
+ }
+ renderPromotions();
+}
+function openCreate(){
+ document.getElementById("editId").value="";
+ document.getElementById("modalHeading").textContent="Create Promotion";
+ document.getElementById("promoName").value="";
+ document.getElementById("promoType").value="coupon";
+ document.getElementById("discountType").value="fixed";
+ document.getElementById("promoCode").value="";
+ document.getElementById("promoValue").value="";
+ document.getElementById("minimumSpend").value="";
+ document.getElementById("bundleDetails").value="";
+ document.getElementById("deliveryDetails").value="";
+ document.getElementById("startDate").value="";
+ document.getElementById("endDate").value="";
+ document.getElementById("usageLimit").value="0";
+ document.getElementById("perCustomerLimit").value="0";
+ document.getElementById("promoDescription").value="";
+ document.getElementById("promoStatus").value="active";
+ updateTypeFields();
+ document.getElementById("createModal").style.display="flex";
+}
+function closeCreate(){document.getElementById("createModal").style.display="none"}
+function updateTypeFields(){
+ const type=document.getElementById("promoType").value;
+ document.getElementById("couponField").classList.toggle("hidden",type!=="coupon");
+ document.getElementById("minimumField").classList.toggle("hidden",type!=="minimum"&&type!=="coupon");
+ document.getElementById("bundleField").classList.toggle("hidden",type!=="bundle");
+ document.getElementById("deliveryField").classList.toggle("hidden",type!=="delivery");
+ document.getElementById("discountField").classList.toggle("hidden",type==="delivery");
+ document.getElementById("discountType").disabled=type==="delivery";
+}
+function savePromotion(){
+ const id=document.getElementById("editId").value;
+ const name=document.getElementById("promoName").value.trim();
+ const type=document.getElementById("promoType").value;
+ const discountType=document.getElementById("discountType").value;
+ const code=document.getElementById("promoCode").value.trim().toUpperCase();
+ const value=Number(document.getElementById("promoValue").value);
+ const minimumSpend=Number(document.getElementById("minimumSpend").value||0);
+ const start=document.getElementById("startDate").value;
+ const end=document.getElementById("endDate").value;
+ const usageLimit=Number(document.getElementById("usageLimit").value);
+ const perCustomerLimit=Number(document.getElementById("perCustomerLimit").value);
+ const description=document.getElementById("promoDescription").value.trim();
+ const status=document.getElementById("promoStatus").value;
+ const bundleDetails=document.getElementById("bundleDetails").value.trim();
+ const deliveryDetails=document.getElementById("deliveryDetails").value.trim();
+
+ if(!name){alert("Enter a promotion name.");return}
+ if(type!=="delivery"&&(!Number.isFinite(value)||value<=0)){alert("Enter a valid discount value.");return}
+ if(discountType==="percent"&&value>100){alert("Percentage discount cannot exceed 100%.");return}
+ if(!start||!end||new Date(end)<=new Date(start)){alert("Enter a valid start and end date. The end must be after the start.");return}
+ if(!Number.isInteger(usageLimit)||usageLimit<0||!Number.isInteger(perCustomerLimit)||perCustomerLimit<0){alert("Usage limits must be whole numbers of zero or greater.");return}
+ if((type==="coupon")&&!code){alert("Enter a coupon code.");return}
+ if(code&&promotions.some(p=>p.id!==id&&p.code.toUpperCase()===code)){alert("That coupon code is already in use.");return}
+ if(type==="minimum"&&minimumSpend<=0){alert("Enter the minimum order value.");return}
+ if(type==="bundle"&&!bundleDetails){alert("Enter the bundle details.");return}
+ if(type==="delivery"&&!deliveryDetails){alert("Enter the delivery promotion details.");return}
+
+ const old=promotions.find(p=>p.id===id);
+ const promo={
+  id:id||"AHR-PROMO-"+Date.now(),
+  name,type,discountType,value:type==="delivery"?0:value,code,
+  minimumSpend:type==="minimum"||type==="coupon"?minimumSpend:0,
+  bundleDetails,deliveryDetails,start,end,usageLimit,perCustomerLimit,
+  description,status,
+  createdAt:old?old.createdAt:new Date().toISOString()
+ };
+ if(id){
+  promotions=promotions.map(p=>p.id===id?promo:p);
+ }else promotions.push(promo);
+ saveData();
+ closeCreate();
+ refresh();
+ alert("Promotion saved in this prototype.");
+}
+function editPromotion(id){
+ const p=promotions.find(x=>x.id===id);
+ if(!p)return;
+ openCreate();
+ document.getElementById("modalHeading").textContent="Edit Promotion";
+ document.getElementById("editId").value=p.id;
+ document.getElementById("promoName").value=p.name;
+ document.getElementById("promoType").value=p.type;
+ document.getElementById("discountType").value=p.discountType||"fixed";
+ document.getElementById("promoCode").value=p.code||"";
+ document.getElementById("promoValue").value=p.value||"";
+ document.getElementById("minimumSpend").value=p.minimumSpend||"";
+ document.getElementById("bundleDetails").value=p.bundleDetails||"";
+ document.getElementById("deliveryDetails").value=p.deliveryDetails||"";
+ document.getElementById("startDate").value=p.start;
+ document.getElementById("endDate").value=p.end;
+ document.getElementById("usageLimit").value=p.usageLimit||0;
+ document.getElementById("perCustomerLimit").value=p.perCustomerLimit||0;
+ document.getElementById("promoDescription").value=p.description||"";
+ document.getElementById("promoStatus").value=p.status||"active";
+ updateTypeFields();
+}
+function togglePause(id){
+ const p=promotions.find(x=>x.id===id);
+ if(!p)return;
+ p.status=p.status==="paused"?"active":"paused";
+ saveData();refresh();
+}
+function deletePromotion(id){
+ const p=promotions.find(x=>x.id===id);
+ if(!p)return;
+ if(!confirm("Delete "+p.name+"? Existing redemption records will be retained."))return;
+ promotions=promotions.filter(x=>x.id!==id);
+ saveData();refresh();
+}
+function openUsage(id){
+ const p=promotions.find(x=>x.id===id);
+ if(!p)return;
+ document.getElementById("usagePromoId").value=id;
+ document.getElementById("usagePromoName").textContent=p.name;
+ document.getElementById("usageCustomer").value="";
+ document.getElementById("usageOrder").value="";
+ document.getElementById("usageDiscount").value="";
+ document.getElementById("usageModal").style.display="flex";
+}
+function closeUsage(){document.getElementById("usageModal").style.display="none"}
+function saveUsage(){
+ const id=document.getElementById("usagePromoId").value;
+ const p=promotions.find(x=>x.id===id);
+ const customer=document.getElementById("usageCustomer").value.trim();
+ const order=document.getElementById("usageOrder").value.trim();
+ const discount=Number(document.getElementById("usageDiscount").value);
+ if(!p){alert("Promotion not found.");return}
+ if(getStatus(p)!=="active"){alert("Only an active promotion can be recorded as redeemed.");return}
+ if(!customer||!order){alert("Enter both customer ID and order number.");return}
+ if(!Number.isFinite(discount)||discount<0){alert("Enter a valid discount amount.");return}
+ const records=usages.filter(u=>u.promoId===id);
+ if(p.usageLimit>0&&records.length>=p.usageLimit){alert("This promotion has reached its total usage limit.");return}
+ if(p.perCustomerLimit>0&&records.filter(u=>u.customerId===customer).length>=p.perCustomerLimit){alert("This customer has reached the usage limit.");return}
+ if(usages.some(u=>u.orderNumber===order)){alert("This order already has a recorded promotion redemption.");return}
+ usages.push({
+  id:"AHR-USE-"+Date.now(),
+  promoId:id,promoName:p.name,
+  customerId:customer,orderNumber:order,discount,
+  date:new Date().toISOString()
+ });
+ saveData();closeUsage();refresh();
+ alert("Redemption recorded in this prototype.");
+}
+function refresh(){
+ refreshStats();
+ renderPromotions();
+ renderTracking();
+}
+refresh();
+</script>
+</body>
+</html>
