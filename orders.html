@@ -29,6 +29,7 @@ body{margin:0;background:var(--pale);color:var(--text);font-family:'DM Sans',Ari
 button,input,select{font:inherit}
 button{cursor:pointer}
 a{text-decoration:none;color:inherit}
+.hidden{display:none!important}
 
 .topbar{
   height:66px;background:var(--navy);display:flex;align-items:center;
@@ -55,7 +56,7 @@ a{text-decoration:none;color:inherit}
 .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:20px}
 .stat{background:white;border:1px solid var(--line);border-radius:13px;padding:14px;box-shadow:var(--shadow)}
 .stat small{font-size:9px;color:var(--muted)}
-.stat strong{display:block;color:var(--navy);font-size:21px;margin-top:9px}
+.stat strong{display:block;color:var(--navy);font-size:21px;margin-top:9px;overflow-wrap:anywhere}
 .stat p{font-size:8px;color:var(--muted);margin:4px 0 0}
 
 .toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}
@@ -74,11 +75,15 @@ a{text-decoration:none;color:inherit}
 }
 .batch-top,.order-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .batch-name,.order-number{font-size:13px;font-weight:800;color:var(--navy)}
-.batch-date,.order-date{font-size:9px;color:var(--muted);margin-top:5px}
+.batch-date,.order-date{font-size:9px;color:var(--muted);margin-top:5px;line-height:1.6}
 .batch-status,.order-status{
   font-size:8px;font-weight:800;padding:6px 9px;border-radius:20px;white-space:nowrap;
   background:var(--light);color:var(--royal)
 }
+.batch-status.open{background:#E6F7EE;color:var(--green)}
+.batch-status.closed{background:#F0F2F6;color:#6E7888}
+.batch-status.upcoming{background:#FFF5DF;color:#9A742B}
+
 .batch-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
 .metric-label{font-size:8px;color:var(--muted);margin-bottom:5px}
 .metric-value{font-size:13px;font-weight:800;color:var(--navy)}
@@ -100,9 +105,48 @@ a{text-decoration:none;color:inherit}
 .view{display:none}
 .view.active{display:block}
 .back-link{border:0;background:none;color:var(--royal);font-size:10px;font-weight:800;padding:0;margin-bottom:14px}
-.tabs{display:flex;gap:7px;overflow-x:auto;margin:17px 0 14px;padding-bottom:3px}
-.tab{white-space:nowrap;border:1px solid var(--line);background:white;color:var(--muted);padding:9px 12px;border-radius:9px;font-size:9px;font-weight:700}
-.tab.active{background:var(--royal);border-color:var(--royal);color:white}
+
+/* FOUR MAIN BATCH SHORTCUTS */
+.shortcuts{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin:17px 0 20px;
+}
+.shortcut{
+  border:1px solid var(--line);
+  background:white;
+  border-radius:13px;
+  padding:14px 8px;
+  text-align:center;
+  box-shadow:var(--shadow);
+  color:var(--navy);
+  min-width:0;
+}
+.shortcut-icon{
+  display:grid;
+  place-items:center;
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  background:var(--light);
+  color:var(--royal);
+  font-size:19px;
+  margin:0 auto 9px;
+}
+.shortcut strong{display:block;font-size:9px;line-height:1.4}
+.shortcut small{display:block;color:var(--muted);font-size:7px;margin-top:4px;line-height:1.4}
+.shortcut:active{transform:scale(.98)}
+
+.search-panel{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:14px;
+  margin-bottom:15px;
+}
+.search-panel h3{font-size:12px;color:var(--navy);margin:0 0 10px}
+.search-panel .toolbar{margin:0}
 
 .table-wrap{overflow-x:auto;background:white;border:1px solid var(--line);border-radius:13px}
 table{width:100%;border-collapse:collapse;min-width:520px}
@@ -123,7 +167,7 @@ td strong{color:var(--navy)}
 .detail-box small{display:block;color:var(--muted);font-size:8px;margin-bottom:6px}
 .detail-box strong{font-size:10px;color:var(--navy);overflow-wrap:anywhere}
 .full{grid-column:1/-1}
-.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:17px}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:17px;flex-wrap:wrap}
 .items-table{width:100%;min-width:0;margin-top:16px}
 .items-table th,.items-table td{padding:9px 5px}
 .right{text-align:right}
@@ -142,9 +186,29 @@ td strong{color:var(--navy)}
 .nav-link.active{color:var(--royal);font-weight:800}
 .nav-link.active span{background:var(--light);border-radius:9px;padding:3px 12px}
 
-@media(min-width:650px){.modal-backdrop{align-items:center;padding:15px}.modal{border-radius:18px}}
-@media(max-width:650px){.page{padding:19px 13px 90px}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stat{padding:11px}.stat strong{font-size:18px}.order-info{grid-template-columns:1fr 1fr}}
-@media(max-width:390px){.heading h1{font-size:20px}.detail-grid{grid-template-columns:1fr}.full{grid-column:auto}.artwork-grid{grid-template-columns:1fr}}
+@media(min-width:650px){
+  .modal-backdrop{align-items:center;padding:15px}
+  .modal{border-radius:18px}
+}
+@media(max-width:650px){
+  .page{padding:19px 13px 90px}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .stat{padding:11px}
+  .stat strong{font-size:18px}
+  .order-info{grid-template-columns:1fr 1fr}
+  .shortcuts{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .shortcut{padding:11px 4px}
+  .shortcut-icon{width:34px;height:34px}
+  .shortcut strong{font-size:8px}
+  .shortcut small{font-size:7px}
+}
+@media(max-width:390px){
+  .heading h1{font-size:20px}
+  .detail-grid{grid-template-columns:1fr}
+  .full{grid-column:auto}
+  .artwork-grid{grid-template-columns:1fr}
+  .order-bottom{align-items:flex-start;flex-direction:column}
+}
 </style>
 </head>
 
@@ -163,7 +227,7 @@ td strong{color:var(--navy)}
 
 <main class="page">
 
-  <!-- BATCH OVERVIEW -->
+  <!-- BATCH LIST -->
   <section id="batchView" class="view active">
     <div class="heading">
       <div>
@@ -207,7 +271,7 @@ td strong{color:var(--navy)}
     <section class="batch-list" id="batchList"></section>
   </section>
 
-  <!-- ORDERS INSIDE A BATCH -->
+  <!-- SELECTED BATCH -->
   <section id="ordersView" class="view">
     <button class="back-link" onclick="showBatches()">← All batches</button>
 
@@ -236,17 +300,37 @@ td strong{color:var(--navy)}
       </div>
     </section>
 
-    <div class="tabs">
-      <button class="tab active" data-tab="orders" onclick="switchTab('orders')">Customer orders</button>
-      <button class="tab" data-tab="quantities" onclick="switchTab('quantities')">Product quantities</button>
-      <button class="tab" data-tab="artwork" onclick="switchTab('artwork')">Custom artwork</button>
-    </div>
+    <!-- THE FOUR MAIN SHORTCUTS -->
+    <section class="shortcuts">
+      <button class="shortcut" onclick="openPrintOptions()">
+        <span class="shortcut-icon">▤</span>
+        <strong>Print Receipts</strong>
+        <small>All or selected orders</small>
+      </button>
+      <button class="shortcut" onclick="switchTab('quantities')">
+        <span class="shortcut-icon">▦</span>
+        <strong>Product Order Summary</strong>
+        <small>Quantities and variants</small>
+      </button>
+      <button class="shortcut" onclick="focusOrderSearch()">
+        <span class="shortcut-icon">⌕</span>
+        <strong>Search Order</strong>
+        <small>Find by order number</small>
+      </button>
+      <button class="shortcut" onclick="switchTab('artwork')">
+        <span class="shortcut-icon">▧</span>
+        <strong>Customer Artwork</strong>
+        <small>Find uploaded designs</small>
+      </button>
+    </section>
 
-    <div id="ordersTab">
+    <!-- ORDER SEARCH -->
+    <div class="search-panel" id="orderSearchPanel">
+      <h3>Search customer order</h3>
       <div class="toolbar">
-        <input class="search" id="orderSearch" placeholder="Search order number or customer..." oninput="renderBatchOrders()">
+        <input class="search" id="orderSearch" placeholder="Enter order number or customer name..." oninput="renderBatchOrders()">
         <select class="field" id="orderStatusFilter" onchange="renderBatchOrders()">
-          <option value="all">All order statuses</option>
+          <option value="all">All fulfilment stages</option>
           <option value="received">Received</option>
           <option value="procurement">Procurement</option>
           <option value="processing">Processing</option>
@@ -255,25 +339,24 @@ td strong{color:var(--navy)}
           <option value="cancelled">Cancelled</option>
         </select>
       </div>
+    </div>
 
+    <!-- CUSTOMER ORDERS -->
+    <div id="ordersTab">
       <div class="section-heading">
         <strong>Customer orders</strong>
         <span id="visibleOrderCount">0 orders</span>
       </div>
-
-      <div class="order-actions" style="margin:0 0 12px">
-        <button class="btn secondary" onclick="printBatchReceipts()">Print all batch receipts</button>
-      </div>
-
       <section class="order-list" id="orderList"></section>
     </div>
 
+    <!-- PRODUCT SUMMARY -->
     <div id="quantitiesTab" style="display:none">
       <div class="section-heading">
-        <strong>Procurement quantity summary</strong>
+        <strong>Product order summary</strong>
         <span>Grouped by product and variant</span>
       </div>
-      <p class="muted">Totals combine matching products and variant combinations across this batch.</p>
+      <p class="muted">Matching product and variant combinations are combined across all customer orders in this batch.</p>
       <div class="table-wrap">
         <table>
           <thead>
@@ -287,12 +370,13 @@ td strong{color:var(--navy)}
           <tbody id="quantityRows"></tbody>
         </table>
       </div>
-      <button class="btn secondary" style="margin-top:12px" onclick="printQuantitySummary()">Print quantity summary</button>
+      <button class="btn secondary" style="margin-top:12px" onclick="printQuantitySummary()">Print product summary</button>
     </div>
 
+    <!-- ARTWORK -->
     <div id="artworkTab" style="display:none">
       <div class="section-heading">
-        <strong>Customer artwork lookup</strong>
+        <strong>Customer artwork</strong>
         <span id="artworkCount">0 files</span>
       </div>
       <div class="toolbar">
@@ -328,13 +412,48 @@ td strong{color:var(--navy)}
   </div>
 </div>
 
-<script>
-const ORDER_KEY = "ahruh_orders_prototype_v1";
-const BATCH_KEY = "ahruh_batches_prototype_v1";
+<!-- PRINT OPTIONS -->
+<div class="modal-backdrop" id="printOptionsModal" onclick="closePrintBackdrop(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Print batch receipts</h2>
+      <button class="close" onclick="closePrintOptions()">×</button>
+    </div>
 
-let orders = [];
-let batches = [];
-let selectedBatch = null;
+    <p class="muted">Receipts print in order-number sequence. Each customer's order starts on a fresh 150 × 100 mm sheet.</p>
+
+    <div style="display:grid;gap:12px;margin-top:16px">
+      <label style="display:flex;gap:9px;align-items:center;font-size:11px;font-weight:700">
+        <input type="radio" name="printMode" value="all" checked onchange="updatePrintMode()">
+        Print all receipts in this batch
+      </label>
+
+      <label style="display:flex;gap:9px;align-items:center;font-size:11px;font-weight:700">
+        <input type="radio" name="printMode" value="selected" onchange="updatePrintMode()">
+        Select specific receipts
+      </label>
+
+      <div id="selectedPrintOptions" class="hidden">
+        <div class="form-note" style="font-size:9px;color:var(--muted);margin:10px 0">Choose the orders you want to print.</div>
+        <div id="printOrderChoices" style="display:grid;gap:9px;max-height:270px;overflow:auto"></div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn outline" onclick="closePrintOptions()">Cancel</button>
+      <button class="btn primary" onclick="printChosenReceipts()">Continue to print</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ORDER_KEY="ahruh_orders_prototype_v1";
+const BATCH_KEY="ahruh_batches_prototype_v1";
+
+let orders=[];
+let batches=[];
+let selectedBatch=null;
+let activeOrderId=null;
 
 function readArray(key){
   try{
@@ -349,7 +468,9 @@ function loadData(){
 }
 
 function money(value){
-  return "₦"+Number(value||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
+  return "₦"+Number(value||0).toLocaleString("en-NG",{
+    minimumFractionDigits:2,maximumFractionDigits:2
+  });
 }
 
 function escapeHTML(value){
@@ -375,25 +496,34 @@ function orderBatchName(order){
   return String(order.batchName||order.batch||"");
 }
 
-function ordersForBatch(batch){
-  const id=String(batch.id||batch.batchId||"");
-  const name=String(batch.name||batch.title||batch.batchName||"");
-  return orders.filter(o=>
-    (id && orderBatchId(o)===id) ||
-    (!orderBatchId(o) && name && orderBatchName(o)===name)
-  );
-}
-
 function batchName(batch){
   return batch.name||batch.title||batch.batchName||"Untitled batch";
 }
 
+function batchId(batch){
+  return String(batch.id||batch.batchId||"");
+}
+
+function ordersForBatch(batch){
+  const id=batchId(batch);
+  const name=batchName(batch);
+
+  return orders.filter(order=>{
+    const linkedId=orderBatchId(order);
+    if(linkedId)return linkedId===id;
+    return orderBatchName(order)===name;
+  });
+}
+
 function batchStatus(batch){
-  const raw=String(batch.status||"").toLowerCase();
-  if(raw.includes("open"))return "Open";
-  if(raw.includes("upcoming")||raw.includes("scheduled"))return "Upcoming";
-  if(raw.includes("closed"))return "Closed";
-  return raw?raw.charAt(0).toUpperCase()+raw.slice(1):"Not specified";
+  const opens=new Date(batch.openDate||batch.startDate||"").getTime();
+  const closes=new Date(batch.closeDate||"").getTime();
+  const now=Date.now();
+
+  if(!Number.isFinite(opens)||!Number.isFinite(closes))return "Upcoming";
+  if(now<opens)return "Upcoming";
+  if(now>=closes)return "Closed";
+  return "Open";
 }
 
 function orderStatus(order){
@@ -419,19 +549,39 @@ function dateText(value){
     date.toLocaleString("en-NG",{dateStyle:"medium",timeStyle:"short"});
 }
 
+function orderNumber(order){
+  return String(order.orderNumber||order.id||"");
+}
+
+function orderSort(a,b){
+  return orderNumber(a).localeCompare(orderNumber(b),undefined,{
+    numeric:true,sensitivity:"base"
+  });
+}
+
 function orderGoodsValue(order){
   if(order.subtotal!==undefined)return Number(order.subtotal)||0;
   if(order.goodsTotal!==undefined)return Number(order.goodsTotal)||0;
+
   return (Array.isArray(order.items)?order.items:[]).reduce((sum,item)=>
     sum+Number(item.price||0)*Number(item.quantity||0),0);
 }
 
 function totalBatchGoods(batchOrders){
-  return batchOrders.reduce((sum,o)=>sum+orderGoodsValue(o),0);
+  return batchOrders.reduce((sum,order)=>sum+orderGoodsValue(order),0);
+}
+
+function uniqueCustomerCount(batchOrders){
+  const customers=new Set();
+  batchOrders.forEach(order=>{
+    const c=customerOf(order);
+    customers.add(String(c.id||c.email||c.phone||customerName(order)));
+  });
+  return customers.size;
 }
 
 function showView(id){
-  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  document.querySelectorAll(".view").forEach(view=>view.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
@@ -443,26 +593,27 @@ function showBatches(){
 }
 
 function renderBatches(){
+  loadData();
+
   const query=document.getElementById("batchSearch").value.trim().toLowerCase();
   const filter=document.getElementById("batchFilter").value;
 
   const filtered=batches.filter(batch=>{
     const name=batchName(batch).toLowerCase();
     const status=batchStatus(batch).toLowerCase();
-    return name.includes(query) && (filter==="all" || status===filter);
+    return name.includes(query)&&(filter==="all"||status===filter);
   });
 
-  const allOrdersCount=orders.length;
   document.getElementById("totalBatches").textContent=batches.length;
-  document.getElementById("allOrders").textContent=allOrdersCount;
+  document.getElementById("allOrders").textContent=orders.length;
   document.getElementById("allGoodsValue").textContent=money(
-    orders.reduce((sum,o)=>sum+orderGoodsValue(o),0)
+    orders.reduce((sum,order)=>sum+orderGoodsValue(order),0)
   );
   document.getElementById("batchCount").textContent=filtered.length+" batches";
 
   const list=document.getElementById("batchList");
 
-  if(filtered.length===0){
+  if(!filtered.length){
     list.innerHTML=`
       <div class="empty">
         <div class="empty-icon">▦</div>
@@ -475,16 +626,20 @@ function renderBatches(){
 
   list.innerHTML=filtered.map(batch=>{
     const batchOrders=ordersForBatch(batch);
-    const goods=totalBatchGoods(batchOrders);
-    const id=String(batch.id||batch.batchId||"");
+    const status=batchStatus(batch);
+    const id=batchId(batch);
+
     return `
       <article class="batch-card">
         <div class="batch-top">
           <div>
             <div class="batch-name">${escapeHTML(batchName(batch))}</div>
-            <div class="batch-date">${escapeHTML(batch.startDate||batch.openDate||"")} ${batch.closeDate?"— "+escapeHTML(batch.closeDate):""}</div>
+            <div class="batch-date">
+              Opens: ${escapeHTML(dateText(batch.openDate||batch.startDate))}<br>
+              Closes: ${escapeHTML(dateText(batch.closeDate))}
+            </div>
           </div>
-          <span class="batch-status">${escapeHTML(batchStatus(batch))}</span>
+          <span class="batch-status ${status.toLowerCase()}">${status}</span>
         </div>
         <div class="batch-metrics">
           <div>
@@ -493,52 +648,65 @@ function renderBatches(){
           </div>
           <div>
             <div class="metric-label">Total goods value</div>
-            <div class="metric-value">${money(goods)}</div>
+            <div class="metric-value">${money(totalBatchGoods(batchOrders))}</div>
           </div>
         </div>
         <div class="batch-actions">
-          <button class="btn primary" onclick="openBatch('${escapeHTML(id)}')">View batch orders</button>
+          <button class="btn primary" onclick="openBatchById('${escapeHTML(id)}')">View batch orders</button>
         </div>
       </article>`;
   }).join("");
 }
 
-function openBatch(id){
+function openBatchById(id){
   loadData();
-  selectedBatch=batches.find(b=>String(b.id||b.batchId||"")===id);
-  if(!selectedBatch)return;
+  const batch=batches.find(item=>batchId(item)===String(id));
+  if(!batch)return;
+  openBatch(batch);
+}
 
-  const batchOrders=ordersForBatch(selectedBatch);
-  const uniqueCustomers=new Set(batchOrders.map(o=>{
-    const c=customerOf(o);
-    return c.id||c.email||c.phone||customerName(o);
-  }));
+function openBatch(batch){
+  selectedBatch=batch;
 
-  document.getElementById("selectedBatchName").textContent=batchName(selectedBatch);
+  const batchOrders=ordersForBatch(batch);
+  document.getElementById("selectedBatchName").textContent=batchName(batch);
   document.getElementById("selectedBatchDates").textContent=
-    "Manage orders for this shopping batch.";
+    "Opens: "+dateText(batch.openDate||batch.startDate)+" · Closes: "+dateText(batch.closeDate);
+
   document.getElementById("batchOrderCount").textContent=batchOrders.length;
   document.getElementById("batchGoodsValue").textContent=money(totalBatchGoods(batchOrders));
-  document.getElementById("batchCustomers").textContent=uniqueCustomers.size;
+  document.getElementById("batchCustomers").textContent=uniqueCustomerCount(batchOrders);
 
   document.getElementById("orderSearch").value="";
   document.getElementById("orderStatusFilter").value="all";
+  document.getElementById("artworkSearch").value="";
+
   switchTab("orders");
   showView("ordersView");
   renderBatchOrders();
 }
 
 function switchTab(tab){
-  ["orders","quantities","artwork"].forEach(name=>{
-    document.getElementById(name+"Tab").style.display=name===tab?"block":"none";
-  });
-  document.querySelectorAll(".tab").forEach(button=>{
-    button.classList.toggle("active",button.dataset.tab===tab);
-  });
+  document.getElementById("ordersTab").style.display=tab==="orders"?"block":"none";
+  document.getElementById("quantitiesTab").style.display=tab==="quantities"?"block":"none";
+  document.getElementById("artworkTab").style.display=tab==="artwork"?"block":"none";
 
-  if(tab==="orders")renderBatchOrders();
+  if(tab==="orders"){
+    document.getElementById("orderSearchPanel").style.display="block";
+    renderBatchOrders();
+  }else{
+    document.getElementById("orderSearchPanel").style.display="none";
+  }
+
   if(tab==="quantities")renderQuantities();
   if(tab==="artwork")renderArtwork();
+}
+
+function focusOrderSearch(){
+  switchTab("orders");
+  const field=document.getElementById("orderSearch");
+  field.focus();
+  field.scrollIntoView({behavior:"smooth",block:"center"});
 }
 
 function renderBatchOrders(){
@@ -549,19 +717,21 @@ function renderBatchOrders(){
   const query=document.getElementById("orderSearch").value.trim().toLowerCase();
   const status=document.getElementById("orderStatusFilter").value;
 
-  const filtered=batchOrders.filter(o=>{
-    const c=customerOf(o);
+  const filtered=batchOrders.filter(order=>{
+    const c=customerOf(order);
     const searchable=[
-      o.orderNumber,o.id,customerName(o),c.email,c.phone
+      order.orderNumber,order.id,customerName(order),c.email,c.phone
     ].join(" ").toLowerCase();
-    return searchable.includes(query) &&
-      (status==="all"||orderStatus(o)===status);
-  });
+
+    return searchable.includes(query)&&
+      (status==="all"||orderStatus(order)===status);
+  }).sort(orderSort);
 
   document.getElementById("visibleOrderCount").textContent=filtered.length+" orders";
 
   const list=document.getElementById("orderList");
-  if(filtered.length===0){
+
+  if(!filtered.length){
     list.innerHTML=`
       <div class="empty">
         <div class="empty-icon">▧</div>
@@ -571,23 +741,25 @@ function renderBatchOrders(){
     return;
   }
 
-  list.innerHTML=filtered.map(o=>{
-    const c=customerOf(o);
-    const status=orderStatus(o);
-    const quantity=(o.items||[]).reduce((sum,i)=>sum+Number(i.quantity||0),0);
+  list.innerHTML=filtered.map(order=>{
+    const items=Array.isArray(order.items)?order.items:[];
+    const quantity=items.reduce((sum,item)=>sum+Number(item.quantity||0),0);
+    const id=String(order.id||order.orderNumber||"");
+
     return `
       <article class="order-card">
         <div class="order-top">
           <div>
-            <div class="order-number">${escapeHTML(o.orderNumber||o.id||"Order")}</div>
-            <div class="order-date">${escapeHTML(dateText(o.createdAt||o.orderDate))}</div>
+            <div class="order-number">${escapeHTML(orderNumber(order))}</div>
+            <div class="order-date">${escapeHTML(dateText(order.createdAt||order.orderDate))}</div>
           </div>
-          <span class="order-status">${escapeHTML(statusText(status))}</span>
+          <span class="order-status">${escapeHTML(statusText(orderStatus(order)))}</span>
         </div>
+
         <div class="order-info">
           <div>
             <div class="info-label">Customer</div>
-            <div class="info-value">${escapeHTML(customerName(o))}</div>
+            <div class="info-value">${escapeHTML(customerName(order))}</div>
           </div>
           <div>
             <div class="info-label">Product quantity</div>
@@ -595,27 +767,36 @@ function renderBatchOrders(){
           </div>
           <div>
             <div class="info-label">Goods value</div>
-            <div class="info-value">${money(orderGoodsValue(o))}</div>
+            <div class="info-value">${money(orderGoodsValue(order))}</div>
           </div>
         </div>
+
         <div class="order-bottom">
           <div>
-            <div class="order-total">${money(o.total??orderGoodsValue(o))}</div>
+            <div class="order-total">${money(order.total??orderGoodsValue(order))}</div>
             <div class="muted">Order total including other charges, if recorded</div>
           </div>
           <div class="order-actions">
-            <button class="btn secondary" onclick="viewOrder('${escapeHTML(o.id)}')">View order</button>
-            <button class="btn outline" onclick="printReceipt('${escapeHTML(o.id)}')">Print receipt</button>
+            <button class="btn secondary" onclick="viewOrder('${escapeHTML(id)}')">View order</button>
+            <button class="btn outline" onclick="printReceipt('${escapeHTML(id)}')">Print receipt</button>
           </div>
         </div>
       </article>`;
   }).join("");
 }
 
+function findOrder(id){
+  return orders.find(order=>
+    String(order.id||order.orderNumber)===String(id)
+  );
+}
+
 function viewOrder(id){
   loadData();
-  const order=orders.find(o=>String(o.id)===String(id));
+  const order=findOrder(id);
   if(!order)return;
+
+  activeOrderId=String(order.id||order.orderNumber);
 
   const c=customerOf(order);
   const address=order.address||c.address||{};
@@ -628,13 +809,14 @@ function viewOrder(id){
   document.getElementById("detailContent").innerHTML=`
     <div class="detail-grid">
       <div class="detail-box"><small>Customer</small><strong>${escapeHTML(customerName(order))}</strong></div>
-      <div class="detail-box"><small>Order number</small><strong>${escapeHTML(order.orderNumber||order.id||"—")}</strong></div>
+      <div class="detail-box"><small>Order number</small><strong>${escapeHTML(orderNumber(order))}</strong></div>
       <div class="detail-box"><small>Phone</small><strong>${escapeHTML(c.phone||"Not recorded")}</strong></div>
       <div class="detail-box"><small>Email</small><strong>${escapeHTML(c.email||"Not recorded")}</strong></div>
       <div class="detail-box full"><small>Delivery address</small><strong>${escapeHTML(addressText||"Not recorded")}</strong></div>
       <div class="detail-box"><small>Shopping batch</small><strong>${escapeHTML(orderBatchName(order)||batchName(selectedBatch||{}))}</strong></div>
       <div class="detail-box"><small>Fulfilment stage</small><strong>${escapeHTML(statusText(orderStatus(order)))}</strong></div>
       <div class="detail-box"><small>Payment method</small><strong>${escapeHTML(order.paymentMethod||"Not recorded")}</strong></div>
+      <div class="detail-box"><small>Payment reference</small><strong>${escapeHTML(order.paymentReference||order.transactionReference||"Not recorded")}</strong></div>
       <div class="detail-box"><small>Order date</small><strong>${escapeHTML(dateText(order.createdAt||order.orderDate))}</strong></div>
     </div>
 
@@ -643,11 +825,12 @@ function viewOrder(id){
       <table class="items-table">
         <thead><tr><th>Product</th><th>Variant</th><th>Qty</th><th class="right">Unit price</th><th class="right">Line total</th></tr></thead>
         <tbody>
-          ${items.length?items.map(i=>{
-            const qty=Number(i.quantity||0),price=Number(i.price||0);
+          ${items.length?items.map(item=>{
+            const qty=Number(item.quantity||0);
+            const price=Number(item.price||0);
             return `<tr>
-              <td>${escapeHTML(i.name||i.productName||"Product")}</td>
-              <td>${escapeHTML(i.variant||variantText(i))}</td>
+              <td>${escapeHTML(item.name||item.productName||"Product")}</td>
+              <td>${escapeHTML(variantText(item))}</td>
               <td>${qty}</td>
               <td class="right">${money(price)}</td>
               <td class="right">${money(price*qty)}</td>
@@ -666,30 +849,80 @@ function viewOrder(id){
 
     <div class="section-heading"><strong>Fulfilment progress</strong></div>
     <select class="field" id="fulfilmentSelect" style="width:100%">
-      ${["received","procurement","processing","dispatched","delivered","cancelled"].map(s=>
-        `<option value="${s}" ${orderStatus(order)===s?"selected":""}>${statusText(s)}</option>`
+      ${["received","procurement","processing","dispatched","delivered","cancelled"].map(status=>
+        `<option value="${status}" ${orderStatus(order)===status?"selected":""}>${statusText(status)}</option>`
       ).join("")}
     </select>
-    <button class="btn primary" style="margin-top:10px" onclick="saveFulfilment('${escapeHTML(order.id)}')">Save fulfilment update</button>
+    <button class="btn primary" style="margin-top:10px" onclick="saveFulfilment('${escapeHTML(activeOrderId)}')">Save fulfilment update</button>
+
+    <div class="section-heading"><strong>Order artwork</strong></div>
+    <div id="orderArtwork"></div>
   `;
 
-  document.getElementById("detailPrintButton").onclick=()=>printReceipt(id);
+  renderOrderArtwork(order);
+  document.getElementById("detailPrintButton").onclick=()=>printReceipt(activeOrderId);
   document.getElementById("detailModal").classList.add("show");
 }
 
 function variantText(item){
   if(item.variant)return item.variant;
-  if(item.variants&&typeof item.variants==="object"){
-    return Object.entries(item.variants).map(([k,v])=>k+": "+v).join(", ");
+
+  const variants=item.variants||item.options||{};
+  if(typeof variants==="object"&&!Array.isArray(variants)){
+    return Object.entries(variants).map(([key,value])=>key+": "+value).join(", ");
   }
-  return "";
+
+  if(Array.isArray(variants)){
+    return variants.map(option=>
+      typeof option==="object"?(option.name||option.value||""):option
+    ).join(", ");
+  }
+
+  return [
+    item.colour||item.color?("Colour: "+(item.colour||item.color)):"",
+    item.size?("Size: "+item.size):""
+  ].filter(Boolean).join(", ");
+}
+
+function artworkUrl(item){
+  const artwork=item.artworkUrl||item.artworkURL||item.artwork||item.customArtwork||item.uploadedArtwork;
+  if(!artwork)return "";
+  if(typeof artwork==="string")return artwork;
+  return artwork.url||artwork.dataUrl||artwork.previewUrl||artwork.fileUrl||"";
+}
+
+function renderOrderArtwork(order){
+  const items=Array.isArray(order.items)?order.items:[];
+  const found=items.filter(item=>artworkUrl(item));
+  const container=document.getElementById("orderArtwork");
+
+  if(!found.length){
+    container.innerHTML='<p class="muted">No artwork is attached to this order in the saved order data.</p>';
+    return;
+  }
+
+  container.innerHTML=`
+    <div class="artwork-grid">
+      ${found.map(item=>`
+        <article class="artwork-card">
+          <a href="${escapeHTML(artworkUrl(item))}" target="_blank" rel="noopener">
+            <img src="${escapeHTML(artworkUrl(item))}" alt="Customer artwork">
+          </a>
+          <div>
+            <strong>${escapeHTML(item.name||item.productName||"Product")}</strong>
+            <small>${escapeHTML(variantText(item))}</small>
+            <a class="artwork-link" href="${escapeHTML(artworkUrl(item))}" target="_blank" rel="noopener">Open artwork</a>
+          </div>
+        </article>
+      `).join("")}
+    </div>`;
 }
 
 function saveFulfilment(id){
-  const order=orders.find(o=>String(o.id)===String(id));
+  const order=findOrder(id);
   if(!order)return;
-  const status=document.getElementById("fulfilmentSelect").value;
-  order.fulfilmentStatus=status;
+
+  order.fulfilmentStatus=document.getElementById("fulfilmentSelect").value;
   order.updatedAt=new Date().toISOString();
 
   try{
@@ -701,6 +934,18 @@ function saveFulfilment(id){
   }
 }
 
+function productKey(item){
+  return String(item.productId||item.id||item.name||item.productName||"Product");
+}
+
+function variantKey(item){
+  const variants=item.variants||item.options||{};
+  if(typeof variants==="object"){
+    return JSON.stringify(variants,Object.keys(variants).sort());
+  }
+  return String(item.variantId||variantText(item)||"Standard");
+}
+
 function renderQuantities(){
   if(!selectedBatch)return;
   loadData();
@@ -710,65 +955,64 @@ function renderQuantities(){
   ordersForBatch(selectedBatch).forEach(order=>{
     (order.items||[]).forEach(item=>{
       const name=item.name||item.productName||"Product";
-      const variant=variantText(item);
-      const productId=item.productId||item.id||name;
-      const variantId=item.variantId||variant;
-      const key=String(productId)+"::"+String(variantId);
+      const variant=variantText(item)||"Standard";
+      const key=productKey(item)+"::"+variantKey(item);
 
       if(!summary.has(key)){
-        summary.set(key,{
-          name,variant,quantity:0,customers:new Set()
-        });
+        summary.set(key,{name,variant,quantity:0,customers:new Set()});
       }
 
       const entry=summary.get(key);
       entry.quantity+=Number(item.quantity||0);
+
       const c=customerOf(order);
-      entry.customers.add(c.id||c.email||c.phone||customerName(order));
+      entry.customers.add(String(c.id||c.email||c.phone||customerName(order)));
     });
   });
 
   const rows=[...summary.values()].sort((a,b)=>a.name.localeCompare(b.name));
+
   document.getElementById("quantityRows").innerHTML=rows.length
-    ?rows.map(r=>`
+    ?rows.map(row=>`
       <tr>
-        <td><strong>${escapeHTML(r.name)}</strong></td>
-        <td>${escapeHTML(r.variant||"Standard")}</td>
-        <td><strong>${r.quantity}</strong></td>
-        <td>${r.customers.size}</td>
+        <td><strong>${escapeHTML(row.name)}</strong></td>
+        <td>${escapeHTML(row.variant)}</td>
+        <td><strong>${row.quantity}</strong></td>
+        <td>${row.customers.size}</td>
       </tr>`).join("")
     :'<tr><td colspan="4">No product quantities to summarise yet.</td></tr>';
 }
 
 function collectArtwork(){
   const results=[];
+
   ordersForBatch(selectedBatch).forEach(order=>{
     (order.items||[]).forEach(item=>{
-      const artwork=item.artworkUrl||item.artworkURL||item.artwork||item.customArtwork||item.uploadedArtwork;
-      if(!artwork)return;
-
-      const url=typeof artwork==="string"?artwork:
-        artwork.url||artwork.dataUrl||artwork.previewUrl||"";
+      const url=artworkUrl(item);
       if(!url)return;
 
       results.push({
         url,
         product:item.name||item.productName||"Product",
         customer:customerName(order),
-        order:order.orderNumber||order.id||"Order",
+        order:orderNumber(order),
         variant:variantText(item)
       });
     });
   });
+
   return results;
 }
 
 function renderArtwork(){
   if(!selectedBatch)return;
+  loadData();
+
   const query=document.getElementById("artworkSearch").value.trim().toLowerCase();
   const all=collectArtwork();
-  const filtered=all.filter(a=>
-    [a.product,a.customer,a.order,a.variant].join(" ").toLowerCase().includes(query)
+
+  const filtered=all.filter(item=>
+    [item.product,item.customer,item.order,item.variant].join(" ").toLowerCase().includes(query)
   );
 
   document.getElementById("artworkCount").textContent=filtered.length+" files";
@@ -784,27 +1028,91 @@ function renderArtwork(){
     return;
   }
 
-  grid.innerHTML=filtered.map(a=>`
+  grid.innerHTML=filtered.map(item=>`
     <article class="artwork-card">
-      <a href="${escapeHTML(a.url)}" target="_blank" rel="noopener">
-        <img src="${escapeHTML(a.url)}" alt="Customer artwork">
+      <a href="${escapeHTML(item.url)}" target="_blank" rel="noopener">
+        <img src="${escapeHTML(item.url)}" alt="Customer artwork">
       </a>
       <div>
-        <strong>${escapeHTML(a.product)}</strong>
-        <small>Customer: ${escapeHTML(a.customer)}</small>
-        <small>Order: ${escapeHTML(a.order)}</small>
-        <small>${escapeHTML(a.variant)}</small>
-        <a class="artwork-link" href="${escapeHTML(a.url)}" target="_blank" rel="noopener">Open artwork</a>
+        <strong>${escapeHTML(item.product)}</strong>
+        <small>Customer: ${escapeHTML(item.customer)}</small>
+        <small>Order: ${escapeHTML(item.order)}</small>
+        <small>${escapeHTML(item.variant)}</small>
+        <a class="artwork-link" href="${escapeHTML(item.url)}" target="_blank" rel="noopener">Open artwork</a>
       </div>
     </article>
   `).join("");
 }
+
+/* PRINT OPTIONS */
+
+function openPrintOptions(){
+  if(!selectedBatch)return;
+
+  const batchOrders=ordersForBatch(selectedBatch).slice().sort(orderSort);
+
+  if(!batchOrders.length){
+    alert("There are no orders in this batch to print.");
+    return;
+  }
+
+  document.querySelector('input[name="printMode"][value="all"]').checked=true;
+  document.getElementById("selectedPrintOptions").classList.add("hidden");
+
+  document.getElementById("printOrderChoices").innerHTML=batchOrders.map(order=>{
+    const id=String(order.id||order.orderNumber);
+    return `
+      <label style="display:flex;gap:9px;align-items:center;border:1px solid var(--line);padding:10px;border-radius:9px;font-size:10px">
+        <input type="checkbox" class="print-order-check" value="${escapeHTML(id)}" checked>
+        <span><strong>${escapeHTML(orderNumber(order))}</strong> · ${escapeHTML(customerName(order))}</span>
+        <span style="margin-left:auto;color:var(--muted)">${money(order.total??orderGoodsValue(order))}</span>
+      </label>`;
+  }).join("");
+
+  document.getElementById("printOptionsModal").classList.add("show");
+}
+
+function updatePrintMode(){
+  const mode=document.querySelector('input[name="printMode"]:checked').value;
+  document.getElementById("selectedPrintOptions").classList.toggle("hidden",mode!=="selected");
+}
+
+function closePrintOptions(){
+  document.getElementById("printOptionsModal").classList.remove("show");
+}
+
+function closePrintBackdrop(event){
+  if(event.target.id==="printOptionsModal")closePrintOptions();
+}
+
+function printChosenReceipts(){
+  if(!selectedBatch)return;
+
+  const mode=document.querySelector('input[name="printMode"]:checked').value;
+  let chosen=ordersForBatch(selectedBatch).slice();
+
+  if(mode==="selected"){
+    const ids=[...document.querySelectorAll(".print-order-check:checked")].map(input=>input.value);
+    if(!ids.length){
+      alert("Select at least one receipt to print.");
+      return;
+    }
+    chosen=chosen.filter(order=>ids.includes(String(order.id||order.orderNumber)));
+  }
+
+  chosen.sort(orderSort);
+  closePrintOptions();
+  printDocument(chosen.map(receiptHTML).join(""),"AHRUH Batch Receipts");
+}
+
+/* RECEIPTS */
 
 function receiptHTML(order){
   const c=customerOf(order);
   const address=order.address||c.address||{};
   const addressText=typeof address==="string"?address:
     [address.line1,address.line2,address.city,address.state,address.country].filter(Boolean).join(", ");
+
   const items=Array.isArray(order.items)?order.items:[];
 
   return `
@@ -812,20 +1120,23 @@ function receiptHTML(order){
       <h1>AHRUH</h1>
       <p class="receipt-sub">CUSTOMER ORDER RECEIPT</p>
       <hr>
-      <p><b>Order:</b> ${escapeHTML(order.orderNumber||order.id||"")}</p>
+      <p><b>Order:</b> ${escapeHTML(orderNumber(order))}</p>
       <p><b>Date:</b> ${escapeHTML(dateText(order.createdAt||order.orderDate))}</p>
       <p><b>Customer:</b> ${escapeHTML(customerName(order))}</p>
-      <p><b>Phone:</b> ${escapeHTML(c.phone||"")}</p>
-      <p><b>Address:</b> ${escapeHTML(addressText)}</p>
+      <p><b>Phone:</b> ${escapeHTML(c.phone||"Not recorded")}</p>
+      <p><b>Address:</b> ${escapeHTML(addressText||"Not recorded")}</p>
       <hr>
       <table>
         <thead><tr><th>Product / Variant</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead>
         <tbody>
-          ${items.map(i=>{
-            const qty=Number(i.quantity||0),price=Number(i.price||0);
+          ${items.map(item=>{
+            const qty=Number(item.quantity||0);
+            const price=Number(item.price||0);
             return `<tr>
-              <td>${escapeHTML(i.name||i.productName||"Product")}<br>${escapeHTML(variantText(i))}</td>
-              <td>${qty}</td><td>${money(price)}</td><td>${money(qty*price)}</td>
+              <td>${escapeHTML(item.name||item.productName||"Product")}<br>${escapeHTML(variantText(item))}</td>
+              <td>${qty}</td>
+              <td>${money(price)}</td>
+              <td>${money(qty*price)}</td>
             </tr>`;
           }).join("")}
         </tbody>
@@ -835,7 +1146,8 @@ function receiptHTML(order){
       <p class="row"><span>Discount</span><b>${money(order.discount)}</b></p>
       <p class="row"><span>Delivery fee</span><b>${money(order.deliveryFee)}</b></p>
       <p class="row total"><span>TOTAL</span><b>${money(order.total??orderGoodsValue(order))}</b></p>
-      <p><b>Payment method:</b> ${escapeHTML(order.paymentMethod||"")}</p>
+      <p><b>Payment method:</b> ${escapeHTML(order.paymentMethod||"Not recorded")}</p>
+      <p><b>Payment reference:</b> ${escapeHTML(order.paymentReference||order.transactionReference||"Not recorded")}</p>
       <hr>
       <p class="receipt-sub">Thank you for shopping with AHRUH.</p>
     </section>`;
@@ -843,6 +1155,7 @@ function receiptHTML(order){
 
 function printDocument(content,title){
   const win=window.open("","_blank","width=700,height=800");
+
   if(!win){
     alert("Please allow pop-ups to print receipts.");
     return;
@@ -851,86 +1164,136 @@ function printDocument(content,title){
   win.document.open();
   win.document.write(`
     <!DOCTYPE html>
-    <html><head><meta charset="UTF-8"><title>${escapeHTML(title)}</title>
-    <style>
-      @page{size:150mm 100mm;margin:6mm}
-      body{font-family:Arial,sans-serif;color:#111;font-size:9px}
-      .receipt{break-after:page;page-break-after:always}
-      .receipt:last-child{break-after:auto;page-break-after:auto}
-      h1{text-align:center;font-size:22px;letter-spacing:3px;margin:0}
-      .receipt-sub{text-align:center;font-size:8px}
-      hr{border:0;border-top:1px dashed #555;margin:7px 0}
-      p{margin:4px 0}
-      table{width:100%;border-collapse:collapse;font-size:8px;margin:8px 0}
-      th,td{text-align:left;padding:5px 2px;border-bottom:1px solid #ddd;vertical-align:top}
-      .row{display:flex;justify-content:space-between;gap:8px}
-      .total{font-size:12px;font-weight:bold;border-top:1px solid #555;padding-top:7px}
-      @media print{body{margin:0}}
-    </style></head><body>${content}</body></html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>${escapeHTML(title)}</title>
+      <style>
+        @page{size:150mm 100mm;margin:5mm}
+        *{box-sizing:border-box}
+        body{font-family:Arial,sans-serif;color:#111;font-size:9px;margin:0}
+        .receipt{
+          width:100%;
+          break-before:page;
+          page-break-before:always;
+          break-inside:auto;
+          page-break-inside:auto;
+          padding:0;
+        }
+        .receipt:first-child{
+          break-before:auto;
+          page-break-before:auto;
+        }
+        h1{text-align:center;font-size:22px;letter-spacing:3px;margin:0}
+        .receipt-sub{text-align:center;font-size:8px}
+        hr{border:0;border-top:1px dashed #555;margin:7px 0}
+        p{margin:4px 0;overflow-wrap:anywhere}
+        table{width:100%;border-collapse:collapse;font-size:8px;margin:8px 0}
+        th,td{text-align:left;padding:5px 2px;border-bottom:1px solid #ddd;vertical-align:top;overflow-wrap:anywhere}
+        .row{display:flex;justify-content:space-between;gap:8px}
+        .total{font-size:12px;font-weight:bold;border-top:1px solid #555;padding-top:7px}
+        @media print{body{margin:0}}
+      </style>
+    </head>
+    <body>${content}</body>
+    </html>
   `);
+
   win.document.close();
-  win.onload=()=>win.print();
+
+  win.onload=()=>{
+    win.focus();
+    win.print();
+  };
 }
 
 function printReceipt(id){
   loadData();
-  const order=orders.find(o=>String(o.id)===String(id));
+  const order=findOrder(id);
   if(!order)return;
   printDocument(receiptHTML(order),"AHRUH Order Receipt");
 }
 
-function printBatchReceipts(){
-  if(!selectedBatch)return;
-  const batchOrders=ordersForBatch(selectedBatch);
-  if(!batchOrders.length){
-    alert("There are no orders in this batch to print.");
-    return;
-  }
-  printDocument(batchOrders.map(receiptHTML).join(""),"AHRUH Batch Receipts");
-}
-
 function printQuantitySummary(){
   if(!selectedBatch)return;
+
   const summary=new Map();
 
   ordersForBatch(selectedBatch).forEach(order=>{
     (order.items||[]).forEach(item=>{
       const name=item.name||item.productName||"Product";
       const variant=variantText(item)||"Standard";
-      const key=(item.productId||item.id||name)+"::"+(item.variantId||variant);
-      if(!summary.has(key))summary.set(key,{name,variant,quantity:0,customers:new Set()});
+      const key=productKey(item)+"::"+variantKey(item);
+
+      if(!summary.has(key)){
+        summary.set(key,{name,variant,quantity:0,customers:new Set()});
+      }
+
       const row=summary.get(key);
       row.quantity+=Number(item.quantity||0);
+
       const c=customerOf(order);
-      row.customers.add(c.id||c.email||c.phone||customerName(order));
+      row.customers.add(String(c.id||c.email||c.phone||customerName(order)));
     });
   });
 
-  const rows=[...summary.values()];
+  const rows=[...summary.values()].sort((a,b)=>a.name.localeCompare(b.name));
+
   const html=`
     <section>
       <h1>AHRUH</h1>
-      <h3>Batch Product Quantity Summary</h3>
+      <h3>Batch Product Order Summary</h3>
       <p>${escapeHTML(batchName(selectedBatch))}</p>
       <table>
         <thead><tr><th>Product</th><th>Variant</th><th>Quantity</th><th>Customers</th></tr></thead>
-        <tbody>${rows.map(r=>`
-          <tr><td>${escapeHTML(r.name)}</td><td>${escapeHTML(r.variant)}</td><td>${r.quantity}</td><td>${r.customers.size}</td></tr>
-        `).join("")}</tbody>
+        <tbody>
+          ${rows.map(row=>`
+            <tr>
+              <td>${escapeHTML(row.name)}</td>
+              <td>${escapeHTML(row.variant)}</td>
+              <td>${row.quantity}</td>
+              <td>${row.customers.size}</td>
+            </tr>
+          `).join("")}
+        </tbody>
       </table>
     </section>`;
-  printDocument(html,"AHRUH Quantity Summary");
+
+  printDocument(html,"AHRUH Product Order Summary");
 }
 
 function closeModal(){
   document.getElementById("detailModal").classList.remove("show");
 }
+
 function closeBackdrop(event){
   if(event.target.id==="detailModal")closeModal();
 }
 
+/* OPEN THE BATCH PASSED FROM batches.html */
+function openBatchFromURL(){
+  const params=new URLSearchParams(window.location.search);
+  const requestedBatch=params.get("batch");
+  const requestedView=params.get("view");
+
+  if(!requestedBatch)return false;
+
+  const batch=batches.find(item=>batchId(item)===requestedBatch);
+  if(!batch)return false;
+
+  openBatch(batch);
+
+  if(requestedView==="quantities")switchTab("quantities");
+  if(requestedView==="artwork")switchTab("artwork");
+
+  return true;
+}
+
 loadData();
-renderBatches();
+
+if(!openBatchFromURL()){
+  renderBatches();
+}
 </script>
 </body>
 </html>
