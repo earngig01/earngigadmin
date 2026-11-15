@@ -43,13 +43,9 @@ a{text-decoration:none;color:inherit}
 
 /* BRAND */
 
-.brand{
-  display:flex;
-  align-items:center;
-}
-
 .brand-word{
   position:relative;
+  display:inline-block;
   padding-bottom:5px;
 }
 
@@ -85,12 +81,12 @@ a{text-decoration:none;color:inherit}
 
 .topbar{
   min-height:67px;
-  background:var(--royal);
+  background:var(--navy);
   color:white;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:12px 25px;
+  padding:12px 22px;
   gap:15px;
   position:sticky;
   top:0;
@@ -98,30 +94,22 @@ a{text-decoration:none;color:inherit}
   box-shadow:0 3px 12px #123d7920;
 }
 
-.top-left,.top-right{
+.top-right{
   display:flex;
   align-items:center;
-  gap:15px;
-}
-
-.menu-btn{
-  border:0;
-  background:transparent;
-  color:white;
-  font-size:25px;
-  padding:4px;
+  gap:13px;
 }
 
 .top-action{
-  width:36px;
-  height:36px;
+  width:37px;
+  height:37px;
   display:grid;
   place-items:center;
   border:0;
   border-radius:50%;
   background:#ffffff20;
   color:white;
-  font-size:17px;
+  font-size:19px;
   position:relative;
 }
 
@@ -136,8 +124,8 @@ a{text-decoration:none;color:inherit}
 }
 
 .avatar{
-  width:35px;
-  height:35px;
+  width:36px;
+  height:36px;
   border-radius:50%;
   background:white;
   color:var(--royal);
@@ -146,12 +134,74 @@ a{text-decoration:none;color:inherit}
   font-weight:800;
 }
 
+/* TOP DEPARTMENT SHORTCUTS */
+
+.quick-nav-wrap{
+  background:white;
+  border-bottom:1px solid var(--line);
+  padding:10px 18px;
+  position:relative;
+  z-index:20;
+}
+
+.quick-nav{
+  max-width:1250px;
+  margin:auto;
+  display:flex;
+  gap:9px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  padding-bottom:2px;
+}
+
+.quick-nav::-webkit-scrollbar{display:none}
+
+.quick-link{
+  flex:0 0 100px;
+  min-height:75px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:white;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  color:var(--navy);
+  transition:.2s;
+}
+
+.quick-link:hover{
+  border-color:#B8D3FA;
+  background:var(--pale);
+}
+
+.quick-link.active{
+  background:var(--light);
+  border-color:#B9D4FA;
+  color:var(--royal);
+}
+
+.quick-icon{
+  width:31px;
+  height:31px;
+  display:grid;
+  place-items:center;
+  font-size:21px;
+}
+
+.quick-link strong{
+  font-size:9px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
 /* MAIN */
 
 .main{
   max-width:1250px;
   margin:auto;
-  padding:23px 25px 100px;
+  padding:22px 25px 100px;
 }
 
 /* WELCOME BANNER */
@@ -193,10 +243,7 @@ a{text-decoration:none;color:inherit}
   bottom:-100px;
 }
 
-.welcome-content{
-  position:relative;
-  z-index:2;
-}
+.welcome-content{position:relative;z-index:2}
 
 .welcome-date{
   font-size:9px;
@@ -330,23 +377,12 @@ a{text-decoration:none;color:inherit}
   font-size:18px;
 }
 
-.stat:nth-child(1) .stat-icon{
-  background:#E4F0FF;color:#3478E5;
-}
-.stat:nth-child(2) .stat-icon{
-  background:#FFF1D9;color:#D99A29;
-}
-.stat:nth-child(3) .stat-icon{
-  background:#EBE9FF;color:#7563D9;
-}
-.stat:nth-child(4) .stat-icon{
-  background:#FFE9EF;color:#D45B7C;
-}
+.stat:nth-child(1) .stat-icon{background:#E4F0FF;color:#3478E5}
+.stat:nth-child(2) .stat-icon{background:#FFF1D9;color:#D99A29}
+.stat:nth-child(3) .stat-icon{background:#EBE9FF;color:#7563D9}
+.stat:nth-child(4) .stat-icon{background:#E6F7EE;color:#15966B}
 
-.stat small{
-  color:var(--muted);
-  font-size:10px;
-}
+.stat small{color:var(--muted);font-size:10px}
 
 .stat h2{
   font-size:24px;
@@ -354,11 +390,7 @@ a{text-decoration:none;color:inherit}
   margin:12px 0 4px;
 }
 
-.stat p{
-  color:var(--muted);
-  font-size:9px;
-  margin:0;
-}
+.stat p{color:var(--muted);font-size:9px;margin:0}
 
 /* MANAGEMENT GRID */
 
@@ -491,11 +523,7 @@ a{text-decoration:none;color:inherit}
   padding:10px 5px;
 }
 
-.more-item span{
-  font-size:21px;
-  color:var(--royal);
-}
-
+.more-item span{font-size:21px;color:var(--royal)}
 .more-item strong{font-size:9px}
 
 /* BOTTOM NAVIGATION */
@@ -529,11 +557,7 @@ a{text-decoration:none;color:inherit}
 }
 
 .bottom-link span{font-size:19px}
-
-.bottom-link.active{
-  color:var(--royal);
-  font-weight:700;
-}
+.bottom-link.active{color:var(--royal);font-weight:700}
 
 .bottom-link.active span{
   background:var(--light);
@@ -550,8 +574,13 @@ a{text-decoration:none;color:inherit}
 }
 
 @media(max-width:520px){
-  .topbar{height:59px;padding:0 14px}
+  .topbar{min-height:59px;padding:8px 14px}
   .brand-name{font-size:30px}
+  .quick-nav-wrap{padding:8px 10px}
+  .quick-nav{gap:7px}
+  .quick-link{flex-basis:77px;min-height:67px;border-radius:11px;gap:4px}
+  .quick-icon{font-size:19px;width:28px;height:28px}
+  .quick-link strong{font-size:8px}
   .main{padding:16px 12px 90px}
   .welcome{min-height:140px;padding:20px 16px;border-radius:16px}
   .welcome h1{font-size:22px}
@@ -575,7 +604,6 @@ a{text-decoration:none;color:inherit}
 @media(max-width:350px){
   .welcome-art{width:70px}
   .welcome h1{font-size:19px}
-  .manage-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 </style>
 </head>
@@ -583,14 +611,10 @@ a{text-decoration:none;color:inherit}
 <body>
 
 <header class="topbar">
-  <div class="top-left">
-    <div class="brand">
-      <div class="brand-word">
-        <div class="brand-name">AHRUH</div>
-        <div class="brand-flourish"></div>
-        <div class="brand-tagline">ADMIN SPACE</div>
-      </div>
-    </div>
+  <div class="brand-word">
+    <div class="brand-name">AHRUH</div>
+    <div class="brand-flourish"></div>
+    <div class="brand-tagline">ADMIN SPACE</div>
   </div>
 
   <div class="top-right">
@@ -602,6 +626,68 @@ a{text-decoration:none;color:inherit}
     <div class="avatar">A</div>
   </div>
 </header>
+
+<!-- QUICK ACCESS ICONS -->
+<nav class="quick-nav-wrap" aria-label="Admin departments">
+  <div class="quick-nav">
+
+    <a class="quick-link active" href="admin.html">
+      <span class="quick-icon">▦</span>
+      <strong>Dashboard</strong>
+    </a>
+
+    <a class="quick-link" href="batches.html">
+      <span class="quick-icon">▱</span>
+      <strong>Batches</strong>
+    </a>
+
+    <a class="quick-link" href="products.html">
+      <span class="quick-icon">◇</span>
+      <strong>Products</strong>
+    </a>
+
+    <a class="quick-link" href="categories.html">
+      <span class="quick-icon">▤</span>
+      <strong>Categories</strong>
+    </a>
+
+    <a class="quick-link" href="orders.html">
+      <span class="quick-icon">🛍</span>
+      <strong>Orders</strong>
+    </a>
+
+    <a class="quick-link" href="wallet.html">
+      <span class="quick-icon">▣</span>
+      <strong>Wallet</strong>
+    </a>
+
+    <a class="quick-link" href="promotions.html">
+      <span class="quick-icon">◇</span>
+      <strong>Promotions</strong>
+    </a>
+
+    <a class="quick-link" href="games.html">
+      <span class="quick-icon">♟</span>
+      <strong>Games</strong>
+    </a>
+
+    <a class="quick-link" href="customers.html">
+      <span class="quick-icon">♙</span>
+      <strong>Customers</strong>
+    </a>
+
+    <a class="quick-link" href="notifications.html">
+      <span class="quick-icon">♧</span>
+      <strong>Notifications</strong>
+    </a>
+
+    <a class="quick-link" href="settings.html">
+      <span class="quick-icon">⚙</span>
+      <strong>Settings</strong>
+    </a>
+
+  </div>
+</nav>
 
 <main class="main">
 
@@ -625,6 +711,7 @@ a{text-decoration:none;color:inherit}
     </div>
 
     <div class="stats">
+
       <div class="stat">
         <div class="stat-top">
           <small>Customers</small>
@@ -654,12 +741,13 @@ a{text-decoration:none;color:inherit}
 
       <div class="stat">
         <div class="stat-top">
-          <small>Pending</small>
+          <small>Awaiting Fulfilment</small>
           <div class="stat-icon">◷</div>
         </div>
         <h2 id="pendingCount">—</h2>
-        <p>Awaiting fulfilment</p>
+        <p>Orders not yet fulfilled</p>
       </div>
+
     </div>
   </section>
 
@@ -673,11 +761,11 @@ a{text-decoration:none;color:inherit}
 
       <a class="manage-item" href="batches.html">
         <div class="manage-icon">▦</div>
-        <strong>Batches</strong>
+        <strong>Batch Management</strong>
       </a>
 
       <a class="manage-item" href="products.html">
-        <div class="manage-icon">▣</div>
+        <div class="manage-icon">◇</div>
         <strong>Products</strong>
       </a>
 
@@ -687,7 +775,7 @@ a{text-decoration:none;color:inherit}
       </a>
 
       <a class="manage-item" href="orders.html">
-        <div class="manage-icon">🛒</div>
+        <div class="manage-icon">🛍</div>
         <strong>Orders</strong>
       </a>
 
@@ -696,14 +784,24 @@ a{text-decoration:none;color:inherit}
         <strong>Wallet</strong>
       </a>
 
-      <a class="manage-item" href="rewards.html">
-        <div class="manage-icon">✧</div>
-        <strong>Rewards</strong>
+      <a class="manage-item" href="promotions.html">
+        <div class="manage-icon">◇</div>
+        <strong>Promotions</strong>
       </a>
 
       <a class="manage-item" href="games.html">
         <div class="manage-icon">♟</div>
         <strong>Games</strong>
+      </a>
+
+      <a class="manage-item" href="rewards.html">
+        <div class="manage-icon">✧</div>
+        <strong>Rewards</strong>
+      </a>
+
+      <a class="manage-item" href="customers.html">
+        <div class="manage-icon">♙</div>
+        <strong>Customers</strong>
       </a>
 
       <a class="manage-item" href="shipping.html">
@@ -714,16 +812,6 @@ a{text-decoration:none;color:inherit}
       <a class="manage-item" href="reports.html">
         <div class="manage-icon">▥</div>
         <strong>Reports</strong>
-      </a>
-
-      <a class="manage-item" href="customers.html">
-        <div class="manage-icon">♙</div>
-        <strong>Customers</strong>
-      </a>
-
-      <a class="manage-item" href="promotions.html">
-        <div class="manage-icon">◇</div>
-        <strong>Promotions</strong>
       </a>
 
       <a class="manage-item" href="settings.html">
@@ -762,7 +850,7 @@ a{text-decoration:none;color:inherit}
     <div class="more-grid">
       <a class="more-item" href="artwork.html"><span>▧</span><strong>Custom Artwork</strong></a>
       <a class="more-item" href="mining.html"><span>✧</span><strong>Mining</strong></a>
-      <a class="more-item" href="notifications.html"><span>♢</span><strong>Notifications</strong></a>
+      <a class="more-item" href="notifications.html"><span>♧</span><strong>Notifications</strong></a>
       <a class="more-item" href="reviews.html"><span>☆</span><strong>Reviews</strong></a>
       <a class="more-item" href="reports.html"><span>▥</span><strong>Analytics</strong></a>
       <a class="more-item" href="settings.html"><span>⚙</span><strong>Settings</strong></a>
@@ -783,11 +871,11 @@ a{text-decoration:none;color:inherit}
   </a>
 
   <a class="bottom-link" href="orders.html">
-    <span>🛒</span>Orders
+    <span>🛍</span>Orders
   </a>
 
   <a class="bottom-link" href="products.html">
-    <span>▣</span>Products
+    <span>◇</span>Products
   </a>
 
   <button class="bottom-link" onclick="openMore()">
@@ -806,7 +894,7 @@ function closeMore(){
 }
 
 function closeMoreOutside(event){
-  if(event.target.id==="moreMenu") closeMore();
+  if(event.target.id==="moreMenu")closeMore();
 }
 
 document.getElementById("welcomeDate").textContent =
@@ -818,9 +906,11 @@ document.getElementById("welcomeDate").textContent =
   });
 
 /*
-  Live figures will be connected to the secure AHRUH backend.
-  Do not use browser-only storage for wallet balances,
-  payment records, authentication or customer financial data.
+  Dashboard figures remain placeholders until a secure
+  central AHRUH backend is connected.
+
+  Do not use browser storage as the source of truth for
+  customer accounts, orders, payments or wallet balances.
 */
 </script>
 
