@@ -5,7 +5,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#102A56">
-<title>Ahruh | Batch Management</title>
+<title>AHRUH | Batch Management</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -15,7 +18,7 @@
   --royal2:#2866CB;
   --soft:#D5E6FF;
   --light:#EAF2FF;
-  --pale:#F5F8FF;
+  --pale:#F4F8FF;
   --white:#fff;
   --gold:#D6B66F;
   --text:#253653;
@@ -24,441 +27,767 @@
   --green:#15966B;
   --orange:#D78A25;
   --red:#D45D65;
-  --shadow:0 8px 28px rgba(16,42,86,.055);
+  --shadow:0 6px 22px rgba(16,42,86,.06);
 }
 
 *{box-sizing:border-box}
+
 body{
-  margin:0;background:var(--pale);color:var(--text);
-  font-family:Arial,sans-serif;font-size:14px;
+  margin:0;
+  background:var(--pale);
+  color:var(--text);
+  font-family:'DM Sans',Arial,sans-serif;
+  font-size:14px;
 }
+
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 a{text-decoration:none;color:inherit}
 .hidden{display:none!important}
 
-.layout{min-height:100vh}
+/* HEADER */
 
-.sidebar{
-  width:255px;position:fixed;inset:0 auto 0 0;
-  background:linear-gradient(180deg,#102A56,#193D70);
-  color:white;padding:24px 16px;display:flex;
-  flex-direction:column;overflow-y:auto;z-index:30;
-  transition:transform .25s;
-}
-.brand{
-  display:flex;align-items:center;gap:11px;
-  padding:0 9px 26px;border-bottom:1px solid #ffffff20;
-}
-.brand-mark{
-  width:43px;height:43px;border-radius:13px;
-  background:var(--gold);color:var(--navy);
-  display:grid;place-items:center;font-size:25px;font-weight:900;
-}
-.brand-name{font-size:25px;font-weight:800;letter-spacing:-1px}
-.brand-name span{color:var(--gold)}
-.brand small{
-  display:block;font-size:9px;color:#C5D6F1;
-  letter-spacing:1.7px;margin-top:4px;
-}
-.nav-label{
-  font-size:9px;color:#AFC4E4;letter-spacing:1.5px;
-  font-weight:700;padding:23px 11px 9px;
-}
-.nav-link{
-  display:flex;align-items:center;gap:12px;
-  padding:12px 13px;border-radius:9px;
-  color:#D8E5F7;font-size:11px;margin:2px 0;
-}
-.nav-link:hover,.nav-link.active{background:#ffffff20;color:white}
-.nav-link.active{border-left:3px solid var(--gold);padding-left:10px}
-.nav-icon{width:22px;text-align:center;font-size:17px;color:#AFCFFF}
-.sidebar-bottom{margin-top:auto;padding-top:22px}
-.admin-mini{
-  border-top:1px solid #ffffff20;padding:17px 8px 0;
-  display:flex;align-items:center;gap:10px;
-}
-.admin-avatar{
-  width:37px;height:37px;border-radius:50%;
-  background:var(--gold);color:var(--navy);
-  display:grid;place-items:center;font-weight:800;
-}
-.admin-mini strong{display:block;font-size:11px}
-.admin-mini small{font-size:9px;color:#C5D6F1}
-
-.main{margin-left:255px;min-height:100vh;min-width:0}
 .topbar{
-  height:72px;padding:0 32px;background:white;
-  border-bottom:1px solid var(--line);
-  display:flex;align-items:center;justify-content:space-between;
-  gap:15px;position:sticky;top:0;z-index:20;
+  height:68px;
+  background:var(--navy);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  color:white;
+  position:sticky;
+  top:0;
+  z-index:30;
+  box-shadow:0 4px 15px #102A5620;
 }
-.top-left,.top-right{display:flex;align-items:center;gap:13px}
-.page-label{font-size:11px;color:var(--muted)}
-.menu-toggle{
-  display:none;border:0;background:var(--light);
-  color:var(--navy);border-radius:8px;padding:9px 11px;
-}
-.top-search{
-  width:220px;border:1px solid var(--line);
-  background:#F9FBFF;border-radius:9px;
-  padding:10px 13px;font-size:11px;outline:none;
-}
-.top-icon{
-  width:38px;height:38px;background:white;
-  border:1px solid var(--line);border-radius:9px;color:var(--navy);
-}
-.content{max-width:1550px;margin:auto;padding:29px 32px 50px}
 
-.heading{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:15px;flex-wrap:wrap;margin-bottom:22px;
+.top-left,.top-right{
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
-.heading h1{font-size:26px;color:var(--navy);margin:0 0 7px}
-.heading p{font-size:11px;color:var(--muted);margin:0;line-height:1.6}
 
-.btn{
-  border:0;border-radius:8px;padding:11px 15px;
-  font-size:10px;font-weight:700;
+.brand{
+  display:flex;
+  align-items:center;
+  gap:9px;
 }
-.btn-primary{background:var(--royal);color:white}
-.btn-primary:hover{background:var(--royal2)}
-.btn-light{background:var(--light);color:var(--royal)}
-.btn-outline{background:white;border:1px solid var(--line);color:var(--navy)}
-.btn-danger{background:#FCEDEE;color:var(--red)}
 
-.notice{
-  padding:13px 16px;border-radius:10px;
-  background:#FFF9EB;border:1px solid #F0E5C7;
-  color:#8A6C2F;font-size:10px;line-height:1.7;
+.brand-mark{
+  width:37px;
+  height:37px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background:var(--gold);
+  color:var(--navy);
+  font-family:'Cormorant Garamond',serif;
+  font-size:29px;
+  font-weight:700;
+}
+
+.brand-word{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-weight:700;
+  font-size:27px;
+  letter-spacing:2px;
+  line-height:1;
+  color:white;
+}
+
+.brand-tag{
+  font-size:7px;
+  letter-spacing:2px;
+  color:#C9D9F1;
+  margin-top:4px;
+}
+
+.icon-btn{
+  width:37px;
+  height:37px;
+  border:0;
+  border-radius:10px;
+  background:#FFFFFF18;
+  color:white;
+  font-size:18px;
+}
+
+.avatar{
+  width:35px;
+  height:35px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:white;
+  color:var(--royal);
+  font-weight:800;
+}
+
+/* PAGE */
+
+.page{
+  max-width:950px;
+  margin:auto;
+  padding:23px 18px 105px;
+}
+
+.page-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
   margin-bottom:20px;
 }
 
-.stats{
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:14px;margin-bottom:26px;
+.page-heading h1{
+  margin:0 0 5px;
+  color:var(--navy);
+  font-size:23px;
 }
-.stat{
-  background:white;border:1px solid var(--line);
-  border-radius:12px;padding:17px;box-shadow:var(--shadow);
-}
-.stat-top{display:flex;justify-content:space-between;align-items:center}
-.stat small{font-size:10px;color:var(--muted)}
-.stat-icon{
-  width:35px;height:35px;border-radius:10px;
-  background:var(--light);color:var(--royal);
-  display:grid;place-items:center;font-size:17px;
-}
-.stat h2{font-size:24px;color:var(--navy);margin:12px 0 4px}
-.stat p{font-size:9px;color:var(--muted);margin:0}
 
-.panel{
-  background:white;border:1px solid var(--line);
-  border-radius:13px;padding:19px;margin-top:20px;
+.page-heading p{
+  margin:0;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+}
+
+.primary-btn{
+  border:0;
+  background:var(--royal);
+  color:white;
+  border-radius:10px;
+  padding:12px 15px;
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+  box-shadow:0 5px 12px #3478E528;
+}
+
+.primary-btn:hover{background:var(--royal2)}
+
+.light-btn{
+  border:0;
+  background:var(--light);
+  color:var(--royal);
+  border-radius:9px;
+  padding:10px 13px;
+  font-size:10px;
+  font-weight:700;
+}
+
+.outline-btn{
+  border:1px solid var(--line);
+  background:white;
+  color:var(--navy);
+  border-radius:9px;
+  padding:10px 13px;
+  font-size:10px;
+  font-weight:700;
+}
+
+/* SUMMARY */
+
+.summary{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-bottom:23px;
+}
+
+.summary-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:14px;
   box-shadow:var(--shadow);
+  min-width:0;
 }
-.panel-head{
-  display:flex;justify-content:space-between;
-  align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:17px;
+
+.summary-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:5px;
 }
-.panel-head h2{font-size:14px;color:var(--navy);margin:0 0 5px}
-.panel-head p{font-size:10px;color:var(--muted);margin:0}
+
+.summary-top small{
+  color:var(--muted);
+  font-size:9px;
+}
+
+.summary-icon{
+  width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  background:var(--light);
+  color:var(--royal);
+  border-radius:9px;
+  font-size:15px;
+}
+
+.summary-card h2{
+  color:var(--navy);
+  font-size:23px;
+  margin:10px 0 3px;
+}
+
+.summary-card p{
+  margin:0;
+  color:var(--muted);
+  font-size:8px;
+}
+
+/* BATCH AREA */
+
+.section-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:24px 0 13px;
+}
+
+.section-heading h2{
+  font-size:15px;
+  color:var(--navy);
+  margin:0;
+}
+
+.section-heading small{
+  font-size:9px;
+  color:var(--muted);
+}
+
+.search-box{
+  position:relative;
+  margin-bottom:12px;
+}
+
+.search-box input{
+  width:100%;
+  border:1px solid var(--line);
+  background:white;
+  border-radius:11px;
+  padding:13px 14px 13px 39px;
+  font-size:11px;
+  outline:none;
+}
+
+.search-box input:focus{border-color:var(--royal)}
+
+.search-symbol{
+  position:absolute;
+  left:14px;
+  top:11px;
+  color:var(--muted);
+  font-size:15px;
+}
 
 .filters{
-  display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px;
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding-bottom:5px;
+  margin-bottom:14px;
 }
-.field{
-  border:1px solid var(--line);background:#fff;
-  border-radius:8px;padding:10px 12px;
-  font-size:10px;color:var(--text);outline:none;
-}
-.field:focus{border-color:var(--royal)}
-.filters .field{min-width:145px}
 
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:760px}
-th{
-  text-align:left;background:#F7F9FE;color:var(--muted);
-  font-size:9px;padding:13px 11px;
+.filter-btn{
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:8px 13px;
+  background:white;
+  color:var(--muted);
+  font-size:9px;
+  font-weight:700;
+  white-space:nowrap;
 }
-td{
-  padding:14px 11px;border-top:1px solid #EDF1F7;
-  font-size:10px;vertical-align:middle;
+
+.filter-btn.active{
+  background:var(--navy);
+  border-color:var(--navy);
+  color:white;
 }
-.batch-name{font-weight:700;color:var(--navy);font-size:11px}
-.subtext{display:block;font-size:9px;color:var(--muted);margin-top:4px}
-.money{font-weight:700;color:var(--navy)}
+
+/* BATCH CARDS */
+
+.batch-list{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+
+.batch-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:16px;
+  box-shadow:var(--shadow);
+}
+
+.batch-card-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.batch-title{
+  color:var(--navy);
+  font-size:14px;
+  font-weight:800;
+}
+
+.batch-date{
+  color:var(--muted);
+  font-size:9px;
+  margin-top:5px;
+  line-height:1.6;
+}
+
 .status{
-  display:inline-block;padding:5px 9px;border-radius:20px;
-  font-size:9px;font-weight:700;white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:6px 9px;
+  border-radius:20px;
+  font-size:8px;
+  font-weight:800;
+  white-space:nowrap;
 }
-.open{background:#E6F7EE;color:#168054}
-.closed{background:#F0F2F6;color:#6E7888}
-.upcoming{background:#FFF5DF;color:#9A742B}
-.action-link{color:var(--royal);font-weight:700;font-size:10px}
-.empty{padding:30px;text-align:center;color:var(--muted);font-size:11px}
+
+.status::before{
+  content:"";
+  width:6px;
+  height:6px;
+  background:currentColor;
+  border-radius:50%;
+}
+
+.status.open{background:#E6F7EE;color:#168054}
+.status.closed{background:#F0F2F6;color:#6E7888}
+.status.upcoming{background:#FFF5DF;color:#9A742B}
+
+.batch-metrics{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:16px;
+  padding:13px 0;
+  border-top:1px solid #EDF1F7;
+  border-bottom:1px solid #EDF1F7;
+}
+
+.metric small{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  margin-bottom:6px;
+}
+
+.metric strong{
+  color:var(--navy);
+  font-size:16px;
+}
+
+.batch-card-bottom{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-top:13px;
+}
+
+.batch-created{
+  font-size:9px;
+  color:var(--muted);
+}
+
+.empty-state{
+  background:white;
+  border:1px dashed #C9D8EC;
+  border-radius:15px;
+  text-align:center;
+  padding:35px 18px;
+}
+
+.empty-icon{
+  width:55px;
+  height:55px;
+  margin:0 auto 12px;
+  border-radius:17px;
+  background:var(--light);
+  color:var(--royal);
+  display:grid;
+  place-items:center;
+  font-size:25px;
+}
+
+.empty-state h3{
+  color:var(--navy);
+  font-size:14px;
+  margin:0 0 6px;
+}
+
+.empty-state p{
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.6;
+  margin:0 0 15px;
+}
+
+/* MODALS */
 
 .modal-backdrop{
-  position:fixed;inset:0;background:#102A5680;
-  z-index:100;display:none;align-items:center;
-  justify-content:center;padding:15px;
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:#102A5680;
+  align-items:flex-end;
+  justify-content:center;
+  padding:0;
 }
-.modal-backdrop.show{display:flex}
-.modal{
-  background:white;width:min(590px,100%);
-  max-height:90vh;overflow:auto;border-radius:15px;
-  padding:23px;box-shadow:0 20px 60px #102A5640;
-}
-.modal-head{
-  display:flex;justify-content:space-between;
-  align-items:center;margin-bottom:18px;
-}
-.modal-head h2{font-size:18px;color:var(--navy);margin:0}
-.close{
-  border:0;background:var(--light);color:var(--navy);
-  border-radius:8px;width:33px;height:33px;font-size:18px;
-}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-.form-group{display:flex;flex-direction:column;gap:7px}
-.form-group.full{grid-column:1/-1}
-.form-group label{font-size:10px;font-weight:700;color:var(--text)}
-.form-group input,.form-group textarea,.form-group select{
-  border:1px solid var(--line);border-radius:8px;
-  padding:11px;font-size:11px;outline:none;width:100%;
-}
-.form-group input:focus,.form-group textarea:focus,
-.form-group select:focus{border-color:var(--royal)}
-.form-note{font-size:9px;color:var(--muted);line-height:1.6}
-.modal-actions{
-  display:flex;justify-content:flex-end;gap:9px;
-  margin-top:20px;flex-wrap:wrap;
-}
-.detail-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
-}
-.detail-box{
-  background:var(--pale);border:1px solid var(--line);
-  border-radius:10px;padding:13px;
-}
-.detail-box small{display:block;color:var(--muted);font-size:9px}
-.detail-box strong{display:block;color:var(--navy);font-size:17px;margin-top:7px}
-.detail-section{margin-top:20px}
-.detail-section h3{font-size:12px;color:var(--navy)}
-.detail-section p{font-size:10px;color:var(--muted);line-height:1.7}
-.detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
-.footer{text-align:center;padding:30px 0 0;color:var(--muted);font-size:9px}
 
-@media(max-width:1100px){
-  .stats{grid-template-columns:repeat(2,1fr)}
+.modal-backdrop.show{display:flex}
+
+.modal{
+  width:100%;
+  max-width:620px;
+  max-height:91vh;
+  overflow-y:auto;
+  background:white;
+  border-radius:21px 21px 0 0;
+  padding:21px 19px 30px;
+  animation:slideUp .2s ease;
 }
-@media(max-width:700px){
-  .sidebar{transform:translateX(-100%);box-shadow:10px 0 30px #0002}
-  .sidebar.show{transform:translateX(0)}
-  .main{margin-left:0}
-  .topbar{height:64px;padding:0 14px}
-  .menu-toggle{display:block}
-  .page-label{display:none}
-  .top-search{width:min(180px,40vw)}
-  .content{padding:22px 14px 35px}
-  .heading h1{font-size:23px}
-  .stats{gap:9px}
-  .stat{padding:13px}
-  .stat h2{font-size:21px}
+
+@keyframes slideUp{
+  from{transform:translateY(35px);opacity:.6}
+  to{transform:translateY(0);opacity:1}
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:19px;
+}
+
+.modal-head h2{
+  color:var(--navy);
+  font-size:17px;
+  margin:0;
+}
+
+.close-btn{
+  width:33px;
+  height:33px;
+  border:0;
+  border-radius:50%;
+  background:var(--light);
+  color:var(--navy);
+  font-size:19px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:13px;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.form-group.full{grid-column:1/-1}
+
+.form-group label{
+  color:var(--text);
+  font-size:10px;
+  font-weight:700;
+}
+
+.form-group input,
+.form-group textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:12px;
+  outline:none;
+  font-size:11px;
+  color:var(--text);
+  background:white;
+}
+
+.form-group input:focus,
+.form-group textarea:focus{border-color:var(--royal)}
+
+.form-note{
+  font-size:9px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:9px;
+  margin-top:20px;
+}
+
+/* DETAILS */
+
+.detail-summary{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.detail-box{
+  background:var(--pale);
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:14px;
+}
+
+.detail-box small{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.detail-box strong{
+  display:block;
+  color:var(--navy);
+  font-size:19px;
+  margin-top:7px;
+}
+
+.detail-section{margin-top:20px}
+
+.detail-section h3{
+  font-size:11px;
+  color:var(--navy);
+  margin:0 0 8px;
+}
+
+.detail-section p{
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.8;
+  margin:0;
+}
+
+.detail-links{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:20px;
+}
+
+.detail-links a{
+  display:block;
+  text-align:center;
+  padding:12px 7px;
+  border-radius:9px;
+  background:var(--light);
+  color:var(--royal);
+  font-size:9px;
+  font-weight:700;
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:66px;
+  background:white;
+  border-top:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  z-index:40;
+  box-shadow:0 -4px 15px #102A560A;
+}
+
+.bottom-link{
+  border:0;
+  background:none;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  min-width:55px;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.bottom-link span{font-size:19px}
+
+.bottom-link.active{
+  color:var(--royal);
+  font-weight:800;
+}
+
+.bottom-link.active span{
+  background:var(--light);
+  border-radius:9px;
+  padding:3px 12px;
+}
+
+.footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:9px;
+  padding:25px 0 0;
+}
+
+/* RESPONSIVE */
+
+@media(min-width:650px){
+  .batch-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .modal-backdrop{align-items:center;padding:15px}
+  .modal{border-radius:18px}
+}
+
+@media(max-width:520px){
+  .topbar{height:61px;padding:0 13px}
+  .page{padding:19px 13px 90px}
+  .page-heading h1{font-size:21px}
+  .page-heading p{max-width:230px}
+  .primary-btn{padding:11px 12px;font-size:10px}
+  .summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .summary-card{padding:12px}
+  .summary-card h2{font-size:21px}
+  .summary-card p{font-size:8px}
+  .batch-card{padding:14px}
   .form-grid{grid-template-columns:1fr}
   .form-group.full{grid-column:auto}
-  .detail-grid{grid-template-columns:1fr 1fr}
-}
-@media(max-width:380px){
-  .stats{grid-template-columns:1fr 1fr}
+  .bottom-nav{height:63px}
 }
 </style>
 </head>
 
 <body>
-<div class="layout">
-
-<aside class="sidebar" id="sidebar">
-  <div class="brand">
-    <div class="brand-mark">A</div>
-    <div>
-      <div class="brand-name">Ah<span>ruh</span></div>
-      <small>Admin workspace</small>
-    </div>
-  </div>
-
-  <div class="nav-label">MAIN MENU</div>
-  <a class="nav-link" href="admin.html"><span class="nav-icon">⌂</span> Dashboard Overview</a>
-
-  <div class="nav-label">SHOPPING OPERATIONS</div>
-  <a class="nav-link active" href="batches.html"><span class="nav-icon">▦</span> Batch Management</a>
-  <a class="nav-link" href="products.html"><span class="nav-icon">▣</span> Product Management</a>
-  <a class="nav-link" href="categories.html"><span class="nav-icon">▤</span> Category Management</a>
-  <a class="nav-link" href="orders.html"><span class="nav-icon">▧</span> Orders & Receipts</a>
-  <a class="nav-link" href="artwork.html"><span class="nav-icon">▧</span> Custom Artwork</a>
-  <a class="nav-link" href="customers.html"><span class="nav-icon">♙</span> Customers</a>
-
-  <div class="nav-label">MONEY & REWARDS</div>
-  <a class="nav-link" href="wallet.html"><span class="nav-icon">₦</span> Naira Wallet</a>
-  <a class="nav-link" href="rewards.html"><span class="nav-icon">◈</span> G-Coin Rewards</a>
-  <a class="nav-link" href="games.html"><span class="nav-icon">♟</span> Games Management</a>
-  <a class="nav-link" href="mining.html"><span class="nav-icon">✧</span> Mining Management</a>
-
-  <div class="nav-label">GROWTH & DELIVERY</div>
-  <a class="nav-link" href="promotions.html"><span class="nav-icon">◇</span> Coupons & Promotions</a>
-  <a class="nav-link" href="shipping.html"><span class="nav-icon">⌖</span> Shipping & Delivery</a>
-  <a class="nav-link" href="notifications.html"><span class="nav-icon">♢</span> Notifications</a>
-  <a class="nav-link" href="reviews.html"><span class="nav-icon">☆</span> Product Reviews</a>
-
-  <div class="nav-label">CONTROL CENTRE</div>
-  <a class="nav-link" href="reports.html"><span class="nav-icon">▥</span> Reports & Analytics</a>
-  <a class="nav-link" href="settings.html"><span class="nav-icon">⚙</span> Platform Settings</a>
-
-  <div class="sidebar-bottom">
-    <div class="admin-mini">
-      <div class="admin-avatar">A</div>
-      <div><strong>Ahruh Admin</strong><small>Owner account</small></div>
-    </div>
-  </div>
-</aside>
-
-<main class="main">
 
 <header class="topbar">
   <div class="top-left">
-    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-    <span class="page-label">Admin / Shopping Operations / Batches</span>
+    <div class="brand">
+      <div class="brand-mark">A</div>
+      <div>
+        <div class="brand-word">AHRUH</div>
+        <div class="brand-tag">ADMIN SPACE</div>
+      </div>
+    </div>
   </div>
+
   <div class="top-right">
-    <input class="top-search" id="batchSearch" placeholder="Search batches..." oninput="renderBatches()">
-    <button class="top-icon" title="Notifications" onclick="location.href='notifications.html'">♧</button>
+    <button class="icon-btn" onclick="location.href='notifications.html'" aria-label="Notifications">♧</button>
+    <div class="avatar">A</div>
   </div>
 </header>
 
-<div class="content">
+<main class="page">
 
-  <section class="heading">
+  <section class="page-heading">
     <div>
       <h1>Batch Management</h1>
-      <p>Create shopping batches, control order periods and monitor fulfilment.</p>
+      <p>Manage shopping periods and monitor your batches.</p>
     </div>
-    <button class="btn btn-primary" onclick="openCreateModal()">＋ Create New Batch</button>
+    <button class="primary-btn" onclick="openCreateModal()">＋ New Batch</button>
   </section>
 
-  <div class="notice">
-    <strong>Prototype notice:</strong>
-    This page demonstrates the batch management interface. Changes made here
-    are held in this browser session only. Automatic batch closing, payment
-    restrictions and permanent records must be enforced by Ahruh's secure
-    backend before launch.
-  </div>
-
-  <section class="stats">
-    <div class="stat">
-      <div class="stat-top"><small>Total Batches</small><span class="stat-icon">▦</span></div>
-      <h2 id="totalBatches">0</h2>
-      <p>All batches created</p>
-    </div>
-    <div class="stat">
-      <div class="stat-top"><small>Open Batches</small><span class="stat-icon">◉</span></div>
-      <h2 id="openBatches">0</h2>
-      <p>Currently accepting orders</p>
-    </div>
-    <div class="stat">
-      <div class="stat-top"><small>Closed Batches</small><span class="stat-icon">▣</span></div>
-      <h2 id="closedBatches">0</h2>
-      <p>Order periods completed</p>
-    </div>
-    <div class="stat">
-      <div class="stat-top"><small>Upcoming Batches</small><span class="stat-icon">◷</span></div>
-      <h2 id="upcomingBatches">0</h2>
-      <p>Scheduled to open</p>
-    </div>
-  </section>
-
-  <section class="panel">
-    <div class="panel-head">
-      <div>
-        <h2>All Shopping Batches</h2>
-        <p>Review batch schedules, order totals and goods value.</p>
+  <section class="summary">
+    <div class="summary-card">
+      <div class="summary-top">
+        <small>Total batches</small>
+        <span class="summary-icon">▦</span>
       </div>
-      <button class="btn btn-light" onclick="renderBatches()">↻ Refresh</button>
+      <h2 id="totalBatches">0</h2>
+      <p>All created batches</p>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-top">
+        <small>Open batches</small>
+        <span class="summary-icon">◉</span>
+      </div>
+      <h2 id="openBatches">0</h2>
+      <p>Accepting orders</p>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-top">
+        <small>Closed batches</small>
+        <span class="summary-icon">▣</span>
+      </div>
+      <h2 id="closedBatches">0</h2>
+      <p>Order period ended</p>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-top">
+        <small>Upcoming</small>
+        <span class="summary-icon">◷</span>
+      </div>
+      <h2 id="upcomingBatches">0</h2>
+      <p>Waiting to open</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-heading">
+      <h2>Your batches</h2>
+      <small id="batchCount">0 batches</small>
+    </div>
+
+    <div class="search-box">
+      <span class="search-symbol">⌕</span>
+      <input id="batchSearch" type="search"
+        placeholder="Search by batch name..."
+        oninput="renderBatches()">
     </div>
 
     <div class="filters">
-      <select class="field" id="statusFilter" onchange="renderBatches()">
-        <option value="all">All statuses</option>
-        <option value="Open">Open</option>
-        <option value="Closed">Closed</option>
-        <option value="Upcoming">Upcoming</option>
-      </select>
-
-      <select class="field" id="sortFilter" onchange="renderBatches()">
-        <option value="newest">Newest first</option>
-        <option value="oldest">Oldest first</option>
-        <option value="orders">Most orders</option>
-      </select>
+      <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">All batches</button>
+      <button class="filter-btn" data-filter="Open" onclick="setFilter('Open',this)">Open</button>
+      <button class="filter-btn" data-filter="Upcoming" onclick="setFilter('Upcoming',this)">Upcoming</button>
+      <button class="filter-btn" data-filter="Closed" onclick="setFilter('Closed',this)">Closed</button>
     </div>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>BATCH</th>
-            <th>OPENING DATE</th>
-            <th>CLOSING DATE</th>
-            <th>ORDERS</th>
-            <th>GOODS VALUE</th>
-            <th>STATUS</th>
-            <th>ACTION</th>
-          </tr>
-        </thead>
-        <tbody id="batchTable">
-          <tr><td colspan="7" class="empty">No batches have been created in this session. Create your first batch to get started.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <section class="panel">
-    <div class="panel-head">
-      <div>
-        <h2>Batch Operations</h2>
-        <p>Important tasks available when managing an individual batch.</p>
-      </div>
-    </div>
-
-    <div class="detail-grid">
-      <div class="detail-box">
-        <small>Order management</small>
-        <strong>01</strong>
-        <span class="subtext">View and search batch orders</span>
-      </div>
-      <div class="detail-box">
-        <small>Procurement</small>
-        <strong>02</strong>
-        <span class="subtext">Track supplier purchasing</span>
-      </div>
-      <div class="detail-box">
-        <small>Fulfilment</small>
-        <strong>03</strong>
-        <span class="subtext">Track received and delivered goods</span>
-      </div>
-    </div>
+    <div class="batch-list" id="batchList"></div>
   </section>
 
   <footer class="footer">
-    Ahruh Admin Workspace · Batch Management
+    AHRUH · Batch Management
   </footer>
-</div>
-</main>
-</div>
 
-<!-- CREATE BATCH MODAL -->
-<div class="modal-backdrop" id="createModal">
+</main>
+
+<!-- BOTTOM NAVIGATION -->
+<nav class="bottom-nav">
+  <a class="bottom-link" href="admin.html"><span>⌂</span>Home</a>
+  <a class="bottom-link active" href="batches.html"><span>▦</span>Batches</a>
+  <a class="bottom-link" href="orders.html"><span>▧</span>Orders</a>
+  <a class="bottom-link" href="products.html"><span>▣</span>Products</a>
+  <a class="bottom-link" href="settings.html"><span>⚙</span>Settings</a>
+</nav>
+
+<!-- CREATE BATCH -->
+<div class="modal-backdrop" id="createModal" onclick="closeOnBackdrop(event,'createModal')">
   <div class="modal">
     <div class="modal-head">
-      <h2>Create New Batch</h2>
-      <button class="close" onclick="closeCreateModal()">×</button>
+      <h2>Create a new batch</h2>
+      <button class="close-btn" onclick="closeCreateModal()">×</button>
     </div>
 
     <form id="batchForm">
@@ -466,7 +795,7 @@ td{
 
         <div class="form-group full">
           <label for="batchName">Batch name or number</label>
-          <input id="batchName" placeholder="e.g. Batch 01" required>
+          <input id="batchName" placeholder="e.g. Batch 01" required maxlength="60">
         </div>
 
         <div class="form-group">
@@ -480,57 +809,209 @@ td{
         </div>
 
         <div class="form-group full">
-          <label for="batchDescription">Description (optional)</label>
-          <textarea id="batchDescription" rows="3" placeholder="Add internal notes about this batch"></textarea>
+          <label for="batchDescription">Internal notes (optional)</label>
+          <textarea id="batchDescription" rows="3" placeholder="Add notes about this shopping batch"></textarea>
         </div>
 
-        <div class="form-group full">
-          <label for="batchStatus">Initial status</label>
-          <select id="batchStatus">
-            <option value="auto">Determine from schedule</option>
-            <option value="Upcoming">Upcoming</option>
-            <option value="Open">Open (prototype only)</option>
-          </select>
-          <span class="form-note">
-            In production, the backend must determine whether customers
-            can place and pay for orders. An admin page cannot override
-            server-side batch restrictions.
-          </span>
-        </div>
       </div>
 
+      <p class="form-note">
+        Batch status is calculated from its opening and closing dates.
+        Actual customer checkout restrictions must be enforced by the secure backend.
+      </p>
+
       <div class="modal-actions">
-        <button type="button" class="btn btn-outline" onclick="closeCreateModal()">Cancel</button>
-        <button type="submit" class="btn btn-primary">Create Batch</button>
+        <button type="button" class="outline-btn" onclick="closeCreateModal()">Cancel</button>
+        <button type="submit" class="primary-btn">Create batch</button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- BATCH DETAILS MODAL -->
-<div class="modal-backdrop" id="detailModal">
+<!-- BATCH DETAILS -->
+<div class="modal-backdrop" id="detailModal" onclick="closeOnBackdrop(event,'detailModal')">
   <div class="modal">
     <div class="modal-head">
-      <h2 id="detailTitle">Batch Details</h2>
-      <button class="close" onclick="closeDetailModal()">×</button>
+      <h2 id="detailTitle">Batch details</h2>
+      <button class="close-btn" onclick="closeDetailModal()">×</button>
     </div>
 
     <div id="detailContent"></div>
 
-    <div class="detail-actions">
-      <a class="btn btn-light" id="viewOrdersLink" href="orders.html">View Orders</a>
-      <a class="btn btn-light" id="viewArtworkLink" href="artwork.html">Custom Artwork</a>
-      <a class="btn btn-outline" id="viewProductsLink" href="products.html">Product Summary</a>
+    <div class="detail-links">
+      <a id="ordersLink" href="orders.html">View batch orders</a>
+      <a id="productsLink" href="products.html">Product summary</a>
+      <a id="artworkLink" href="artwork.html">Custom artwork</a>
+      <a href="shipping.html">Delivery management</a>
     </div>
   </div>
 </div>
 
 <script>
-let batches = [];
-let selectedBatch = null;
+const STORAGE_KEY = "ahruh_batches_prototype_v1";
 
-function toggleSidebar(){
-  document.getElementById("sidebar").classList.toggle("show");
+let batches = [];
+let currentFilter = "all";
+
+function loadBatches(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    batches = Array.isArray(saved) ? saved : [];
+  }catch(error){
+    batches = [];
+  }
+}
+
+function saveBatches(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(batches));
+  }catch(error){
+    alert("Unable to save batches in this browser.");
+  }
+}
+
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g,char=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[char]));
+}
+
+function getBatchStatus(batch){
+  const now = Date.now();
+  const opens = new Date(batch.openDate).getTime();
+  const closes = new Date(batch.closeDate).getTime();
+
+  if(!Number.isFinite(opens) || !Number.isFinite(closes)){
+    return "Upcoming";
+  }
+
+  if(now < opens) return "Upcoming";
+  if(now >= closes) return "Closed";
+  return "Open";
+}
+
+function formatDate(value){
+  if(!value) return "—";
+
+  const date = new Date(value);
+  if(Number.isNaN(date.getTime())) return "—";
+
+  return date.toLocaleString("en-NG",{
+    day:"numeric",
+    month:"short",
+    year:"numeric",
+    hour:"2-digit",
+    minute:"2-digit"
+  });
+}
+
+function formatMoney(value){
+  return "₦" + Number(value || 0).toLocaleString("en-NG");
+}
+
+function setFilter(filter,button){
+  currentFilter = filter;
+
+  document.querySelectorAll(".filter-btn").forEach(item=>{
+    item.classList.remove("active");
+  });
+
+  button.classList.add("active");
+  renderBatches();
+}
+
+function updateSummary(){
+  const counts = {
+    Open:0,
+    Closed:0,
+    Upcoming:0
+  };
+
+  batches.forEach(batch=>{
+    counts[getBatchStatus(batch)]++;
+  });
+
+  document.getElementById("totalBatches").textContent = batches.length;
+  document.getElementById("openBatches").textContent = counts.Open;
+  document.getElementById("closedBatches").textContent = counts.Closed;
+  document.getElementById("upcomingBatches").textContent = counts.Upcoming;
+}
+
+function renderBatches(){
+  const query = document.getElementById("batchSearch").value.trim().toLowerCase();
+
+  updateSummary();
+
+  let filtered = batches.filter(batch=>{
+    const status = getBatchStatus(batch);
+    const matchesName = batch.name.toLowerCase().includes(query);
+    const matchesStatus = currentFilter === "all" || status === currentFilter;
+
+    return matchesName && matchesStatus;
+  });
+
+  filtered.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+
+  document.getElementById("batchCount").textContent =
+    filtered.length + (filtered.length === 1 ? " batch" : " batches");
+
+  const list = document.getElementById("batchList");
+
+  if(filtered.length === 0){
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">▦</div>
+        <h3>${batches.length ? "No matching batches" : "No batches yet"}</h3>
+        <p>${batches.length
+          ? "Try another search or select a different status."
+          : "Create your first shopping batch to begin organising customer orders."}</p>
+        ${batches.length ? "" : '<button class="primary-btn" onclick="openCreateModal()">＋ Create first batch</button>'}
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(batch=>{
+    const status = getBatchStatus(batch);
+    const orders = Number(batch.orders || 0);
+    const goods = Number(batch.goodsValue || 0);
+
+    return `
+      <article class="batch-card">
+        <div class="batch-card-top">
+          <div>
+            <div class="batch-title">${escapeHTML(batch.name)}</div>
+            <div class="batch-date">
+              Opens: ${formatDate(batch.openDate)}<br>
+              Closes: ${formatDate(batch.closeDate)}
+            </div>
+          </div>
+
+          <span class="status ${status.toLowerCase()}">${status}</span>
+        </div>
+
+        <div class="batch-metrics">
+          <div class="metric">
+            <small>Total orders</small>
+            <strong>${orders.toLocaleString("en-NG")}</strong>
+          </div>
+          <div class="metric">
+            <small>Total goods value</small>
+            <strong>${formatMoney(goods)}</strong>
+          </div>
+        </div>
+
+        <div class="batch-card-bottom">
+          <span class="batch-created">Created ${formatDate(batch.createdAt)}</span>
+          <button class="light-btn" onclick="viewBatch('${escapeHTML(batch.id)}')">
+            View details →
+          </button>
+        </div>
+      </article>`;
+  }).join("");
 }
 
 function openCreateModal(){
@@ -545,103 +1026,10 @@ function closeDetailModal(){
   document.getElementById("detailModal").classList.remove("show");
 }
 
-function escapeHTML(value){
-  return String(value ?? "").replace(/[&<>"']/g,char=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  }[char]));
-}
-
-function getBatchStatus(batch){
-  const now = new Date();
-  const opens = new Date(batch.openDate);
-  const closes = new Date(batch.closeDate);
-
-  if(now < opens) return "Upcoming";
-  if(now > closes) return "Closed";
-  return "Open";
-}
-
-function formatDate(value){
-  if(!value) return "—";
-  return new Date(value).toLocaleString("en-NG",{
-    day:"numeric",
-    month:"short",
-    year:"numeric",
-    hour:"2-digit",
-    minute:"2-digit"
-  });
-}
-
-function formatMoney(value){
-  return "₦" + Number(value || 0).toLocaleString("en-NG");
-}
-
-function renderBatches(){
-  const query = document.getElementById("batchSearch").value.trim().toLowerCase();
-  const filter = document.getElementById("statusFilter").value;
-  const sort = document.getElementById("sortFilter").value;
-
-  batches.forEach(batch=>{
-    batch.status = getBatchStatus(batch);
-  });
-
-  let filtered = batches.filter(batch=>{
-    const matchesQuery = batch.name.toLowerCase().includes(query);
-    const matchesStatus = filter === "all" || batch.status === filter;
-    return matchesQuery && matchesStatus;
-  });
-
-  if(sort === "newest"){
-    filtered.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
-  }else if(sort === "oldest"){
-    filtered.sort((a,b)=>new Date(a.createdAt)-new Date(b.createdAt));
-  }else if(sort === "orders"){
-    filtered.sort((a,b)=>(b.orders||0)-(a.orders||0));
+function closeOnBackdrop(event,id){
+  if(event.target.id === id){
+    document.getElementById(id).classList.remove("show");
   }
-
-  document.getElementById("totalBatches").textContent = batches.length;
-  document.getElementById("openBatches").textContent =
-    batches.filter(b=>b.status==="Open").length;
-  document.getElementById("closedBatches").textContent =
-    batches.filter(b=>b.status==="Closed").length;
-  document.getElementById("upcomingBatches").textContent =
-    batches.filter(b=>b.status==="Upcoming").length;
-
-  const tbody = document.getElementById("batchTable");
-
-  if(filtered.length === 0){
-    tbody.innerHTML = `
-      <tr><td colspan="7" class="empty">
-        ${batches.length === 0
-          ? "No batches have been created in this session. Create your first batch to get started."
-          : "No matching batches found."}
-      </td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = filtered.map(batch=>{
-    const statusClass = batch.status.toLowerCase();
-
-    return `
-      <tr>
-        <td>
-          <span class="batch-name">${escapeHTML(batch.name)}</span>
-          <span class="subtext">Created ${formatDate(batch.createdAt)}</span>
-        </td>
-        <td>${formatDate(batch.openDate)}</td>
-        <td>${formatDate(batch.closeDate)}</td>
-        <td><strong>${Number(batch.orders||0).toLocaleString("en-NG")}</strong></td>
-        <td class="money">${formatMoney(batch.goodsValue)}</td>
-        <td><span class="status ${statusClass}">${batch.status}</span></td>
-        <td>
-          <button class="btn btn-light" onclick="viewBatch('${batch.id}')">View details</button>
-        </td>
-      </tr>`;
-  }).join("");
 }
 
 document.getElementById("batchForm").addEventListener("submit",function(event){
@@ -652,68 +1040,71 @@ document.getElementById("batchForm").addEventListener("submit",function(event){
   const closeDate = document.getElementById("closeDate").value;
   const description = document.getElementById("batchDescription").value.trim();
 
+  const opens = new Date(openDate);
+  const closes = new Date(closeDate);
+
   if(!name || !openDate || !closeDate){
     alert("Please complete the required fields.");
     return;
   }
 
-  const open = new Date(openDate);
-  const close = new Date(closeDate);
-
-  if(Number.isNaN(open.getTime()) || Number.isNaN(close.getTime()) || close <= open){
+  if(Number.isNaN(opens.getTime()) || Number.isNaN(closes.getTime()) || closes <= opens){
     alert("The closing date must be later than the opening date.");
     return;
   }
 
-  if(batches.some(batch=>batch.name.toLowerCase()===name.toLowerCase())){
-    alert("A batch with this name already exists in this session.");
+  if(batches.some(batch=>batch.name.toLowerCase() === name.toLowerCase())){
+    alert("A batch with this name already exists.");
     return;
   }
 
-  const batch = {
-    id:"batch-"+Date.now(),
+  const newBatch = {
+    id:"batch-" + Date.now(),
     name,
     openDate,
     closeDate,
     description,
     createdAt:new Date().toISOString(),
     orders:0,
-    goodsValue:0,
-    status:"Upcoming"
+    goodsValue:0
   };
 
-  batches.push(batch);
-  closeCreateModal();
-  this.reset();
+  batches.unshift(newBatch);
+  saveBatches();
   renderBatches();
+
+  this.reset();
+  closeCreateModal();
 });
 
 function viewBatch(id){
-  const batch = batches.find(item=>item.id===id);
+  const batch = batches.find(item=>item.id === id);
   if(!batch) return;
 
-  selectedBatch = batch;
+  const status = getBatchStatus(batch);
 
   document.getElementById("detailTitle").textContent = batch.name;
 
   document.getElementById("detailContent").innerHTML = `
-    <div class="detail-grid">
+    <div class="detail-summary">
       <div class="detail-box">
-        <small>Orders</small>
-        <strong>${Number(batch.orders||0).toLocaleString("en-NG")}</strong>
+        <small>Total orders</small>
+        <strong>${Number(batch.orders || 0).toLocaleString("en-NG")}</strong>
       </div>
+
       <div class="detail-box">
-        <small>Goods value</small>
+        <small>Total goods value</small>
         <strong>${formatMoney(batch.goodsValue)}</strong>
-      </div>
-      <div class="detail-box">
-        <small>Status</small>
-        <strong style="font-size:13px">${escapeHTML(getBatchStatus(batch))}</strong>
       </div>
     </div>
 
     <div class="detail-section">
-      <h3>Batch schedule</h3>
+      <h3>Batch status</h3>
+      <p>${escapeHTML(status)}</p>
+    </div>
+
+    <div class="detail-section">
+      <h3>Shopping schedule</h3>
       <p>
         Opening: ${formatDate(batch.openDate)}<br>
         Closing: ${formatDate(batch.closeDate)}
@@ -721,46 +1112,36 @@ function viewBatch(id){
     </div>
 
     <div class="detail-section">
-      <h3>Internal description</h3>
-      <p>${escapeHTML(batch.description || "No description provided.")}</p>
+      <h3>Internal notes</h3>
+      <p>${escapeHTML(batch.description || "No notes added.")}</p>
     </div>
 
     <div class="detail-section">
-      <h3>Procurement and fulfilment</h3>
+      <h3>Batch fulfilment</h3>
       <p>
-        Supplier purchasing, received quantities, artwork approval
-        and customer delivery tracking will be managed through the
-        connected batch operations pages.
+        Orders, supplier purchases, received quantities, custom artwork
+        and customer deliveries can be reviewed from the linked management pages.
       </p>
     </div>
   `;
 
-  const batchParam = encodeURIComponent(batch.id);
-  document.getElementById("viewOrdersLink").href =
-    "orders.html?batch="+batchParam;
-  document.getElementById("viewArtworkLink").href =
-    "artwork.html?batch="+batchParam;
-  document.getElementById("viewProductsLink").href =
-    "products.html?batch="+batchParam;
+  const param = encodeURIComponent(batch.id);
+
+  document.getElementById("ordersLink").href = "orders.html?batch=" + param;
+  document.getElementById("productsLink").href = "products.html?batch=" + param;
+  document.getElementById("artworkLink").href = "artwork.html?batch=" + param;
 
   document.getElementById("detailModal").classList.add("show");
 }
 
-document.querySelectorAll(".nav-link").forEach(link=>{
-  link.addEventListener("click",()=>{
-    document.getElementById("sidebar").classList.remove("show");
-  });
+/* Refresh statuses when the page becomes active */
+document.addEventListener("visibilitychange",()=>{
+  if(!document.hidden) renderBatches();
 });
 
-document.getElementById("todayDate").textContent =
-  new Date().toLocaleDateString("en-NG",{
-    weekday:"short",
-    day:"numeric",
-    month:"short",
-    year:"numeric"
-  });
-
+loadBatches();
 renderBatches();
 </script>
+
 </body>
 </html>
