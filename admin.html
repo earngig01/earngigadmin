@@ -4,8 +4,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#1761C9">
-<title>Ahruh | Admin</title>
+<meta name="theme-color" content="#102A56">
+<title>AHRUH | Admin Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -16,7 +20,7 @@
   --light:#EAF2FF;
   --pale:#F4F8FF;
   --white:#FFFFFF;
-  --gold:#E5B95F;
+  --gold:#D6B66F;
   --text:#243653;
   --muted:#8996AA;
   --line:#E8EDF5;
@@ -29,7 +33,7 @@ body{
   margin:0;
   background:var(--pale);
   color:var(--text);
-  font-family:Arial,sans-serif;
+  font-family:'DM Sans',Arial,sans-serif;
   font-size:14px;
 }
 
@@ -37,14 +41,57 @@ button,input{font:inherit}
 button{cursor:pointer}
 a{text-decoration:none;color:inherit}
 
+/* BRAND */
+
+.brand{
+  display:flex;
+  align-items:center;
+}
+
+.brand-word{
+  position:relative;
+  padding-bottom:5px;
+}
+
+.brand-name{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:34px;
+  line-height:.9;
+  font-weight:700;
+  letter-spacing:2.5px;
+  color:white;
+}
+
+.brand-flourish{
+  position:absolute;
+  height:5px;
+  width:100%;
+  bottom:0;
+  left:0;
+  border-bottom:1.5px solid var(--gold);
+  border-radius:0 0 70% 25%;
+  transform:skewX(-20deg);
+}
+
+.brand-tagline{
+  font-size:8px;
+  letter-spacing:2.2px;
+  color:#D6E5FA;
+  margin-top:8px;
+  font-weight:600;
+}
+
+/* TOP BAR */
+
 .topbar{
-  height:66px;
+  min-height:67px;
   background:var(--royal);
   color:white;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 25px;
+  padding:12px 25px;
+  gap:15px;
   position:sticky;
   top:0;
   z-index:30;
@@ -64,32 +111,6 @@ a{text-decoration:none;color:inherit}
   font-size:25px;
   padding:4px;
 }
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:9px;
-}
-
-.brand-mark{
-  width:34px;
-  height:34px;
-  background:var(--gold);
-  color:var(--navy);
-  display:grid;
-  place-items:center;
-  border-radius:10px;
-  font-weight:900;
-  font-size:21px;
-}
-
-.brand-name{
-  font-size:22px;
-  font-weight:800;
-  letter-spacing:-.7px;
-}
-
-.brand-name span{color:#FFE2A0}
 
 .top-action{
   width:36px;
@@ -133,14 +154,14 @@ a{text-decoration:none;color:inherit}
   padding:23px 25px 100px;
 }
 
-/* WELCOME */
+/* WELCOME BANNER */
 
 .welcome{
-  background:linear-gradient(115deg,#1761C9,#3989F0);
+  background:linear-gradient(115deg,#102A56,#1768D5 65%,#438FF0);
   border-radius:20px;
-  padding:25px 25px;
+  padding:25px;
   color:white;
-  min-height:165px;
+  min-height:170px;
   position:relative;
   overflow:hidden;
   display:flex;
@@ -189,12 +210,14 @@ a{text-decoration:none;color:inherit}
   font-size:27px;
   margin:0 0 8px;
   letter-spacing:-.7px;
+  font-weight:700;
 }
 
 .welcome p{
   color:#E1EDFF;
   font-size:11px;
   margin:0;
+  line-height:1.6;
 }
 
 .welcome-art{
@@ -250,11 +273,9 @@ a{text-decoration:none;color:inherit}
   transform:rotate(9deg);
 }
 
-/* OVERVIEW */
+/* SECTIONS */
 
-.section{
-  margin-top:25px;
-}
+.section{margin-top:25px}
 
 .section-head{
   display:flex;
@@ -268,12 +289,15 @@ a{text-decoration:none;color:inherit}
   font-size:16px;
   color:var(--navy);
   margin:0;
+  font-weight:700;
 }
 
 .section-head small{
   color:var(--muted);
   font-size:10px;
 }
+
+/* STAT CARDS */
 
 .stats{
   display:grid;
@@ -383,7 +407,7 @@ a{text-decoration:none;color:inherit}
   line-height:1.3;
 }
 
-/* QUICK ACTIVITY */
+/* ACTIVITY */
 
 .activity-card{
   background:white;
@@ -393,45 +417,12 @@ a{text-decoration:none;color:inherit}
   box-shadow:var(--shadow);
 }
 
-.activity-row{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:12px 0;
-  border-bottom:1px solid #EFF2F7;
-}
-
-.activity-row:last-child{border-bottom:0}
-
-.activity-icon{
-  width:37px;
-  height:37px;
-  border-radius:11px;
-  display:grid;
-  place-items:center;
-  background:var(--light);
-  color:var(--royal);
-  font-size:17px;
-  flex:none;
-}
-
-.activity-row strong{
-  font-size:11px;
-  display:block;
-}
-
-.activity-row small{
-  font-size:9px;
-  color:var(--muted);
-  display:block;
-  margin-top:4px;
-}
-
 .activity-empty{
   text-align:center;
   color:var(--muted);
   font-size:10px;
   padding:20px 5px;
+  line-height:1.7;
 }
 
 /* MORE MENU */
@@ -456,12 +447,6 @@ a{text-decoration:none;color:inherit}
   padding:22px 20px 35px;
   max-height:85vh;
   overflow-y:auto;
-  animation:slideUp .2s ease;
-}
-
-@keyframes slideUp{
-  from{transform:translateY(40px);opacity:.6}
-  to{transform:translateY(0);opacity:1}
 }
 
 .more-head{
@@ -506,7 +491,11 @@ a{text-decoration:none;color:inherit}
   padding:10px 5px;
 }
 
-.more-item span{font-size:21px;color:var(--royal)}
+.more-item span{
+  font-size:21px;
+  color:var(--royal);
+}
+
 .more-item strong{font-size:9px}
 
 /* BOTTOM NAVIGATION */
@@ -540,7 +529,11 @@ a{text-decoration:none;color:inherit}
 }
 
 .bottom-link span{font-size:19px}
-.bottom-link.active{color:var(--royal);font-weight:700}
+
+.bottom-link.active{
+  color:var(--royal);
+  font-weight:700;
+}
 
 .bottom-link.active span{
   background:var(--light);
@@ -548,7 +541,7 @@ a{text-decoration:none;color:inherit}
   padding:4px 12px;
 }
 
-/* SMALL SCREENS */
+/* RESPONSIVE */
 
 @media(max-width:800px){
   .main{padding:18px 17px 95px}
@@ -558,7 +551,7 @@ a{text-decoration:none;color:inherit}
 
 @media(max-width:520px){
   .topbar{height:59px;padding:0 14px}
-  .brand-name{font-size:20px}
+  .brand-name{font-size:30px}
   .main{padding:16px 12px 90px}
   .welcome{min-height:140px;padding:20px 16px;border-radius:16px}
   .welcome h1{font-size:22px}
@@ -579,10 +572,6 @@ a{text-decoration:none;color:inherit}
   .bottom-nav{height:64px}
 }
 
-@media(min-width:801px){
-  .bottom-nav{left:255px}
-}
-
 @media(max-width:350px){
   .welcome-art{width:70px}
   .welcome h1{font-size:19px}
@@ -595,15 +584,19 @@ a{text-decoration:none;color:inherit}
 
 <header class="topbar">
   <div class="top-left">
-    <button class="menu-btn" onclick="openMore()" aria-label="Open menu">☰</button>
     <div class="brand">
-      <div class="brand-mark">A</div>
-      <div class="brand-name">Ah<span>ruh</span></div>
+      <div class="brand-word">
+        <div class="brand-name">AHRUH</div>
+        <div class="brand-flourish"></div>
+        <div class="brand-tagline">ADMIN SPACE</div>
+      </div>
     </div>
   </div>
 
   <div class="top-right">
-    <button class="top-action" onclick="location.href='notifications.html'" aria-label="Notifications">
+    <button class="top-action"
+      onclick="location.href='notifications.html'"
+      aria-label="Notifications">
       ♧<i class="dot"></i>
     </button>
     <div class="avatar">A</div>
@@ -612,12 +605,11 @@ a{text-decoration:none;color:inherit}
 
 <main class="main">
 
-  <!-- WELCOME BANNER -->
   <section class="welcome">
     <div class="welcome-content">
       <div class="welcome-date" id="welcomeDate"></div>
       <h1>Good day, Admin! 👋</h1>
-      <p>Here's what's happening on Ahruh today.</p>
+      <p>Here's what's happening on AHRUH today.</p>
     </div>
 
     <div class="welcome-art" aria-hidden="true">
@@ -626,7 +618,6 @@ a{text-decoration:none;color:inherit}
     </div>
   </section>
 
-  <!-- OVERVIEW -->
   <section class="section">
     <div class="section-head">
       <h2>Store Overview</h2>
@@ -634,7 +625,6 @@ a{text-decoration:none;color:inherit}
     </div>
 
     <div class="stats">
-
       <div class="stat">
         <div class="stat-top">
           <small>Customers</small>
@@ -670,14 +660,12 @@ a{text-decoration:none;color:inherit}
         <h2 id="pendingCount">—</h2>
         <p>Awaiting fulfilment</p>
       </div>
-
     </div>
   </section>
 
-  <!-- MANAGEMENT -->
   <section class="section">
     <div class="section-head">
-      <h2>Manage Ahruh</h2>
+      <h2>Manage AHRUH</h2>
       <small>All departments</small>
     </div>
 
@@ -746,7 +734,6 @@ a{text-decoration:none;color:inherit}
     </div>
   </section>
 
-  <!-- RECENT ACTIVITY -->
   <section class="section">
     <div class="section-head">
       <h2>Recent Activity</h2>
@@ -766,21 +753,21 @@ a{text-decoration:none;color:inherit}
 <!-- MORE MENU -->
 <div class="more-menu" id="moreMenu" onclick="closeMoreOutside(event)">
   <div class="more-content">
+
     <div class="more-head">
       <h2>All Departments</h2>
       <button class="close-btn" onclick="closeMore()">×</button>
     </div>
 
     <div class="more-grid">
-
       <a class="more-item" href="artwork.html"><span>▧</span><strong>Custom Artwork</strong></a>
       <a class="more-item" href="mining.html"><span>✧</span><strong>Mining</strong></a>
       <a class="more-item" href="notifications.html"><span>♢</span><strong>Notifications</strong></a>
       <a class="more-item" href="reviews.html"><span>☆</span><strong>Reviews</strong></a>
       <a class="more-item" href="reports.html"><span>▥</span><strong>Analytics</strong></a>
       <a class="more-item" href="settings.html"><span>⚙</span><strong>Settings</strong></a>
-
     </div>
+
   </div>
 </div>
 
@@ -831,9 +818,9 @@ document.getElementById("welcomeDate").textContent =
   });
 
 /*
-  Live dashboard figures are intentionally left blank.
-  Connect these elements to the authenticated backend
-  before displaying customer, order or financial data.
+  Live figures will be connected to the secure AHRUH backend.
+  Do not use browser-only storage for wallet balances,
+  payment records, authentication or customer financial data.
 */
 </script>
 
