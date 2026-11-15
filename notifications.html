@@ -5,7 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#102A56">
-<title>AHRUH | Settings</title>
+<title>AHRUH | Notifications</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
@@ -31,7 +32,7 @@ body{
   font-family:'DM Sans',Arial,sans-serif;
   font-size:13px;
 }
-button,input,textarea,select{font:inherit}
+button,input,select{font:inherit}
 a{text-decoration:none;color:inherit}
 .topbar{
   background:var(--navy);
@@ -70,192 +71,198 @@ a{text-decoration:none;color:inherit}
   margin:auto;
   padding:20px 15px 100px;
 }
-.page-heading{margin-bottom:18px}
-.page-heading h1{
+.heading{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:17px;
+}
+.heading h1{
   color:var(--navy);
   font-size:23px;
   margin:0 0 5px;
 }
-.page-heading p{
+.heading p{
   color:var(--muted);
   font-size:11px;
-  line-height:1.6;
   margin:0;
-}
-.settings-section{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:15px;
-  padding:16px;
-  margin-bottom:13px;
-  box-shadow:var(--shadow);
-}
-.section-head{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:15px;
-}
-.section-icon{
-  width:38px;
-  height:38px;
-  flex:none;
-  display:grid;
-  place-items:center;
-  border-radius:12px;
-  background:var(--light);
-  color:var(--royal);
-  font-size:19px;
-}
-.section-head h2{
-  color:var(--navy);
-  font-size:13px;
-  margin:0 0 3px;
-}
-.section-head p{
-  color:var(--muted);
-  font-size:9px;
-  margin:0;
-}
-.field{margin-bottom:13px}
-.field:last-child{margin-bottom:0}
-.field label{
-  display:block;
-  color:var(--text);
-  font-size:10px;
-  font-weight:700;
-  margin-bottom:6px;
-}
-.field input,.field textarea,.field select{
-  width:100%;
-  border:1px solid var(--line);
-  border-radius:9px;
-  background:#FBFCFF;
-  color:var(--text);
-  padding:11px;
-  outline:none;
-  font-size:11px;
-}
-.field textarea{
-  min-height:75px;
-  resize:vertical;
-}
-.field input:focus,.field textarea:focus,.field select:focus{
-  border-color:#8BB8F4;
-  background:white;
-}
-.field small{
-  display:block;
-  color:var(--muted);
-  font-size:9px;
-  margin-top:5px;
   line-height:1.5;
 }
-.two-col{
+.unread-count{
+  background:var(--light);
+  color:var(--royal);
+  padding:7px 10px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:800;
+  white-space:nowrap;
+}
+.summary{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:10px;
+  margin-bottom:17px;
 }
-.setting-row{
+.summary-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:13px;
+  box-shadow:var(--shadow);
+}
+.summary-card small{
+  color:var(--muted);
+  font-size:10px;
+}
+.summary-card strong{
+  display:block;
+  color:var(--navy);
+  font-size:22px;
+  margin-top:7px;
+}
+.toolbar{
+  display:flex;
+  gap:8px;
+  margin-bottom:12px;
+}
+.search{
+  flex:1;
+  min-width:0;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:11px;
+  background:white;
+  outline:none;
+  font-size:11px;
+}
+.search:focus{border-color:#8BB8F4}
+.filters{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  padding-bottom:8px;
+  scrollbar-width:none;
+}
+.filters::-webkit-scrollbar{display:none}
+.filter{
+  flex:none;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:8px 12px;
+  background:white;
+  color:var(--text);
+  font-size:10px;
+}
+.filter.active{
+  background:var(--navy);
+  border-color:var(--navy);
+  color:white;
+}
+.actions{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin:10px 0 13px;
+}
+.actions button{
+  border:0;
+  background:transparent;
+  color:var(--royal);
+  font-size:10px;
+  font-weight:800;
+  padding:7px 0;
+}
+.notification-list{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+.notification{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:13px;
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+  box-shadow:var(--shadow);
+}
+.notification.unread{
+  border-left:3px solid var(--royal);
+  background:#FCFDFF;
+}
+.n-icon{
+  width:39px;
+  height:39px;
+  flex:none;
+  border-radius:12px;
+  background:var(--light);
+  color:var(--royal);
+  display:grid;
+  place-items:center;
+  font-size:19px;
+}
+.n-content{flex:1;min-width:0}
+.n-top{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+}
+.n-top strong{
+  color:var(--navy);
+  font-size:11px;
+  line-height:1.5;
+}
+.n-time{
+  color:var(--muted);
+  font-size:9px;
+  white-space:nowrap;
+}
+.n-content p{
+  color:#64748B;
+  font-size:10px;
+  line-height:1.6;
+  margin:5px 0 8px;
+}
+.n-bottom{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
-  padding:12px 0;
-  border-bottom:1px solid var(--line);
+  gap:8px;
 }
-.setting-row:last-child{border-bottom:0}
-.setting-row strong{
-  display:block;
-  color:var(--text);
-  font-size:11px;
-}
-.setting-row small{
-  display:block;
-  color:var(--muted);
-  font-size:9px;
-  line-height:1.5;
-  margin-top:4px;
-}
-.switch{
-  width:42px;
-  height:24px;
-  flex:none;
-  position:relative;
-}
-.switch input{
-  opacity:0;
-  width:0;
-  height:0;
-}
-.slider{
-  position:absolute;
-  inset:0;
-  background:#DCE3ED;
-  border-radius:30px;
-  cursor:pointer;
-  transition:.2s;
-}
-.slider:before{
-  content:"";
-  position:absolute;
-  width:18px;
-  height:18px;
-  left:3px;
-  top:3px;
-  border-radius:50%;
-  background:white;
-  transition:.2s;
-  box-shadow:0 1px 3px #0002;
-}
-.switch input:checked + .slider{background:var(--royal)}
-.switch input:checked + .slider:before{transform:translateX(18px)}
-.notice{
-  padding:11px 12px;
-  border-radius:10px;
-  background:#FFF8E9;
-  color:#87621F;
-  font-size:10px;
-  line-height:1.6;
-  margin-top:12px;
-}
-.info{
-  padding:11px 12px;
-  border-radius:10px;
+.n-type{
+  color:var(--royal);
   background:var(--light);
-  color:var(--navy);
-  font-size:10px;
-  line-height:1.6;
-  margin-top:12px;
-}
-.save-bar{
-  position:sticky;
-  bottom:68px;
-  z-index:5;
-  display:flex;
-  justify-content:flex-end;
-  padding:10px 0;
-  pointer-events:none;
-}
-.save-btn{
-  pointer-events:auto;
-  border:0;
-  border-radius:10px;
-  background:var(--navy);
-  color:white;
-  padding:12px 20px;
-  font-size:11px;
-  font-weight:800;
-  box-shadow:0 5px 15px #102A5630;
-}
-.reset-btn{
-  border:1px solid var(--line);
-  border-radius:9px;
-  background:white;
-  color:var(--red);
-  padding:9px 12px;
-  font-size:10px;
+  border-radius:20px;
+  padding:4px 8px;
+  font-size:8px;
   font-weight:700;
+}
+.n-buttons{display:flex;gap:10px}
+.n-buttons button{
+  border:0;
+  background:none;
+  padding:3px 0;
+  color:var(--royal);
+  font-size:9px;
+  font-weight:800;
+}
+.n-buttons button.delete{color:var(--red)}
+.empty{
+  text-align:center;
+  padding:35px 15px;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:13px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.7;
+}
+.empty-icon{
+  font-size:29px;
+  margin-bottom:9px;
 }
 .bottom-nav{
   position:fixed;
@@ -280,10 +287,13 @@ a{text-decoration:none;color:inherit}
 }
 .bottom-nav span{font-size:19px}
 .bottom-nav a.active{color:var(--royal);font-weight:800}
-@media(max-width:480px){
-  .two-col{grid-template-columns:1fr}
-  .main{padding:17px 12px 100px}
-  .settings-section{padding:14px}
+@media(min-width:650px){
+  .summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:380px){
+  .n-time{font-size:8px}
+  .notification{padding:11px}
+  .n-icon{width:34px;height:34px}
 }
 </style>
 </head>
@@ -300,307 +310,52 @@ a{text-decoration:none;color:inherit}
 
 <main class="main">
 
-  <div class="page-heading">
-    <h1>Settings</h1>
-    <p>Manage your AHRUH store configuration and administrative preferences.</p>
+  <div class="heading">
+    <div>
+      <h1>Notifications</h1>
+      <p>Stay informed about activity and updates across AHRUH.</p>
+    </div>
+    <div class="unread-count" id="unreadBadge">0 unread</div>
   </div>
 
-  <!-- BUSINESS DETAILS -->
-  <section class="settings-section">
-    <div class="section-head">
-      <div class="section-icon">▣</div>
-      <div>
-        <h2>Business Information</h2>
-        <p>Basic details displayed across the store</p>
-      </div>
+  <div class="summary">
+    <div class="summary-card">
+      <small>Total notifications</small>
+      <strong id="totalCount">0</strong>
     </div>
-
-    <div class="field">
-      <label for="storeName">Store name</label>
-      <input id="storeName" name="storeName" value="AHRUH">
+    <div class="summary-card">
+      <small>Unread notifications</small>
+      <strong id="unreadCount">0</strong>
     </div>
-
-    <div class="field">
-      <label for="storeEmail">Business email</label>
-      <input id="storeEmail" name="storeEmail" type="email" placeholder="Enter business email">
-    </div>
-
-    <div class="field">
-      <label for="storePhone">Business phone number</label>
-      <input id="storePhone" name="storePhone" type="tel" placeholder="Enter phone number">
-    </div>
-
-    <div class="field">
-      <label for="storeAddress">Business address</label>
-      <textarea id="storeAddress" name="storeAddress" placeholder="Enter business address"></textarea>
-    </div>
-
-    <div class="field">
-      <label for="storeCurrency">Store currency</label>
-      <select id="storeCurrency" name="storeCurrency">
-        <option value="NGN">Nigerian Naira (₦)</option>
-      </select>
-    </div>
-  </section>
-
-  <!-- BATCH SETTINGS -->
-  <section class="settings-section">
-    <div class="section-head">
-      <div class="section-icon">▱</div>
-      <div>
-        <h2>Batch Settings</h2>
-        <p>Default rules for batch ordering</p>
-      </div>
-    </div>
-
-    <div class="setting-row">
-      <div>
-        <strong>Automatic batch opening</strong>
-        <small>Allow scheduled batches to open at their configured opening time</small>
-      </div>
-      <label class="switch">
-        <input type="checkbox" id="autoOpen" checked>
-        <span class="slider"></span>
-      </label>
-    </div>
-
-    <div class="setting-row">
-      <div>
-        <strong>Automatic batch closing</strong>
-        <small>Close checkout when the scheduled batch closing time is reached</small>
-      </div>
-      <label class="switch">
-        <input type="checkbox" id="autoClose" checked>
-        <span class="slider"></span>
-      </label>
-    </div>
-
-    <div class="notice">
-      Important: These are prototype preferences. Actual scheduled opening and closing must be enforced by the AHRUH backend, not by this browser page.
-    </div>
-  </section>
-
-  <!-- DELIVERY SETTINGS -->
-  <section class="settings-section">
-    <div class="section-head">
-      <div class="section-icon">🚚</div>
-      <div>
-        <h2>Delivery Settings</h2>
-        <p>Delivery charges and free delivery threshold</p>
-      </div>
-    </div>
-
-    <div class="two-col">
-      <div class="field">
-        <label for="freeThreshold">Free delivery from (₦)</label>
-        <input id="freeThreshold" type="number" min="0" value="20000">
-      </div>
-
-      <div class="field">
-        <label for="deliveryFee">Delivery fee below threshold (₦)</label>
-        <input id="deliveryFee" type="number" min="0" value="2000">
-      </div>
-    </div>
-
-    <div class="info">
-      AHRUH delivery rule: goods subtotal of ₦20,000 and above qualifies for free delivery. Orders below ₦20,000 pay ₦2,000 delivery fee.
-    </div>
-  </section>
-
-  <!-- WALLET AND COINS -->
-  <section class="settings-section">
-    <div class="section-head">
-      <div class="section-icon">₦</div>
-      <div>
-        <h2>Wallet & G-Coins</h2>
-        <p>Reward conversion and wallet configuration</p>
-      </div>
-    </div>
-
-    <div class="two-col">
-      <div class="field">
-        <label for="coinConversion">G-Coins equivalent to ₦1</label>
-        <input id="coinConversion" type="number" min="1" value="10">
-        <small>10 G-Coins = ₦1</small>
-      </div>
-
-      <div class="field">
-        <label for="dailyCheckin">Daily check-in reward</label>
-        <input id="dailyCheckin" type="number" min="0" value="50">
-        <small>G-Coins awarded per eligible daily check-in</small>
-      </div>
-
-      <div class="field">
-        <label for="miningRate">Mining taps per G-Coin</label>
-        <input id="miningRate" type="number" min="1" value="10">
-      </div>
-
-      <div class="field">
-        <label for="miningLimit">Maximum mining reward per day</label>
-        <input id="miningLimit" type="number" min="0" value="500">
-        <small>Maximum G-Coins from mining daily</small>
-      </div>
-    </div>
-
-    <div class="notice">
-      These settings describe reward rules only. Wallet balances and coin transactions must be validated and recorded by the secure backend.
-    </div>
-  </section>
-
-  <!-- NOTIFICATIONS -->
-  <section class="settings-section">
-    <div class="section-head">
-      <div class="section-icon">♧</div>
-      <div>
-        <h2>Notifications</h2>
-        <p>Choose which store events should trigger notifications</p>
-      </div>
-    </div>
-
-    <div class="setting-row">
-      <div>
-        <strong>Batch opening notifications</strong>
-        <small>Notify customers when a batch opens</small>
-      </div>
-      <label class="switch">
-        <input type="checkbox" id="notifyBatchOpen" checked>
-        <span class="slider"></span>
-      </label>
-    </div>
-
-    <div class="setting-row">
-      <div>
-        <strong>Batch closing reminders</strong>
-        <small>Remind customers before a batch closes</small>
-      </div>
-      <label class="switch">
-        <input type="checkbox" id="notifyBatchClose" checked>
-        <span class="slider"></span>
-      </label>
-    </div>
-
-    <div class="setting-row">
-      <div>
-        <strong>Order updates</strong>
-        <small>Notify customers about order processing and fulfilment</small>
-      </div>
-      <label class="switch">
-        <input type="checkbox" id="notifyOrders" checked>
-        <span class="slider"></span>
-      </label>
-    </div>
-
-    <div class="setting-row">
-      <div>
-        <strong>Promotions and offers</strong>
-        <small>Send approved promotional announcements</small>
-      </div>
-      <label class="switch">
-        <input type="checkbox" id="notifyPromotions" checked>
-        <span class="slider"></span>
-      </label>
-    </div>
-
-    <div class="setting-row">
-      <div>
-        <strong>Reward notifications</strong>
-        <small>Notify customers about eligible rewards and coins</small>
-      </div>
-      <label class="switch">
-        <input type="checkbox" id="notifyRewards" checked>
-        <span class="slider"></span>
-      </label>
-    </div>
-  </section>
-
-  <!-- ADMIN PREFERENCES -->
-  <section class="settings-section">
-    <div class="section-head">
-      <div class="section-icon">⚙</div>
-      <div>
-        <h2>Admin Preferences</h2>
-        <p>Dashboard display and administrative options</p>
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="adminName">Admin display name</label>
-      <input id="adminName" placeholder="Enter admin display name">
-    </div>
-
-    <div class="field">
-      <label for="timezone">Store time zone</label>
-      <select id="timezone">
-        <option value="Africa/Lagos">Africa/Lagos (Nigeria)</option>
-      </select>
-      <small>Batch opening and closing times should use the store's local time zone.</small>
-    </div>
-
-    <div class="setting-row">
-      <div>
-        <strong>Confirm before deleting records</strong>
-        <small>Request confirmation before destructive actions</small>
-      </div>
-      <label class="switch">
-        <input type="checkbox" id="confirmDelete" checked>
-        <span class="slider"></span>
-      </label>
-    </div>
-
-    <div class="setting-row">
-      <div>
-        <strong>Show dashboard activity</strong>
-        <small>Display recent administrative activity on the dashboard</small>
-      </div>
-      <label class="switch">
-        <input type="checkbox" id="showActivity" checked>
-        <span class="slider"></span>
-      </label>
-    </div>
-  </section>
-
-  <!-- SECURITY -->
-  <section class="settings-section">
-    <div class="section-head">
-      <div class="section-icon">♙</div>
-      <div>
-        <h2>Security & Access</h2>
-        <p>Information about administrative account protection</p>
-      </div>
-    </div>
-
-    <div class="setting-row">
-      <div>
-        <strong>Admin account</strong>
-        <small>Manage administrator access through the secure authentication system</small>
-      </div>
-      <span class="pill">Backend required</span>
-    </div>
-
-    <div class="setting-row">
-      <div>
-        <strong>Password management</strong>
-        <small>Passwords must be changed through the authenticated account system</small>
-      </div>
-      <span class="pill">Backend required</span>
-    </div>
-
-    <div class="notice">
-      Do not store admin passwords, access tokens or payment credentials in this page or in browser localStorage.
-    </div>
-  </section>
-
-  <div class="save-bar">
-    <button class="save-btn" onclick="saveSettings()">Save Settings</button>
   </div>
 
-  <div style="display:flex;justify-content:flex-end;margin:0 0 12px">
-    <button class="reset-btn" onclick="resetSettings()">Reset prototype settings</button>
+  <div class="toolbar">
+    <input
+      class="search"
+      id="searchInput"
+      type="search"
+      placeholder="Search notifications..."
+      oninput="renderNotifications()"
+    >
   </div>
 
-  <p style="font-size:9px;color:#8996AA;line-height:1.6">
-    Prototype notice: settings are saved in this browser only. They do not yet update the live customer app or enforce store-wide rules. A secure backend connection is required for shared settings and operational enforcement.
-  </p>
+  <div class="filters">
+    <button class="filter active" onclick="setFilter('all',this)">All</button>
+    <button class="filter" onclick="setFilter('unread',this)">Unread</button>
+    <button class="filter" onclick="setFilter('orders',this)">Orders</button>
+    <button class="filter" onclick="setFilter('batches',this)">Batches</button>
+    <button class="filter" onclick="setFilter('customers',this)">Customers</button>
+    <button class="filter" onclick="setFilter('payments',this)">Payments</button>
+    <button class="filter" onclick="setFilter('rewards',this)">Rewards</button>
+    <button class="filter" onclick="setFilter('system',this)">System</button>
+  </div>
+
+  <div class="actions">
+    <button onclick="markAllRead()">Mark all as read</button>
+    <button onclick="clearRead()">Clear read notifications</button>
+  </div>
+
+  <div class="notification-list" id="notificationList"></div>
 
 </main>
 
@@ -609,121 +364,199 @@ a{text-decoration:none;color:inherit}
   <a href="batches.html"><span>▦</span>Batches</a>
   <a href="orders.html"><span>🛍</span>Orders</a>
   <a href="products.html"><span>◇</span>Products</a>
-  <a class="active" href="settings.html"><span>⚙</span>Settings</a>
+  <a class="active" href="notifications.html"><span>♧</span>Alerts</a>
 </nav>
 
 <script>
-const STORAGE_KEY="ahruh_admin_settings_prototype_v1";
+const STORAGE_KEY="ahruh_admin_notifications_prototype_v1";
 
-const settingIds=[
-  "storeName",
-  "storeEmail",
-  "storePhone",
-  "storeAddress",
-  "storeCurrency",
-  "autoOpen",
-  "autoClose",
-  "freeThreshold",
-  "deliveryFee",
-  "coinConversion",
-  "dailyCheckin",
-  "miningRate",
-  "miningLimit",
-  "notifyBatchOpen",
-  "notifyBatchClose",
-  "notifyOrders",
-  "notifyPromotions",
-  "notifyRewards",
-  "adminName",
-  "timezone",
-  "confirmDelete",
-  "showActivity"
-];
+let notifications=[];
+let activeFilter="all";
 
-function getSettings(){
+function loadNotifications(){
   try{
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");
+    const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
+    notifications=Array.isArray(saved)?saved:[];
   }catch(error){
-    return {};
+    notifications=[];
   }
 }
 
-function loadSettings(){
-  const settings=getSettings();
+function saveNotifications(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(notifications));
+  }catch(error){
+    alert("Unable to save notifications in this browser.");
+  }
+}
 
-  settingIds.forEach(id=>{
-    const element=document.getElementById(id);
-    if(!element)return;
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,char=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  }[char]));
+}
 
-    if(Object.prototype.hasOwnProperty.call(settings,id)){
-      if(element.type==="checkbox"){
-        element.checked=Boolean(settings[id]);
-      }else{
-        element.value=settings[id];
-      }
-    }
+function iconFor(type){
+  const icons={
+    orders:"🛍",
+    batches:"▱",
+    customers:"♙",
+    payments:"₦",
+    rewards:"✧",
+    system:"⚙"
+  };
+  return icons[type]||"♧";
+}
+
+function formatTime(value){
+  if(!value)return "Date unavailable";
+
+  const date=new Date(value);
+  if(isNaN(date.getTime()))return "Date unavailable";
+
+  return date.toLocaleString("en-NG",{
+    day:"numeric",
+    month:"short",
+    hour:"numeric",
+    minute:"2-digit"
   });
 }
 
-function saveSettings(){
-  const settings={};
+function setFilter(filter,button){
+  activeFilter=filter;
 
-  settingIds.forEach(id=>{
-    const element=document.getElementById(id);
-    if(!element)return;
+  document.querySelectorAll(".filter").forEach(item=>
+    item.classList.remove("active")
+  );
 
-    settings[id]=element.type==="checkbox"
-      ?element.checked
-      :element.value;
-  });
-
-  const threshold=Number(settings.freeThreshold);
-  const fee=Number(settings.deliveryFee);
-  const conversion=Number(settings.coinConversion);
-  const miningRate=Number(settings.miningRate);
-  const miningLimit=Number(settings.miningLimit);
-
-  if(!Number.isFinite(threshold)||threshold<0){
-    alert("Enter a valid free delivery threshold.");
-    return;
-  }
-
-  if(!Number.isFinite(fee)||fee<0){
-    alert("Enter a valid delivery fee.");
-    return;
-  }
-
-  if(!Number.isInteger(conversion)||conversion<1){
-    alert("G-Coins conversion must be at least 1.");
-    return;
-  }
-
-  if(!Number.isInteger(miningRate)||miningRate<1){
-    alert("Mining taps per coin must be at least 1.");
-    return;
-  }
-
-  if(!Number.isInteger(miningLimit)||miningLimit<0){
-    alert("Enter a valid daily mining limit.");
-    return;
-  }
-
-  try{
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(settings));
-    alert("Settings saved in this browser.");
-  }catch(error){
-    alert("Unable to save settings in this browser.");
-  }
+  button.classList.add("active");
+  renderNotifications();
 }
 
-function resetSettings(){
-  if(!confirm("Reset all saved prototype settings in this browser?"))return;
+function getVisibleNotifications(){
+  const search=document.getElementById("searchInput").value
+    .trim().toLowerCase();
 
-  localStorage.removeItem(STORAGE_KEY);
-  location.reload();
+  return notifications
+    .filter(item=>{
+      if(activeFilter==="unread"&&item.read)return false;
+      if(activeFilter!=="all"&&activeFilter!=="unread"&&item.type!==activeFilter)return false;
+
+      const text=[
+        item.title,
+        item.message,
+        item.type
+      ].join(" ").toLowerCase();
+
+      return !search||text.includes(search);
+    })
+    .sort((a,b)=>
+      new Date(b.createdAt||0)-new Date(a.createdAt||0)
+    );
 }
 
-loadSettings();
+function renderNotifications(){
+  const list=document.getElementById("notificationList");
+  const unread=notifications.filter(item=>!item.read).length;
+
+  document.getElementById("totalCount").textContent=notifications.length;
+  document.getElementById("unreadCount").textContent=unread;
+  document.getElementById("unreadBadge").textContent=unread+" unread";
+
+  const visible=getVisibleNotifications();
+
+  if(!visible.length){
+    list.innerHTML=`
+      <div class="empty">
+        <div class="empty-icon">♧</div>
+        <strong>No notifications found</strong><br>
+        New AHRUH activity notifications will appear here when connected.
+      </div>`;
+    return;
+  }
+
+  list.innerHTML=visible.map(item=>`
+    <article class="notification ${item.read?"":"unread"}">
+      <div class="n-icon">${iconFor(item.type)}</div>
+
+      <div class="n-content">
+        <div class="n-top">
+          <strong>${escapeHTML(item.title||"Notification")}</strong>
+          <span class="n-time">${formatTime(item.createdAt)}</span>
+        </div>
+
+        <p>${escapeHTML(item.message||"")}</p>
+
+        <div class="n-bottom">
+          <span class="n-type">${escapeHTML(item.type||"system")}</span>
+
+          <div class="n-buttons">
+            ${item.read
+              ?`<button onclick="markUnread('${item.id}')">Mark unread</button>`
+              :`<button onclick="markRead('${item.id}')">Mark read</button>`
+            }
+            <button class="delete" onclick="deleteNotification('${item.id}')">Delete</button>
+          </div>
+        </div>
+      </div>
+    </article>
+  `).join("");
+}
+
+function markRead(id){
+  const item=notifications.find(item=>String(item.id)===String(id));
+  if(!item)return;
+  item.read=true;
+  saveNotifications();
+  renderNotifications();
+}
+
+function markUnread(id){
+  const item=notifications.find(item=>String(item.id)===String(id));
+  if(!item)return;
+  item.read=false;
+  saveNotifications();
+  renderNotifications();
+}
+
+function markAllRead(){
+  notifications.forEach(item=>item.read=true);
+  saveNotifications();
+  renderNotifications();
+}
+
+function deleteNotification(id){
+  if(!confirm("Delete this notification?"))return;
+
+  notifications=notifications.filter(item=>
+    String(item.id)!==String(id)
+  );
+
+  saveNotifications();
+  renderNotifications();
+}
+
+function clearRead(){
+  const readCount=notifications.filter(item=>item.read).length;
+
+  if(!readCount){
+    alert("There are no read notifications to clear.");
+    return;
+  }
+
+  if(!confirm("Clear all read notifications?"))return;
+
+  notifications=notifications.filter(item=>!item.read);
+  saveNotifications();
+  renderNotifications();
+}
+
+loadNotifications();
+renderNotifications();
 </script>
 
 </body>
