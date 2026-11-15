@@ -1,0 +1,828 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#102A56">
+<title>AHRUH | Category Management</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --navy:#102A56;
+  --royal:#1768D5;
+  --blue:#3478E5;
+  --light:#EAF2FF;
+  --pale:#F4F8FF;
+  --gold:#D6B66F;
+  --text:#253653;
+  --muted:#8996AA;
+  --line:#E6ECF5;
+  --green:#15966B;
+  --red:#D45D65;
+  --shadow:0 6px 22px rgba(16,42,86,.06);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--pale);
+  color:var(--text);
+  font-family:'DM Sans',Arial,sans-serif;
+  font-size:14px;
+}
+
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+
+.topbar{
+  height:66px;
+  background:var(--navy);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  color:white;
+  position:sticky;
+  top:0;
+  z-index:30;
+  box-shadow:0 4px 15px #102A5620;
+}
+
+.brand-word{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:32px;
+  font-weight:700;
+  letter-spacing:2.5px;
+  line-height:1;
+}
+
+.brand-tag{
+  font-size:7px;
+  letter-spacing:2px;
+  color:#C9D9F1;
+  margin-top:5px;
+}
+
+.top-right{display:flex;align-items:center;gap:12px}
+
+.top-icon{
+  width:36px;height:36px;border:0;border-radius:10px;
+  background:#ffffff18;color:white;font-size:17px;
+}
+
+.avatar{
+  width:34px;height:34px;border-radius:50%;
+  display:grid;place-items:center;background:white;
+  color:var(--royal);font-weight:800;
+}
+
+.page{
+  max-width:1050px;
+  margin:auto;
+  padding:23px 18px 100px;
+}
+
+.heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.heading h1{font-size:23px;color:var(--navy);margin:0 0 5px}
+.heading p{font-size:10px;color:var(--muted);margin:0;line-height:1.6}
+
+.btn{
+  border:0;border-radius:9px;padding:11px 14px;
+  font-size:10px;font-weight:700;
+}
+
+.primary{background:var(--royal);color:white}
+.primary:hover{background:#2866CB}
+.light-btn{background:var(--light);color:var(--royal)}
+.outline-btn{background:white;border:1px solid var(--line);color:var(--navy)}
+.danger-btn{background:#FCEDEE;color:var(--red)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-bottom:22px;
+}
+
+.stat{
+  background:white;border:1px solid var(--line);
+  border-radius:13px;padding:14px;box-shadow:var(--shadow);
+}
+
+.stat small{font-size:9px;color:var(--muted)}
+.stat strong{display:block;color:var(--navy);font-size:22px;margin-top:9px}
+.stat p{font-size:8px;color:var(--muted);margin:4px 0 0}
+
+.toolbar{
+  display:flex;gap:9px;flex-wrap:wrap;margin-bottom:17px;
+}
+
+.search{
+  flex:1;min-width:180px;border:1px solid var(--line);
+  border-radius:10px;padding:12px;background:white;
+  font-size:10px;outline:none;
+}
+
+.field{
+  border:1px solid var(--line);border-radius:9px;
+  padding:11px;background:white;color:var(--text);font-size:10px;
+}
+
+.search:focus,.field:focus{border-color:var(--royal);outline:none}
+
+.section-heading{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:10px;margin-bottom:13px;
+}
+
+.section-heading strong{font-size:13px;color:var(--navy)}
+.section-heading span{font-size:9px;color:var(--muted)}
+
+.category-list{display:grid;gap:11px}
+
+.category-card{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:13px;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  min-width:0;
+}
+
+.category-image{
+  width:68px;height:68px;flex-shrink:0;
+  border-radius:11px;object-fit:cover;
+  background:var(--light);
+}
+
+.category-icon{
+  width:68px;height:68px;flex-shrink:0;
+  border-radius:11px;background:linear-gradient(135deg,#EAF2FF,#D7E7FF);
+  display:grid;place-items:center;font-size:27px;color:var(--royal);
+}
+
+.category-details{flex:1;min-width:0}
+.category-name{font-size:12px;font-weight:800;color:var(--navy);overflow-wrap:anywhere}
+.category-description{font-size:9px;color:var(--muted);margin-top:5px;line-height:1.5}
+.category-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+
+.pill{
+  padding:5px 8px;border-radius:20px;
+  font-size:8px;font-weight:700;background:var(--light);color:var(--royal);
+}
+
+.pill.active{background:#E6F7EE;color:#168054}
+.pill.inactive{background:#F0F2F6;color:#6E7888}
+
+.card-actions{display:flex;gap:6px;flex-shrink:0}
+
+.card-actions button{
+  border:0;border-radius:7px;padding:8px 10px;
+  font-size:9px;font-weight:700;
+}
+
+.edit-btn{background:var(--light);color:var(--royal)}
+.delete-btn{background:#FCEDEE;color:var(--red)}
+
+.empty{
+  text-align:center;padding:42px 16px;background:white;
+  border:1px dashed #C9D8EC;border-radius:15px;
+}
+
+.empty-icon{
+  width:55px;height:55px;border-radius:17px;
+  background:var(--light);color:var(--royal);
+  display:grid;place-items:center;font-size:25px;margin:0 auto 12px;
+}
+
+.empty h3{font-size:14px;color:var(--navy);margin:0 0 6px}
+.empty p{font-size:10px;color:var(--muted);margin:0 0 15px;line-height:1.6}
+
+.backdrop{
+  position:fixed;inset:0;background:#102A5680;z-index:100;
+  display:none;align-items:flex-end;justify-content:center;padding:0;
+}
+
+.backdrop.show{display:flex}
+
+.modal{
+  width:100%;max-width:650px;max-height:93vh;overflow-y:auto;
+  background:white;border-radius:20px 20px 0 0;padding:21px 18px 30px;
+}
+
+.modal-head{
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;
+}
+
+.modal-head h2{font-size:17px;color:var(--navy);margin:0}
+
+.close{
+  width:33px;height:33px;border:0;border-radius:50%;
+  background:var(--light);color:var(--navy);font-size:19px;
+}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+
+.group{display:flex;flex-direction:column;gap:7px}
+.group.full{grid-column:1/-1}
+.group label{font-size:10px;font-weight:700;color:var(--text)}
+
+.group input,.group textarea,.group select{
+  width:100%;padding:11px;border:1px solid var(--line);
+  border-radius:9px;font-size:10px;outline:none;background:white;
+}
+
+.group input:focus,.group textarea:focus,.group select:focus{border-color:var(--royal)}
+
+.group textarea{resize:vertical}
+
+.note{font-size:9px;color:var(--muted);line-height:1.6}
+
+.check-row{
+  display:flex;align-items:center;gap:9px;
+  font-size:10px;color:var(--text);
+}
+
+.check-row input{width:16px;height:16px;accent-color:var(--royal)}
+
+.preview{
+  width:100%;max-height:160px;object-fit:contain;
+  border-radius:10px;background:var(--pale);
+  margin-top:8px;display:none;
+}
+
+.modal-actions{
+  display:flex;justify-content:flex-end;gap:8px;margin-top:20px;
+}
+
+.subcategory-list{
+  display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;
+}
+
+.subcategory-chip{
+  background:var(--light);color:var(--royal);
+  padding:6px 9px;border-radius:20px;font-size:9px;
+}
+
+.footer{text-align:center;padding:25px 0 0;color:var(--muted);font-size:9px}
+
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;height:65px;
+  background:white;border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-around;
+  z-index:40;box-shadow:0 -4px 15px #102A560A;
+}
+
+.nav-link{
+  border:0;background:none;display:flex;flex-direction:column;
+  align-items:center;gap:4px;color:var(--muted);font-size:9px;min-width:55px;
+}
+
+.nav-link span{font-size:19px}
+.nav-link.active{color:var(--royal);font-weight:800}
+.nav-link.active span{background:var(--light);border-radius:9px;padding:3px 12px}
+
+@media(min-width:650px){
+  .backdrop{align-items:center;padding:15px}
+  .modal{border-radius:18px}
+}
+
+@media(max-width:520px){
+  .page{padding:19px 13px 90px}
+  .category-card{align-items:flex-start;flex-wrap:wrap}
+  .category-details{min-width:calc(100% - 85px)}
+  .card-actions{margin-left:81px}
+}
+
+@media(max-width:390px){
+  .form-grid{grid-template-columns:1fr}
+  .group.full{grid-column:auto}
+  .heading h1{font-size:20px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div>
+    <div class="brand-word">AHRUH</div>
+    <div class="brand-tag">ADMIN SPACE</div>
+  </div>
+  <div class="top-right">
+    <button class="top-icon" onclick="location.href='notifications.html'">♧</button>
+    <div class="avatar">A</div>
+  </div>
+</header>
+
+<main class="page">
+
+  <section class="heading">
+    <div>
+      <h1>Category Management</h1>
+      <p>Create and organise the categories customers will browse.</p>
+    </div>
+    <button class="btn primary" onclick="openModal()">＋ Create Category</button>
+  </section>
+
+  <section class="stats">
+    <div class="stat">
+      <small>Total categories</small>
+      <strong id="totalCount">0</strong>
+      <p>All categories created</p>
+    </div>
+    <div class="stat">
+      <small>Active categories</small>
+      <strong id="activeCount">0</strong>
+      <p>Available for store display</p>
+    </div>
+    <div class="stat">
+      <small>Inactive categories</small>
+      <strong id="inactiveCount">0</strong>
+      <p>Currently hidden</p>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <input class="search" id="searchInput"
+      placeholder="Search categories..." oninput="renderCategories()">
+
+    <select class="field" id="statusFilter" onchange="renderCategories()">
+      <option value="all">All categories</option>
+      <option value="active">Active</option>
+      <option value="inactive">Inactive</option>
+    </select>
+  </div>
+
+  <div class="section-heading">
+    <strong>Your categories</strong>
+    <span id="listCount">0 categories</span>
+  </div>
+
+  <section class="category-list" id="categoryList"></section>
+
+  <footer class="footer">AHRUH · Category Management</footer>
+</main>
+
+<nav class="bottom-nav">
+  <a class="nav-link" href="admin.html"><span>⌂</span>Home</a>
+  <a class="nav-link" href="batches.html"><span>▦</span>Batches</a>
+  <a class="nav-link" href="orders.html"><span>▧</span>Orders</a>
+  <a class="nav-link" href="products.html"><span>▣</span>Products</a>
+  <a class="nav-link active" href="categories.html"><span>▤</span>Categories</a>
+</nav>
+
+<!-- CREATE / EDIT MODAL -->
+<div class="backdrop" id="categoryModal" onclick="closeBackdrop(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="modalTitle">Create category</h2>
+      <button class="close" onclick="closeModal()">×</button>
+    </div>
+
+    <form id="categoryForm">
+      <div class="form-grid">
+
+        <div class="group full">
+          <label for="categoryName">Category name *</label>
+          <input id="categoryName" required maxlength="60"
+            placeholder="Enter your category name">
+        </div>
+
+        <div class="group">
+          <label for="categoryIcon">Category icon or emoji</label>
+          <input id="categoryIcon" maxlength="8" placeholder="e.g. ✨">
+        </div>
+
+        <div class="group">
+          <label for="displayOrder">Display order</label>
+          <input id="displayOrder" type="number" min="0" step="1" value="1">
+          <span class="note">Smaller numbers appear first.</span>
+        </div>
+
+        <div class="group full">
+          <label for="categoryImage">Category image</label>
+          <input id="categoryImage" type="file"
+            accept="image/png,image/jpeg,image/webp">
+          <img id="imagePreview" class="preview" alt="Category image preview">
+          <span class="note">Choose a representative image for the category.</span>
+        </div>
+
+        <div class="group full">
+          <label for="categoryBanner">Category banner</label>
+          <input id="categoryBanner" type="file"
+            accept="image/png,image/jpeg,image/webp">
+          <img id="bannerPreview" class="preview" alt="Category banner preview">
+          <span class="note">Optional wide image for category pages.</span>
+        </div>
+
+        <div class="group full">
+          <label for="categoryDescription">Description</label>
+          <textarea id="categoryDescription" rows="3"
+            maxlength="500" placeholder="Describe this category..."></textarea>
+        </div>
+
+        <div class="group full">
+          <label for="subcategories">Subcategories</label>
+          <textarea id="subcategories" rows="3"
+            placeholder="Enter one subcategory per line"></textarea>
+          <span class="note">Example: Enter each subcategory on a separate line.</span>
+        </div>
+
+        <div class="group full">
+          <label class="check-row">
+            <input type="checkbox" id="categoryActive" checked>
+            Make this category active
+          </label>
+        </div>
+
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn outline-btn"
+          onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn primary" id="saveButton">
+          Save category
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const CATEGORY_KEY = "ahruh_categories_prototype_v1";
+const PRODUCT_KEY = "ahruh_products_prototype_v1";
+
+let categories = [];
+let editingId = null;
+let imageData = "";
+let bannerData = "";
+
+function loadCategories(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(CATEGORY_KEY) || "[]");
+    categories = Array.isArray(saved) ? saved : [];
+  }catch(error){
+    categories = [];
+  }
+}
+
+function saveCategories(){
+  try{
+    localStorage.setItem(CATEGORY_KEY,JSON.stringify(categories));
+    return true;
+  }catch(error){
+    alert("Unable to save. Browser storage may be full. Try smaller images.");
+    return false;
+  }
+}
+
+function loadProducts(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(PRODUCT_KEY) || "[]");
+    return Array.isArray(saved) ? saved : [];
+  }catch(error){
+    return [];
+  }
+}
+
+function saveProducts(products){
+  try{
+    localStorage.setItem(PRODUCT_KEY,JSON.stringify(products));
+    return true;
+  }catch(error){
+    alert("Unable to update product categories. Storage may be full.");
+    return false;
+  }
+}
+
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g,char=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[char]));
+}
+
+function sortedCategories(){
+  return [...categories].sort((a,b)=>{
+    const orderA=Number(a.order)||0;
+    const orderB=Number(b.order)||0;
+    return orderA-orderB || a.name.localeCompare(b.name);
+  });
+}
+
+function updateStats(){
+  document.getElementById("totalCount").textContent=categories.length;
+  document.getElementById("activeCount").textContent=
+    categories.filter(c=>c.active).length;
+  document.getElementById("inactiveCount").textContent=
+    categories.filter(c=>!c.active).length;
+}
+
+function renderCategories(){
+  updateStats();
+
+  const query=document.getElementById("searchInput").value.trim().toLowerCase();
+  const status=document.getElementById("statusFilter").value;
+
+  const filtered=sortedCategories().filter(c=>{
+    const matchesName=c.name.toLowerCase().includes(query);
+    const matchesStatus=status==="all" ||
+      (status==="active" && c.active) ||
+      (status==="inactive" && !c.active);
+    return matchesName && matchesStatus;
+  });
+
+  document.getElementById("listCount").textContent=
+    filtered.length+(filtered.length===1?" category":" categories");
+
+  const list=document.getElementById("categoryList");
+
+  if(filtered.length===0){
+    list.innerHTML=`
+      <div class="empty">
+        <div class="empty-icon">▤</div>
+        <h3>${categories.length?"No matching categories":"No categories created yet"}</h3>
+        <p>${categories.length
+          ?"Try a different search or status filter."
+          :"Your category list is empty. Create your first category when you're ready."}</p>
+        ${categories.length?"":'<button class="btn primary" onclick="openModal()">＋ Create first category</button>'}
+      </div>`;
+    return;
+  }
+
+  list.innerHTML=filtered.map((c,index)=>{
+    const image=c.image
+      ? `<img class="category-image" src="${escapeHTML(c.image)}" alt="${escapeHTML(c.name)}">`
+      : `<div class="category-icon">${escapeHTML(c.icon||"▤")}</div>`;
+
+    const subcategories=Array.isArray(c.subcategories)?c.subcategories:[];
+
+    return `
+      <article class="category-card">
+        ${image}
+        <div class="category-details">
+          <div class="category-name">${escapeHTML(c.name)}</div>
+          <div class="category-description">
+            ${escapeHTML(c.description||"No description added.")}
+          </div>
+          <div class="category-meta">
+            <span class="pill ${c.active?"active":"inactive"}">
+              ${c.active?"Active":"Inactive"}
+            </span>
+            <span class="pill">Order: ${Number(c.order)||0}</span>
+            <span class="pill">${subcategories.length} subcategories</span>
+          </div>
+          ${subcategories.length?`
+            <div class="subcategory-list">
+              ${subcategories.map(s=>`<span class="subcategory-chip">${escapeHTML(s)}</span>`).join("")}
+            </div>`:""}
+        </div>
+        <div class="card-actions">
+          <button class="edit-btn" onclick="editCategory('${escapeHTML(c.id)}')">Edit</button>
+          <button class="delete-btn" onclick="deleteCategory('${escapeHTML(c.id)}')">Delete</button>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+function openModal(){
+  editingId=null;
+  imageData="";
+  bannerData="";
+
+  document.getElementById("categoryForm").reset();
+  document.getElementById("modalTitle").textContent="Create category";
+  document.getElementById("saveButton").textContent="Save category";
+  document.getElementById("categoryActive").checked=true;
+
+  document.getElementById("imagePreview").style.display="none";
+  document.getElementById("bannerPreview").style.display="none";
+
+  document.getElementById("displayOrder").value=categories.length+1;
+
+  document.getElementById("categoryModal").classList.add("show");
+}
+
+function closeModal(){
+  document.getElementById("categoryModal").classList.remove("show");
+}
+
+function closeBackdrop(event){
+  if(event.target.id==="categoryModal")closeModal();
+}
+
+function readImage(file,previewId,callback){
+  if(!file)return;
+
+  if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
+    alert("Please choose a JPG, PNG or WEBP image.");
+    return;
+  }
+
+  if(file.size>900*1024){
+    alert("Please choose an image smaller than 900 KB for this prototype.");
+    return;
+  }
+
+  const reader=new FileReader();
+
+  reader.onload=()=>{
+    callback(reader.result);
+    const preview=document.getElementById(previewId);
+    preview.src=reader.result;
+    preview.style.display="block";
+  };
+
+  reader.readAsDataURL(file);
+}
+
+document.getElementById("categoryImage").addEventListener("change",function(){
+  readImage(this.files[0],"imagePreview",value=>imageData=value);
+});
+
+document.getElementById("categoryBanner").addEventListener("change",function(){
+  readImage(this.files[0],"bannerPreview",value=>bannerData=value);
+});
+
+function editCategory(id){
+  const c=categories.find(item=>item.id===id);
+  if(!c)return;
+
+  editingId=id;
+  imageData=c.image||"";
+  bannerData=c.banner||"";
+
+  document.getElementById("modalTitle").textContent="Edit category";
+  document.getElementById("saveButton").textContent="Update category";
+
+  document.getElementById("categoryName").value=c.name;
+  document.getElementById("categoryIcon").value=c.icon||"";
+  document.getElementById("displayOrder").value=c.order||0;
+  document.getElementById("categoryDescription").value=c.description||"";
+  document.getElementById("subcategories").value=
+    (c.subcategories||[]).join("\n");
+  document.getElementById("categoryActive").checked=!!c.active;
+
+  const imagePreview=document.getElementById("imagePreview");
+  imagePreview.style.display=c.image?"block":"none";
+  if(c.image)imagePreview.src=c.image;
+
+  const bannerPreview=document.getElementById("bannerPreview");
+  bannerPreview.style.display=c.banner?"block":"none";
+  if(c.banner)bannerPreview.src=c.banner;
+
+  document.getElementById("categoryModal").classList.add("show");
+}
+
+document.getElementById("categoryForm").addEventListener("submit",function(event){
+  event.preventDefault();
+
+  const name=document.getElementById("categoryName").value.trim();
+  const order=Number(document.getElementById("displayOrder").value);
+
+  if(!name){
+    alert("Please enter a category name.");
+    return;
+  }
+
+  if(!Number.isInteger(order)||order<0){
+    alert("Display order must be a whole number of zero or above.");
+    return;
+  }
+
+  const duplicate=categories.some(c=>
+    c.name.toLowerCase()===name.toLowerCase() && c.id!==editingId
+  );
+
+  if(duplicate){
+    alert("A category with this name already exists.");
+    return;
+  }
+
+  const existing=editingId
+    ? categories.find(c=>c.id===editingId)
+    : null;
+
+  const category={
+    id:editingId||("category-"+Date.now()),
+    name,
+    icon:document.getElementById("categoryIcon").value.trim(),
+    image:imageData || existing?.image || "",
+    banner:bannerData || existing?.banner || "",
+    description:document.getElementById("categoryDescription").value.trim(),
+    order,
+    active:document.getElementById("categoryActive").checked,
+    subcategories:document.getElementById("subcategories").value
+      .split("\n")
+      .map(s=>s.trim())
+      .filter(Boolean),
+    updatedAt:new Date().toISOString()
+  };
+
+  if(editingId){
+    categories=categories.map(c=>c.id===editingId?category:c);
+  }else{
+    categories.push(category);
+  }
+
+  if(!saveCategories())return;
+
+  closeModal();
+  renderCategories();
+});
+
+function deleteCategory(id){
+  const category=categories.find(c=>c.id===id);
+  if(!category)return;
+
+  const products=loadProducts();
+  const assigned=products.filter(p=>p.category===category.name);
+
+  if(assigned.length){
+    const alternatives=categories.filter(c=>
+      c.id!==id && c.active
+    );
+
+    if(alternatives.length===0){
+      alert(
+        "This category has "+assigned.length+
+        " product(s). Create another active category before deleting it."
+      );
+      return;
+    }
+
+    const choices=alternatives.map((c,i)=>
+      (i+1)+". "+c.name
+    ).join("\n");
+
+    const answer=prompt(
+      "This category has "+assigned.length+
+      " product(s).\n\nChoose a replacement category by number:\n\n"+
+      choices+"\n\nEnter the number:"
+    );
+
+    if(answer===null)return;
+
+    const choice=Number(answer);
+    if(!Number.isInteger(choice)||choice<1||choice>alternatives.length){
+      alert("Invalid selection. Nothing was deleted.");
+      return;
+    }
+
+    const replacement=alternatives[choice-1];
+
+    if(!confirm(
+      "Move "+assigned.length+" product(s) to "+
+      replacement.name+" and delete "+category.name+"?"
+    ))return;
+
+    const updatedProducts=products.map(p=>
+      p.category===category.name
+        ? {...p,category:replacement.name}
+        : p
+    );
+
+    if(!saveProducts(updatedProducts))return;
+  }else{
+    if(!confirm("Delete the category "+category.name+"?"))return;
+  }
+
+  categories=categories.filter(c=>c.id!==id);
+
+  if(!saveCategories()){
+    alert("Category deletion could not be saved.");
+    return;
+  }
+
+  renderCategories();
+}
+
+loadCategories();
+renderCategories();
+</script>
+
+</body>
+</html>
