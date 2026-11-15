@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#102A56">
-<title>AHRUH | Order Management</title>
+<title>AHRUH | Batch Orders</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -46,10 +46,16 @@ a{text-decoration:none;color:inherit}
 .heading h1{font-size:23px;color:var(--navy);margin:0 0 5px}
 .heading p{font-size:10px;color:var(--muted);margin:0;line-height:1.6}
 
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:22px}
+.btn{border:0;border-radius:9px;padding:10px 13px;font-size:10px;font-weight:700}
+.primary{background:var(--royal);color:white}
+.secondary{background:var(--light);color:var(--royal)}
+.outline{background:white;border:1px solid var(--line);color:var(--navy)}
+.danger{background:#FCEDEE;color:var(--red)}
+
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:20px}
 .stat{background:white;border:1px solid var(--line);border-radius:13px;padding:14px;box-shadow:var(--shadow)}
 .stat small{font-size:9px;color:var(--muted)}
-.stat strong{display:block;color:var(--navy);font-size:22px;margin-top:9px}
+.stat strong{display:block;color:var(--navy);font-size:21px;margin-top:9px}
 .stat p{font-size:8px;color:var(--muted);margin:4px 0 0}
 
 .toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}
@@ -57,62 +63,77 @@ a{text-decoration:none;color:inherit}
 .field{border:1px solid var(--line);border-radius:9px;padding:11px;background:white;color:var(--text);font-size:10px}
 .search:focus,.field:focus{border-color:var(--royal);outline:none}
 
-.section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 0 12px}
 .section-heading strong{font-size:13px;color:var(--navy)}
 .section-heading span{font-size:9px;color:var(--muted)}
 
-.order-list{display:grid;gap:11px}
-.order-card{background:white;border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow)}
-.order-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.order-number{font-size:12px;font-weight:800;color:var(--navy)}
-.order-date{font-size:9px;color:var(--muted);margin-top:5px}
-.status{font-size:8px;font-weight:800;padding:6px 9px;border-radius:20px;white-space:nowrap}
-.pending{background:#FFF4DC;color:#9B6B14}
-.processing{background:#EAF2FF;color:#1768D5}
-.dispatched{background:#F0EAFE;color:#7451B8}
-.delivered{background:#E6F7EE;color:#168054}
-.cancelled{background:#FCEDEE;color:#B64C55}
-.order-info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:15px;padding-top:13px;border-top:1px solid var(--line)}
+.batch-list,.order-list{display:grid;gap:11px}
+.batch-card,.order-card{
+  background:white;border:1px solid var(--line);border-radius:14px;
+  padding:15px;box-shadow:var(--shadow);
+}
+.batch-top,.order-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.batch-name,.order-number{font-size:13px;font-weight:800;color:var(--navy)}
+.batch-date,.order-date{font-size:9px;color:var(--muted);margin-top:5px}
+.batch-status,.order-status{
+  font-size:8px;font-weight:800;padding:6px 9px;border-radius:20px;white-space:nowrap;
+  background:var(--light);color:var(--royal)
+}
+.batch-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.metric-label{font-size:8px;color:var(--muted);margin-bottom:5px}
+.metric-value{font-size:13px;font-weight:800;color:var(--navy)}
+.batch-actions,.order-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
+.batch-actions button,.order-actions button{font-size:9px;font-weight:700;padding:9px 11px;border:0;border-radius:8px}
+
+.order-info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:13px;padding-top:12px;border-top:1px solid var(--line)}
 .info-label{font-size:8px;color:var(--muted);margin-bottom:5px}
 .info-value{font-size:10px;color:var(--navy);font-weight:700;overflow-wrap:anywhere}
-.order-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px}
-.total{font-size:14px;font-weight:800;color:var(--navy)}
-.payment{font-size:8px;color:var(--muted);margin-top:4px}
-.actions{display:flex;gap:7px}
-.actions button{border:0;border-radius:8px;padding:9px 11px;font-size:9px;font-weight:700}
-.view-btn{background:var(--light);color:var(--royal)}
-.print-btn{background:#F2F4F8;color:var(--navy)}
+.order-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:13px}
+.order-total{font-size:14px;font-weight:800;color:var(--navy)}
+.muted{font-size:9px;color:var(--muted);margin-top:4px}
 
-.empty{text-align:center;padding:42px 16px;background:white;border:1px dashed #C9D8EC;border-radius:15px}
+.empty{text-align:center;padding:40px 16px;background:white;border:1px dashed #C9D8EC;border-radius:15px}
 .empty-icon{width:55px;height:55px;border-radius:17px;background:var(--light);color:var(--royal);display:grid;place-items:center;font-size:25px;margin:0 auto 12px}
 .empty h3{font-size:14px;color:var(--navy);margin:0 0 6px}
 .empty p{font-size:10px;color:var(--muted);margin:0;line-height:1.6}
 
-.backdrop{position:fixed;inset:0;background:#102A5680;z-index:100;display:none;align-items:flex-end;justify-content:center;padding:0}
-.backdrop.show{display:flex}
-.modal{width:100%;max-width:650px;max-height:92vh;overflow-y:auto;background:white;border-radius:20px 20px 0 0;padding:21px 18px 30px}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.view{display:none}
+.view.active{display:block}
+.back-link{border:0;background:none;color:var(--royal);font-size:10px;font-weight:800;padding:0;margin-bottom:14px}
+.tabs{display:flex;gap:7px;overflow-x:auto;margin:17px 0 14px;padding-bottom:3px}
+.tab{white-space:nowrap;border:1px solid var(--line);background:white;color:var(--muted);padding:9px 12px;border-radius:9px;font-size:9px;font-weight:700}
+.tab.active{background:var(--royal);border-color:var(--royal);color:white}
+
+.table-wrap{overflow-x:auto;background:white;border:1px solid var(--line);border-radius:13px}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{text-align:left;padding:12px 11px;border-bottom:1px solid var(--line);font-size:9px}
+th{background:#F8FAFE;color:var(--muted);font-size:8px}
+td{color:var(--text)}
+td strong{color:var(--navy)}
+.artwork-link{color:var(--royal);font-weight:800;text-decoration:underline}
+
+.modal-backdrop{position:fixed;inset:0;background:#102A5680;z-index:100;display:none;align-items:flex-end;justify-content:center;padding:0}
+.modal-backdrop.show{display:flex}
+.modal{width:100%;max-width:680px;max-height:92vh;overflow-y:auto;background:white;border-radius:20px 20px 0 0;padding:20px 17px 28px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}
 .modal-head h2{font-size:17px;color:var(--navy);margin:0}
 .close{width:33px;height:33px;border:0;border-radius:50%;background:var(--light);color:var(--navy);font-size:19px}
-.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .detail-box{background:var(--pale);border-radius:10px;padding:12px;min-width:0}
-.detail-box small{display:block;color:var(--muted);font-size:9px;margin-bottom:6px}
+.detail-box small{display:block;color:var(--muted);font-size:8px;margin-bottom:6px}
 .detail-box strong{font-size:10px;color:var(--navy);overflow-wrap:anywhere}
-.detail-full{grid-column:1/-1}
-.items-table{width:100%;border-collapse:collapse;margin-top:17px;font-size:10px}
-.items-table th,.items-table td{text-align:left;padding:10px 7px;border-bottom:1px solid var(--line)}
-.items-table th{color:var(--muted);font-size:8px}
-.items-table td{color:var(--text)}
-.summary{margin-top:15px;border-top:1px solid var(--line);padding-top:12px}
-.summary-row{display:flex;justify-content:space-between;padding:5px 0;font-size:10px}
-.summary-row.total-row{font-size:14px;font-weight:800;color:var(--navy);border-top:1px solid var(--line);margin-top:6px;padding-top:12px}
-.status-control{margin-top:18px}
-.status-control label{display:block;font-size:10px;font-weight:700;margin-bottom:7px}
-.status-control select{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;font-size:10px}
-.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
-.btn{border:0;border-radius:9px;padding:11px 14px;font-size:10px;font-weight:700}
-.primary{background:var(--royal);color:white}
-.outline-btn{background:white;border:1px solid var(--line);color:var(--navy)}
+.full{grid-column:1/-1}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:17px}
+.items-table{width:100%;min-width:0;margin-top:16px}
+.items-table th,.items-table td{padding:9px 5px}
+.right{text-align:right}
+
+.artwork-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.artwork-card{background:white;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.artwork-card img{width:100%;height:130px;object-fit:contain;background:#F7F9FD;display:block}
+.artwork-card div{padding:10px}
+.artwork-card strong{display:block;color:var(--navy);font-size:10px}
+.artwork-card small{display:block;color:var(--muted);font-size:8px;margin-top:5px}
 .footer{text-align:center;padding:25px 0 0;color:var(--muted);font-size:9px}
 
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;height:65px;background:white;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-around;z-index:40;box-shadow:0 -4px 15px #102A560A}
@@ -121,13 +142,14 @@ a{text-decoration:none;color:inherit}
 .nav-link.active{color:var(--royal);font-weight:800}
 .nav-link.active span{background:var(--light);border-radius:9px;padding:3px 12px}
 
-@media(min-width:650px){.backdrop{align-items:center;padding:15px}.modal{border-radius:18px}}
-@media(max-width:700px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:430px){.page{padding:19px 13px 90px}.order-info{grid-template-columns:1fr 1fr}.detail-grid{grid-template-columns:1fr}.detail-full{grid-column:auto}.heading h1{font-size:20px}}
+@media(min-width:650px){.modal-backdrop{align-items:center;padding:15px}.modal{border-radius:18px}}
+@media(max-width:650px){.page{padding:19px 13px 90px}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stat{padding:11px}.stat strong{font-size:18px}.order-info{grid-template-columns:1fr 1fr}}
+@media(max-width:390px){.heading h1{font-size:20px}.detail-grid{grid-template-columns:1fr}.full{grid-column:auto}.artwork-grid{grid-template-columns:1fr}}
 </style>
 </head>
 
 <body>
+
 <header class="topbar">
   <div>
     <div class="brand-word">AHRUH</div>
@@ -140,63 +162,147 @@ a{text-decoration:none;color:inherit}
 </header>
 
 <main class="page">
-  <section class="heading">
-    <div>
-      <h1>Order Management</h1>
-      <p>Review customer orders, payments and fulfilment progress.</p>
+
+  <!-- BATCH OVERVIEW -->
+  <section id="batchView" class="view active">
+    <div class="heading">
+      <div>
+        <h1>Batch Orders</h1>
+        <p>Choose a shopping batch to manage its customer orders.</p>
+      </div>
+    </div>
+
+    <section class="stats">
+      <div class="stat">
+        <small>Total batches</small>
+        <strong id="totalBatches">0</strong>
+        <p>Recorded batches</p>
+      </div>
+      <div class="stat">
+        <small>Total orders</small>
+        <strong id="allOrders">0</strong>
+        <p>Across all batches</p>
+      </div>
+      <div class="stat">
+        <small>Total goods value</small>
+        <strong id="allGoodsValue">₦0</strong>
+        <p>Order goods value</p>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <input class="search" id="batchSearch" placeholder="Search batch name..." oninput="renderBatches()">
+      <select class="field" id="batchFilter" onchange="renderBatches()">
+        <option value="all">All batches</option>
+        <option value="open">Open</option>
+        <option value="closed">Closed</option>
+        <option value="upcoming">Upcoming</option>
+      </select>
+    </div>
+
+    <div class="section-heading">
+      <strong>Your shopping batches</strong>
+      <span id="batchCount">0 batches</span>
+    </div>
+    <section class="batch-list" id="batchList"></section>
+  </section>
+
+  <!-- ORDERS INSIDE A BATCH -->
+  <section id="ordersView" class="view">
+    <button class="back-link" onclick="showBatches()">← All batches</button>
+
+    <div class="heading">
+      <div>
+        <h1 id="selectedBatchName">Batch Orders</h1>
+        <p id="selectedBatchDates">Orders belonging to this batch.</p>
+      </div>
+    </div>
+
+    <section class="stats">
+      <div class="stat">
+        <small>Orders in batch</small>
+        <strong id="batchOrderCount">0</strong>
+        <p>Customer orders</p>
+      </div>
+      <div class="stat">
+        <small>Total goods value</small>
+        <strong id="batchGoodsValue">₦0</strong>
+        <p>Before delivery fees</p>
+      </div>
+      <div class="stat">
+        <small>Customers</small>
+        <strong id="batchCustomers">0</strong>
+        <p>Unique customers</p>
+      </div>
+    </section>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="orders" onclick="switchTab('orders')">Customer orders</button>
+      <button class="tab" data-tab="quantities" onclick="switchTab('quantities')">Product quantities</button>
+      <button class="tab" data-tab="artwork" onclick="switchTab('artwork')">Custom artwork</button>
+    </div>
+
+    <div id="ordersTab">
+      <div class="toolbar">
+        <input class="search" id="orderSearch" placeholder="Search order number or customer..." oninput="renderBatchOrders()">
+        <select class="field" id="orderStatusFilter" onchange="renderBatchOrders()">
+          <option value="all">All order statuses</option>
+          <option value="received">Received</option>
+          <option value="procurement">Procurement</option>
+          <option value="processing">Processing</option>
+          <option value="dispatched">Dispatched</option>
+          <option value="delivered">Delivered</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+
+      <div class="section-heading">
+        <strong>Customer orders</strong>
+        <span id="visibleOrderCount">0 orders</span>
+      </div>
+
+      <div class="order-actions" style="margin:0 0 12px">
+        <button class="btn secondary" onclick="printBatchReceipts()">Print all batch receipts</button>
+      </div>
+
+      <section class="order-list" id="orderList"></section>
+    </div>
+
+    <div id="quantitiesTab" style="display:none">
+      <div class="section-heading">
+        <strong>Procurement quantity summary</strong>
+        <span>Grouped by product and variant</span>
+      </div>
+      <p class="muted">Totals combine matching products and variant combinations across this batch.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Variant</th>
+              <th>Total quantity</th>
+              <th>Customers</th>
+            </tr>
+          </thead>
+          <tbody id="quantityRows"></tbody>
+        </table>
+      </div>
+      <button class="btn secondary" style="margin-top:12px" onclick="printQuantitySummary()">Print quantity summary</button>
+    </div>
+
+    <div id="artworkTab" style="display:none">
+      <div class="section-heading">
+        <strong>Customer artwork lookup</strong>
+        <span id="artworkCount">0 files</span>
+      </div>
+      <div class="toolbar">
+        <input class="search" id="artworkSearch" placeholder="Search product, customer or order..." oninput="renderArtwork()">
+      </div>
+      <section class="artwork-grid" id="artworkGrid"></section>
     </div>
   </section>
 
-  <section class="stats">
-    <div class="stat">
-      <small>Total orders</small>
-      <strong id="totalOrders">0</strong>
-      <p>All recorded orders</p>
-    </div>
-    <div class="stat">
-      <small>Awaiting payment</small>
-      <strong id="pendingOrders">0</strong>
-      <p>Payment not confirmed</p>
-    </div>
-    <div class="stat">
-      <small>Processing</small>
-      <strong id="processingOrders">0</strong>
-      <p>Being prepared</p>
-    </div>
-    <div class="stat">
-      <small>Delivered</small>
-      <strong id="deliveredOrders">0</strong>
-      <p>Successfully delivered</p>
-    </div>
-  </section>
-
-  <div class="toolbar">
-    <input class="search" id="searchInput" placeholder="Search order number or customer..." oninput="renderOrders()">
-    <select class="field" id="statusFilter" onchange="renderOrders()">
-      <option value="all">All statuses</option>
-      <option value="pending">Pending payment</option>
-      <option value="paid">Paid</option>
-      <option value="processing">Processing</option>
-      <option value="dispatched">Dispatched</option>
-      <option value="delivered">Delivered</option>
-      <option value="cancelled">Cancelled</option>
-    </select>
-    <select class="field" id="paymentFilter" onchange="renderOrders()">
-      <option value="all">All payments</option>
-      <option value="paid">Paid</option>
-      <option value="unpaid">Unpaid</option>
-      <option value="refunded">Refunded</option>
-    </select>
-  </div>
-
-  <div class="section-heading">
-    <strong>Customer orders</strong>
-    <span id="orderCount">0 orders</span>
-  </div>
-
-  <section class="order-list" id="orderList"></section>
-
-  <footer class="footer">AHRUH · Order Management</footer>
+  <footer class="footer">AHRUH · Batch Order Management</footer>
 </main>
 
 <nav class="bottom-nav">
@@ -207,166 +313,299 @@ a{text-decoration:none;color:inherit}
   <a class="nav-link" href="categories.html"><span>▤</span>Categories</a>
 </nav>
 
-<div class="backdrop" id="orderModal" onclick="closeBackdrop(event)">
+<!-- ORDER DETAILS -->
+<div class="modal-backdrop" id="detailModal" onclick="closeBackdrop(event)">
   <div class="modal">
     <div class="modal-head">
       <h2 id="detailTitle">Order details</h2>
       <button class="close" onclick="closeModal()">×</button>
     </div>
-    <div id="orderDetails"></div>
+    <div id="detailContent"></div>
     <div class="modal-actions">
-      <button class="btn outline-btn" onclick="closeModal()">Close</button>
-      <button class="btn primary" id="printDetailBtn">Print receipt</button>
+      <button class="btn outline" onclick="closeModal()">Close</button>
+      <button class="btn primary" id="detailPrintButton">Print receipt</button>
     </div>
   </div>
 </div>
 
 <script>
 const ORDER_KEY = "ahruh_orders_prototype_v1";
+const BATCH_KEY = "ahruh_batches_prototype_v1";
+
 let orders = [];
-let selectedOrderId = null;
+let batches = [];
+let selectedBatch = null;
 
-function loadOrders(){
+function readArray(key){
   try{
-    const data = JSON.parse(localStorage.getItem(ORDER_KEY) || "[]");
-    orders = Array.isArray(data) ? data : [];
-  }catch(error){
-    orders = [];
-  }
+    const value=JSON.parse(localStorage.getItem(key)||"[]");
+    return Array.isArray(value)?value:[];
+  }catch(error){return []}
 }
 
-function saveOrders(){
-  try{
-    localStorage.setItem(ORDER_KEY,JSON.stringify(orders));
-    return true;
-  }catch(error){
-    alert("Unable to save the order update.");
-    return false;
-  }
-}
-
-function escapeHTML(value){
-  return String(value ?? "").replace(/[&<>"']/g,char=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[char]));
+function loadData(){
+  orders=readArray(ORDER_KEY);
+  batches=readArray(BATCH_KEY);
 }
 
 function money(value){
   return "₦"+Number(value||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
 }
 
-function statusLabel(status){
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+function customerOf(order){
+  return order.customer||{};
+}
+
+function customerName(order){
+  const c=customerOf(order);
+  return c.name||order.customerName||"Customer";
+}
+
+function orderBatchId(order){
+  return String(order.batchId||order.batch_id||"");
+}
+
+function orderBatchName(order){
+  return String(order.batchName||order.batch||"");
+}
+
+function ordersForBatch(batch){
+  const id=String(batch.id||batch.batchId||"");
+  const name=String(batch.name||batch.title||batch.batchName||"");
+  return orders.filter(o=>
+    (id && orderBatchId(o)===id) ||
+    (!orderBatchId(o) && name && orderBatchName(o)===name)
+  );
+}
+
+function batchName(batch){
+  return batch.name||batch.title||batch.batchName||"Untitled batch";
+}
+
+function batchStatus(batch){
+  const raw=String(batch.status||"").toLowerCase();
+  if(raw.includes("open"))return "Open";
+  if(raw.includes("upcoming")||raw.includes("scheduled"))return "Upcoming";
+  if(raw.includes("closed"))return "Closed";
+  return raw?raw.charAt(0).toUpperCase()+raw.slice(1):"Not specified";
+}
+
+function orderStatus(order){
+  return order.fulfilmentStatus||order.status||"received";
+}
+
+function statusText(status){
   const labels={
-    pending:"Pending payment",
-    paid:"Paid",
+    received:"Received",
+    procurement:"Procurement",
     processing:"Processing",
     dispatched:"Dispatched",
     delivered:"Delivered",
     cancelled:"Cancelled"
   };
-  return labels[status]||"Pending payment";
+  return labels[status]||String(status).replace(/_/g," ");
 }
 
-function paymentLabel(payment){
-  const labels={paid:"Paid",unpaid:"Unpaid",refunded:"Refunded"};
-  return labels[payment]||"Unpaid";
-}
-
-function dateLabel(value){
-  if(!value)return "Date unavailable";
+function dateText(value){
+  if(!value)return "Date not recorded";
   const date=new Date(value);
-  if(Number.isNaN(date.getTime()))return "Date unavailable";
-  return date.toLocaleString("en-NG",{dateStyle:"medium",timeStyle:"short"});
+  return Number.isNaN(date.getTime())?"Date not recorded":
+    date.toLocaleString("en-NG",{dateStyle:"medium",timeStyle:"short"});
 }
 
-function updateStats(){
-  document.getElementById("totalOrders").textContent=orders.length;
-  document.getElementById("pendingOrders").textContent=
-    orders.filter(o=>(o.paymentStatus||"unpaid")==="unpaid").length;
-  document.getElementById("processingOrders").textContent=
-    orders.filter(o=>o.status==="processing").length;
-  document.getElementById("deliveredOrders").textContent=
-    orders.filter(o=>o.status==="delivered").length;
+function orderGoodsValue(order){
+  if(order.subtotal!==undefined)return Number(order.subtotal)||0;
+  if(order.goodsTotal!==undefined)return Number(order.goodsTotal)||0;
+  return (Array.isArray(order.items)?order.items:[]).reduce((sum,item)=>
+    sum+Number(item.price||0)*Number(item.quantity||0),0);
 }
 
-function renderOrders(){
-  updateStats();
+function totalBatchGoods(batchOrders){
+  return batchOrders.reduce((sum,o)=>sum+orderGoodsValue(o),0);
+}
 
-  const query=document.getElementById("searchInput").value.trim().toLowerCase();
-  const status=document.getElementById("statusFilter").value;
-  const payment=document.getElementById("paymentFilter").value;
+function showView(id){
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
 
-  const filtered=orders.filter(o=>{
-    const customer=o.customer||{};
-    const matchesSearch=
-      String(o.orderNumber||"").toLowerCase().includes(query)||
-      String(customer.name||o.customerName||"").toLowerCase().includes(query)||
-      String(customer.email||"").toLowerCase().includes(query)||
-      String(customer.phone||"").toLowerCase().includes(query);
+function showBatches(){
+  selectedBatch=null;
+  showView("batchView");
+  loadData();
+  renderBatches();
+}
 
-    const matchesStatus=status==="all"||o.status===status;
-    const matchesPayment=payment==="all"||
-      (o.paymentStatus||"unpaid")===payment;
+function renderBatches(){
+  const query=document.getElementById("batchSearch").value.trim().toLowerCase();
+  const filter=document.getElementById("batchFilter").value;
 
-    return matchesSearch&&matchesStatus&&matchesPayment;
+  const filtered=batches.filter(batch=>{
+    const name=batchName(batch).toLowerCase();
+    const status=batchStatus(batch).toLowerCase();
+    return name.includes(query) && (filter==="all" || status===filter);
   });
 
-  document.getElementById("orderCount").textContent=
-    filtered.length+(filtered.length===1?" order":" orders");
+  const allOrdersCount=orders.length;
+  document.getElementById("totalBatches").textContent=batches.length;
+  document.getElementById("allOrders").textContent=allOrdersCount;
+  document.getElementById("allGoodsValue").textContent=money(
+    orders.reduce((sum,o)=>sum+orderGoodsValue(o),0)
+  );
+  document.getElementById("batchCount").textContent=filtered.length+" batches";
 
-  const list=document.getElementById("orderList");
+  const list=document.getElementById("batchList");
 
   if(filtered.length===0){
     list.innerHTML=`
       <div class="empty">
+        <div class="empty-icon">▦</div>
+        <h3>${batches.length?"No matching batches":"No batches created yet"}</h3>
+        <p>${batches.length?"Try another search or filter.":"Create a shopping batch first. Its customer orders will appear here."}</p>
+        <a class="btn secondary" href="batches.html">Go to Batch Management</a>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML=filtered.map(batch=>{
+    const batchOrders=ordersForBatch(batch);
+    const goods=totalBatchGoods(batchOrders);
+    const id=String(batch.id||batch.batchId||"");
+    return `
+      <article class="batch-card">
+        <div class="batch-top">
+          <div>
+            <div class="batch-name">${escapeHTML(batchName(batch))}</div>
+            <div class="batch-date">${escapeHTML(batch.startDate||batch.openDate||"")} ${batch.closeDate?"— "+escapeHTML(batch.closeDate):""}</div>
+          </div>
+          <span class="batch-status">${escapeHTML(batchStatus(batch))}</span>
+        </div>
+        <div class="batch-metrics">
+          <div>
+            <div class="metric-label">Customer orders</div>
+            <div class="metric-value">${batchOrders.length}</div>
+          </div>
+          <div>
+            <div class="metric-label">Total goods value</div>
+            <div class="metric-value">${money(goods)}</div>
+          </div>
+        </div>
+        <div class="batch-actions">
+          <button class="btn primary" onclick="openBatch('${escapeHTML(id)}')">View batch orders</button>
+        </div>
+      </article>`;
+  }).join("");
+}
+
+function openBatch(id){
+  loadData();
+  selectedBatch=batches.find(b=>String(b.id||b.batchId||"")===id);
+  if(!selectedBatch)return;
+
+  const batchOrders=ordersForBatch(selectedBatch);
+  const uniqueCustomers=new Set(batchOrders.map(o=>{
+    const c=customerOf(o);
+    return c.id||c.email||c.phone||customerName(o);
+  }));
+
+  document.getElementById("selectedBatchName").textContent=batchName(selectedBatch);
+  document.getElementById("selectedBatchDates").textContent=
+    "Manage orders for this shopping batch.";
+  document.getElementById("batchOrderCount").textContent=batchOrders.length;
+  document.getElementById("batchGoodsValue").textContent=money(totalBatchGoods(batchOrders));
+  document.getElementById("batchCustomers").textContent=uniqueCustomers.size;
+
+  document.getElementById("orderSearch").value="";
+  document.getElementById("orderStatusFilter").value="all";
+  switchTab("orders");
+  showView("ordersView");
+  renderBatchOrders();
+}
+
+function switchTab(tab){
+  ["orders","quantities","artwork"].forEach(name=>{
+    document.getElementById(name+"Tab").style.display=name===tab?"block":"none";
+  });
+  document.querySelectorAll(".tab").forEach(button=>{
+    button.classList.toggle("active",button.dataset.tab===tab);
+  });
+
+  if(tab==="orders")renderBatchOrders();
+  if(tab==="quantities")renderQuantities();
+  if(tab==="artwork")renderArtwork();
+}
+
+function renderBatchOrders(){
+  if(!selectedBatch)return;
+  loadData();
+
+  const batchOrders=ordersForBatch(selectedBatch);
+  const query=document.getElementById("orderSearch").value.trim().toLowerCase();
+  const status=document.getElementById("orderStatusFilter").value;
+
+  const filtered=batchOrders.filter(o=>{
+    const c=customerOf(o);
+    const searchable=[
+      o.orderNumber,o.id,customerName(o),c.email,c.phone
+    ].join(" ").toLowerCase();
+    return searchable.includes(query) &&
+      (status==="all"||orderStatus(o)===status);
+  });
+
+  document.getElementById("visibleOrderCount").textContent=filtered.length+" orders";
+
+  const list=document.getElementById("orderList");
+  if(filtered.length===0){
+    list.innerHTML=`
+      <div class="empty">
         <div class="empty-icon">▧</div>
-        <h3>${orders.length?"No matching orders":"No orders yet"}</h3>
-        <p>${orders.length
-          ?"Try changing your search or filters."
-          :"Customer orders will appear here when checkout is connected to AHRUH."}</p>
+        <h3>${batchOrders.length?"No matching orders":"No customer orders in this batch yet"}</h3>
+        <p>Orders connected to this batch will appear here when checkout is connected.</p>
       </div>`;
     return;
   }
 
   list.innerHTML=filtered.map(o=>{
-    const customer=o.customer||{};
-    const name=customer.name||o.customerName||"Customer";
-    const status=o.status||"pending";
-    const paymentStatus=o.paymentStatus||"unpaid";
-
+    const c=customerOf(o);
+    const status=orderStatus(o);
+    const quantity=(o.items||[]).reduce((sum,i)=>sum+Number(i.quantity||0),0);
     return `
       <article class="order-card">
         <div class="order-top">
           <div>
-            <div class="order-number">${escapeHTML(o.orderNumber||"Order")}</div>
-            <div class="order-date">${escapeHTML(dateLabel(o.createdAt))}</div>
+            <div class="order-number">${escapeHTML(o.orderNumber||o.id||"Order")}</div>
+            <div class="order-date">${escapeHTML(dateText(o.createdAt||o.orderDate))}</div>
           </div>
-          <span class="status ${escapeHTML(status)}">${escapeHTML(statusLabel(status))}</span>
+          <span class="order-status">${escapeHTML(statusText(status))}</span>
         </div>
-
         <div class="order-info">
           <div>
             <div class="info-label">Customer</div>
-            <div class="info-value">${escapeHTML(name)}</div>
+            <div class="info-value">${escapeHTML(customerName(o))}</div>
           </div>
           <div>
-            <div class="info-label">Items</div>
-            <div class="info-value">${Array.isArray(o.items)?o.items.reduce((n,i)=>n+Number(i.quantity||0),0):0}</div>
+            <div class="info-label">Product quantity</div>
+            <div class="info-value">${quantity}</div>
           </div>
           <div>
-            <div class="info-label">Payment</div>
-            <div class="info-value">${escapeHTML(paymentLabel(paymentStatus))}</div>
+            <div class="info-label">Goods value</div>
+            <div class="info-value">${money(orderGoodsValue(o))}</div>
           </div>
         </div>
-
         <div class="order-bottom">
           <div>
-            <div class="total">${money(o.total)}</div>
-            <div class="payment">${escapeHTML(o.paymentMethod||"Payment method unavailable")}</div>
+            <div class="order-total">${money(o.total??orderGoodsValue(o))}</div>
+            <div class="muted">Order total including other charges, if recorded</div>
           </div>
-          <div class="actions">
-            <button class="view-btn" onclick="viewOrder('${escapeHTML(o.id)}')">View order</button>
-            <button class="print-btn" onclick="printOrder('${escapeHTML(o.id)}')">Print</button>
+          <div class="order-actions">
+            <button class="btn secondary" onclick="viewOrder('${escapeHTML(o.id)}')">View order</button>
+            <button class="btn outline" onclick="printReceipt('${escapeHTML(o.id)}')">Print receipt</button>
           </div>
         </div>
       </article>`;
@@ -374,223 +613,324 @@ function renderOrders(){
 }
 
 function viewOrder(id){
-  const order=orders.find(o=>o.id===id);
+  loadData();
+  const order=orders.find(o=>String(o.id)===String(id));
   if(!order)return;
 
-  selectedOrderId=id;
-  const customer=order.customer||{};
-  const address=order.address||customer.address||{};
-  const addressText=typeof address==="string"
-    ? address
-    : [address.line1,address.line2,address.city,address.state,address.country]
-      .filter(Boolean).join(", ");
+  const c=customerOf(order);
+  const address=order.address||c.address||{};
+  const addressText=typeof address==="string"?address:
+    [address.line1,address.line2,address.city,address.state,address.country].filter(Boolean).join(", ");
 
   const items=Array.isArray(order.items)?order.items:[];
+  document.getElementById("detailTitle").textContent=order.orderNumber||"Order details";
 
-  document.getElementById("detailTitle").textContent=
-    order.orderNumber||"Order details";
-
-  document.getElementById("orderDetails").innerHTML=`
+  document.getElementById("detailContent").innerHTML=`
     <div class="detail-grid">
-      <div class="detail-box">
-        <small>Customer name</small>
-        <strong>${escapeHTML(customer.name||order.customerName||"Not provided")}</strong>
-      </div>
-      <div class="detail-box">
-        <small>Phone number</small>
-        <strong>${escapeHTML(customer.phone||"Not provided")}</strong>
-      </div>
-      <div class="detail-box">
-        <small>Email address</small>
-        <strong>${escapeHTML(customer.email||"Not provided")}</strong>
-      </div>
-      <div class="detail-box">
-        <small>Order date</small>
-        <strong>${escapeHTML(dateLabel(order.createdAt))}</strong>
-      </div>
-      <div class="detail-box detail-full">
-        <small>Delivery address</small>
-        <strong>${escapeHTML(addressText||"Not provided")}</strong>
-      </div>
-      <div class="detail-box">
-        <small>Payment method</small>
-        <strong>${escapeHTML(order.paymentMethod||"Not provided")}</strong>
-      </div>
-      <div class="detail-box">
-        <small>Payment status</small>
-        <strong>${escapeHTML(paymentLabel(order.paymentStatus||"unpaid"))}</strong>
-      </div>
+      <div class="detail-box"><small>Customer</small><strong>${escapeHTML(customerName(order))}</strong></div>
+      <div class="detail-box"><small>Order number</small><strong>${escapeHTML(order.orderNumber||order.id||"—")}</strong></div>
+      <div class="detail-box"><small>Phone</small><strong>${escapeHTML(c.phone||"Not recorded")}</strong></div>
+      <div class="detail-box"><small>Email</small><strong>${escapeHTML(c.email||"Not recorded")}</strong></div>
+      <div class="detail-box full"><small>Delivery address</small><strong>${escapeHTML(addressText||"Not recorded")}</strong></div>
+      <div class="detail-box"><small>Shopping batch</small><strong>${escapeHTML(orderBatchName(order)||batchName(selectedBatch||{}))}</strong></div>
+      <div class="detail-box"><small>Fulfilment stage</small><strong>${escapeHTML(statusText(orderStatus(order)))}</strong></div>
+      <div class="detail-box"><small>Payment method</small><strong>${escapeHTML(order.paymentMethod||"Not recorded")}</strong></div>
+      <div class="detail-box"><small>Order date</small><strong>${escapeHTML(dateText(order.createdAt||order.orderDate))}</strong></div>
     </div>
 
-    <table class="items-table">
-      <thead>
-        <tr><th>Product</th><th>Qty</th><th>Price</th><th>Total</th></tr>
-      </thead>
-      <tbody>
-        ${items.length?items.map(item=>{
-          const quantity=Number(item.quantity||0);
-          const price=Number(item.price||0);
-          return `<tr>
-            <td>${escapeHTML(item.name||item.productName||"Product")}${item.variant?`<br><small>${escapeHTML(item.variant)}</small>`:""}</td>
-            <td>${quantity}</td>
-            <td>${money(price)}</td>
-            <td>${money(price*quantity)}</td>
-          </tr>`;
-        }).join(""):'<tr><td colspan="4">No item details recorded.</td></tr>'}
-      </tbody>
-    </table>
-
-    <div class="summary">
-      <div class="summary-row"><span>Subtotal</span><strong>${money(order.subtotal)}</strong></div>
-      <div class="summary-row"><span>Discount</span><strong>${money(order.discount)}</strong></div>
-      <div class="summary-row"><span>Delivery fee</span><strong>${money(order.deliveryFee)}</strong></div>
-      <div class="summary-row total-row"><span>Order total</span><strong>${money(order.total)}</strong></div>
-    </div>
-
-    <div class="status-control">
-      <label for="newStatus">Update order status</label>
-      <select id="newStatus">
-        ${["pending","paid","processing","dispatched","delivered","cancelled"].map(s=>
-          `<option value="${s}" ${order.status===s?"selected":""}>${statusLabel(s)}</option>`
-        ).join("")}
-      </select>
-    </div>
-
-    <div class="status-control">
-      <label for="newPayment">Update payment status</label>
-      <select id="newPayment">
-        ${["unpaid","paid","refunded"].map(s=>
-          `<option value="${s}" ${(order.paymentStatus||"unpaid")===s?"selected":""}>${paymentLabel(s)}</option>`
-        ).join("")}
-      </select>
-    </div>
-  `;
-
-  document.getElementById("printDetailBtn").onclick=()=>printOrder(id);
-
-  const saveButton=document.createElement("button");
-  saveButton.className="btn primary";
-  saveButton.textContent="Save updates";
-  saveButton.onclick=()=>saveOrderUpdates(id);
-
-  document.querySelector("#orderDetails").appendChild(saveButton);
-  document.getElementById("orderModal").classList.add("show");
-}
-
-function saveOrderUpdates(id){
-  const order=orders.find(o=>o.id===id);
-  if(!order)return;
-
-  const newStatus=document.getElementById("newStatus").value;
-  const newPayment=document.getElementById("newPayment").value;
-
-  if(newStatus==="delivered"&&newPayment!=="paid"){
-    alert("Please confirm payment before marking this order as delivered.");
-    return;
-  }
-
-  order.status=newStatus;
-  order.paymentStatus=newPayment;
-  order.updatedAt=new Date().toISOString();
-
-  if(!saveOrders())return;
-
-  closeModal();
-  renderOrders();
-}
-
-function closeModal(){
-  document.getElementById("orderModal").classList.remove("show");
-}
-
-function closeBackdrop(event){
-  if(event.target.id==="orderModal")closeModal();
-}
-
-function printOrder(id){
-  const order=orders.find(o=>o.id===id);
-  if(!order)return;
-
-  const customer=order.customer||{};
-  const address=order.address||customer.address||{};
-  const addressText=typeof address==="string"
-    ? address
-    : [address.line1,address.line2,address.city,address.state,address.country]
-      .filter(Boolean).join(", ");
-
-  const items=Array.isArray(order.items)?order.items:[];
-
-  const receipt=`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="UTF-8">
-      <title>AHRUH Receipt</title>
-      <style>
-        @page{size:150mm 100mm;margin:7mm}
-        body{font-family:Arial,sans-serif;color:#111;font-size:10px}
-        h1{text-align:center;font-size:22px;letter-spacing:3px;margin:0}
-        .sub{text-align:center;font-size:8px;margin:3px 0 12px}
-        .rule{border-top:1px dashed #555;margin:8px 0}
-        .row{display:flex;justify-content:space-between;gap:8px;margin:4px 0}
-        table{width:100%;border-collapse:collapse;margin:8px 0}
-        th,td{text-align:left;padding:5px 2px;border-bottom:1px solid #ddd}
-        .right{text-align:right}
-        .total{font-weight:bold;font-size:13px}
-        .small{font-size:8px;line-height:1.5}
-      </style>
-    </head>
-    <body>
-      <h1>AHRUH</h1>
-      <div class="sub">ORDER RECEIPT</div>
-      <div class="rule"></div>
-      <div class="row"><strong>Order:</strong><span>${escapeHTML(order.orderNumber||"")}</span></div>
-      <div class="row"><strong>Date:</strong><span>${escapeHTML(dateLabel(order.createdAt))}</span></div>
-      <div class="row"><strong>Customer:</strong><span>${escapeHTML(customer.name||order.customerName||"")}</span></div>
-      <div class="row"><strong>Phone:</strong><span>${escapeHTML(customer.phone||"")}</span></div>
-      <div class="small"><strong>Address:</strong> ${escapeHTML(addressText)}</div>
-      <div class="rule"></div>
-      <table>
-        <thead><tr><th>Product</th><th>Qty</th><th class="right">Price</th><th class="right">Total</th></tr></thead>
+    <div class="section-heading"><strong>Products ordered</strong><span>${items.length} product lines</span></div>
+    <div class="table-wrap">
+      <table class="items-table">
+        <thead><tr><th>Product</th><th>Variant</th><th>Qty</th><th class="right">Unit price</th><th class="right">Line total</th></tr></thead>
         <tbody>
-          ${items.map(item=>{
-            const qty=Number(item.quantity||0);
-            const price=Number(item.price||0);
+          ${items.length?items.map(i=>{
+            const qty=Number(i.quantity||0),price=Number(i.price||0);
             return `<tr>
-              <td>${escapeHTML(item.name||item.productName||"Product")}${item.variant?"<br>"+escapeHTML(item.variant):""}</td>
+              <td>${escapeHTML(i.name||i.productName||"Product")}</td>
+              <td>${escapeHTML(i.variant||variantText(i))}</td>
               <td>${qty}</td>
               <td class="right">${money(price)}</td>
               <td class="right">${money(price*qty)}</td>
             </tr>`;
+          }).join(""):'<tr><td colspan="5">No product details recorded.</td></tr>'}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="detail-grid" style="margin-top:13px">
+      <div class="detail-box"><small>Goods subtotal</small><strong>${money(orderGoodsValue(order))}</strong></div>
+      <div class="detail-box"><small>Discount</small><strong>${money(order.discount)}</strong></div>
+      <div class="detail-box"><small>Delivery fee</small><strong>${money(order.deliveryFee)}</strong></div>
+      <div class="detail-box"><small>Total payable</small><strong>${money(order.total??orderGoodsValue(order))}</strong></div>
+    </div>
+
+    <div class="section-heading"><strong>Fulfilment progress</strong></div>
+    <select class="field" id="fulfilmentSelect" style="width:100%">
+      ${["received","procurement","processing","dispatched","delivered","cancelled"].map(s=>
+        `<option value="${s}" ${orderStatus(order)===s?"selected":""}>${statusText(s)}</option>`
+      ).join("")}
+    </select>
+    <button class="btn primary" style="margin-top:10px" onclick="saveFulfilment('${escapeHTML(order.id)}')">Save fulfilment update</button>
+  `;
+
+  document.getElementById("detailPrintButton").onclick=()=>printReceipt(id);
+  document.getElementById("detailModal").classList.add("show");
+}
+
+function variantText(item){
+  if(item.variant)return item.variant;
+  if(item.variants&&typeof item.variants==="object"){
+    return Object.entries(item.variants).map(([k,v])=>k+": "+v).join(", ");
+  }
+  return "";
+}
+
+function saveFulfilment(id){
+  const order=orders.find(o=>String(o.id)===String(id));
+  if(!order)return;
+  const status=document.getElementById("fulfilmentSelect").value;
+  order.fulfilmentStatus=status;
+  order.updatedAt=new Date().toISOString();
+
+  try{
+    localStorage.setItem(ORDER_KEY,JSON.stringify(orders));
+    closeModal();
+    renderBatchOrders();
+  }catch(error){
+    alert("Could not save this update in browser storage.");
+  }
+}
+
+function renderQuantities(){
+  if(!selectedBatch)return;
+  loadData();
+
+  const summary=new Map();
+
+  ordersForBatch(selectedBatch).forEach(order=>{
+    (order.items||[]).forEach(item=>{
+      const name=item.name||item.productName||"Product";
+      const variant=variantText(item);
+      const productId=item.productId||item.id||name;
+      const variantId=item.variantId||variant;
+      const key=String(productId)+"::"+String(variantId);
+
+      if(!summary.has(key)){
+        summary.set(key,{
+          name,variant,quantity:0,customers:new Set()
+        });
+      }
+
+      const entry=summary.get(key);
+      entry.quantity+=Number(item.quantity||0);
+      const c=customerOf(order);
+      entry.customers.add(c.id||c.email||c.phone||customerName(order));
+    });
+  });
+
+  const rows=[...summary.values()].sort((a,b)=>a.name.localeCompare(b.name));
+  document.getElementById("quantityRows").innerHTML=rows.length
+    ?rows.map(r=>`
+      <tr>
+        <td><strong>${escapeHTML(r.name)}</strong></td>
+        <td>${escapeHTML(r.variant||"Standard")}</td>
+        <td><strong>${r.quantity}</strong></td>
+        <td>${r.customers.size}</td>
+      </tr>`).join("")
+    :'<tr><td colspan="4">No product quantities to summarise yet.</td></tr>';
+}
+
+function collectArtwork(){
+  const results=[];
+  ordersForBatch(selectedBatch).forEach(order=>{
+    (order.items||[]).forEach(item=>{
+      const artwork=item.artworkUrl||item.artworkURL||item.artwork||item.customArtwork||item.uploadedArtwork;
+      if(!artwork)return;
+
+      const url=typeof artwork==="string"?artwork:
+        artwork.url||artwork.dataUrl||artwork.previewUrl||"";
+      if(!url)return;
+
+      results.push({
+        url,
+        product:item.name||item.productName||"Product",
+        customer:customerName(order),
+        order:order.orderNumber||order.id||"Order",
+        variant:variantText(item)
+      });
+    });
+  });
+  return results;
+}
+
+function renderArtwork(){
+  if(!selectedBatch)return;
+  const query=document.getElementById("artworkSearch").value.trim().toLowerCase();
+  const all=collectArtwork();
+  const filtered=all.filter(a=>
+    [a.product,a.customer,a.order,a.variant].join(" ").toLowerCase().includes(query)
+  );
+
+  document.getElementById("artworkCount").textContent=filtered.length+" files";
+  const grid=document.getElementById("artworkGrid");
+
+  if(!filtered.length){
+    grid.innerHTML=`
+      <div class="empty" style="grid-column:1/-1">
+        <div class="empty-icon">▧</div>
+        <h3>${all.length?"No matching artwork":"No customer artwork found"}</h3>
+        <p>Artwork attached to order items in this batch will appear here when uploaded artwork is connected.</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML=filtered.map(a=>`
+    <article class="artwork-card">
+      <a href="${escapeHTML(a.url)}" target="_blank" rel="noopener">
+        <img src="${escapeHTML(a.url)}" alt="Customer artwork">
+      </a>
+      <div>
+        <strong>${escapeHTML(a.product)}</strong>
+        <small>Customer: ${escapeHTML(a.customer)}</small>
+        <small>Order: ${escapeHTML(a.order)}</small>
+        <small>${escapeHTML(a.variant)}</small>
+        <a class="artwork-link" href="${escapeHTML(a.url)}" target="_blank" rel="noopener">Open artwork</a>
+      </div>
+    </article>
+  `).join("");
+}
+
+function receiptHTML(order){
+  const c=customerOf(order);
+  const address=order.address||c.address||{};
+  const addressText=typeof address==="string"?address:
+    [address.line1,address.line2,address.city,address.state,address.country].filter(Boolean).join(", ");
+  const items=Array.isArray(order.items)?order.items:[];
+
+  return `
+    <section class="receipt">
+      <h1>AHRUH</h1>
+      <p class="receipt-sub">CUSTOMER ORDER RECEIPT</p>
+      <hr>
+      <p><b>Order:</b> ${escapeHTML(order.orderNumber||order.id||"")}</p>
+      <p><b>Date:</b> ${escapeHTML(dateText(order.createdAt||order.orderDate))}</p>
+      <p><b>Customer:</b> ${escapeHTML(customerName(order))}</p>
+      <p><b>Phone:</b> ${escapeHTML(c.phone||"")}</p>
+      <p><b>Address:</b> ${escapeHTML(addressText)}</p>
+      <hr>
+      <table>
+        <thead><tr><th>Product / Variant</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead>
+        <tbody>
+          ${items.map(i=>{
+            const qty=Number(i.quantity||0),price=Number(i.price||0);
+            return `<tr>
+              <td>${escapeHTML(i.name||i.productName||"Product")}<br>${escapeHTML(variantText(i))}</td>
+              <td>${qty}</td><td>${money(price)}</td><td>${money(qty*price)}</td>
+            </tr>`;
           }).join("")}
         </tbody>
       </table>
-      <div class="row"><span>Subtotal</span><strong>${money(order.subtotal)}</strong></div>
-      <div class="row"><span>Discount</span><strong>${money(order.discount)}</strong></div>
-      <div class="row"><span>Delivery</span><strong>${money(order.deliveryFee)}</strong></div>
-      <div class="rule"></div>
-      <div class="row total"><span>TOTAL</span><span>${money(order.total)}</span></div>
-      <div class="row"><span>Payment</span><span>${escapeHTML(order.paymentMethod||"")}</span></div>
-      <div class="row"><span>Payment status</span><span>${escapeHTML(paymentLabel(order.paymentStatus||"unpaid"))}</span></div>
-      <div class="rule"></div>
-      <div class="sub">Thank you for shopping with AHRUH.</div>
-      <script>window.onload=()=>window.print();<\/script>
-    </body>
-    </html>
-  `;
+      <hr>
+      <p class="row"><span>Goods subtotal</span><b>${money(orderGoodsValue(order))}</b></p>
+      <p class="row"><span>Discount</span><b>${money(order.discount)}</b></p>
+      <p class="row"><span>Delivery fee</span><b>${money(order.deliveryFee)}</b></p>
+      <p class="row total"><span>TOTAL</span><b>${money(order.total??orderGoodsValue(order))}</b></p>
+      <p><b>Payment method:</b> ${escapeHTML(order.paymentMethod||"")}</p>
+      <hr>
+      <p class="receipt-sub">Thank you for shopping with AHRUH.</p>
+    </section>`;
+}
 
+function printDocument(content,title){
   const win=window.open("","_blank","width=700,height=800");
   if(!win){
     alert("Please allow pop-ups to print receipts.");
     return;
   }
+
   win.document.open();
-  win.document.write(receipt);
+  win.document.write(`
+    <!DOCTYPE html>
+    <html><head><meta charset="UTF-8"><title>${escapeHTML(title)}</title>
+    <style>
+      @page{size:150mm 100mm;margin:6mm}
+      body{font-family:Arial,sans-serif;color:#111;font-size:9px}
+      .receipt{break-after:page;page-break-after:always}
+      .receipt:last-child{break-after:auto;page-break-after:auto}
+      h1{text-align:center;font-size:22px;letter-spacing:3px;margin:0}
+      .receipt-sub{text-align:center;font-size:8px}
+      hr{border:0;border-top:1px dashed #555;margin:7px 0}
+      p{margin:4px 0}
+      table{width:100%;border-collapse:collapse;font-size:8px;margin:8px 0}
+      th,td{text-align:left;padding:5px 2px;border-bottom:1px solid #ddd;vertical-align:top}
+      .row{display:flex;justify-content:space-between;gap:8px}
+      .total{font-size:12px;font-weight:bold;border-top:1px solid #555;padding-top:7px}
+      @media print{body{margin:0}}
+    </style></head><body>${content}</body></html>
+  `);
   win.document.close();
+  win.onload=()=>win.print();
 }
 
-loadOrders();
-renderOrders();
+function printReceipt(id){
+  loadData();
+  const order=orders.find(o=>String(o.id)===String(id));
+  if(!order)return;
+  printDocument(receiptHTML(order),"AHRUH Order Receipt");
+}
+
+function printBatchReceipts(){
+  if(!selectedBatch)return;
+  const batchOrders=ordersForBatch(selectedBatch);
+  if(!batchOrders.length){
+    alert("There are no orders in this batch to print.");
+    return;
+  }
+  printDocument(batchOrders.map(receiptHTML).join(""),"AHRUH Batch Receipts");
+}
+
+function printQuantitySummary(){
+  if(!selectedBatch)return;
+  const summary=new Map();
+
+  ordersForBatch(selectedBatch).forEach(order=>{
+    (order.items||[]).forEach(item=>{
+      const name=item.name||item.productName||"Product";
+      const variant=variantText(item)||"Standard";
+      const key=(item.productId||item.id||name)+"::"+(item.variantId||variant);
+      if(!summary.has(key))summary.set(key,{name,variant,quantity:0,customers:new Set()});
+      const row=summary.get(key);
+      row.quantity+=Number(item.quantity||0);
+      const c=customerOf(order);
+      row.customers.add(c.id||c.email||c.phone||customerName(order));
+    });
+  });
+
+  const rows=[...summary.values()];
+  const html=`
+    <section>
+      <h1>AHRUH</h1>
+      <h3>Batch Product Quantity Summary</h3>
+      <p>${escapeHTML(batchName(selectedBatch))}</p>
+      <table>
+        <thead><tr><th>Product</th><th>Variant</th><th>Quantity</th><th>Customers</th></tr></thead>
+        <tbody>${rows.map(r=>`
+          <tr><td>${escapeHTML(r.name)}</td><td>${escapeHTML(r.variant)}</td><td>${r.quantity}</td><td>${r.customers.size}</td></tr>
+        `).join("")}</tbody>
+      </table>
+    </section>`;
+  printDocument(html,"AHRUH Quantity Summary");
+}
+
+function closeModal(){
+  document.getElementById("detailModal").classList.remove("show");
+}
+function closeBackdrop(event){
+  if(event.target.id==="detailModal")closeModal();
+}
+
+loadData();
+renderBatches();
 </script>
 </body>
 </html>
