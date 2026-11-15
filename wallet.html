@@ -3,229 +3,459 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>EarnGig Admin | Coin Withdrawals</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101d3a">
+<title>AHRUH | Wallet Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#111827;--purple:#7047eb;--lav:#f1edff;--bg:#f5f6fa;--text:#20283a;--muted:#8991a3;--border:#e9eaf1;--green:#16865c;--greenbg:#e9f8f1;--orange:#bd761b;--orangebg:#fff4e5;--red:#d34b58;--redbg:#fff0f1;--blue:#3976c8;--bluebg:#edf4ff}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer}
-.layout{display:flex;min-height:100vh}.sidebar{width:250px;background:var(--navy);color:white;position:fixed;inset:0 auto 0 0;padding:25px 15px;overflow:auto;z-index:10}
-.brand{display:flex;align-items:center;gap:10px;padding:0 12px 28px;font-size:22px;font-weight:800}.crown{width:27px;height:25px}
-.nav-label{font-size:10px;letter-spacing:1.5px;color:#8290a9;padding:18px 13px 9px;font-weight:700}
-.nav-link{display:flex;align-items:center;gap:12px;color:#aeb8ca;text-decoration:none;padding:11px 13px;margin:3px 0;border-radius:8px;font-size:13px}
-.nav-link:hover,.nav-link.active{background:#292344;color:white}.nav-link.active{box-shadow:inset 3px 0 var(--purple)}.nav-icon{width:19px;text-align:center}
-.sidebar-footer{border-top:1px solid #30394b;margin-top:28px;padding:18px 12px;color:#8996aa;font-size:11px;line-height:1.7}
-.main{margin-left:250px;width:calc(100% - 250px);min-width:0}.topbar{height:72px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:5}
-.top-title{font-size:14px;font-weight:700}.top-sub{font-size:11px;color:var(--muted);margin-top:3px}.admin-pill{background:var(--lav);color:var(--purple);padding:8px 13px;border-radius:20px;font-size:11px;font-weight:700}
-.content{padding:29px 30px 50px;max-width:1600px;margin:auto}.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:22px}
-h1{font-size:24px;margin:0 0 7px;letter-spacing:-.6px}.subtitle{font-size:12px;color:var(--muted);line-height:1.6}
-.btn{border:0;border-radius:7px;padding:10px 14px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px}
-.primary{background:var(--purple);color:white}.light{background:white;border:1px solid var(--border);color:#535d70}.danger{background:var(--redbg);color:var(--red)}.success{background:var(--greenbg);color:var(--green)}
-.notice{background:#f0edff;border:1px solid #e1d9ff;border-radius:9px;padding:13px 15px;color:#51418c;font-size:11px;line-height:1.7;margin-bottom:20px}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:20px}.stat,.panel{background:white;border:1px solid var(--border);border-radius:10px;box-shadow:0 5px 20px #181f350b}
-.stat{padding:18px}.stat-label{font-size:11px;color:var(--muted);font-weight:600}.stat-value{font-size:23px;font-weight:800;margin-top:12px}.stat-foot{font-size:10px;color:var(--muted);margin-top:7px}
-.panel{margin-bottom:20px}.panel-head{padding:17px 19px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.panel-title{font-size:13px;font-weight:800}.panel-sub{font-size:10px;color:var(--muted);margin-top:4px}
-.filters{display:flex;gap:8px;flex-wrap:wrap}.field{border:1px solid var(--border);background:white;border-radius:7px;padding:10px;font-size:11px;color:var(--text);outline:none;min-width:130px}.field:focus{border-color:var(--purple)}.search{min-width:220px}
-.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:left;font-size:10px;color:#8c94a5;background:#fafbfc;padding:13px 15px}td{padding:14px 15px;border-top:1px solid #f0f1f5;font-size:11px;vertical-align:middle}tbody tr:hover{background:#fcfbff}
-.person{display:flex;align-items:center;gap:9px}.avatar{width:34px;height:34px;border-radius:9px;background:#eee9ff;color:var(--purple);display:grid;place-items:center;font-weight:800;flex-shrink:0}.person-name{font-weight:700}.person-meta{font-size:10px;color:var(--muted);margin-top:4px}
-.tag{display:inline-block;border-radius:20px;padding:5px 9px;font-size:9px;font-weight:800}.pending{background:var(--orangebg);color:var(--orange)}.approved{background:var(--greenbg);color:var(--green)}.rejected{background:var(--redbg);color:var(--red)}.processing{background:var(--bluebg);color:var(--blue)}.paid{background:var(--greenbg);color:var(--green)}.frozen{background:#f0f1f4;color:#697386}
-.action{border:1px solid var(--border);background:white;border-radius:6px;padding:7px 9px;font-size:10px;font-weight:700;color:#596276}.action:hover{border-color:var(--purple);color:var(--purple)}
-.empty{text-align:center;padding:42px 20px;color:var(--muted)}.empty strong{display:block;color:#4d5668;font-size:13px;margin-bottom:6px}.empty p{font-size:11px;line-height:1.6;margin:0}
-.modal-backdrop{display:none;position:fixed;inset:0;background:#0a0f1c99;z-index:30;align-items:center;justify-content:center;padding:16px}.modal-backdrop.show{display:flex}.modal{background:white;border-radius:13px;width:100%;max-width:700px;max-height:92vh;overflow-y:auto;box-shadow:0 20px 70px #0003}
-.modal-head{padding:19px 21px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.modal-head h2{font-size:16px;margin:0}.close{border:0;background:#f2f3f7;border-radius:7px;width:30px;height:30px;font-size:17px}
-.modal-body{padding:20px 21px}.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.detail{padding:12px;background:#f8f9fc;border-radius:8px;min-width:0}.detail-label{font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase}.detail-value{font-size:12px;font-weight:700;overflow-wrap:anywhere}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 13px}.form-group{margin-top:13px}.form-group label{display:block;font-size:10px;font-weight:700;margin-bottom:6px}.form-group .field{width:100%}.form-group.full{grid-column:1/-1}textarea.field{min-height:75px;resize:vertical}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:20px}.help{font-size:10px;color:var(--muted);line-height:1.6;margin-top:7px}
-.mobile-menu{display:none;border:0;background:white;font-size:20px}
-@media(max-width:1050px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:760px){.sidebar{transform:translateX(-100%);transition:.25s}.sidebar.open{transform:translateX(0)}.main{margin-left:0;width:100%}.mobile-menu{display:block}.topbar{padding:0 16px}.content{padding:22px 15px}.heading{flex-direction:column}.search{min-width:100%;width:100%}.filters{width:100%}.filters .field{flex:1}}
-@media(max-width:480px){.detail-grid,.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}}
+:root{
+  --navy:#101d3a;
+  --navy2:#182b50;
+  --blue:#315fba;
+  --soft:#edf3ff;
+  --gold:#c9a96e;
+  --bg:#f4f6fa;
+  --white:#fff;
+  --text:#18233b;
+  --muted:#7b8497;
+  --border:#e7eaf0;
+  --green:#16865b;
+  --red:#c84e54;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.topbar{
+  background:var(--navy);color:white;padding:17px 18px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:5;
+}
+.brand{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;letter-spacing:2px}
+.tagline{font-size:9px;letter-spacing:3px;color:var(--gold);margin-top:-4px}
+.top-right{font-size:12px;color:#d8dfed}
+.container{max-width:1050px;margin:auto;padding:19px 15px 45px}
+.back{color:var(--blue);text-decoration:none;font-size:13px;font-weight:700;display:inline-block;margin-bottom:15px}
+.heading{font-size:23px;font-weight:700;margin:0}
+.subheading{font-size:12px;color:var(--muted);margin:5px 0 18px}
+.shortcuts{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:17px}
+.shortcut{
+  background:white;border:1px solid var(--border);border-radius:13px;
+  padding:13px 8px;text-align:center;color:var(--navy);
+  font-size:11px;font-weight:700;min-height:78px;
+}
+.shortcut span{display:block;font-size:21px;margin-bottom:6px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-bottom:18px}
+.stat{background:white;border:1px solid var(--border);border-radius:15px;padding:16px}
+.stat-label{font-size:11px;color:var(--muted)}
+.stat-value{font-size:22px;font-weight:700;margin-top:7px;overflow-wrap:anywhere}
+.stat-note{font-size:10px;color:var(--muted);margin-top:5px}
+.section{background:white;border:1px solid var(--border);border-radius:15px;padding:15px;margin-bottom:15px}
+.section-title{font-size:15px;font-weight:700;margin:0 0 12px}
+.search-row{display:flex;gap:8px}
+input,select{
+  width:100%;border:1px solid var(--border);border-radius:10px;
+  padding:12px;background:#fff;color:var(--text);outline:none;min-width:0;
+}
+input:focus,select:focus{border-color:var(--blue)}
+.btn{
+  border:0;border-radius:10px;padding:11px 14px;
+  background:var(--navy);color:white;font-weight:700;font-size:12px;
+}
+.btn.blue{background:var(--blue)}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.btn.light{background:var(--soft);color:var(--navy)}
+.btn.red{background:#fff0f0;color:var(--red)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.customer-card,.transaction{
+  border:1px solid var(--border);border-radius:12px;padding:13px;
+  margin-top:9px;background:#fff;
+}
+.card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.customer-name{font-size:13px;font-weight:700}
+.small{font-size:11px;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}
+.balance-line{display:flex;justify-content:space-between;gap:10px;margin-top:13px;font-size:12px}
+.balance-line strong{color:var(--navy)}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.actions .btn{flex:1}
+.pill{font-size:10px;border-radius:30px;padding:5px 9px;background:var(--soft);color:var(--blue);white-space:nowrap}
+.tabs{display:flex;gap:7px;overflow-x:auto;margin-bottom:12px}
+.tab{padding:9px 13px;border:1px solid var(--border);border-radius:30px;background:white;font-size:11px;font-weight:700;white-space:nowrap}
+.tab.active{background:var(--navy);color:white;border-color:var(--navy)}
+.transaction{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.tx-title{font-size:12px;font-weight:700}
+.tx-meta{font-size:10px;color:var(--muted);margin-top:4px}
+.amount{font-size:13px;font-weight:700;text-align:right;white-space:nowrap}
+.credit{color:var(--green)}
+.debit{color:var(--red)}
+.empty{text-align:center;padding:24px 10px;color:var(--muted);font-size:12px}
+.modal-bg{
+  position:fixed;inset:0;background:#071329aa;z-index:10;
+  display:none;align-items:center;justify-content:center;padding:15px;
+}
+.modal{
+  width:100%;max-width:440px;background:white;border-radius:17px;
+  padding:19px;max-height:90vh;overflow:auto;
+}
+.modal h3{margin:0 0 6px;font-size:17px}
+.field{margin-top:13px}
+.field label{display:block;font-size:11px;font-weight:700;margin-bottom:6px}
+.field small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.modal-actions{display:flex;gap:8px;margin-top:18px}
+.modal-actions button{flex:1}
+.notice{background:#fff8e9;color:#755b2c;padding:11px;border-radius:10px;font-size:11px;line-height:1.5;margin-top:12px}
+.profile-balance{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:13px 0}
+.profile-balance div{background:var(--soft);border-radius:11px;padding:12px}
+.profile-balance small{display:block;color:var(--muted);font-size:10px}
+.profile-balance strong{display:block;font-size:16px;margin-top:5px}
+.hidden{display:none!important}
+@media(max-width:520px){
+ .shortcuts{grid-template-columns:repeat(2,1fr)}
+ .stat-value{font-size:19px}
+ .container{padding:16px 12px 35px}
+ .topbar{padding:14px}
+}
 </style>
 </head>
 <body>
-<div class="layout">
-<aside class="sidebar" id="sidebar">
- <div class="brand">
-  <svg class="crown" viewBox="0 0 40 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-   <path d="M4 10L11 16L19.5 4L28 16L36 10L32 28H8L4 10Z" stroke="#E8BD62" stroke-width="2" stroke-linejoin="round"/>
-   <path d="M9 23H31M11 31H29" stroke="#E8BD62" stroke-width="2" stroke-linecap="round"/>
-   <circle cx="4" cy="8" r="2" fill="#E8BD62"/><circle cx="19.5" cy="3" r="2" fill="#E8BD62"/><circle cx="36" cy="8" r="2" fill="#E8BD62"/>
-  </svg><span>EarnGig</span>
- </div>
- <div class="nav-label">OVERVIEW</div>
- <a class="nav-link" href="admin.html"><span class="nav-icon">▦</span>Dashboard</a>
- <div class="nav-label">USER MANAGEMENT</div>
- <a class="nav-link" href="users.html"><span class="nav-icon">♙</span>Users</a>
- <a class="nav-link" href="membership.html"><span class="nav-icon">◇</span>Membership</a>
- <div class="nav-label">FINANCIAL MANAGEMENT</div>
- <a class="nav-link active" href="wallet.html"><span class="nav-icon">◈</span>Coin Withdrawals</a>
- <a class="nav-link" href="coin-purchases.html"><span class="nav-icon">◉</span>Coin Purchases</a>
- <a class="nav-link" href="referrals.html"><span class="nav-icon">♧</span>Referrals</a>
- <a class="nav-link" href="transactions.html"><span class="nav-icon">⇄</span>Transactions</a>
- <a class="nav-link" href="deposits.html"><span class="nav-icon">↓</span>Deposits</a>
- <a class="nav-link" href="withdrawals.html"><span class="nav-icon">↑</span>User Naira Withdrawals</a>
- <a class="nav-link" href="payouts.html"><span class="nav-icon">⇧</span>Payout Management</a>
- <a class="nav-link" href="seller-wallet.html"><span class="nav-icon">▣</span>Seller Store Wallet</a>
- <div class="nav-label">MARKETPLACE</div>
- <a class="nav-link" href="store-verification.html"><span class="nav-icon">✓</span>Store Verification</a>
- <div class="nav-label">ADVERTISING</div>
- <a class="nav-link" href="advertising.html"><span class="nav-icon">▤</span>Advertisement Bookings</a>
- <a class="nav-link" href="watch-earn.html"><span class="nav-icon">▶</span>Watch &amp; Earn</a>
- <a class="nav-link" href="billboard.html"><span class="nav-icon">▣</span>Billboard Management</a>
- <div class="nav-label">CONTENT &amp; OPERATIONS</div>
- <a class="nav-link" href="writers.html"><span class="nav-icon">✎</span>Writers</a>
- <div class="sidebar-footer">EarnGig Administration<br>Owner access only<br><span style="color:#e8bd62">●</span> Admin prototype</div>
-</aside>
 
-<main class="main">
 <header class="topbar">
- <div style="display:flex;align-items:center;gap:13px">
-  <button class="mobile-menu" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
-  <div><div class="top-title">Coin Withdrawals</div><div class="top-sub">Financial management / Coin withdrawal requests</div></div>
- </div>
- <div class="admin-pill">OWNER ADMIN</div>
+  <div>
+    <div class="brand">AHRUH</div>
+    <div class="tagline">ADMIN SPACE</div>
+  </div>
+  <div class="top-right">Wallet Management</div>
 </header>
 
-<div class="content">
- <div class="heading">
-  <div><h1>Coin Withdrawals</h1><div class="subtitle">Monitor users who request to withdraw their earned or purchased coins.</div></div>
-  <button class="btn light" onclick="exportData()">⇩ Export records</button>
- </div>
+<main class="container">
+  <a class="back" href="admin.html">← Back to Dashboard</a>
+  <h1 class="heading">Wallet Management</h1>
+  <p class="subheading">Manage customer Naira wallets, G-Coins and wallet transactions.</p>
 
- <div class="notice">
-  <strong>This page is only for coin withdrawal requests.</strong> Coin purchases are tracked separately in Coin Purchases. Ordinary Naira wallet withdrawals remain in User Naira Withdrawals. The displayed Naira equivalent uses the existing conversion reference of 10 coins = ₦1; any withdrawal eligibility, fees or limits must be configured by EarnGig before live processing.
- </div>
+  <div class="shortcuts">
+    <button class="shortcut" onclick="showSection('customers')"><span>👥</span>Customer Wallets</button>
+    <button class="shortcut" onclick="openTransaction()"><span>➕</span>Credit / Debit</button>
+    <button class="shortcut" onclick="showSection('history')"><span>📜</span>Transactions</button>
+    <button class="shortcut" onclick="showSection('rules')"><span>🪙</span>Wallet Rules</button>
+  </div>
 
- <section class="stats">
-  <div class="stat"><div class="stat-label">Withdrawal requests</div><div class="stat-value" id="totalCount">0</div><div class="stat-foot">All recorded requests</div></div>
-  <div class="stat"><div class="stat-label">Pending review</div><div class="stat-value" id="pendingCount">0</div><div class="stat-foot">Waiting for admin review</div></div>
-  <div class="stat"><div class="stat-label">Coins requested</div><div class="stat-value" id="requestedCoins">0</div><div class="stat-foot">Across recorded requests</div></div>
-  <div class="stat"><div class="stat-label">Completed</div><div class="stat-value" id="paidCount">0</div><div class="stat-foot">Marked as paid</div></div>
- </section>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Total Naira Wallet Balance</div>
+      <div class="stat-value" id="totalNaira">₦0.00</div>
+      <div class="stat-note">Across registered customer wallets</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Total G-Coins</div>
+      <div class="stat-value" id="totalCoins">0</div>
+      <div class="stat-note">Across registered customer wallets</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Naira Transactions</div>
+      <div class="stat-value" id="nairaTransactions">0</div>
+      <div class="stat-note">Recorded Naira wallet transactions</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">G-Coins Transactions</div>
+      <div class="stat-value" id="coinTransactions">0</div>
+      <div class="stat-note">Recorded G-Coins transactions</div>
+    </div>
+  </div>
 
- <section class="panel">
-  <div class="panel-head">
-   <div><div class="panel-title">Coin withdrawal request register</div><div class="panel-sub">Review requests, user details, destination and processing status.</div></div>
-   <div class="filters">
-    <input class="field search" id="search" placeholder="Search name, user ID or request..." oninput="render()">
-    <select class="field" id="statusFilter" onchange="render()"><option value="">All statuses</option><option>Pending Review</option><option>Approved</option><option>Processing</option><option>Paid</option><option>Rejected</option></select>
-   </div>
-  </div>
-  <div class="table-wrap">
-   <table><thead><tr><th>USER</th><th>REQUEST ID</th><th>COINS REQUESTED</th><th>NAIRA EQUIVALENT</th><th>DATE</th><th>STATUS</th><th>ACTION</th></tr></thead><tbody id="rows"></tbody></table>
-  </div>
-  <div class="panel-head" style="border-top:1px solid var(--border);border-bottom:0">
-   <span class="help">Live requests will appear when the backend is connected.</span>
-   <button class="btn primary" onclick="openAdd()">＋ Record request</button>
-  </div>
- </section>
- <div class="help">Prototype storage: <code>earngig_coin_withdrawals_v1</code>. This page does not debit a live coin balance, initiate a bank transfer or verify a payout.</div>
-</div>
+  <section class="section" id="customersSection">
+    <h2 class="section-title">Find Customer Wallet</h2>
+    <div class="search-row">
+      <input id="customerSearch" placeholder="Search customer name, email or ID..." oninput="renderCustomers()">
+      <button class="btn blue" onclick="renderCustomers()">Search</button>
+    </div>
+    <div id="customerList"></div>
+  </section>
+
+  <section class="section" id="historySection">
+    <h2 class="section-title">Wallet Transactions</h2>
+    <div class="tabs">
+      <button class="tab active" data-filter="all" onclick="setFilter('all',this)">All</button>
+      <button class="tab" data-filter="naira" onclick="setFilter('naira',this)">Naira</button>
+      <button class="tab" data-filter="coins" onclick="setFilter('coins',this)">G-Coins</button>
+    </div>
+    <div id="transactionList"></div>
+  </section>
+
+  <section class="section" id="rulesSection">
+    <h2 class="section-title">AHRUH Wallet Rules</h2>
+    <div class="balance-line"><span>Naira wallet</span><strong>Used for shopping</strong></div>
+    <div class="balance-line"><span>G-Coins conversion</span><strong>100 coins = ₦10</strong></div>
+    <div class="balance-line"><span>Value of 1 G-Coin</span><strong>₦0.10</strong></div>
+    <div class="balance-line"><span>Daily check-in reward</span><strong>50 G-Coins</strong></div>
+    <div class="notice">
+      Naira and G-Coins are separate balances. G-Coins must not be automatically treated as Naira cash. Any conversion, withdrawal or redemption rules must be implemented according to AHRUH's approved wallet policy.
+    </div>
+  </section>
 </main>
-</div>
 
-<div class="modal-backdrop" id="addModal" onclick="backdrop(event,'addModal')">
- <div class="modal"><div class="modal-head"><h2>Record coin withdrawal request</h2><button class="close" onclick="closeModal('addModal')">×</button></div><div class="modal-body">
-  <div class="notice">This is a local administrative record only. It does not create a real request or move coins or money.</div>
-  <div class="form-grid">
-   <div class="form-group"><label>User full name *</label><input class="field" id="fName" placeholder="Full name"></div>
-   <div class="form-group"><label>EarnGig user ID *</label><input class="field" id="fUserId" placeholder="User ID"></div>
-   <div class="form-group"><label>Email address</label><input class="field" id="fEmail" type="email" placeholder="Email"></div>
-   <div class="form-group"><label>Coins requested *</label><input class="field" id="fCoins" type="number" min="1" step="1" placeholder="Number of coins" oninput="updateEquivalent()"></div>
-   <div class="form-group"><label>Bank name</label><input class="field" id="fBank" placeholder="Bank name"></div>
-   <div class="form-group"><label>Account name</label><input class="field" id="fAccountName" placeholder="Account holder"></div>
-   <div class="form-group"><label>Account number</label><input class="field" id="fAccountNumber" placeholder="Account number"></div>
-   <div class="form-group"><label>Estimated Naira equivalent</label><input class="field" id="fEquivalent" readonly placeholder="₦0.00"></div>
-   <div class="form-group full"><label>Admin note</label><textarea class="field" id="fNote" placeholder="Optional note"></textarea></div>
+<div class="modal-bg" id="transactionModal">
+  <div class="modal">
+    <h3>Wallet Adjustment</h3>
+    <p class="small">Credit or debit a customer's wallet.</p>
+
+    <div class="field">
+      <label>Customer</label>
+      <select id="txCustomer"></select>
+    </div>
+    <div class="field">
+      <label>Wallet Type</label>
+      <select id="txWallet">
+        <option value="naira">Naira Wallet (₦)</option>
+        <option value="coins">G-Coins Wallet</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Action</label>
+      <select id="txAction">
+        <option value="credit">Credit wallet</option>
+        <option value="debit">Debit wallet</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Amount</label>
+      <input type="number" id="txAmount" min="0.01" step="0.01" placeholder="Enter amount">
+    </div>
+    <div class="field">
+      <label>Reason / Description</label>
+      <input id="txReason" maxlength="160" placeholder="Enter reason for this adjustment">
+    </div>
+    <div class="notice">
+      Every adjustment is recorded in the transaction history. In a live system, this action must require an authorised admin account and server-side audit logging.
+    </div>
+    <div class="modal-actions">
+      <button class="btn light" onclick="closeTransaction()">Cancel</button>
+      <button class="btn" onclick="saveTransaction()">Save Adjustment</button>
+    </div>
   </div>
-  <div class="modal-actions"><button class="btn light" onclick="closeModal('addModal')">Cancel</button><button class="btn primary" onclick="saveRequest()">Save request</button></div>
- </div></div>
 </div>
 
-<div class="modal-backdrop" id="detailModal" onclick="backdrop(event,'detailModal')">
- <div class="modal"><div class="modal-head"><h2 id="detailTitle">Withdrawal details</h2><button class="close" onclick="closeModal('detailModal')">×</button></div><div class="modal-body" id="detailBody"></div></div>
-</div>
-
-<div class="modal-backdrop" id="statusModal" onclick="backdrop(event,'statusModal')">
- <div class="modal"><div class="modal-head"><h2>Update withdrawal status</h2><button class="close" onclick="closeModal('statusModal')">×</button></div><div class="modal-body">
-  <div class="form-group"><label>New status</label><select class="field" id="newStatus"><option>Approved</option><option>Processing</option><option>Paid</option><option>Rejected</option></select></div>
-  <div class="form-group"><label>Payment reference (required for Paid)</label><input class="field" id="paymentRef" placeholder="Bank or provider reference"></div>
-  <div class="form-group"><label>Admin note *</label><textarea class="field" id="statusNote" placeholder="Reason or processing details"></textarea></div>
-  <div class="notice" style="margin-top:14px">Only mark a request as Paid after confirming the actual transfer. Saving a reference here does not verify payment.</div>
-  <div class="modal-actions"><button class="btn light" onclick="closeModal('statusModal')">Cancel</button><button class="btn primary" onclick="saveStatus()">Save update</button></div>
- </div></div>
+<div class="modal-bg" id="profileModal">
+  <div class="modal">
+    <h3 id="profileName">Customer Wallet</h3>
+    <p class="small" id="profileInfo"></p>
+    <div class="profile-balance">
+      <div><small>Naira Balance</small><strong id="profileNaira">₦0.00</strong></div>
+      <div><small>G-Coins Balance</small><strong id="profileCoins">0</strong></div>
+    </div>
+    <h3 style="font-size:13px;margin-top:17px">Customer Transactions</h3>
+    <div id="profileTransactions"></div>
+    <div class="modal-actions">
+      <button class="btn light" onclick="closeProfile()">Close</button>
+      <button class="btn" onclick="adjustSelectedCustomer()">Adjust Wallet</button>
+    </div>
+  </div>
 </div>
 
 <script>
-const KEY='earngig_coin_withdrawals_v1';
-let requests=load(),activeId=null;
-function load(){try{let a=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(a)?a:[]}catch(e){return []}}
-function save(){localStorage.setItem(KEY,JSON.stringify(requests))}
-function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function uid(){return 'CWD-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,5).toUpperCase()}
-function money(v){return '₦'+Number(v||0).toLocaleString('en-NG',{minimumFractionDigits:2,maximumFractionDigits:2})}
-function equivalent(coins){return Number(coins||0)/10}
-function closeModal(id){document.getElementById(id).classList.remove('show')}
-function backdrop(e,id){if(e.target.id===id)closeModal(id)}
-function badge(s){let c={'Pending Review':'pending','Approved':'approved','Processing':'processing','Paid':'paid','Rejected':'rejected'}[s]||'pending';return `<span class="tag ${c}">${esc(s)}</span>`}
-function updateEquivalent(){document.getElementById('fEquivalent').value=money(equivalent(document.getElementById('fCoins').value))}
-function openAdd(){
- ['fName','fUserId','fEmail','fCoins','fBank','fAccountName','fAccountNumber','fNote'].forEach(id=>document.getElementById(id).value='');
- updateEquivalent();document.getElementById('addModal').classList.add('show');
+const CUSTOMER_KEY = "ahruh_wallet_customers_v1";
+const TRANSACTION_KEY = "ahruh_wallet_transactions_v1";
+
+let customers = readData(CUSTOMER_KEY);
+let transactions = readData(TRANSACTION_KEY);
+let activeFilter = "all";
+let selectedCustomerId = null;
+
+function readData(key){
+  try{
+    const value = JSON.parse(localStorage.getItem(key) || "[]");
+    return Array.isArray(value) ? value : [];
+  }catch(e){return []}
 }
-function saveRequest(){
- const name=document.getElementById('fName').value.trim(),userId=document.getElementById('fUserId').value.trim(),coins=Number(document.getElementById('fCoins').value);
- if(!name||!userId||!Number.isSafeInteger(coins)||coins<=0){alert('Enter the user name, user ID and a valid whole number of coins.');return}
- const now=new Date().toISOString();
- requests.unshift({id:uid(),name,userId,email:document.getElementById('fEmail').value.trim(),coins,nairaEquivalent:equivalent(coins),bank:document.getElementById('fBank').value.trim(),accountName:document.getElementById('fAccountName').value.trim(),accountNumber:document.getElementById('fAccountNumber').value.trim(),note:document.getElementById('fNote').value.trim(),status:'Pending Review',paymentReference:'',createdAt:now,updatedAt:now,history:[]});
- save();render();closeModal('addModal');
+function saveData(){
+  localStorage.setItem(CUSTOMER_KEY,JSON.stringify(customers));
+  localStorage.setItem(TRANSACTION_KEY,JSON.stringify(transactions));
 }
-function render(){
- document.getElementById('totalCount').textContent=requests.length;
- document.getElementById('pendingCount').textContent=requests.filter(x=>x.status==='Pending Review').length;
- document.getElementById('requestedCoins').textContent=requests.reduce((s,x)=>s+Number(x.coins||0),0).toLocaleString('en-NG');
- document.getElementById('paidCount').textContent=requests.filter(x=>x.status==='Paid').length;
- const q=document.getElementById('search').value.trim().toLowerCase(),status=document.getElementById('statusFilter').value;
- const list=requests.filter(x=>(!q||[x.name,x.userId,x.id,x.email].join(' ').toLowerCase().includes(q))&&(!status||x.status===status));
- document.getElementById('rows').innerHTML=list.length?list.map(x=>`<tr>
- <td><div class="person"><div class="avatar">${esc((x.name||'?')[0].toUpperCase())}</div><div><div class="person-name">${esc(x.name)}</div><div class="person-meta">${esc(x.userId)}</div></div></div></td>
- <td>${esc(x.id)}</td><td><strong>${Number(x.coins).toLocaleString('en-NG')}</strong></td><td>${money(x.nairaEquivalent)}</td><td>${new Date(x.createdAt).toLocaleDateString('en-NG')}</td><td>${badge(x.status)}</td><td><button class="action" onclick="showDetails('${x.id}')">View ↗</button></td></tr>`).join(''):'<tr><td colspan="7"><div class="empty"><strong>No coin withdrawal requests</strong><p>Requests will appear here after the live withdrawal service is connected.</p></div></td></tr>';
+function money(value){
+  return "₦" + Number(value || 0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
 }
-function detail(label,value){return `<div class="detail"><div class="detail-label">${esc(label)}</div><div class="detail-value">${esc(value||'Not provided')}</div></div>`}
-function showDetails(id){
- const x=requests.find(r=>r.id===id);if(!x)return;activeId=id;
- document.getElementById('detailTitle').textContent='Request '+x.id;
- document.getElementById('detailBody').innerHTML=`<div class="detail-grid">
- ${detail('User',x.name)}${detail('User ID',x.userId)}${detail('Email',x.email)}
- ${detail('Coins requested',Number(x.coins).toLocaleString('en-NG'))}${detail('Naira equivalent',money(x.nairaEquivalent))}
- ${detail('Bank',x.bank)}${detail('Account name',x.accountName)}${detail('Account number',x.accountNumber)}
- ${detail('Status',x.status)}${detail('Payment reference',x.paymentReference)}
- ${detail('Request date',new Date(x.createdAt).toLocaleString('en-NG'))}</div>
- <div class="detail" style="margin-top:12px"><div class="detail-label">Request note</div><div class="detail-value">${esc(x.note||'No note')}</div></div>
- ${x.history?.length?'<h3 style="font-size:12px;margin:18px 0 8px">Status history</h3>'+x.history.map(h=>`<div class="detail" style="margin-top:7px"><strong>${esc(h.status)}</strong><div class="help">${esc(h.note)} · ${new Date(h.date).toLocaleString('en-NG')}</div></div>`).join(''):''}
- <div class="modal-actions">${!['Paid','Rejected'].includes(x.status)?`<button class="btn primary" onclick="openStatus('${x.id}')">Update status</button>`:''}<button class="btn light" onclick="closeModal('detailModal')">Close</button></div>`;
- document.getElementById('detailModal').classList.add('show');
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g,char=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[char]));
 }
-function openStatus(id){
- const x=requests.find(r=>r.id===id);if(!x)return;activeId=id;closeModal('detailModal');
- document.getElementById('newStatus').value=x.status==='Pending Review'?'Approved':x.status;
- document.getElementById('paymentRef').value=x.paymentReference||'';
- document.getElementById('statusNote').value='';
- document.getElementById('statusModal').classList.add('show');
+function formatDate(value){
+  const date = new Date(value);
+  return isNaN(date) ? "Date unavailable" : date.toLocaleString();
 }
-function saveStatus(){
- const x=requests.find(r=>r.id===activeId);if(!x)return;
- const status=document.getElementById('newStatus').value,ref=document.getElementById('paymentRef').value.trim(),note=document.getElementById('statusNote').value.trim();
- if(!note){alert('Enter an admin note.');return}
- if(status==='Paid'&&!ref){alert('Enter the payment reference before marking as paid.');return}
- const now=new Date().toISOString();x.status=status;x.paymentReference=ref;x.updatedAt=now;x.history=x.history||[];x.history.unshift({status,note,date:now});
- save();render();closeModal('statusModal');activeId=null;
+function getName(customer){
+  return customer.name || customer.fullName || customer.full_name || "Unnamed customer";
 }
-function exportData(){
- const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),coinWithdrawals:requests},null,2)],{type:'application/json'});
- const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='earngig-coin-withdrawals.json';a.click();URL.revokeObjectURL(url);
+function getId(customer){
+  return customer.id || customer.customerId || customer.customer_id || "";
 }
-render();
+function getNaira(customer){
+  return Number(customer.nairaBalance ?? customer.naira ?? 0);
+}
+function getCoins(customer){
+  return Number(customer.coinsBalance ?? customer.coins ?? 0);
+}
+function setNaira(customer,value){
+  if("nairaBalance" in customer || !("naira" in customer)) customer.nairaBalance=value;
+  else customer.naira=value;
+}
+function setCoins(customer,value){
+  if("coinsBalance" in customer || !("coins" in customer)) customer.coinsBalance=value;
+  else customer.coins=value;
+}
+function totalBalances(){
+  document.getElementById("totalNaira").textContent=money(customers.reduce((s,c)=>s+getNaira(c),0));
+  document.getElementById("totalCoins").textContent=customers.reduce((s,c)=>s+getCoins(c),0).toLocaleString();
+  document.getElementById("nairaTransactions").textContent=transactions.filter(t=>t.wallet==="naira").length;
+  document.getElementById("coinTransactions").textContent=transactions.filter(t=>t.wallet==="coins").length;
+}
+function renderCustomers(){
+  const query=document.getElementById("customerSearch").value.trim().toLowerCase();
+  const list=customers.filter(c=>
+    [getName(c),getId(c),c.email||"",c.phone||""].join(" ").toLowerCase().includes(query)
+  );
+  const holder=document.getElementById("customerList");
+  if(!list.length){
+    holder.innerHTML='<div class="empty">'+(customers.length?'No matching customer found.':'No customer wallets have been added yet.')+'</div>';
+    return;
+  }
+  holder.innerHTML=list.map(c=>`
+    <div class="customer-card">
+      <div class="card-top">
+        <div>
+          <div class="customer-name">${escapeHTML(getName(c))}</div>
+          <div class="small">${escapeHTML(c.email||"No email")} · ID: ${escapeHTML(getId(c)||"Not available")}</div>
+        </div>
+        <span class="pill">Wallet</span>
+      </div>
+      <div class="balance-line"><span>Naira Wallet</span><strong>${money(getNaira(c))}</strong></div>
+      <div class="balance-line"><span>G-Coins</span><strong>${getCoins(c).toLocaleString()}</strong></div>
+      <div class="actions">
+        <button class="btn light" onclick="openProfile('${escapeHTML(getId(c))}')">View Wallet</button>
+        <button class="btn" onclick="quickAdjust('${escapeHTML(getId(c))}')">Credit / Debit</button>
+      </div>
+    </div>
+  `).join("");
+}
+function renderTransactions(target="transactionList",customerId=null){
+  let list=[...transactions];
+  if(customerId) list=list.filter(t=>t.customerId===customerId);
+  if(!customerId && activeFilter!=="all") list=list.filter(t=>t.wallet===activeFilter);
+  list.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const holder=document.getElementById(target);
+  if(!list.length){
+    holder.innerHTML='<div class="empty">No wallet transactions recorded yet.</div>';
+    return;
+  }
+  holder.innerHTML=list.map(t=>{
+    const positive=t.action==="credit";
+    const amount=t.wallet==="naira"?money(t.amount):Number(t.amount).toLocaleString()+" coins";
+    return `<div class="transaction">
+      <div>
+        <div class="tx-title">${escapeHTML(t.reason||"Wallet adjustment")}</div>
+        <div class="tx-meta">${escapeHTML(t.customerName||"Customer")} · ${t.wallet==="naira"?"Naira wallet":"G-Coins"} · ${formatDate(t.date)}</div>
+        <div class="tx-meta">Reference: ${escapeHTML(t.id)}</div>
+      </div>
+      <div class="amount ${positive?"credit":"debit"}">${positive?"+":"−"}${amount}</div>
+    </div>`;
+  }).join("");
+}
+function setFilter(filter,button){
+  activeFilter=filter;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  button.classList.add("active");
+  renderTransactions();
+}
+function showSection(name){
+  const ids={customers:"customersSection",history:"historySection",rules:"rulesSection"};
+  const element=document.getElementById(ids[name]);
+  if(element) element.scrollIntoView({behavior:"smooth",block:"start"});
+  if(name==="history") renderTransactions();
+}
+function openTransaction(customerId=null){
+  const select=document.getElementById("txCustomer");
+  select.innerHTML=customers.map(c=>
+    `<option value="${escapeHTML(getId(c))}">${escapeHTML(getName(c))} — ${escapeHTML(getId(c))}</option>`
+  ).join("");
+  if(customerId) select.value=customerId;
+  if(!customers.length){
+    alert("There are no customer wallets to adjust yet.");
+    return;
+  }
+  document.getElementById("txAmount").value="";
+  document.getElementById("txReason").value="";
+  document.getElementById("transactionModal").style.display="flex";
+}
+function closeTransaction(){
+  document.getElementById("transactionModal").style.display="none";
+}
+function quickAdjust(customerId){
+  openTransaction(customerId);
+}
+function saveTransaction(){
+  const customerId=document.getElementById("txCustomer").value;
+  const wallet=document.getElementById("txWallet").value;
+  const action=document.getElementById("txAction").value;
+  const amount=Number(document.getElementById("txAmount").value);
+  const reason=document.getElementById("txReason").value.trim();
+  const customer=customers.find(c=>getId(c)===customerId);
+
+  if(!customer){alert("Please select a customer.");return}
+  if(!Number.isFinite(amount)||amount<=0){alert("Enter a valid amount greater than zero.");return}
+  if(wallet==="coins"&&!Number.isInteger(amount)){alert("G-Coins must be a whole number.");return}
+  if(!reason){alert("Please enter a reason for this adjustment.");return}
+
+  const current=wallet==="naira"?getNaira(customer):getCoins(customer);
+  if(action==="debit"&&amount>current){
+    alert("Insufficient wallet balance. This debit cannot be completed.");
+    return;
+  }
+  const next=action==="credit"?current+amount:current-amount;
+  if(wallet==="naira") setNaira(customer,Number(next.toFixed(2)));
+  else setCoins(customer,next);
+
+  transactions.push({
+    id:"AHR-WAL-"+Date.now()+"-"+Math.random().toString(36).slice(2,7).toUpperCase(),
+    customerId,
+    customerName:getName(customer),
+    wallet,
+    action,
+    amount,
+    reason,
+    date:new Date().toISOString()
+  });
+
+  saveData();
+  closeTransaction();
+  refresh();
+  if(selectedCustomerId) openProfile(selectedCustomerId);
+  alert("Wallet adjustment recorded in this prototype.");
+}
+function openProfile(customerId){
+  const c=customers.find(item=>getId(item)===customerId);
+  if(!c)return;
+  selectedCustomerId=customerId;
+  document.getElementById("profileName").textContent=getName(c);
+  document.getElementById("profileInfo").textContent=(c.email||"No email address")+" · "+customerId;
+  document.getElementById("profileNaira").textContent=money(getNaira(c));
+  document.getElementById("profileCoins").textContent=getCoins(c).toLocaleString();
+  renderTransactions("profileTransactions",customerId);
+  document.getElementById("profileModal").style.display="flex";
+}
+function closeProfile(){
+  document.getElementById("profileModal").style.display="none";
+  selectedCustomerId=null;
+}
+function adjustSelectedCustomer(){
+  const id=selectedCustomerId;
+  closeProfile();
+  openTransaction(id);
+}
+function refresh(){
+  totalBalances();
+  renderCustomers();
+  renderTransactions();
+}
+refresh();
 </script>
 </body>
 </html>
