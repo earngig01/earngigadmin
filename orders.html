@@ -1,0 +1,596 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#102A56">
+<title>AHRUH | Order Management</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --navy:#102A56;
+  --royal:#1768D5;
+  --light:#EAF2FF;
+  --pale:#F4F8FF;
+  --gold:#D6B66F;
+  --text:#253653;
+  --muted:#8996AA;
+  --line:#E6ECF5;
+  --green:#15966B;
+  --red:#D45D65;
+  --shadow:0 6px 22px rgba(16,42,86,.06);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pale);color:var(--text);font-family:'DM Sans',Arial,sans-serif;font-size:14px}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+
+.topbar{
+  height:66px;background:var(--navy);display:flex;align-items:center;
+  justify-content:space-between;padding:0 18px;color:white;
+  position:sticky;top:0;z-index:30;box-shadow:0 4px 15px #102A5620;
+}
+.brand-word{font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:700;letter-spacing:2.5px;line-height:1}
+.brand-tag{font-size:7px;letter-spacing:2px;color:#C9D9F1;margin-top:5px}
+.top-right{display:flex;align-items:center;gap:12px}
+.top-icon{width:36px;height:36px;border:0;border-radius:10px;background:#ffffff18;color:white;font-size:17px}
+.avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:white;color:var(--royal);font-weight:800}
+
+.page{max-width:1100px;margin:auto;padding:23px 18px 100px}
+.heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+.heading h1{font-size:23px;color:var(--navy);margin:0 0 5px}
+.heading p{font-size:10px;color:var(--muted);margin:0;line-height:1.6}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:22px}
+.stat{background:white;border:1px solid var(--line);border-radius:13px;padding:14px;box-shadow:var(--shadow)}
+.stat small{font-size:9px;color:var(--muted)}
+.stat strong{display:block;color:var(--navy);font-size:22px;margin-top:9px}
+.stat p{font-size:8px;color:var(--muted);margin:4px 0 0}
+
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}
+.search{flex:1;min-width:180px;border:1px solid var(--line);border-radius:10px;padding:12px;background:white;font-size:10px;outline:none}
+.field{border:1px solid var(--line);border-radius:9px;padding:11px;background:white;color:var(--text);font-size:10px}
+.search:focus,.field:focus{border-color:var(--royal);outline:none}
+
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
+.section-heading strong{font-size:13px;color:var(--navy)}
+.section-heading span{font-size:9px;color:var(--muted)}
+
+.order-list{display:grid;gap:11px}
+.order-card{background:white;border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow)}
+.order-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.order-number{font-size:12px;font-weight:800;color:var(--navy)}
+.order-date{font-size:9px;color:var(--muted);margin-top:5px}
+.status{font-size:8px;font-weight:800;padding:6px 9px;border-radius:20px;white-space:nowrap}
+.pending{background:#FFF4DC;color:#9B6B14}
+.processing{background:#EAF2FF;color:#1768D5}
+.dispatched{background:#F0EAFE;color:#7451B8}
+.delivered{background:#E6F7EE;color:#168054}
+.cancelled{background:#FCEDEE;color:#B64C55}
+.order-info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:15px;padding-top:13px;border-top:1px solid var(--line)}
+.info-label{font-size:8px;color:var(--muted);margin-bottom:5px}
+.info-value{font-size:10px;color:var(--navy);font-weight:700;overflow-wrap:anywhere}
+.order-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px}
+.total{font-size:14px;font-weight:800;color:var(--navy)}
+.payment{font-size:8px;color:var(--muted);margin-top:4px}
+.actions{display:flex;gap:7px}
+.actions button{border:0;border-radius:8px;padding:9px 11px;font-size:9px;font-weight:700}
+.view-btn{background:var(--light);color:var(--royal)}
+.print-btn{background:#F2F4F8;color:var(--navy)}
+
+.empty{text-align:center;padding:42px 16px;background:white;border:1px dashed #C9D8EC;border-radius:15px}
+.empty-icon{width:55px;height:55px;border-radius:17px;background:var(--light);color:var(--royal);display:grid;place-items:center;font-size:25px;margin:0 auto 12px}
+.empty h3{font-size:14px;color:var(--navy);margin:0 0 6px}
+.empty p{font-size:10px;color:var(--muted);margin:0;line-height:1.6}
+
+.backdrop{position:fixed;inset:0;background:#102A5680;z-index:100;display:none;align-items:flex-end;justify-content:center;padding:0}
+.backdrop.show{display:flex}
+.modal{width:100%;max-width:650px;max-height:92vh;overflow-y:auto;background:white;border-radius:20px 20px 0 0;padding:21px 18px 30px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.modal-head h2{font-size:17px;color:var(--navy);margin:0}
+.close{width:33px;height:33px;border:0;border-radius:50%;background:var(--light);color:var(--navy);font-size:19px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.detail-box{background:var(--pale);border-radius:10px;padding:12px;min-width:0}
+.detail-box small{display:block;color:var(--muted);font-size:9px;margin-bottom:6px}
+.detail-box strong{font-size:10px;color:var(--navy);overflow-wrap:anywhere}
+.detail-full{grid-column:1/-1}
+.items-table{width:100%;border-collapse:collapse;margin-top:17px;font-size:10px}
+.items-table th,.items-table td{text-align:left;padding:10px 7px;border-bottom:1px solid var(--line)}
+.items-table th{color:var(--muted);font-size:8px}
+.items-table td{color:var(--text)}
+.summary{margin-top:15px;border-top:1px solid var(--line);padding-top:12px}
+.summary-row{display:flex;justify-content:space-between;padding:5px 0;font-size:10px}
+.summary-row.total-row{font-size:14px;font-weight:800;color:var(--navy);border-top:1px solid var(--line);margin-top:6px;padding-top:12px}
+.status-control{margin-top:18px}
+.status-control label{display:block;font-size:10px;font-weight:700;margin-bottom:7px}
+.status-control select{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;font-size:10px}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.btn{border:0;border-radius:9px;padding:11px 14px;font-size:10px;font-weight:700}
+.primary{background:var(--royal);color:white}
+.outline-btn{background:white;border:1px solid var(--line);color:var(--navy)}
+.footer{text-align:center;padding:25px 0 0;color:var(--muted);font-size:9px}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:65px;background:white;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-around;z-index:40;box-shadow:0 -4px 15px #102A560A}
+.nav-link{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted);font-size:9px;min-width:55px}
+.nav-link span{font-size:19px}
+.nav-link.active{color:var(--royal);font-weight:800}
+.nav-link.active span{background:var(--light);border-radius:9px;padding:3px 12px}
+
+@media(min-width:650px){.backdrop{align-items:center;padding:15px}.modal{border-radius:18px}}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:430px){.page{padding:19px 13px 90px}.order-info{grid-template-columns:1fr 1fr}.detail-grid{grid-template-columns:1fr}.detail-full{grid-column:auto}.heading h1{font-size:20px}}
+</style>
+</head>
+
+<body>
+<header class="topbar">
+  <div>
+    <div class="brand-word">AHRUH</div>
+    <div class="brand-tag">ADMIN SPACE</div>
+  </div>
+  <div class="top-right">
+    <button class="top-icon" onclick="location.href='notifications.html'">♧</button>
+    <div class="avatar">A</div>
+  </div>
+</header>
+
+<main class="page">
+  <section class="heading">
+    <div>
+      <h1>Order Management</h1>
+      <p>Review customer orders, payments and fulfilment progress.</p>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="stat">
+      <small>Total orders</small>
+      <strong id="totalOrders">0</strong>
+      <p>All recorded orders</p>
+    </div>
+    <div class="stat">
+      <small>Awaiting payment</small>
+      <strong id="pendingOrders">0</strong>
+      <p>Payment not confirmed</p>
+    </div>
+    <div class="stat">
+      <small>Processing</small>
+      <strong id="processingOrders">0</strong>
+      <p>Being prepared</p>
+    </div>
+    <div class="stat">
+      <small>Delivered</small>
+      <strong id="deliveredOrders">0</strong>
+      <p>Successfully delivered</p>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <input class="search" id="searchInput" placeholder="Search order number or customer..." oninput="renderOrders()">
+    <select class="field" id="statusFilter" onchange="renderOrders()">
+      <option value="all">All statuses</option>
+      <option value="pending">Pending payment</option>
+      <option value="paid">Paid</option>
+      <option value="processing">Processing</option>
+      <option value="dispatched">Dispatched</option>
+      <option value="delivered">Delivered</option>
+      <option value="cancelled">Cancelled</option>
+    </select>
+    <select class="field" id="paymentFilter" onchange="renderOrders()">
+      <option value="all">All payments</option>
+      <option value="paid">Paid</option>
+      <option value="unpaid">Unpaid</option>
+      <option value="refunded">Refunded</option>
+    </select>
+  </div>
+
+  <div class="section-heading">
+    <strong>Customer orders</strong>
+    <span id="orderCount">0 orders</span>
+  </div>
+
+  <section class="order-list" id="orderList"></section>
+
+  <footer class="footer">AHRUH · Order Management</footer>
+</main>
+
+<nav class="bottom-nav">
+  <a class="nav-link" href="admin.html"><span>⌂</span>Home</a>
+  <a class="nav-link" href="batches.html"><span>▦</span>Batches</a>
+  <a class="nav-link active" href="orders.html"><span>▧</span>Orders</a>
+  <a class="nav-link" href="products.html"><span>▣</span>Products</a>
+  <a class="nav-link" href="categories.html"><span>▤</span>Categories</a>
+</nav>
+
+<div class="backdrop" id="orderModal" onclick="closeBackdrop(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="detailTitle">Order details</h2>
+      <button class="close" onclick="closeModal()">×</button>
+    </div>
+    <div id="orderDetails"></div>
+    <div class="modal-actions">
+      <button class="btn outline-btn" onclick="closeModal()">Close</button>
+      <button class="btn primary" id="printDetailBtn">Print receipt</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ORDER_KEY = "ahruh_orders_prototype_v1";
+let orders = [];
+let selectedOrderId = null;
+
+function loadOrders(){
+  try{
+    const data = JSON.parse(localStorage.getItem(ORDER_KEY) || "[]");
+    orders = Array.isArray(data) ? data : [];
+  }catch(error){
+    orders = [];
+  }
+}
+
+function saveOrders(){
+  try{
+    localStorage.setItem(ORDER_KEY,JSON.stringify(orders));
+    return true;
+  }catch(error){
+    alert("Unable to save the order update.");
+    return false;
+  }
+}
+
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g,char=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[char]));
+}
+
+function money(value){
+  return "₦"+Number(value||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function statusLabel(status){
+  const labels={
+    pending:"Pending payment",
+    paid:"Paid",
+    processing:"Processing",
+    dispatched:"Dispatched",
+    delivered:"Delivered",
+    cancelled:"Cancelled"
+  };
+  return labels[status]||"Pending payment";
+}
+
+function paymentLabel(payment){
+  const labels={paid:"Paid",unpaid:"Unpaid",refunded:"Refunded"};
+  return labels[payment]||"Unpaid";
+}
+
+function dateLabel(value){
+  if(!value)return "Date unavailable";
+  const date=new Date(value);
+  if(Number.isNaN(date.getTime()))return "Date unavailable";
+  return date.toLocaleString("en-NG",{dateStyle:"medium",timeStyle:"short"});
+}
+
+function updateStats(){
+  document.getElementById("totalOrders").textContent=orders.length;
+  document.getElementById("pendingOrders").textContent=
+    orders.filter(o=>(o.paymentStatus||"unpaid")==="unpaid").length;
+  document.getElementById("processingOrders").textContent=
+    orders.filter(o=>o.status==="processing").length;
+  document.getElementById("deliveredOrders").textContent=
+    orders.filter(o=>o.status==="delivered").length;
+}
+
+function renderOrders(){
+  updateStats();
+
+  const query=document.getElementById("searchInput").value.trim().toLowerCase();
+  const status=document.getElementById("statusFilter").value;
+  const payment=document.getElementById("paymentFilter").value;
+
+  const filtered=orders.filter(o=>{
+    const customer=o.customer||{};
+    const matchesSearch=
+      String(o.orderNumber||"").toLowerCase().includes(query)||
+      String(customer.name||o.customerName||"").toLowerCase().includes(query)||
+      String(customer.email||"").toLowerCase().includes(query)||
+      String(customer.phone||"").toLowerCase().includes(query);
+
+    const matchesStatus=status==="all"||o.status===status;
+    const matchesPayment=payment==="all"||
+      (o.paymentStatus||"unpaid")===payment;
+
+    return matchesSearch&&matchesStatus&&matchesPayment;
+  });
+
+  document.getElementById("orderCount").textContent=
+    filtered.length+(filtered.length===1?" order":" orders");
+
+  const list=document.getElementById("orderList");
+
+  if(filtered.length===0){
+    list.innerHTML=`
+      <div class="empty">
+        <div class="empty-icon">▧</div>
+        <h3>${orders.length?"No matching orders":"No orders yet"}</h3>
+        <p>${orders.length
+          ?"Try changing your search or filters."
+          :"Customer orders will appear here when checkout is connected to AHRUH."}</p>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML=filtered.map(o=>{
+    const customer=o.customer||{};
+    const name=customer.name||o.customerName||"Customer";
+    const status=o.status||"pending";
+    const paymentStatus=o.paymentStatus||"unpaid";
+
+    return `
+      <article class="order-card">
+        <div class="order-top">
+          <div>
+            <div class="order-number">${escapeHTML(o.orderNumber||"Order")}</div>
+            <div class="order-date">${escapeHTML(dateLabel(o.createdAt))}</div>
+          </div>
+          <span class="status ${escapeHTML(status)}">${escapeHTML(statusLabel(status))}</span>
+        </div>
+
+        <div class="order-info">
+          <div>
+            <div class="info-label">Customer</div>
+            <div class="info-value">${escapeHTML(name)}</div>
+          </div>
+          <div>
+            <div class="info-label">Items</div>
+            <div class="info-value">${Array.isArray(o.items)?o.items.reduce((n,i)=>n+Number(i.quantity||0),0):0}</div>
+          </div>
+          <div>
+            <div class="info-label">Payment</div>
+            <div class="info-value">${escapeHTML(paymentLabel(paymentStatus))}</div>
+          </div>
+        </div>
+
+        <div class="order-bottom">
+          <div>
+            <div class="total">${money(o.total)}</div>
+            <div class="payment">${escapeHTML(o.paymentMethod||"Payment method unavailable")}</div>
+          </div>
+          <div class="actions">
+            <button class="view-btn" onclick="viewOrder('${escapeHTML(o.id)}')">View order</button>
+            <button class="print-btn" onclick="printOrder('${escapeHTML(o.id)}')">Print</button>
+          </div>
+        </div>
+      </article>`;
+  }).join("");
+}
+
+function viewOrder(id){
+  const order=orders.find(o=>o.id===id);
+  if(!order)return;
+
+  selectedOrderId=id;
+  const customer=order.customer||{};
+  const address=order.address||customer.address||{};
+  const addressText=typeof address==="string"
+    ? address
+    : [address.line1,address.line2,address.city,address.state,address.country]
+      .filter(Boolean).join(", ");
+
+  const items=Array.isArray(order.items)?order.items:[];
+
+  document.getElementById("detailTitle").textContent=
+    order.orderNumber||"Order details";
+
+  document.getElementById("orderDetails").innerHTML=`
+    <div class="detail-grid">
+      <div class="detail-box">
+        <small>Customer name</small>
+        <strong>${escapeHTML(customer.name||order.customerName||"Not provided")}</strong>
+      </div>
+      <div class="detail-box">
+        <small>Phone number</small>
+        <strong>${escapeHTML(customer.phone||"Not provided")}</strong>
+      </div>
+      <div class="detail-box">
+        <small>Email address</small>
+        <strong>${escapeHTML(customer.email||"Not provided")}</strong>
+      </div>
+      <div class="detail-box">
+        <small>Order date</small>
+        <strong>${escapeHTML(dateLabel(order.createdAt))}</strong>
+      </div>
+      <div class="detail-box detail-full">
+        <small>Delivery address</small>
+        <strong>${escapeHTML(addressText||"Not provided")}</strong>
+      </div>
+      <div class="detail-box">
+        <small>Payment method</small>
+        <strong>${escapeHTML(order.paymentMethod||"Not provided")}</strong>
+      </div>
+      <div class="detail-box">
+        <small>Payment status</small>
+        <strong>${escapeHTML(paymentLabel(order.paymentStatus||"unpaid"))}</strong>
+      </div>
+    </div>
+
+    <table class="items-table">
+      <thead>
+        <tr><th>Product</th><th>Qty</th><th>Price</th><th>Total</th></tr>
+      </thead>
+      <tbody>
+        ${items.length?items.map(item=>{
+          const quantity=Number(item.quantity||0);
+          const price=Number(item.price||0);
+          return `<tr>
+            <td>${escapeHTML(item.name||item.productName||"Product")}${item.variant?`<br><small>${escapeHTML(item.variant)}</small>`:""}</td>
+            <td>${quantity}</td>
+            <td>${money(price)}</td>
+            <td>${money(price*quantity)}</td>
+          </tr>`;
+        }).join(""):'<tr><td colspan="4">No item details recorded.</td></tr>'}
+      </tbody>
+    </table>
+
+    <div class="summary">
+      <div class="summary-row"><span>Subtotal</span><strong>${money(order.subtotal)}</strong></div>
+      <div class="summary-row"><span>Discount</span><strong>${money(order.discount)}</strong></div>
+      <div class="summary-row"><span>Delivery fee</span><strong>${money(order.deliveryFee)}</strong></div>
+      <div class="summary-row total-row"><span>Order total</span><strong>${money(order.total)}</strong></div>
+    </div>
+
+    <div class="status-control">
+      <label for="newStatus">Update order status</label>
+      <select id="newStatus">
+        ${["pending","paid","processing","dispatched","delivered","cancelled"].map(s=>
+          `<option value="${s}" ${order.status===s?"selected":""}>${statusLabel(s)}</option>`
+        ).join("")}
+      </select>
+    </div>
+
+    <div class="status-control">
+      <label for="newPayment">Update payment status</label>
+      <select id="newPayment">
+        ${["unpaid","paid","refunded"].map(s=>
+          `<option value="${s}" ${(order.paymentStatus||"unpaid")===s?"selected":""}>${paymentLabel(s)}</option>`
+        ).join("")}
+      </select>
+    </div>
+  `;
+
+  document.getElementById("printDetailBtn").onclick=()=>printOrder(id);
+
+  const saveButton=document.createElement("button");
+  saveButton.className="btn primary";
+  saveButton.textContent="Save updates";
+  saveButton.onclick=()=>saveOrderUpdates(id);
+
+  document.querySelector("#orderDetails").appendChild(saveButton);
+  document.getElementById("orderModal").classList.add("show");
+}
+
+function saveOrderUpdates(id){
+  const order=orders.find(o=>o.id===id);
+  if(!order)return;
+
+  const newStatus=document.getElementById("newStatus").value;
+  const newPayment=document.getElementById("newPayment").value;
+
+  if(newStatus==="delivered"&&newPayment!=="paid"){
+    alert("Please confirm payment before marking this order as delivered.");
+    return;
+  }
+
+  order.status=newStatus;
+  order.paymentStatus=newPayment;
+  order.updatedAt=new Date().toISOString();
+
+  if(!saveOrders())return;
+
+  closeModal();
+  renderOrders();
+}
+
+function closeModal(){
+  document.getElementById("orderModal").classList.remove("show");
+}
+
+function closeBackdrop(event){
+  if(event.target.id==="orderModal")closeModal();
+}
+
+function printOrder(id){
+  const order=orders.find(o=>o.id===id);
+  if(!order)return;
+
+  const customer=order.customer||{};
+  const address=order.address||customer.address||{};
+  const addressText=typeof address==="string"
+    ? address
+    : [address.line1,address.line2,address.city,address.state,address.country]
+      .filter(Boolean).join(", ");
+
+  const items=Array.isArray(order.items)?order.items:[];
+
+  const receipt=`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <title>AHRUH Receipt</title>
+      <style>
+        @page{size:150mm 100mm;margin:7mm}
+        body{font-family:Arial,sans-serif;color:#111;font-size:10px}
+        h1{text-align:center;font-size:22px;letter-spacing:3px;margin:0}
+        .sub{text-align:center;font-size:8px;margin:3px 0 12px}
+        .rule{border-top:1px dashed #555;margin:8px 0}
+        .row{display:flex;justify-content:space-between;gap:8px;margin:4px 0}
+        table{width:100%;border-collapse:collapse;margin:8px 0}
+        th,td{text-align:left;padding:5px 2px;border-bottom:1px solid #ddd}
+        .right{text-align:right}
+        .total{font-weight:bold;font-size:13px}
+        .small{font-size:8px;line-height:1.5}
+      </style>
+    </head>
+    <body>
+      <h1>AHRUH</h1>
+      <div class="sub">ORDER RECEIPT</div>
+      <div class="rule"></div>
+      <div class="row"><strong>Order:</strong><span>${escapeHTML(order.orderNumber||"")}</span></div>
+      <div class="row"><strong>Date:</strong><span>${escapeHTML(dateLabel(order.createdAt))}</span></div>
+      <div class="row"><strong>Customer:</strong><span>${escapeHTML(customer.name||order.customerName||"")}</span></div>
+      <div class="row"><strong>Phone:</strong><span>${escapeHTML(customer.phone||"")}</span></div>
+      <div class="small"><strong>Address:</strong> ${escapeHTML(addressText)}</div>
+      <div class="rule"></div>
+      <table>
+        <thead><tr><th>Product</th><th>Qty</th><th class="right">Price</th><th class="right">Total</th></tr></thead>
+        <tbody>
+          ${items.map(item=>{
+            const qty=Number(item.quantity||0);
+            const price=Number(item.price||0);
+            return `<tr>
+              <td>${escapeHTML(item.name||item.productName||"Product")}${item.variant?"<br>"+escapeHTML(item.variant):""}</td>
+              <td>${qty}</td>
+              <td class="right">${money(price)}</td>
+              <td class="right">${money(price*qty)}</td>
+            </tr>`;
+          }).join("")}
+        </tbody>
+      </table>
+      <div class="row"><span>Subtotal</span><strong>${money(order.subtotal)}</strong></div>
+      <div class="row"><span>Discount</span><strong>${money(order.discount)}</strong></div>
+      <div class="row"><span>Delivery</span><strong>${money(order.deliveryFee)}</strong></div>
+      <div class="rule"></div>
+      <div class="row total"><span>TOTAL</span><span>${money(order.total)}</span></div>
+      <div class="row"><span>Payment</span><span>${escapeHTML(order.paymentMethod||"")}</span></div>
+      <div class="row"><span>Payment status</span><span>${escapeHTML(paymentLabel(order.paymentStatus||"unpaid"))}</span></div>
+      <div class="rule"></div>
+      <div class="sub">Thank you for shopping with AHRUH.</div>
+      <script>window.onload=()=>window.print();<\/script>
+    </body>
+    </html>
+  `;
+
+  const win=window.open("","_blank","width=700,height=800");
+  if(!win){
+    alert("Please allow pop-ups to print receipts.");
+    return;
+  }
+  win.document.open();
+  win.document.write(receipt);
+  win.document.close();
+}
+
+loadOrders();
+renderOrders();
+</script>
+</body>
+</html>
