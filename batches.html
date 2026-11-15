@@ -13,13 +13,10 @@
 <style>
 :root{
   --navy:#102A56;
-  --navy2:#193D70;
   --royal:#3478E5;
   --royal2:#2866CB;
-  --soft:#D5E6FF;
   --light:#EAF2FF;
   --pale:#F4F8FF;
-  --white:#fff;
   --gold:#D6B66F;
   --text:#253653;
   --muted:#8492A9;
@@ -31,16 +28,8 @@
 }
 
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:var(--pale);
-  color:var(--text);
-  font-family:'DM Sans',Arial,sans-serif;
-  font-size:14px;
-}
-
-button,input,select,textarea{font:inherit}
+body{margin:0;background:var(--pale);color:var(--text);font-family:'DM Sans',Arial,sans-serif;font-size:14px}
+button,input,textarea{font:inherit}
 button{cursor:pointer}
 a{text-decoration:none;color:inherit}
 .hidden{display:none!important}
@@ -48,617 +37,132 @@ a{text-decoration:none;color:inherit}
 /* HEADER */
 
 .topbar{
-  height:68px;
-  background:var(--navy);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 18px;
-  color:white;
-  position:sticky;
-  top:0;
-  z-index:30;
-  box-shadow:0 4px 15px #102A5620;
-}
-
-.top-left,.top-right{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:9px;
-}
-
-.brand-mark{
-  width:37px;
-  height:37px;
-  border-radius:10px;
-  display:grid;
-  place-items:center;
-  background:var(--gold);
-  color:var(--navy);
-  font-family:'Cormorant Garamond',serif;
-  font-size:29px;
-  font-weight:700;
+  height:65px;background:var(--navy);display:flex;
+  align-items:center;justify-content:space-between;
+  padding:0 18px;color:white;position:sticky;top:0;
+  z-index:30;box-shadow:0 4px 15px #102A5620;
 }
 
 .brand-word{
   font-family:'Cormorant Garamond',Georgia,serif;
-  font-weight:700;
-  font-size:27px;
-  letter-spacing:2px;
-  line-height:1;
-  color:white;
+  font-weight:700;font-size:31px;letter-spacing:2.5px;
+  line-height:1;color:white;
 }
+.brand-tag{font-size:8px;letter-spacing:2px;color:#C9D9F1;margin-top:5px}
 
-.brand-tag{
-  font-size:7px;
-  letter-spacing:2px;
-  color:#C9D9F1;
-  margin-top:4px;
-}
-
-.icon-btn{
-  width:37px;
-  height:37px;
-  border:0;
-  border-radius:10px;
-  background:#FFFFFF18;
-  color:white;
-  font-size:18px;
-}
-
-.avatar{
-  width:35px;
-  height:35px;
-  display:grid;
-  place-items:center;
-  border-radius:50%;
-  background:white;
-  color:var(--royal);
-  font-weight:800;
-}
+.top-right{display:flex;align-items:center;gap:12px}
+.icon-btn{width:37px;height:37px;border:0;border-radius:10px;background:#FFFFFF18;color:white;font-size:18px}
+.avatar{width:35px;height:35px;display:grid;place-items:center;border-radius:50%;background:white;color:var(--royal);font-weight:800}
 
 /* PAGE */
 
-.page{
-  max-width:950px;
-  margin:auto;
-  padding:23px 18px 105px;
-}
+.page{max-width:950px;margin:auto;padding:23px 18px 105px}
+.page-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.page-heading h1{margin:0 0 5px;color:var(--navy);font-size:23px}
+.page-heading p{margin:0;color:var(--muted);font-size:11px;line-height:1.5}
 
-.page-heading{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:20px;
-}
-
-.page-heading h1{
-  margin:0 0 5px;
-  color:var(--navy);
-  font-size:23px;
-}
-
-.page-heading p{
-  margin:0;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.5;
-}
-
-.primary-btn{
-  border:0;
-  background:var(--royal);
-  color:white;
-  border-radius:10px;
-  padding:12px 15px;
-  font-size:11px;
-  font-weight:700;
-  white-space:nowrap;
-  box-shadow:0 5px 12px #3478E528;
-}
-
+.primary-btn{border:0;background:var(--royal);color:white;border-radius:10px;padding:12px 15px;font-size:11px;font-weight:700;white-space:nowrap;box-shadow:0 5px 12px #3478E528}
 .primary-btn:hover{background:var(--royal2)}
-
-.light-btn{
-  border:0;
-  background:var(--light);
-  color:var(--royal);
-  border-radius:9px;
-  padding:10px 13px;
-  font-size:10px;
-  font-weight:700;
-}
-
-.outline-btn{
-  border:1px solid var(--line);
-  background:white;
-  color:var(--navy);
-  border-radius:9px;
-  padding:10px 13px;
-  font-size:10px;
-  font-weight:700;
-}
+.light-btn{border:0;background:var(--light);color:var(--royal);border-radius:9px;padding:10px 13px;font-size:10px;font-weight:700}
+.outline-btn{border:1px solid var(--line);background:white;color:var(--navy);border-radius:9px;padding:10px 13px;font-size:10px;font-weight:700}
+.danger-btn{border:0;background:#FCEDEE;color:var(--red);border-radius:9px;padding:10px 13px;font-size:10px;font-weight:700}
 
 /* SUMMARY */
 
-.summary{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:10px;
-  margin-bottom:23px;
-}
-
-.summary-card{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:13px;
-  padding:14px;
-  box-shadow:var(--shadow);
-  min-width:0;
-}
-
-.summary-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:5px;
-}
-
-.summary-top small{
-  color:var(--muted);
-  font-size:9px;
-}
-
-.summary-icon{
-  width:30px;
-  height:30px;
-  display:grid;
-  place-items:center;
-  background:var(--light);
-  color:var(--royal);
-  border-radius:9px;
-  font-size:15px;
-}
-
-.summary-card h2{
-  color:var(--navy);
-  font-size:23px;
-  margin:10px 0 3px;
-}
-
-.summary-card p{
-  margin:0;
-  color:var(--muted);
-  font-size:8px;
-}
+.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:23px}
+.summary-card{background:white;border:1px solid var(--line);border-radius:13px;padding:14px;box-shadow:var(--shadow);min-width:0}
+.summary-top{display:flex;align-items:center;justify-content:space-between;gap:5px}
+.summary-top small{color:var(--muted);font-size:9px}
+.summary-icon{width:30px;height:30px;display:grid;place-items:center;background:var(--light);color:var(--royal);border-radius:9px;font-size:15px}
+.summary-card h2{color:var(--navy);font-size:23px;margin:10px 0 3px}
+.summary-card p{margin:0;color:var(--muted);font-size:8px}
 
 /* BATCH AREA */
 
-.section-heading{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin:24px 0 13px;
-}
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:24px 0 13px}
+.section-heading h2{font-size:15px;color:var(--navy);margin:0}
+.section-heading small{font-size:9px;color:var(--muted)}
 
-.section-heading h2{
-  font-size:15px;
-  color:var(--navy);
-  margin:0;
-}
-
-.section-heading small{
-  font-size:9px;
-  color:var(--muted);
-}
-
-.search-box{
-  position:relative;
-  margin-bottom:12px;
-}
-
-.search-box input{
-  width:100%;
-  border:1px solid var(--line);
-  background:white;
-  border-radius:11px;
-  padding:13px 14px 13px 39px;
-  font-size:11px;
-  outline:none;
-}
-
+.search-box{position:relative;margin-bottom:12px}
+.search-box input{width:100%;border:1px solid var(--line);background:white;border-radius:11px;padding:13px 14px 13px 39px;font-size:11px;outline:none}
 .search-box input:focus{border-color:var(--royal)}
+.search-symbol{position:absolute;left:14px;top:11px;color:var(--muted);font-size:15px}
 
-.search-symbol{
-  position:absolute;
-  left:14px;
-  top:11px;
-  color:var(--muted);
-  font-size:15px;
-}
-
-.filters{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  padding-bottom:5px;
-  margin-bottom:14px;
-}
-
-.filter-btn{
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:8px 13px;
-  background:white;
-  color:var(--muted);
-  font-size:9px;
-  font-weight:700;
-  white-space:nowrap;
-}
-
-.filter-btn.active{
-  background:var(--navy);
-  border-color:var(--navy);
-  color:white;
-}
+.filters{display:flex;gap:8px;overflow-x:auto;padding-bottom:5px;margin-bottom:14px}
+.filter-btn{border:1px solid var(--line);border-radius:20px;padding:8px 13px;background:white;color:var(--muted);font-size:9px;font-weight:700;white-space:nowrap}
+.filter-btn.active{background:var(--navy);border-color:var(--navy);color:white}
 
 /* BATCH CARDS */
 
-.batch-list{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:12px;
-}
+.batch-list{display:grid;grid-template-columns:1fr;gap:12px}
+.batch-card{background:white;border:1px solid var(--line);border-radius:15px;padding:16px;box-shadow:var(--shadow)}
+.batch-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.batch-title{color:var(--navy);font-size:14px;font-weight:800}
+.batch-date{color:var(--muted);font-size:9px;margin-top:5px;line-height:1.6}
 
-.batch-card{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:15px;
-  padding:16px;
-  box-shadow:var(--shadow);
-}
-
-.batch-card-top{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.batch-title{
-  color:var(--navy);
-  font-size:14px;
-  font-weight:800;
-}
-
-.batch-date{
-  color:var(--muted);
-  font-size:9px;
-  margin-top:5px;
-  line-height:1.6;
-}
-
-.status{
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  padding:6px 9px;
-  border-radius:20px;
-  font-size:8px;
-  font-weight:800;
-  white-space:nowrap;
-}
-
-.status::before{
-  content:"";
-  width:6px;
-  height:6px;
-  background:currentColor;
-  border-radius:50%;
-}
-
+.status{display:inline-flex;align-items:center;gap:5px;padding:6px 9px;border-radius:20px;font-size:8px;font-weight:800;white-space:nowrap}
+.status::before{content:"";width:6px;height:6px;background:currentColor;border-radius:50%}
 .status.open{background:#E6F7EE;color:#168054}
 .status.closed{background:#F0F2F6;color:#6E7888}
 .status.upcoming{background:#FFF5DF;color:#9A742B}
 
-.batch-metrics{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:16px;
-  padding:13px 0;
-  border-top:1px solid #EDF1F7;
-  border-bottom:1px solid #EDF1F7;
-}
+.batch-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;padding:13px 0;border-top:1px solid #EDF1F7;border-bottom:1px solid #EDF1F7}
+.metric small{display:block;color:var(--muted);font-size:9px;margin-bottom:6px}
+.metric strong{color:var(--navy);font-size:16px}
+.batch-card-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:13px}
+.batch-created{font-size:9px;color:var(--muted)}
 
-.metric small{
-  display:block;
-  color:var(--muted);
-  font-size:9px;
-  margin-bottom:6px;
-}
-
-.metric strong{
-  color:var(--navy);
-  font-size:16px;
-}
-
-.batch-card-bottom{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-top:13px;
-}
-
-.batch-created{
-  font-size:9px;
-  color:var(--muted);
-}
-
-.empty-state{
-  background:white;
-  border:1px dashed #C9D8EC;
-  border-radius:15px;
-  text-align:center;
-  padding:35px 18px;
-}
-
-.empty-icon{
-  width:55px;
-  height:55px;
-  margin:0 auto 12px;
-  border-radius:17px;
-  background:var(--light);
-  color:var(--royal);
-  display:grid;
-  place-items:center;
-  font-size:25px;
-}
-
-.empty-state h3{
-  color:var(--navy);
-  font-size:14px;
-  margin:0 0 6px;
-}
-
-.empty-state p{
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.6;
-  margin:0 0 15px;
-}
+.empty-state{background:white;border:1px dashed #C9D8EC;border-radius:15px;text-align:center;padding:35px 18px}
+.empty-icon{width:55px;height:55px;margin:0 auto 12px;border-radius:17px;background:var(--light);color:var(--royal);display:grid;place-items:center;font-size:25px}
+.empty-state h3{color:var(--navy);font-size:14px;margin:0 0 6px}
+.empty-state p{color:var(--muted);font-size:10px;line-height:1.6;margin:0 0 15px}
 
 /* MODALS */
 
-.modal-backdrop{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:100;
-  background:#102A5680;
-  align-items:flex-end;
-  justify-content:center;
-  padding:0;
-}
-
+.modal-backdrop{display:none;position:fixed;inset:0;z-index:100;background:#102A5680;align-items:flex-end;justify-content:center;padding:0}
 .modal-backdrop.show{display:flex}
+.modal{width:100%;max-width:620px;max-height:91vh;overflow-y:auto;background:white;border-radius:21px 21px 0 0;padding:21px 19px 30px;animation:slideUp .2s ease}
+@keyframes slideUp{from{transform:translateY(35px);opacity:.6}to{transform:translateY(0);opacity:1}}
 
-.modal{
-  width:100%;
-  max-width:620px;
-  max-height:91vh;
-  overflow-y:auto;
-  background:white;
-  border-radius:21px 21px 0 0;
-  padding:21px 19px 30px;
-  animation:slideUp .2s ease;
-}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:19px}
+.modal-head h2{color:var(--navy);font-size:17px;margin:0}
+.close-btn{width:33px;height:33px;border:0;border-radius:50%;background:var(--light);color:var(--navy);font-size:19px}
 
-@keyframes slideUp{
-  from{transform:translateY(35px);opacity:.6}
-  to{transform:translateY(0);opacity:1}
-}
-
-.modal-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:19px;
-}
-
-.modal-head h2{
-  color:var(--navy);
-  font-size:17px;
-  margin:0;
-}
-
-.close-btn{
-  width:33px;
-  height:33px;
-  border:0;
-  border-radius:50%;
-  background:var(--light);
-  color:var(--navy);
-  font-size:19px;
-}
-
-.form-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:13px;
-}
-
-.form-group{
-  display:flex;
-  flex-direction:column;
-  gap:7px;
-}
-
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.form-group{display:flex;flex-direction:column;gap:7px}
 .form-group.full{grid-column:1/-1}
-
-.form-group label{
-  color:var(--text);
-  font-size:10px;
-  font-weight:700;
-}
-
-.form-group input,
-.form-group textarea{
-  width:100%;
-  border:1px solid var(--line);
-  border-radius:9px;
-  padding:12px;
-  outline:none;
-  font-size:11px;
-  color:var(--text);
-  background:white;
-}
-
-.form-group input:focus,
-.form-group textarea:focus{border-color:var(--royal)}
-
-.form-note{
-  font-size:9px;
-  color:var(--muted);
-  line-height:1.6;
-}
-
-.modal-actions{
-  display:flex;
-  justify-content:flex-end;
-  gap:9px;
-  margin-top:20px;
-}
+.form-group label{color:var(--text);font-size:10px;font-weight:700}
+.form-group input,.form-group textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:12px;outline:none;font-size:11px;color:var(--text);background:white}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--royal)}
+.form-note{font-size:9px;color:var(--muted);line-height:1.6}
+.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px;flex-wrap:wrap}
 
 /* DETAILS */
 
-.detail-summary{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
-
-.detail-box{
-  background:var(--pale);
-  border:1px solid var(--line);
-  border-radius:11px;
-  padding:14px;
-}
-
-.detail-box small{
-  display:block;
-  color:var(--muted);
-  font-size:9px;
-}
-
-.detail-box strong{
-  display:block;
-  color:var(--navy);
-  font-size:19px;
-  margin-top:7px;
-}
-
+.detail-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.detail-box{background:var(--pale);border:1px solid var(--line);border-radius:11px;padding:14px}
+.detail-box small{display:block;color:var(--muted);font-size:9px}
+.detail-box strong{display:block;color:var(--navy);font-size:19px;margin-top:7px}
 .detail-section{margin-top:20px}
-
-.detail-section h3{
-  font-size:11px;
-  color:var(--navy);
-  margin:0 0 8px;
-}
-
-.detail-section p{
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.8;
-  margin:0;
-}
-
-.detail-links{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-top:20px;
-}
-
-.detail-links a{
-  display:block;
-  text-align:center;
-  padding:12px 7px;
-  border-radius:9px;
-  background:var(--light);
-  color:var(--royal);
-  font-size:9px;
-  font-weight:700;
-}
+.detail-section h3{font-size:11px;color:var(--navy);margin:0 0 8px}
+.detail-section p{color:var(--muted);font-size:10px;line-height:1.8;margin:0}
+.detail-links{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:20px}
+.detail-links a{display:block;text-align:center;padding:12px 7px;border-radius:9px;background:var(--light);color:var(--royal);font-size:9px;font-weight:700}
 
 /* BOTTOM NAV */
 
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  height:66px;
-  background:white;
-  border-top:1px solid var(--line);
-  display:flex;
-  align-items:center;
-  justify-content:space-around;
-  z-index:40;
-  box-shadow:0 -4px 15px #102A560A;
-}
-
-.bottom-link{
-  border:0;
-  background:none;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  min-width:55px;
-  color:var(--muted);
-  font-size:9px;
-}
-
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:66px;background:white;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-around;z-index:40;box-shadow:0 -4px 15px #102A560A}
+.bottom-link{border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:55px;color:var(--muted);font-size:9px}
 .bottom-link span{font-size:19px}
-
-.bottom-link.active{
-  color:var(--royal);
-  font-weight:800;
-}
-
-.bottom-link.active span{
-  background:var(--light);
-  border-radius:9px;
-  padding:3px 12px;
-}
-
-.footer{
-  text-align:center;
-  color:var(--muted);
-  font-size:9px;
-  padding:25px 0 0;
-}
-
-/* RESPONSIVE */
+.bottom-link.active{color:var(--royal);font-weight:800}
+.bottom-link.active span{background:var(--light);border-radius:9px;padding:3px 12px}
+.footer{text-align:center;color:var(--muted);font-size:9px;padding:25px 0 0}
 
 @media(min-width:650px){
   .batch-list{grid-template-columns:repeat(2,minmax(0,1fr))}
   .modal-backdrop{align-items:center;padding:15px}
   .modal{border-radius:18px}
 }
-
 @media(max-width:520px){
   .topbar{height:61px;padding:0 13px}
   .page{padding:19px 13px 90px}
@@ -680,16 +184,10 @@ a{text-decoration:none;color:inherit}
 <body>
 
 <header class="topbar">
-  <div class="top-left">
-    <div class="brand">
-      <div class="brand-mark">A</div>
-      <div>
-        <div class="brand-word">AHRUH</div>
-        <div class="brand-tag">ADMIN SPACE</div>
-      </div>
-    </div>
+  <div>
+    <div class="brand-word">AHRUH</div>
+    <div class="brand-tag">ADMIN SPACE</div>
   </div>
-
   <div class="top-right">
     <button class="icon-btn" onclick="location.href='notifications.html'" aria-label="Notifications">♧</button>
     <div class="avatar">A</div>
@@ -708,37 +206,22 @@ a{text-decoration:none;color:inherit}
 
   <section class="summary">
     <div class="summary-card">
-      <div class="summary-top">
-        <small>Total batches</small>
-        <span class="summary-icon">▦</span>
-      </div>
+      <div class="summary-top"><small>Total batches</small><span class="summary-icon">▦</span></div>
       <h2 id="totalBatches">0</h2>
       <p>All created batches</p>
     </div>
-
     <div class="summary-card">
-      <div class="summary-top">
-        <small>Open batches</small>
-        <span class="summary-icon">◉</span>
-      </div>
+      <div class="summary-top"><small>Open batches</small><span class="summary-icon">◉</span></div>
       <h2 id="openBatches">0</h2>
-      <p>Accepting orders</p>
+      <p>Accepting orders by schedule</p>
     </div>
-
     <div class="summary-card">
-      <div class="summary-top">
-        <small>Closed batches</small>
-        <span class="summary-icon">▣</span>
-      </div>
+      <div class="summary-top"><small>Closed batches</small><span class="summary-icon">▣</span></div>
       <h2 id="closedBatches">0</h2>
       <p>Order period ended</p>
     </div>
-
     <div class="summary-card">
-      <div class="summary-top">
-        <small>Upcoming</small>
-        <span class="summary-icon">◷</span>
-      </div>
+      <div class="summary-top"><small>Upcoming</small><span class="summary-icon">◷</span></div>
       <h2 id="upcomingBatches">0</h2>
       <p>Waiting to open</p>
     </div>
@@ -752,28 +235,22 @@ a{text-decoration:none;color:inherit}
 
     <div class="search-box">
       <span class="search-symbol">⌕</span>
-      <input id="batchSearch" type="search"
-        placeholder="Search by batch name..."
-        oninput="renderBatches()">
+      <input id="batchSearch" type="search" placeholder="Search by batch name..." oninput="renderBatches()">
     </div>
 
     <div class="filters">
-      <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">All batches</button>
-      <button class="filter-btn" data-filter="Open" onclick="setFilter('Open',this)">Open</button>
-      <button class="filter-btn" data-filter="Upcoming" onclick="setFilter('Upcoming',this)">Upcoming</button>
-      <button class="filter-btn" data-filter="Closed" onclick="setFilter('Closed',this)">Closed</button>
+      <button class="filter-btn active" onclick="setFilter('all',this)">All batches</button>
+      <button class="filter-btn" onclick="setFilter('Open',this)">Open</button>
+      <button class="filter-btn" onclick="setFilter('Upcoming',this)">Upcoming</button>
+      <button class="filter-btn" onclick="setFilter('Closed',this)">Closed</button>
     </div>
 
     <div class="batch-list" id="batchList"></div>
   </section>
 
-  <footer class="footer">
-    AHRUH · Batch Management
-  </footer>
-
+  <footer class="footer">AHRUH · Batch Management</footer>
 </main>
 
-<!-- BOTTOM NAVIGATION -->
 <nav class="bottom-nav">
   <a class="bottom-link" href="admin.html"><span>⌂</span>Home</a>
   <a class="bottom-link active" href="batches.html"><span>▦</span>Batches</a>
@@ -782,47 +259,42 @@ a{text-decoration:none;color:inherit}
   <a class="bottom-link" href="settings.html"><span>⚙</span>Settings</a>
 </nav>
 
-<!-- CREATE BATCH -->
+<!-- CREATE / EDIT BATCH -->
 <div class="modal-backdrop" id="createModal" onclick="closeOnBackdrop(event,'createModal')">
   <div class="modal">
     <div class="modal-head">
-      <h2>Create a new batch</h2>
+      <h2 id="formTitle">Create a new batch</h2>
       <button class="close-btn" onclick="closeCreateModal()">×</button>
     </div>
 
     <form id="batchForm">
       <div class="form-grid">
-
         <div class="form-group full">
           <label for="batchName">Batch name or number</label>
-          <input id="batchName" placeholder="e.g. Batch 01" required maxlength="60">
+          <input id="batchName" placeholder="e.g. Batch 04" required maxlength="60">
         </div>
-
         <div class="form-group">
           <label for="openDate">Opening date and time</label>
           <input id="openDate" type="datetime-local" required>
         </div>
-
         <div class="form-group">
           <label for="closeDate">Closing date and time</label>
           <input id="closeDate" type="datetime-local" required>
         </div>
-
         <div class="form-group full">
           <label for="batchDescription">Internal notes (optional)</label>
           <textarea id="batchDescription" rows="3" placeholder="Add notes about this shopping batch"></textarea>
         </div>
-
       </div>
 
       <p class="form-note">
-        Batch status is calculated from its opening and closing dates.
-        Actual customer checkout restrictions must be enforced by the secure backend.
+        The displayed status follows the opening and closing schedule.
+        Actual order and payment access must also be checked by the secure backend.
       </p>
 
       <div class="modal-actions">
         <button type="button" class="outline-btn" onclick="closeCreateModal()">Cancel</button>
-        <button type="submit" class="primary-btn">Create batch</button>
+        <button type="submit" class="primary-btn" id="saveBatchButton">Create batch</button>
       </div>
     </form>
   </div>
@@ -835,186 +307,214 @@ a{text-decoration:none;color:inherit}
       <h2 id="detailTitle">Batch details</h2>
       <button class="close-btn" onclick="closeDetailModal()">×</button>
     </div>
-
     <div id="detailContent"></div>
 
     <div class="detail-links">
       <a id="ordersLink" href="orders.html">View batch orders</a>
-      <a id="productsLink" href="products.html">Product summary</a>
-      <a id="artworkLink" href="artwork.html">Custom artwork</a>
+      <a id="summaryLink" href="orders.html">Product summary</a>
+      <a id="artworkLink" href="orders.html">Find customer artwork</a>
       <a href="shipping.html">Delivery management</a>
+    </div>
+
+    <div class="modal-actions">
+      <button class="outline-btn" id="editBatchButton">Edit batch</button>
+      <button class="danger-btn" id="deleteBatchButton">Delete batch</button>
     </div>
   </div>
 </div>
 
 <script>
-const STORAGE_KEY = "ahruh_batches_prototype_v1";
+const STORAGE_KEY="ahruh_batches_prototype_v1";
+const ORDER_KEY="ahruh_orders_prototype_v1";
 
-let batches = [];
-let currentFilter = "all";
+let batches=[];
+let orders=[];
+let currentFilter="all";
+let editingId=null;
+let selectedBatchId=null;
 
-function loadBatches(){
+function readArray(key){
   try{
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    batches = Array.isArray(saved) ? saved : [];
-  }catch(error){
-    batches = [];
-  }
+    const value=JSON.parse(localStorage.getItem(key)||"[]");
+    return Array.isArray(value)?value:[];
+  }catch(error){return []}
+}
+
+function loadData(){
+  batches=readArray(STORAGE_KEY);
+  orders=readArray(ORDER_KEY);
 }
 
 function saveBatches(){
   try{
     localStorage.setItem(STORAGE_KEY,JSON.stringify(batches));
+    return true;
   }catch(error){
     alert("Unable to save batches in this browser.");
+    return false;
   }
 }
 
 function escapeHTML(value){
-  return String(value ?? "").replace(/[&<>"']/g,char=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
+  return String(value??"").replace(/[&<>"']/g,char=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
   }[char]));
 }
 
+function getBatchId(batch){
+  return String(batch.id||batch.batchId||"");
+}
+
+function getBatchName(batch){
+  return batch.name||batch.title||batch.batchName||"Untitled batch";
+}
+
 function getBatchStatus(batch){
-  const now = Date.now();
-  const opens = new Date(batch.openDate).getTime();
-  const closes = new Date(batch.closeDate).getTime();
+  const now=Date.now();
+  const opens=new Date(batch.openDate||batch.startDate).getTime();
+  const closes=new Date(batch.closeDate).getTime();
 
-  if(!Number.isFinite(opens) || !Number.isFinite(closes)){
-    return "Upcoming";
-  }
-
-  if(now < opens) return "Upcoming";
-  if(now >= closes) return "Closed";
+  if(!Number.isFinite(opens)||!Number.isFinite(closes))return "Upcoming";
+  if(now<opens)return "Upcoming";
+  if(now>=closes)return "Closed";
   return "Open";
 }
 
 function formatDate(value){
-  if(!value) return "—";
-
-  const date = new Date(value);
-  if(Number.isNaN(date.getTime())) return "—";
-
+  if(!value)return "—";
+  const date=new Date(value);
+  if(Number.isNaN(date.getTime()))return "—";
   return date.toLocaleString("en-NG",{
-    day:"numeric",
-    month:"short",
-    year:"numeric",
-    hour:"2-digit",
-    minute:"2-digit"
+    day:"numeric",month:"short",year:"numeric",
+    hour:"2-digit",minute:"2-digit"
   });
 }
 
-function formatMoney(value){
-  return "₦" + Number(value || 0).toLocaleString("en-NG");
+function money(value){
+  return "₦"+Number(value||0).toLocaleString("en-NG",{
+    minimumFractionDigits:2,maximumFractionDigits:2
+  });
+}
+
+function orderGoodsValue(order){
+  if(order.subtotal!==undefined)return Number(order.subtotal)||0;
+  if(order.goodsTotal!==undefined)return Number(order.goodsTotal)||0;
+  return (order.items||[]).reduce((sum,item)=>
+    sum+Number(item.price||0)*Number(item.quantity||0),0);
+}
+
+function ordersForBatch(batch){
+  const id=getBatchId(batch);
+  const name=getBatchName(batch);
+
+  return orders.filter(order=>{
+    const orderId=String(order.batchId||order.batch_id||"");
+    const orderName=String(order.batchName||order.batch||"");
+
+    return (orderId&&orderId===id)||
+      (!orderId&&orderName===name);
+  });
+}
+
+function batchTotals(batch){
+  const batchOrders=ordersForBatch(batch);
+  return {
+    count:batchOrders.length,
+    value:batchOrders.reduce((sum,order)=>sum+orderGoodsValue(order),0)
+  };
 }
 
 function setFilter(filter,button){
-  currentFilter = filter;
-
-  document.querySelectorAll(".filter-btn").forEach(item=>{
-    item.classList.remove("active");
-  });
-
+  currentFilter=filter;
+  document.querySelectorAll(".filter-btn").forEach(item=>item.classList.remove("active"));
   button.classList.add("active");
   renderBatches();
 }
 
 function updateSummary(){
-  const counts = {
-    Open:0,
-    Closed:0,
-    Upcoming:0
-  };
+  const counts={Open:0,Closed:0,Upcoming:0};
+  batches.forEach(batch=>counts[getBatchStatus(batch)]++);
 
-  batches.forEach(batch=>{
-    counts[getBatchStatus(batch)]++;
-  });
-
-  document.getElementById("totalBatches").textContent = batches.length;
-  document.getElementById("openBatches").textContent = counts.Open;
-  document.getElementById("closedBatches").textContent = counts.Closed;
-  document.getElementById("upcomingBatches").textContent = counts.Upcoming;
+  document.getElementById("totalBatches").textContent=batches.length;
+  document.getElementById("openBatches").textContent=counts.Open;
+  document.getElementById("closedBatches").textContent=counts.Closed;
+  document.getElementById("upcomingBatches").textContent=counts.Upcoming;
 }
 
 function renderBatches(){
-  const query = document.getElementById("batchSearch").value.trim().toLowerCase();
-
+  loadData();
   updateSummary();
 
-  let filtered = batches.filter(batch=>{
-    const status = getBatchStatus(batch);
-    const matchesName = batch.name.toLowerCase().includes(query);
-    const matchesStatus = currentFilter === "all" || status === currentFilter;
+  const query=document.getElementById("batchSearch").value.trim().toLowerCase();
 
-    return matchesName && matchesStatus;
+  let filtered=batches.filter(batch=>{
+    const name=getBatchName(batch).toLowerCase();
+    const status=getBatchStatus(batch);
+    return name.includes(query)&&(currentFilter==="all"||status===currentFilter);
   });
 
-  filtered.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+  filtered.sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
 
-  document.getElementById("batchCount").textContent =
-    filtered.length + (filtered.length === 1 ? " batch" : " batches");
+  document.getElementById("batchCount").textContent=
+    filtered.length+(filtered.length===1?" batch":" batches");
 
-  const list = document.getElementById("batchList");
+  const list=document.getElementById("batchList");
 
-  if(filtered.length === 0){
-    list.innerHTML = `
+  if(!filtered.length){
+    list.innerHTML=`
       <div class="empty-state">
         <div class="empty-icon">▦</div>
-        <h3>${batches.length ? "No matching batches" : "No batches yet"}</h3>
+        <h3>${batches.length?"No matching batches":"No batches yet"}</h3>
         <p>${batches.length
-          ? "Try another search or select a different status."
-          : "Create your first shopping batch to begin organising customer orders."}</p>
-        ${batches.length ? "" : '<button class="primary-btn" onclick="openCreateModal()">＋ Create first batch</button>'}
+          ?"Try another search or select a different status."
+          :"Create your first shopping batch to begin organising customer orders."}</p>
+        ${batches.length?"":'<button class="primary-btn" onclick="openCreateModal()">＋ Create first batch</button>'}
       </div>`;
     return;
   }
 
-  list.innerHTML = filtered.map(batch=>{
-    const status = getBatchStatus(batch);
-    const orders = Number(batch.orders || 0);
-    const goods = Number(batch.goodsValue || 0);
+  list.innerHTML=filtered.map(batch=>{
+    const status=getBatchStatus(batch);
+    const totals=batchTotals(batch);
+    const id=getBatchId(batch);
 
     return `
       <article class="batch-card">
         <div class="batch-card-top">
           <div>
-            <div class="batch-title">${escapeHTML(batch.name)}</div>
+            <div class="batch-title">${escapeHTML(getBatchName(batch))}</div>
             <div class="batch-date">
-              Opens: ${formatDate(batch.openDate)}<br>
+              Opens: ${formatDate(batch.openDate||batch.startDate)}<br>
               Closes: ${formatDate(batch.closeDate)}
             </div>
           </div>
-
           <span class="status ${status.toLowerCase()}">${status}</span>
         </div>
 
         <div class="batch-metrics">
           <div class="metric">
             <small>Total orders</small>
-            <strong>${orders.toLocaleString("en-NG")}</strong>
+            <strong>${totals.count.toLocaleString("en-NG")}</strong>
           </div>
           <div class="metric">
             <small>Total goods value</small>
-            <strong>${formatMoney(goods)}</strong>
+            <strong>${money(totals.value)}</strong>
           </div>
         </div>
 
         <div class="batch-card-bottom">
           <span class="batch-created">Created ${formatDate(batch.createdAt)}</span>
-          <button class="light-btn" onclick="viewBatch('${escapeHTML(batch.id)}')">
-            View details →
-          </button>
+          <button class="light-btn" onclick="viewBatch('${escapeHTML(id)}')">View batch →</button>
         </div>
       </article>`;
   }).join("");
 }
 
 function openCreateModal(){
+  editingId=null;
+  document.getElementById("batchForm").reset();
+  document.getElementById("formTitle").textContent="Create a new batch";
+  document.getElementById("saveBatchButton").textContent="Create batch";
   document.getElementById("createModal").classList.add("show");
 }
 
@@ -1027,121 +527,158 @@ function closeDetailModal(){
 }
 
 function closeOnBackdrop(event,id){
-  if(event.target.id === id){
-    document.getElementById(id).classList.remove("show");
-  }
+  if(event.target.id===id)document.getElementById(id).classList.remove("show");
 }
 
 document.getElementById("batchForm").addEventListener("submit",function(event){
   event.preventDefault();
 
-  const name = document.getElementById("batchName").value.trim();
-  const openDate = document.getElementById("openDate").value;
-  const closeDate = document.getElementById("closeDate").value;
-  const description = document.getElementById("batchDescription").value.trim();
+  const name=document.getElementById("batchName").value.trim();
+  const openDate=document.getElementById("openDate").value;
+  const closeDate=document.getElementById("closeDate").value;
+  const description=document.getElementById("batchDescription").value.trim();
 
-  const opens = new Date(openDate);
-  const closes = new Date(closeDate);
+  const opens=new Date(openDate);
+  const closes=new Date(closeDate);
 
-  if(!name || !openDate || !closeDate){
+  if(!name||!openDate||!closeDate){
     alert("Please complete the required fields.");
     return;
   }
 
-  if(Number.isNaN(opens.getTime()) || Number.isNaN(closes.getTime()) || closes <= opens){
+  if(!Number.isFinite(opens.getTime())||!Number.isFinite(closes.getTime())||closes<=opens){
     alert("The closing date must be later than the opening date.");
     return;
   }
 
-  if(batches.some(batch=>batch.name.toLowerCase() === name.toLowerCase())){
+  const duplicate=batches.some(batch=>
+    getBatchName(batch).toLowerCase()===name.toLowerCase()&&
+    getBatchId(batch)!==editingId
+  );
+
+  if(duplicate){
     alert("A batch with this name already exists.");
     return;
   }
 
-  const newBatch = {
-    id:"batch-" + Date.now(),
-    name,
-    openDate,
-    closeDate,
-    description,
-    createdAt:new Date().toISOString(),
-    orders:0,
-    goodsValue:0
-  };
+  if(editingId){
+    const batch=batches.find(item=>getBatchId(item)===editingId);
+    if(!batch)return;
+    batch.name=name;
+    batch.openDate=openDate;
+    batch.closeDate=closeDate;
+    batch.description=description;
+    batch.updatedAt=new Date().toISOString();
+  }else{
+    batches.unshift({
+      id:"batch-"+Date.now(),
+      name,
+      openDate,
+      closeDate,
+      description,
+      createdAt:new Date().toISOString()
+    });
+  }
 
-  batches.unshift(newBatch);
-  saveBatches();
-  renderBatches();
-
-  this.reset();
-  closeCreateModal();
+  if(saveBatches()){
+    closeCreateModal();
+    renderBatches();
+  }
 });
 
 function viewBatch(id){
-  const batch = batches.find(item=>item.id === id);
-  if(!batch) return;
+  loadData();
+  const batch=batches.find(item=>getBatchId(item)===id);
+  if(!batch)return;
 
-  const status = getBatchStatus(batch);
+  selectedBatchId=id;
+  const totals=batchTotals(batch);
+  const status=getBatchStatus(batch);
 
-  document.getElementById("detailTitle").textContent = batch.name;
-
-  document.getElementById("detailContent").innerHTML = `
+  document.getElementById("detailTitle").textContent=getBatchName(batch);
+  document.getElementById("detailContent").innerHTML=`
     <div class="detail-summary">
       <div class="detail-box">
         <small>Total orders</small>
-        <strong>${Number(batch.orders || 0).toLocaleString("en-NG")}</strong>
+        <strong>${totals.count.toLocaleString("en-NG")}</strong>
       </div>
-
       <div class="detail-box">
         <small>Total goods value</small>
-        <strong>${formatMoney(batch.goodsValue)}</strong>
+        <strong>${money(totals.value)}</strong>
       </div>
     </div>
 
     <div class="detail-section">
       <h3>Batch status</h3>
-      <p>${escapeHTML(status)}</p>
+      <p>${status}</p>
     </div>
 
     <div class="detail-section">
       <h3>Shopping schedule</h3>
       <p>
-        Opening: ${formatDate(batch.openDate)}<br>
+        Opening: ${formatDate(batch.openDate||batch.startDate)}<br>
         Closing: ${formatDate(batch.closeDate)}
       </p>
     </div>
 
     <div class="detail-section">
       <h3>Internal notes</h3>
-      <p>${escapeHTML(batch.description || "No notes added.")}</p>
-    </div>
-
-    <div class="detail-section">
-      <h3>Batch fulfilment</h3>
-      <p>
-        Orders, supplier purchases, received quantities, custom artwork
-        and customer deliveries can be reviewed from the linked management pages.
-      </p>
+      <p>${escapeHTML(batch.description||"No notes added.")}</p>
     </div>
   `;
 
-  const param = encodeURIComponent(batch.id);
+  const param=encodeURIComponent(id);
+  document.getElementById("ordersLink").href="orders.html?batch="+param;
+  document.getElementById("summaryLink").href="orders.html?batch="+param+"&view=quantities";
+  document.getElementById("artworkLink").href="orders.html?batch="+param+"&view=artwork";
 
-  document.getElementById("ordersLink").href = "orders.html?batch=" + param;
-  document.getElementById("productsLink").href = "products.html?batch=" + param;
-  document.getElementById("artworkLink").href = "artwork.html?batch=" + param;
+  document.getElementById("editBatchButton").onclick=()=>editBatch(id);
+  document.getElementById("deleteBatchButton").onclick=()=>deleteBatch(id);
 
   document.getElementById("detailModal").classList.add("show");
 }
 
-/* Refresh statuses when the page becomes active */
+function editBatch(id){
+  const batch=batches.find(item=>getBatchId(item)===id);
+  if(!batch)return;
+
+  editingId=id;
+  closeDetailModal();
+
+  document.getElementById("formTitle").textContent="Edit batch";
+  document.getElementById("saveBatchButton").textContent="Save changes";
+  document.getElementById("batchName").value=getBatchName(batch);
+  document.getElementById("openDate").value=batch.openDate||batch.startDate||"";
+  document.getElementById("closeDate").value=batch.closeDate||"";
+  document.getElementById("batchDescription").value=batch.description||"";
+  document.getElementById("createModal").classList.add("show");
+}
+
+function deleteBatch(id){
+  const batch=batches.find(item=>getBatchId(item)===id);
+  if(!batch)return;
+
+  const linkedOrders=ordersForBatch(batch);
+  if(linkedOrders.length){
+    alert("This batch has customer orders. It cannot be deleted while orders are attached to it.");
+    return;
+  }
+
+  if(!confirm("Delete "+getBatchName(batch)+"? This cannot be undone."))return;
+
+  batches=batches.filter(item=>getBatchId(item)!==id);
+  if(saveBatches()){
+    closeDetailModal();
+    renderBatches();
+  }
+}
+
 document.addEventListener("visibilitychange",()=>{
-  if(!document.hidden) renderBatches();
+  if(!document.hidden)renderBatches();
 });
 
-loadBatches();
+loadData();
 renderBatches();
 </script>
-
 </body>
 </html>
