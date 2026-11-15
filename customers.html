@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101d3a">
+<title>AHRUH | Customers</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --navy:#101d3a;--blue:#315fba;--soft:#edf3ff;
+ --gold:#c9a96e;--bg:#f4f6fa;--text:#18233b;
+ --muted:#7b8497;--border:#e7eaf0;
+ --green:#16865b;--red:#c84e54;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{background:var(--navy);color:white;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5}
+.brand{font:700 30px 'Cormorant Garamond',serif;letter-spacing:2px}
+.tagline{font-size:9px;letter-spacing:3px;color:var(--gold);margin-top:-4px}
+.top-right{font-size:12px;color:#d8dfed}
+.container{max-width:1000px;margin:auto;padding:19px 14px 45px}
+.back{display:inline-block;color:var(--blue);text-decoration:none;font-size:13px;font-weight:700;margin-bottom:15px}
+h1{font-size:23px;margin:0}
+.sub{font-size:12px;color:var(--muted);margin:5px 0 18px}
+.shortcuts{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:16px}
+.shortcut{background:white;border:1px solid var(--border);border-radius:13px;padding:13px 7px;text-align:center;color:var(--navy);font-size:11px;font-weight:700;min-height:76px}
+.shortcut span{display:block;font-size:21px;margin-bottom:6px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.stat,.section{background:white;border:1px solid var(--border);border-radius:14px;padding:15px}
+.stat-label{font-size:11px;color:var(--muted)}
+.stat-value{font-size:22px;font-weight:700;margin-top:7px}
+.stat-note{font-size:10px;color:var(--muted);margin-top:5px}
+.section{margin-bottom:14px}
+.section h2{font-size:15px;margin:0 0 12px}
+.search-row{display:flex;gap:8px}
+input,select,textarea{width:100%;padding:11px;border:1px solid var(--border);border-radius:10px;background:white;color:var(--text);outline:none;min-width:0}
+input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+.btn{border:0;border-radius:10px;padding:11px 14px;background:var(--navy);color:white;font-size:12px;font-weight:700}
+.btn.blue{background:var(--blue)}
+.btn.light{background:var(--soft);color:var(--navy)}
+.btn.red{background:#fff0f0;color:var(--red)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.filters{display:flex;gap:7px;overflow-x:auto;margin:13px 0}
+.filter{border:1px solid var(--border);background:white;border-radius:30px;padding:8px 12px;font-size:11px;white-space:nowrap}
+.filter.active{background:var(--navy);color:white;border-color:var(--navy)}
+.customer-card{background:white;border:1px solid var(--border);border-radius:13px;padding:13px;margin-top:9px}
+.card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.customer-name{font-size:13px;font-weight:700}
+.small{font-size:10px;color:var(--muted);margin-top:5px;line-height:1.5;overflow-wrap:anywhere}
+.pill{font-size:10px;border-radius:30px;padding:5px 9px;background:var(--soft);color:var(--blue);white-space:nowrap}
+.pill.active{background:#e9f7f0;color:var(--green)}
+.pill.suspended{background:#fff0f0;color:var(--red)}
+.balance-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.balance{background:#f5f7fb;border-radius:10px;padding:10px}
+.balance small{display:block;font-size:10px;color:var(--muted)}
+.balance strong{display:block;font-size:14px;margin-top:5px}
+.actions{display:flex;gap:7px;margin-top:11px}
+.actions button{flex:1}
+.empty{text-align:center;padding:24px 10px;color:var(--muted);font-size:12px}
+.notice{background:#fff8e9;color:#755b2c;padding:11px;border-radius:10px;font-size:11px;line-height:1.5;margin-top:12px}
+.modal-bg{position:fixed;inset:0;background:#071329aa;display:none;align-items:center;justify-content:center;padding:14px;z-index:10}
+.modal{width:100%;max-width:500px;background:white;border-radius:16px;padding:18px;max-height:92vh;overflow:auto}
+.modal h3{font-size:17px;margin:0 0 6px}
+.field{margin-top:12px}
+.field label{display:block;font-size:11px;font-weight:700;margin-bottom:6px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal-actions{display:flex;gap:8px;margin-top:17px}
+.modal-actions button{flex:1}
+.profile-heading{display:flex;align-items:center;gap:12px;margin:14px 0}
+.avatar{width:45px;height:45px;border-radius:50%;background:var(--soft);color:var(--blue);display:grid;place-items:center;font-size:17px;font-weight:700}
+.detail{border-bottom:1px solid var(--border);padding:10px 0;display:flex;justify-content:space-between;gap:12px;font-size:11px}
+.detail span:first-child{color:var(--muted)}
+.detail strong{text-align:right;overflow-wrap:anywhere}
+@media(max-width:540px){
+ .shortcuts{grid-template-columns:repeat(2,1fr)}
+ .container{padding:15px 11px 35px}
+ .topbar{padding:13px}
+ .stat-value{font-size:19px}
+ .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+ <div>
+  <div class="brand">AHRUH</div>
+  <div class="tagline">ADMIN SPACE</div>
+ </div>
+ <div class="top-right">Customer Management</div>
+</header>
+
+<main class="container">
+ <a class="back" href="admin.html">← Back to Dashboard</a>
+ <h1>Customers</h1>
+ <p class="sub">View and manage registered AHRUH customers.</p>
+
+ <div class="shortcuts">
+  <button class="shortcut" onclick="goTo('customerSection')"><span>👥</span>All Customers</button>
+  <button class="shortcut" onclick="setFilter('active')"><span>✅</span>Active Customers</button>
+  <button class="shortcut" onclick="setFilter('suspended')"><span>⛔</span>Suspended Accounts</button>
+  <button class="shortcut" onclick="exportCustomers()"><span>📥</span>Export Customers</button>
+ </div>
+
+ <div class="stats">
+  <div class="stat">
+   <div class="stat-label">Total Customers</div>
+   <div class="stat-value" id="totalCustomers">0</div>
+   <div class="stat-note">Registered customer accounts</div>
+  </div>
+  <div class="stat">
+   <div class="stat-label">Active Customers</div>
+   <div class="stat-value" id="activeCustomers">0</div>
+   <div class="stat-note">Accounts currently active</div>
+  </div>
+  <div class="stat">
+   <div class="stat-label">Suspended Customers</div>
+   <div class="stat-value" id="suspendedCustomers">0</div>
+   <div class="stat-note">Accounts currently suspended</div>
+  </div>
+  <div class="stat">
+   <div class="stat-label">Total G-Coins Held</div>
+   <div class="stat-value" id="totalCoins">0</div>
+   <div class="stat-note">Combined customer reward balances</div>
+  </div>
+ </div>
+
+ <section class="section" id="customerSection">
+  <h2>Customer Directory</h2>
+  <div class="search-row">
+   <input id="search" placeholder="Search name, email, phone or customer ID..." oninput="renderCustomers()">
+   <button class="btn blue" onclick="renderCustomers()">Search</button>
+  </div>
+
+  <div class="filters">
+   <button class="filter active" onclick="setFilter('all',this)">All</button>
+   <button class="filter" onclick="setFilter('active',this)">Active</button>
+   <button class="filter" onclick="setFilter('suspended',this)">Suspended</button>
+  </div>
+
+  <div id="customerList"></div>
+ </section>
+
+ <section class="section">
+  <h2>Customer Account Management</h2>
+  <p class="small">Open an individual customer profile to inspect their account information and manage account status.</p>
+  <div class="notice">
+   Customer registration, identity verification, orders, addresses and wallet records should be connected to the AHRUH backend. This page does not create customer accounts or invent customer records.
+  </div>
+ </section>
+</main>
+
+<div class="modal-bg" id="profileModal">
+ <div class="modal">
+  <h3>Customer Profile</h3>
+  <div class="profile-heading">
+   <div class="avatar" id="avatar">A</div>
+   <div>
+    <div class="customer-name" id="profileName">Customer</div>
+    <div class="small" id="profileId"></div>
+   </div>
+  </div>
+
+  <div class="balance-grid">
+   <div class="balance">
+    <small>Naira Wallet</small>
+    <strong id="profileNaira">₦0.00</strong>
+   </div>
+   <div class="balance">
+    <small>G-Coins Wallet</small>
+    <strong id="profileCoins">0</strong>
+   </div>
+  </div>
+
+  <div style="margin-top:14px">
+   <div class="detail"><span>Email</span><strong id="profileEmail">—</strong></div>
+   <div class="detail"><span>Phone</span><strong id="profilePhone">—</strong></div>
+   <div class="detail"><span>Address</span><strong id="profileAddress">—</strong></div>
+   <div class="detail"><span>Account Status</span><strong id="profileStatus">—</strong></div>
+   <div class="detail"><span>Registration Date</span><strong id="profileDate">—</strong></div>
+  </div>
+
+  <div class="notice">Orders and saved delivery addresses will appear here when the customer records are connected to the live backend.</div>
+
+  <div class="modal-actions">
+   <button class="btn light" onclick="closeProfile()">Close</button>
+   <button class="btn" id="statusButton" onclick="toggleSelectedStatus()">Suspend Account</button>
+  </div>
+ </div>
+</div>
+
+<script>
+const CUSTOMER_KEY="ahruh_customers_prototype_v1";
+const WALLET_KEY="ahruh_wallet_customers_v1";
+
+function readList(key){
+ try{
+  const value=JSON.parse(localStorage.getItem(key)||"[]");
+  return Array.isArray(value)?value:[];
+ }catch(e){return []}
+}
+
+let customers=readList(CUSTOMER_KEY);
+const walletCustomers=readList(WALLET_KEY);
+let currentFilter="all";
+let selectedId=null;
+
+function idOf(c){
+ return String(c.id||c.customerId||c.customer_id||"");
+}
+function nameOf(c){
+ return c.name||c.fullName||c.full_name||"Unnamed Customer";
+}
+function emailOf(c){return c.email||c.emailAddress||"—"}
+function phoneOf(c){return c.phone||c.phoneNumber||c.mobile||"—"}
+function addressOf(c){
+ return c.address||c.deliveryAddress||c.delivery_address||"Not provided";
+}
+function nairaOf(c){return Number(c.nairaBalance??c.naira??0)}
+function coinsOf(c){return Number(c.coinsBalance??c.coins??0)}
+function statusOf(c){return c.status==="suspended"?"suspended":"active"}
+function escapeHTML(value){
+ return String(value??"").replace(/[&<>"']/g,ch=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[ch]));
+}
+function money(value){
+ return "₦"+Number(value||0).toLocaleString("en-NG",{
+  minimumFractionDigits:2,maximumFractionDigits:2
+ });
+}
+function dateText(value){
+ if(!value)return "Not available";
+ const d=new Date(value);
+ return isNaN(d)?"Not available":d.toLocaleDateString();
+}
+function findWallet(c){
+ return walletCustomers.find(w=>idOf(w)===idOf(c));
+}
+function renderStats(){
+ document.getElementById("totalCustomers").textContent=customers.length;
+ document.getElementById("activeCustomers").textContent=customers.filter(c=>statusOf(c)==="active").length;
+ document.getElementById("suspendedCustomers").textContent=customers.filter(c=>statusOf(c)==="suspended").length;
+ document.getElementById("totalCoins").textContent=customers.reduce((sum,c)=>{
+  const w=findWallet(c);
+  return sum+coinsOf(c)+(w?coinsOf(w):0);
+ },0).toLocaleString();
+}
+function renderCustomers(){
+ const query=document.getElementById("search").value.trim().toLowerCase();
+ const list=customers.filter(c=>{
+  const wallet=findWallet(c);
+  const text=[
+   nameOf(c),idOf(c),emailOf(c),phoneOf(c)
+  ].join(" ").toLowerCase();
+  const status=statusOf(c);
+  const matchesFilter=currentFilter==="all"||status===currentFilter;
+  return text.includes(query)&&matchesFilter;
+ });
+ const holder=document.getElementById("customerList");
+
+ if(!list.length){
+  holder.innerHTML='<div class="empty">'+
+   (customers.length?"No customers match your search.":"No customer accounts have been added yet.")+
+   '</div>';
+  return;
+ }
+
+ holder.innerHTML=list.map(c=>{
+  const wallet=findWallet(c);
+  const naira=nairaOf(c)|| (wallet?nairaOf(wallet):0);
+  const coins=coinsOf(c)|| (wallet?coinsOf(wallet):0);
+  const status=statusOf(c);
+  return `
+   <article class="customer-card">
+    <div class="card-top">
+     <div>
+      <div class="customer-name">${escapeHTML(nameOf(c))}</div>
+      <div class="small">${escapeHTML(emailOf(c))}</div>
+      <div class="small">ID: ${escapeHTML(idOf(c)||"Not available")} · ${escapeHTML(phoneOf(c))}</div>
+     </div>
+     <span class="pill ${status}">${status==="active"?"Active":"Suspended"}</span>
+    </div>
+
+    <div class="balance-grid">
+     <div class="balance">
+      <small>Naira Wallet</small>
+      <strong>${money(naira)}</strong>
+     </div>
+     <div class="balance">
+      <small>G-Coins</small>
+      <strong>${coins.toLocaleString()}</strong>
+     </div>
+    </div>
+
+    <div class="actions">
+     <button class="btn light" onclick="openProfile('${escapeHTML(idOf(c))}')">View Profile</button>
+     <button class="btn ${status==="active"?"red":"blue"}" onclick="changeStatus('${escapeHTML(idOf(c))}')">${status==="active"?"Suspend":"Reactivate"}</button>
+    </div>
+   </article>
+  `;
+ }).join("");
+}
+function setFilter(filter,button){
+ currentFilter=filter;
+ document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+ if(button)button.classList.add("active");
+ else{
+  const target=[...document.querySelectorAll(".filter")].find(b=>b.textContent.toLowerCase()===filter);
+  if(target)target.classList.add("active");
+ }
+ renderCustomers();
+}
+function goTo(id){
+ document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
+function openProfile(id){
+ const c=customers.find(x=>idOf(x)===id);
+ if(!c)return;
+ selectedId=id;
+ const wallet=findWallet(c);
+ document.getElementById("avatar").textContent=nameOf(c).charAt(0).toUpperCase();
+ document.getElementById("profileName").textContent=nameOf(c);
+ document.getElementById("profileId").textContent="Customer ID: "+(id||"Not available");
+ document.getElementById("profileEmail").textContent=emailOf(c);
+ document.getElementById("profilePhone").textContent=phoneOf(c);
+ document.getElementById("profileAddress").textContent=addressOf(c);
+ document.getElementById("profileStatus").textContent=statusOf(c);
+ document.getElementById("profileDate").textContent=dateText(c.createdAt||c.created_at||c.joinedAt);
+ document.getElementById("profileNaira").textContent=money(nairaOf(c)||(wallet?nairaOf(wallet):0));
+ document.getElementById("profileCoins").textContent=(coinsOf(c)||(wallet?coinsOf(wallet):0)).toLocaleString();
+ document.getElementById("statusButton").textContent=statusOf(c)==="active"?"Suspend Account":"Reactivate Account";
+ document.getElementById("statusButton").className="btn "+(statusOf(c)==="active"?"red":"blue");
+ document.getElementById("profileModal").style.display="flex";
+}
+function closeProfile(){
+ document.getElementById("profileModal").style.display="none";
+ selectedId=null;
+}
+function changeStatus(id){
+ const c=customers.find(x=>idOf(x)===id);
+ if(!c)return;
+ const next=statusOf(c)==="active"?"suspended":"active";
+ const message=next==="suspended"
+  ?"Suspend this customer's account?"
+  :"Reactivate this customer's account?";
+ if(!confirm(message))return;
+ c.status=next;
+ saveCustomers();
+ refresh();
+}
+function toggleSelectedStatus(){
+ if(!selectedId)return;
+ const id=selectedId;
+ closeProfile();
+ changeStatus(id);
+}
+function saveCustomers(){
+ localStorage.setItem(CUSTOMER_KEY,JSON.stringify(customers));
+}
+function exportCustomers(){
+ if(!customers.length){
+  alert("There are no customers to export.");
+  return;
+ }
+ const rows=[
+  ["Customer ID","Name","Email","Phone","Address","Status","Naira Balance","G-Coins"]
+ ];
+ customers.forEach(c=>{
+  const w=findWallet(c);
+  rows.push([
+   idOf(c),nameOf(c),emailOf(c),phoneOf(c),addressOf(c),
+   statusOf(c),nairaOf(c)||(w?nairaOf(w):0),coinsOf(c)||(w?coinsOf(w):0)
+  ]);
+ });
+ const csv=rows.map(row=>row.map(value=>'"'+String(value??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
+ const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="ahruh-customers.csv";
+ a.click();
+ URL.revokeObjectURL(url);
+}
+function refresh(){
+ renderStats();
+ renderCustomers();
+}
+refresh();
+</script>
+</body>
+</html>
