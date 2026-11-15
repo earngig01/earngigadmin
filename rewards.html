@@ -1,0 +1,485 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101d3a">
+<title>AHRUH | G-Coins & Rewards</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#101d3a;--navy2:#182b50;--blue:#315fba;
+  --soft:#edf3ff;--gold:#c9a96e;--bg:#f4f6fa;
+  --white:#fff;--text:#18233b;--muted:#7b8497;
+  --border:#e7eaf0;--green:#16865b;--red:#c84e54;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{background:var(--navy);color:white;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5}
+.brand{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;letter-spacing:2px}
+.tagline{font-size:9px;letter-spacing:3px;color:var(--gold);margin-top:-4px}
+.top-right{font-size:12px;color:#d8dfed}
+.container{max-width:1050px;margin:auto;padding:19px 15px 45px}
+.back{color:var(--blue);text-decoration:none;font-size:13px;font-weight:700;display:inline-block;margin-bottom:15px}
+.heading{font-size:23px;font-weight:700;margin:0}
+.subheading{font-size:12px;color:var(--muted);margin:5px 0 18px}
+.shortcuts{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:17px}
+.shortcut{background:white;border:1px solid var(--border);border-radius:13px;padding:13px 8px;text-align:center;color:var(--navy);font-size:11px;font-weight:700;min-height:78px}
+.shortcut span{display:block;font-size:21px;margin-bottom:6px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-bottom:17px}
+.stat{background:white;border:1px solid var(--border);border-radius:15px;padding:15px}
+.stat-label{font-size:11px;color:var(--muted)}
+.stat-value{font-size:22px;font-weight:700;margin-top:7px}
+.stat-note{font-size:10px;color:var(--muted);margin-top:5px}
+.section{background:white;border:1px solid var(--border);border-radius:15px;padding:15px;margin-bottom:15px}
+.section-title{font-size:15px;font-weight:700;margin:0 0 12px}
+.small{font-size:11px;color:var(--muted);line-height:1.5}
+.grid-two{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;font-weight:700;margin-bottom:6px}
+input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10px;padding:11px;background:white;color:var(--text);outline:none;min-width:0}
+input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+textarea{min-height:75px;resize:vertical}
+.btn{border:0;border-radius:10px;padding:11px 14px;background:var(--navy);color:white;font-weight:700;font-size:12px}
+.btn.blue{background:var(--blue)}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.btn.light{background:var(--soft);color:var(--navy)}
+.btn.red{background:#fff0f0;color:var(--red)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.actions .btn{flex:1}
+.rule-card,.reward-card,.history-card{border:1px solid var(--border);border-radius:12px;padding:13px;margin-top:9px}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.card-title{font-size:13px;font-weight:700}
+.pill{font-size:10px;border-radius:30px;padding:5px 9px;background:var(--soft);color:var(--blue);white-space:nowrap}
+.pill.green{background:#e9f7f0;color:var(--green)}
+.balance-line{display:flex;justify-content:space-between;gap:10px;font-size:12px;margin-top:10px}
+.balance-line strong{color:var(--navy)}
+.tabs{display:flex;gap:7px;overflow-x:auto;margin-bottom:12px}
+.tab{padding:9px 13px;border:1px solid var(--border);border-radius:30px;background:white;font-size:11px;font-weight:700;white-space:nowrap}
+.tab.active{background:var(--navy);color:white;border-color:var(--navy)}
+.search-row{display:flex;gap:8px}
+.search-row input{flex:1}
+.history-card{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.amount{font-size:13px;font-weight:700;white-space:nowrap}
+.credit{color:var(--green)}.debit{color:var(--red)}
+.empty{text-align:center;padding:22px 10px;color:var(--muted);font-size:12px}
+.notice{background:#fff8e9;color:#755b2c;padding:11px;border-radius:10px;font-size:11px;line-height:1.55;margin-top:12px}
+.modal-bg{position:fixed;inset:0;background:#071329aa;z-index:10;display:none;align-items:center;justify-content:center;padding:15px}
+.modal{width:100%;max-width:440px;background:white;border-radius:17px;padding:19px;max-height:90vh;overflow:auto}
+.modal h3{margin:0 0 6px;font-size:17px}
+.modal-actions{display:flex;gap:8px;margin-top:16px}
+.modal-actions button{flex:1}
+.hidden{display:none!important}
+@media(max-width:540px){
+ .shortcuts{grid-template-columns:repeat(2,1fr)}
+ .grid-two{grid-template-columns:1fr}
+ .container{padding:16px 12px 35px}
+ .topbar{padding:14px}
+ .stat-value{font-size:19px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div>
+    <div class="brand">AHRUH</div>
+    <div class="tagline">ADMIN SPACE</div>
+  </div>
+  <div class="top-right">Rewards Management</div>
+</header>
+
+<main class="container">
+  <a class="back" href="admin.html">← Back to Dashboard</a>
+  <h1 class="heading">G-Coins & Rewards</h1>
+  <p class="subheading">Manage customer rewards, check-ins, mining, games and competitions.</p>
+
+  <div class="shortcuts">
+    <button class="shortcut" onclick="goTo('rulesSection')"><span>⚙️</span>Reward Rules</button>
+    <button class="shortcut" onclick="goTo('customerSection')"><span>👥</span>Customer Rewards</button>
+    <button class="shortcut" onclick="openRewardModal()"><span>🪙</span>Give / Deduct Coins</button>
+    <button class="shortcut" onclick="goTo('historySection')"><span>📜</span>Reward History</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Total G-Coins Held</div>
+      <div class="stat-value" id="totalCoins">0</div>
+      <div class="stat-note">Combined customer reward balances</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Rewards Issued</div>
+      <div class="stat-value" id="issuedCoins">0</div>
+      <div class="stat-note">Total coins credited in recorded history</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Coins Deducted</div>
+      <div class="stat-value" id="deductedCoins">0</div>
+      <div class="stat-note">Total coins debited in recorded history</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Reward Transactions</div>
+      <div class="stat-value" id="transactionCount">0</div>
+      <div class="stat-note">Recorded reward entries</div>
+    </div>
+  </div>
+
+  <section class="section" id="rulesSection">
+    <h2 class="section-title">Reward Rules</h2>
+    <p class="small">These are the current AHRUH reward settings. You can edit the values below.</p>
+
+    <div class="grid-two">
+      <div class="field">
+        <label>Daily Check-in Reward (G-Coins)</label>
+        <input id="checkinReward" type="number" min="0" step="1">
+      </div>
+      <div class="field">
+        <label>Mining Coins Per Reward Unit</label>
+        <input id="miningCoins" type="number" min="0" step="1">
+      </div>
+      <div class="field">
+        <label>Mining Taps Per Reward Unit</label>
+        <input id="miningTaps" type="number" min="1" step="1">
+      </div>
+      <div class="field">
+        <label>Maximum Mining Coins Per Day</label>
+        <input id="miningDailyMax" type="number" min="0" step="1">
+      </div>
+      <div class="field">
+        <label>Coins Equal to ₦1</label>
+        <input id="coinsPerNaira" type="number" min="1" step="1">
+      </div>
+      <div class="field">
+        <label>Competition Reward Limit (G-Coins)</label>
+        <input id="competitionLimit" type="number" min="0" step="1">
+      </div>
+    </div>
+
+    <button class="btn blue" onclick="saveRules()">Save Reward Rules</button>
+    <div class="notice">
+      Current reward arrangement: 50 coins for daily check-in; 10 mining taps earn 1 coin; mining is capped at 500 coins per day. G-Coins conversion is 100 coins = ₦10.
+    </div>
+  </section>
+
+  <section class="section" id="customerSection">
+    <h2 class="section-title">Customer Reward Balances</h2>
+    <div class="search-row">
+      <input id="customerSearch" placeholder="Search customer name, email or ID..." oninput="renderCustomers()">
+      <button class="btn blue" onclick="renderCustomers()">Search</button>
+    </div>
+    <div id="customerList"></div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Reward Activities</h2>
+    <div class="reward-card">
+      <div class="card-top">
+        <div>
+          <div class="card-title">Daily Check-in</div>
+          <div class="small">Customers receive coins for their daily check-in.</div>
+        </div>
+        <span class="pill green">50 coins</span>
+      </div>
+      <div class="balance-line"><span>Configured reward</span><strong id="displayCheckin">50 G-Coins</strong></div>
+    </div>
+    <div class="reward-card">
+      <div class="card-top">
+        <div>
+          <div class="card-title">Mining</div>
+          <div class="small">Customers earn coins by tapping the mining activity.</div>
+        </div>
+        <span class="pill">500 daily max</span>
+      </div>
+      <div class="balance-line"><span>Mining rate</span><strong id="displayMining">10 taps = 1 coin</strong></div>
+      <div class="balance-line"><span>Daily maximum</span><strong id="displayMiningMax">500 coins</strong></div>
+      <div class="small" style="margin-top:9px">Daily mining cap is separate from the daily check-in reward.</div>
+    </div>
+    <div class="reward-card">
+      <div class="card-top">
+        <div>
+          <div class="card-title">Games</div>
+          <div class="small">Coins earned from eligible AHRUH games.</div>
+        </div>
+        <span class="pill">Game rewards</span>
+      </div>
+      <div class="small" style="margin-top:8px">Game-specific reward amounts and level rules will be configured when the games administration is connected.</div>
+    </div>
+    <div class="reward-card">
+      <div class="card-top">
+        <div>
+          <div class="card-title">Competitions</div>
+          <div class="small">Special competitions may award G-Coins or Naira prizes.</div>
+        </div>
+        <span class="pill">Special rewards</span>
+      </div>
+      <div class="small" style="margin-top:8px">Naira competition prizes must be recorded separately from G-Coins and credited to the appropriate Naira wallet.</div>
+    </div>
+  </section>
+
+  <section class="section" id="historySection">
+    <h2 class="section-title">Reward History</h2>
+    <div class="tabs">
+      <button class="tab active" onclick="setFilter('all',this)">All</button>
+      <button class="tab" onclick="setFilter('checkin',this)">Check-in</button>
+      <button class="tab" onclick="setFilter('mining',this)">Mining</button>
+      <button class="tab" onclick="setFilter('game',this)">Games</button>
+      <button class="tab" onclick="setFilter('competition',this)">Competition</button>
+      <button class="tab" onclick="setFilter('admin',this)">Admin</button>
+    </div>
+    <div id="historyList"></div>
+  </section>
+</main>
+
+<div class="modal-bg" id="rewardModal">
+  <div class="modal">
+    <h3>Customer Reward Adjustment</h3>
+    <p class="small">Give or deduct G-Coins from a customer's reward balance.</p>
+    <div class="field">
+      <label>Customer</label>
+      <select id="rewardCustomer"></select>
+    </div>
+    <div class="field">
+      <label>Action</label>
+      <select id="rewardAction">
+        <option value="credit">Give G-Coins</option>
+        <option value="debit">Deduct G-Coins</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Reward Category</label>
+      <select id="rewardCategory">
+        <option value="admin">Admin Adjustment</option>
+        <option value="checkin">Daily Check-in</option>
+        <option value="mining">Mining</option>
+        <option value="game">Game Reward</option>
+        <option value="competition">Competition</option>
+        <option value="refund">Reward Reversal</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Number of G-Coins</label>
+      <input id="rewardAmount" type="number" min="1" step="1" placeholder="Enter whole number">
+    </div>
+    <div class="field">
+      <label>Reason / Description</label>
+      <textarea id="rewardReason" maxlength="200" placeholder="Explain why the coins are being given or deducted"></textarea>
+    </div>
+    <div class="notice">Manual adjustments are recorded in the prototype history. A live system must verify admin permission and record the adjustment on the server.</div>
+    <div class="modal-actions">
+      <button class="btn light" onclick="closeRewardModal()">Cancel</button>
+      <button class="btn" onclick="saveReward()">Save Reward</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CUSTOMER_KEY="ahruh_wallet_customers_v1";
+const REWARD_HISTORY_KEY="ahruh_rewards_history_v1";
+const RULES_KEY="ahruh_rewards_rules_v1";
+
+function readArray(key){
+  try{
+    const value=JSON.parse(localStorage.getItem(key)||"[]");
+    return Array.isArray(value)?value:[];
+  }catch(e){return []}
+}
+function readObject(key,fallback){
+  try{
+    const value=JSON.parse(localStorage.getItem(key)||"null");
+    return value&&typeof value==="object"&&!Array.isArray(value)?value:fallback;
+  }catch(e){return fallback}
+}
+let customers=readArray(CUSTOMER_KEY);
+let history=readArray(REWARD_HISTORY_KEY);
+let rules=readObject(RULES_KEY,{
+  checkinReward:50,
+  miningCoins:1,
+  miningTaps:10,
+  miningDailyMax:500,
+  coinsPerNaira:10,
+  competitionLimit:0
+});
+let activeFilter="all";
+
+function nameOf(c){return c.name||c.fullName||c.full_name||"Unnamed customer"}
+function idOf(c){return c.id||c.customerId||c.customer_id||""}
+function coinsOf(c){return Number(c.coinsBalance??c.coins??0)}
+function setCoins(c,value){
+  if("coinsBalance" in c||!("coins" in c))c.coinsBalance=value;
+  else c.coins=value;
+}
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,ch=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[ch]));
+}
+function formatDate(value){
+  const d=new Date(value);
+  return isNaN(d)?"Date unavailable":d.toLocaleString();
+}
+function saveAll(){
+  localStorage.setItem(CUSTOMER_KEY,JSON.stringify(customers));
+  localStorage.setItem(REWARD_HISTORY_KEY,JSON.stringify(history));
+}
+function saveRules(){
+  const fields=["checkinReward","miningCoins","miningTaps","miningDailyMax","coinsPerNaira","competitionLimit"];
+  const next={};
+  for(const field of fields){
+    const value=Number(document.getElementById(field).value);
+    if(!Number.isFinite(value)||value<0||(field==="miningTaps"&&value<1)||(field==="coinsPerNaira"&&value<1)||!Number.isInteger(value)){
+      alert("Please enter valid whole numbers for all reward settings.");
+      return;
+    }
+    next[field]=value;
+  }
+  if(next.miningCoins===0||next.miningTaps===0){
+    alert("Mining reward rate and taps must be greater than zero.");
+    return;
+  }
+  rules=next;
+  localStorage.setItem(RULES_KEY,JSON.stringify(rules));
+  renderRules();
+  alert("Reward rules saved in this prototype.");
+}
+function renderRules(){
+  Object.keys(rules).forEach(key=>{
+    const field=document.getElementById(key);
+    if(field)field.value=rules[key];
+  });
+  document.getElementById("displayCheckin").textContent=rules.checkinReward+" G-Coins";
+  document.getElementById("displayMining").textContent=rules.miningTaps+" taps = "+rules.miningCoins+" coin(s)";
+  document.getElementById("displayMiningMax").textContent=rules.miningDailyMax+" coins";
+}
+function renderStats(){
+  document.getElementById("totalCoins").textContent=customers.reduce((sum,c)=>sum+coinsOf(c),0).toLocaleString();
+  document.getElementById("issuedCoins").textContent=history.filter(t=>t.action==="credit").reduce((sum,t)=>sum+Number(t.amount),0).toLocaleString();
+  document.getElementById("deductedCoins").textContent=history.filter(t=>t.action==="debit").reduce((sum,t)=>sum+Number(t.amount),0).toLocaleString();
+  document.getElementById("transactionCount").textContent=history.length.toLocaleString();
+}
+function renderCustomers(){
+  const q=document.getElementById("customerSearch").value.trim().toLowerCase();
+  const list=customers.filter(c=>
+    [nameOf(c),idOf(c),c.email||"",c.phone||""].join(" ").toLowerCase().includes(q)
+  );
+  const holder=document.getElementById("customerList");
+  if(!list.length){
+    holder.innerHTML='<div class="empty">'+(customers.length?"No matching customer found.":"No customer wallets have been added yet.")+'</div>';
+    return;
+  }
+  holder.innerHTML=list.map(c=>`
+    <div class="rule-card">
+      <div class="card-top">
+        <div>
+          <div class="card-title">${escapeHTML(nameOf(c))}</div>
+          <div class="small">${escapeHTML(c.email||"No email")} · ID: ${escapeHTML(idOf(c)||"Not available")}</div>
+        </div>
+        <span class="pill">Customer</span>
+      </div>
+      <div class="balance-line"><span>G-Coins balance</span><strong>${coinsOf(c).toLocaleString()} coins</strong></div>
+      <div class="actions">
+        <button class="btn light" onclick="viewCustomer('${escapeHTML(idOf(c))}')">View Reward History</button>
+        <button class="btn" onclick="openRewardModal('${escapeHTML(idOf(c))}')">Give / Deduct</button>
+      </div>
+    </div>
+  `).join("");
+}
+function renderHistory(){
+  let list=[...history];
+  if(activeFilter!=="all")list=list.filter(t=>t.category===activeFilter);
+  list.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const holder=document.getElementById("historyList");
+  if(!list.length){
+    holder.innerHTML='<div class="empty">No reward transactions recorded yet.</div>';
+    return;
+  }
+  holder.innerHTML=list.map(t=>`
+    <div class="history-card">
+      <div>
+        <div class="card-title">${escapeHTML(t.reason||"Reward transaction")}</div>
+        <div class="small">${escapeHTML(t.customerName||"Customer")} · ${escapeHTML(t.category)} · ${formatDate(t.date)}</div>
+        <div class="small">Reference: ${escapeHTML(t.id)}</div>
+      </div>
+      <div class="amount ${t.action==="credit"?"credit":"debit"}">${t.action==="credit"?"+":"−"}${Number(t.amount).toLocaleString()} coins</div>
+    </div>
+  `).join("");
+}
+function setFilter(filter,button){
+  activeFilter=filter;
+  document.querySelectorAll(".tab").forEach(tab=>tab.classList.remove("active"));
+  button.classList.add("active");
+  renderHistory();
+}
+function openRewardModal(customerId=""){
+  const select=document.getElementById("rewardCustomer");
+  select.innerHTML=customers.map(c=>
+    `<option value="${escapeHTML(idOf(c))}">${escapeHTML(nameOf(c))} — ${escapeHTML(idOf(c))}</option>`
+  ).join("");
+  if(!customers.length){
+    alert("There are no customer wallets to adjust yet.");
+    return;
+  }
+  if(customerId)select.value=customerId;
+  document.getElementById("rewardAmount").value="";
+  document.getElementById("rewardReason").value="";
+  document.getElementById("rewardModal").style.display="flex";
+}
+function closeRewardModal(){
+  document.getElementById("rewardModal").style.display="none";
+}
+function saveReward(){
+  const customerId=document.getElementById("rewardCustomer").value;
+  const action=document.getElementById("rewardAction").value;
+  const category=document.getElementById("rewardCategory").value;
+  const amount=Number(document.getElementById("rewardAmount").value);
+  const reason=document.getElementById("rewardReason").value.trim();
+  const customer=customers.find(c=>idOf(c)===customerId);
+  if(!customer){alert("Please select a customer.");return}
+  if(!Number.isSafeInteger(amount)||amount<=0){alert("Enter a valid whole number of G-Coins.");return}
+  if(!reason){alert("Please enter a reason for this reward transaction.");return}
+  const current=coinsOf(customer);
+  if(action==="debit"&&amount>current){
+    alert("The customer does not have enough G-Coins for this deduction.");
+    return;
+  }
+  setCoins(customer,action==="credit"?current+amount:current-amount);
+  history.push({
+    id:"AHR-REW-"+Date.now()+"-"+Math.random().toString(36).slice(2,7).toUpperCase(),
+    customerId,
+    customerName:nameOf(customer),
+    action,
+    category,
+    amount,
+    reason,
+    date:new Date().toISOString()
+  });
+  saveAll();
+  closeRewardModal();
+  refresh();
+  alert("Reward adjustment recorded in this prototype.");
+}
+function viewCustomer(customerId){
+  const customer=customers.find(c=>idOf(c)===customerId);
+  if(!customer)return;
+  const records=history.filter(t=>t.customerId===customerId).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const details=records.length?records.map(t=>
+    `${t.action==="credit"?"+":"−"}${t.amount} coins — ${t.category}: ${t.reason} (${formatDate(t.date)})`
+  ).join("\n"):"No reward transactions for this customer.";
+  alert(nameOf(customer)+"\nCurrent balance: "+coinsOf(customer)+" G-Coins\n\n"+details);
+}
+function goTo(id){
+  document.getElementById(id).scrollIntoView({behavior:"smooth",block:"start"});
+}
+function refresh(){
+  renderStats();
+  renderCustomers();
+  renderHistory();
+}
+renderRules();
+refresh();
+</script>
+</body>
+</html>
